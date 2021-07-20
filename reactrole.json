@@ -1,0 +1,110 @@
+[
+    {
+        "role_name": "Members",
+        "role_id": 855717233396547614,
+        "emoji": "\ud83d\ude07",
+        "message_id": 856119581260382241
+    },
+    {
+        "role_name": "test",
+        "role_id": 856124015756181504,
+        "emoji": "\ud83d\ude0e",
+        "message_id": 856126018850258945
+    },
+    {
+        "role_name": "test",
+        "role_id": 856124015756181504,
+        "emoji": "\ud83d\ude0e",
+        "message_id": 856126371016343564
+    },
+    {
+        "role_name": "test2",
+        "role_id": 856127967398330389,
+        "emoji": "<:gpython:855690635351425034>",
+        "message_id": 856127968022757386
+    },
+    {
+        "role_name": "test2",
+        "role_id": 856127800560975882,
+        "emoji": "\ud83d\udc4b",
+        "message_id": 856128693247541278
+    },
+    {
+        "role_name": "react",
+        "role_id": 856128897623785482,
+        "emoji": "<:gsupportserver:855714629606703124>",
+        "message_id": 856128993686454292
+    },
+    {
+        "role_name": "Members",
+        "role_id": 855717233396547614,
+        "emoji": "\ud83d\ude0e",
+        "message_id": 856131821262995476
+    },
+    {
+        "role_name": "Developer",
+        "role_id": 855716170254254136,
+        "emoji": "<a:GM_Tick:849574921310961713>",
+        "message_id": 856132132651925514
+    },
+    {
+        "role_name": "Trainee mod",
+        "role_id": 855715843349413908,
+        "emoji": "<a:GM_WumpusJetpack:850024748540755998>",
+        "message_id": 856132364266897418
+    },
+    {
+        "role_name": "Developer",
+        "role_id": 855716170254254136,
+        "emoji": "<a:GM_Lol:849688938121527306>",
+        "message_id": 856133124086169631
+    },
+    {
+        "role_name": "Trainee mod",
+        "role_id": 855715843349413908,
+        "emoji": "\ud83d\ude04",
+        "message_id": 856404664433639475
+    },
+    {
+        "role_name": "---> Family Member <---",
+        "role_id": 847463733169356861,
+        "emoji": "\ud83d\ude04",
+        "message_id": 856462810166198302
+    },
+    {
+        "role_name": "---> Family Member <---",
+        "role_id": 847463733169356861,
+        "emoji": "<a:GM_Tick:849574921310961713>",
+        "message_id": 856463110793199616
+    },
+    {
+        "role_name": "Members",
+        "role_id": 855717233396547614,
+        "emoji": "\ud83d\ude0e",
+        "message_id": 856525373617078313
+    },
+    {
+        "role_name": "Bot_tester",
+        "role_id": 856410450241388594,
+        "emoji": "\ud83d\udc7e",
+        "message_id": 856722011120468000
+    },
+    {
+        "role_name": "Bot_tester",
+        "role_id": 856410450241388594,
+        "emoji": "\ud83d\udc7e",
+        "message_id": 856722224408166411
+    },
+    {
+        "role_name": "Bot_tester",
+        "role_id": 856410450241388594,
+        "emoji": "\ud83d\udc7e",
+        "message_id": 856747750942965760
+    },
+    {
+        "role_name": "test",
+        "role_id": 856124015756181504,
+        "emoji": "\ud83d\ude0e",
+        "message_id": 856751796356644897
+    }
+]
