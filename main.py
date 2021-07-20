@@ -3,7 +3,6 @@ import random
 import praw
 import urllib.parse, urllib.request, re
 import os
-import levelsys
 import requests
 import members
 import math
@@ -29,7 +28,7 @@ from discord.colour import Color
 from discord.ext import commands
 from googleapiclient.discovery import build
 
-cogs = [covid, members, spotify, AFK, moderation, levelsys]
+cogs = [covid, members, spotify, AFK, moderation]
 
 
 client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all())
