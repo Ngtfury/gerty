@@ -812,7 +812,9 @@ async def dropdown(ctx):
   
 #userinfo
 @client.command()
-async def whois(ctx, member: discord.Member):
+async def whois(ctx, member: discord.Member=None):
+  if member == None:
+    member = ctx.author
 
 
 
@@ -845,11 +847,6 @@ async def whois(ctx, member: discord.Member):
     embed.add_field(name="Hypesquad", value="<:brilliance:866614979250487316>")
   await ctx.send(embed=embed)
 
-@whois.error
-async def whois_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(f"> <a:gcooldown:855749809582768139> **{ctx.author.mention} Please mention a member <:discord_member:860138883165061120> (ie. @member)**")")
 
 @mail.error
 async def mail_error(ctx, error):
