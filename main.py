@@ -834,6 +834,7 @@ async def whois(ctx, member: discord.Member):
 
   embed.add_field(name=f"Roles <:greactionrole:856129896106688522> ({len(roles)})", value=" ".join([role.mention for role in roles]))
   embed.add_field(name="Top role <:greactionrole:856129896106688522>", value=member.top_role.mention)
+  embed.add_field(name="Verified user?", value=member.verified)
 
   embed.add_field(name="Is member a Bot? <:bot:860140819964887099>", value=member.bot)
   if member.public_flags.hypesquad_balance is True:
@@ -848,9 +849,7 @@ async def whois(ctx, member: discord.Member):
 async def whois_error(ctx, error):
     print(error)
     if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(f"> <a:gcooldown:855749809582768139> **{ctx.author.mention} Please mention a member <:discord_member:860138883165061120> (ie. @member)**")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("> **<:discordPoop:813895205115265035> something went wrong retriving the mentioned users info try contacting fury**")
+        await ctx.send(f"> <a:gcooldown:855749809582768139> **{ctx.author.mention} Please mention a member <:discord_member:860138883165061120> (ie. @member)**")")
 
 @mail.error
 async def mail_error(ctx, error):
