@@ -1,6 +1,5 @@
 import discord
 import requests
-import dateutil.parser
 from discord.ext import commands
 from PIL import Image, ImageFont, ImageDraw
 
