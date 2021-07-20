@@ -812,6 +812,7 @@ async def dropdown(ctx):
   
 #userinfo
 @client.command()
+@commands.cooldown(1,5,commands.BucketType.user)
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     member = ctx.author
