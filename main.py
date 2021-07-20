@@ -1225,6 +1225,7 @@ async def dc(ctx):
   if mevoicetrue is None:
     return await ctx.send("I am not currently in a voice channel")
   await ctx.voice_client.disconnect()
+  await player.delete()
   await ctx.message.add_reaction('<a:bye:857642966457253898>')
   dc = discord.Embed(description=f"<:disconnect:857641894313984040> Disconnected",color=0xf5ed00)
   await ctx.send(embed=dc)
