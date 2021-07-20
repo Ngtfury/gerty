@@ -836,7 +836,6 @@ async def whois(ctx, member: discord.Member=None):
 
   embed.add_field(name=f"Roles <:greactionrole:856129896106688522> ({len(roles)})", value=" ".join([role.mention for role in roles]))
   embed.add_field(name="Top role <:greactionrole:856129896106688522>", value=member.top_role.mention)
-  embed.add_field(name="Verified user?", value=member.verified)
 
   embed.add_field(name="Is member a Bot? <:bot:860140819964887099>", value=member.bot)
   if member.public_flags.hypesquad_balance is True:
