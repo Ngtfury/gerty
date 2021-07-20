@@ -830,6 +830,7 @@ async def whois(ctx, member: discord.Member=None):
 
   embed.add_field(name="ID:", value=member.id)
   embed.add_field(name="Server Name:", value=member.display_name)
+  
 
   embed.add_field(name="Account created at:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
   embed.add_field(name="Joined this server at:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
