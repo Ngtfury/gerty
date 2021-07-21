@@ -416,11 +416,11 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
   await member.add_roles(mutedRole, reason=reason)
   if reason == None:
-    embed = discord.Embed(description=f"✅ Muted {member.name}#{member.discriminator}", color=0x2bff00)
+    embed = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator}", color=0x2bff00)
     await ctx.send(embed=embed)
     await member.send(f'You were muted in the server **{guild.name}**')
   else:
-    embed2 = discord.Embed(description=f"✅ Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
+    embed2 = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
     await ctx.send(embed=embed2)
     await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
 
@@ -897,14 +897,14 @@ async def channelinfo(ctx):
 @commands.has_permissions(manage_channels = True)
 async def lock(ctx):
   await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
-  embed = discord.Embed(description=f"✅ {ctx.channel.mention} is now locked", color=0x2bff00)
+  embed = discord.Embed(description=f"<:succes:867385889059504128> {ctx.channel.mention} is now locked", color=0x2bff00)
   await ctx.send(embed=embed)
 
 @client.command()
 @commands.has_permissions(manage_channels = True)
 async def unlock(ctx):
   await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-  embed = discord.Embed(description=f"✅ {ctx.channel.mention} is now unlocked", color=0x2bff00)
+  embed = discord.Embed(description=f"<:succes:867385889059504128> {ctx.channel.mention} is now unlocked", color=0x2bff00)
   await ctx.send(embed=embed)
 
 @client.command(aliases=["flip"])
