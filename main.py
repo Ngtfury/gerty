@@ -1482,8 +1482,6 @@ async def sponge(ctx, user: discord.Member = None):
 @client.command(aliases=["nuke"])
 @commands.has_permissions(manage_channels=True)
 async def n(ctx, channel_name=None):
-  if channel_name == None:
-    channel_name = ctx.channel
     channel_id = int(''.join(i for i in channel_name if i.isdigit())) 
     existing_channel = client.get_channel(channel_id)
     if existing_channel:
