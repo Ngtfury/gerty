@@ -64,17 +64,13 @@ async def on_message_delete(message):
 @client.event
 async def on_guild_join(guild):
     if guild.system_channel:
-        embed=discord.Embed(title="<:dot_2:862321994983669771> Gerty Information <:dot_2:862321994983669771>", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", description="The bot is developed by Fury Alt#0143, `g!help` for commands! :)", color=0xd400ff)
-        embed.set_author(name="Gerty", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/783652973502922752.gif?v=1")
-        embed.add_field(name="My ID:", value="> 855443275658166282", inline=True)
-        embed.add_field(name="Username:", value="> Gerty", inline=True)
-        embed.add_field(name="Tag:", value="> Gerty#9317  <:bot:860140819964887099>", inline=True)
-        embed.add_field(name="Created at:", value="> Fri, 18 June 2021, 01:46 pm", inline=True)
-        embed.add_field(name="Servers in:", value=f"> {len(client.guilds)} Servers", inline=True)
-        embed.add_field(name="Invite Me:", value="> [Invite](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot)", inline=True)
-        embed.add_field(name="Join support server", value="> [Support server](https://discord.gg/XkF3VFbQWU)", inline=True)
-        embed.set_footer(text=f"Thanks for inviting me to {guild.name}! :]")
+        embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
+        embed.set_author(name="Gerty bot", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/765996691098173440.png?v=1")
+        embed.add_field(name="Thanks for inviting me!", value="> _currently I'm in discord servers_", inline=False)
+        embed.add_field(name="To get started:", value="> Command `g!help` will guide through the commands", inline=False)
+        embed.add_field(name="Useful links:", value="> :link: [support server](https://discord.gg/2nCcfeq3ED)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)\n > :link: [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands)", inline=False)
+        embed.set_footer(text="Gerty © 2021")
         await guild.system_channel.send(embed=embed)
 
 
@@ -1016,7 +1012,7 @@ async def help(ctx):
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
   embed.add_field(name="Categories:", value="> <:blurplemoderator:862212401080434698> _Fun commands_\n > <:blurplemoderator:862212401080434698> _Mod commands_\n > <:blurplemoderator:862212401080434698> _Music commands_\n > <:blurplemoderator:862212401080434698> _Miscellaneous commands_\n > <:blurplemoderator:862212401080434698> _Roleplay commands_", inline=False)
-  embed.add_field(name="Useful links:", value="> :link: [Invite me](https://bit.ly/3wGFgl7)\n > :link: [Support server](https://discord.gg/XkF3VFbQWU)\n > :link: [Dashboard](https://youtu.be/dQw4w9WgXcQ)", inline=False)
+  embed.add_field(name="Useful links:", value="> :link: [Invite me](https://bit.ly/3wGFgl7)\n > :link: [Support server](https://discord.gg/XkF3VFbQWU)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
