@@ -724,6 +724,8 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
 @client.command()
 @commands.cooldown(1,5,commands.BucketType.user)
 async def meme(ctx, subred = "memes"):
+  emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_")
+  v = await ctx.send(embed=emm)
   subreddit = reddit.subreddit(subred)
   all_subs = []
 
@@ -741,7 +743,7 @@ async def meme(ctx, subred = "memes"):
 
   em.set_image(url = url)
 
-  await ctx.send(embed= em)
+  await v.edit(embed=em)
 
 
 
