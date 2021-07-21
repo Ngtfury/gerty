@@ -283,7 +283,7 @@ async def brain_update(ctx):
   embed.add_field(name="Update your brain", value="**Your brain is __outdated__ [click here](https://youtu.be/dQw4w9WgXcQ) to __update your brain__**", inline=False)
   await ctx.reply(embed=embed)
 
-#nuke fun command
+
 
 
 
@@ -895,13 +895,15 @@ async def channelinfo(ctx):
 @commands.has_permissions(manage_channels = True)
 async def lock(ctx):
   await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=False)
-  await ctx.send( ctx.channel.mention + " is now locked :lock:")
+  embed = discord.Embed(description=f"✅ {ctx.channel.mention} is now locked", color=0x2bff00)
+  await ctx.send(embed=embed)
 
 @client.command()
 @commands.has_permissions(manage_channels = True)
 async def unlock(ctx):
   await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-  await ctx.send( ctx.channel.mention + " is now unlocked :unlock:")
+  embed = discord.Embed(description=f"✅ {ctx.channel.mention} is now unlocked", color=0x2bff00)
+  await ctx.send(embed=embed)
 
 @client.command(aliases=["flip"])
 async def coin(ctx):
