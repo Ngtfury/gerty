@@ -415,8 +415,14 @@ async def mute(ctx, member: discord.Member, *, reason=None):
       await channel.set_permissions(mutedRole, speak=False, send_messages=False)
 
   await member.add_roles(mutedRole, reason=reason)
-  await ctx.send(f'**:mute: Muted {member.mention} for reason __{reason}__**')
-  await member.send(f'You were muted in the server **{guild.name}** for __{reason}__')
+  if reason == None:
+    embed = discord.Embed(description=f"✅ Muted {member.name}#{member.discriminator}", color=0x2bff00)
+    await ctx.send(embed=embed)
+    await member.send(f'You were muted in the server **{guild.name}**')
+  else:
+    embed2 = discord.Embed(description=f"✅ Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
+    await ctx.send(embed=embed2)
+    await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
 
 @mute.error
 async def mute_error(ctx, error):
@@ -435,8 +441,9 @@ async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
 
   await member.remove_roles(mutedRole)
-  await ctx.send(f'Member unmuted {member.mention}')
-  await member.send(f'You are now unmuted in the server **{ctx.guild.name}**') 
+  em = discord.Embed(description=f"✅ Unmuted {member.name}#{member.discriminator}", color=0x2bff00)
+  await ctx.send(embed=em)
+  await member.send(f'You are now unmuted in the server **{ctx.guild.name}**')
 
 
 #giveaway command main
