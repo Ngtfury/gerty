@@ -724,7 +724,7 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
 @client.command()
 @commands.cooldown(1,5,commands.BucketType.user)
 async def meme(ctx, subred = "memes"):
-  emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_")
+  emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_", color=0xeeff00)
   v = await ctx.send(embed=emm)
   subreddit = reddit.subreddit(subred)
   all_subs = []
@@ -1481,7 +1481,9 @@ async def sponge(ctx, user: discord.Member = None):
 
 @client.command(aliases=["nuke"])
 @commands.has_permissions(manage_channels=True)
-async def n(ctx, channel_name):
+async def n(ctx, channel_name=None):
+  if channel_name == None:
+    channel_name = ctx.channel
     channel_id = int(''.join(i for i in channel_name if i.isdigit())) 
     existing_channel = client.get_channel(channel_id)
     if existing_channel:
