@@ -1260,7 +1260,7 @@ async def dc(ctx):
   await ctx.send(embed=dc)
   await player.delete()
  
-@slash.slash(name="whois", description="join a vc run this command; bot will play a song for you", options=[
+@slash.slash(name="play", description="join a vc run this command; bot will play a song for you", options=[
   create_option(
     name="url",
     description="song name",
