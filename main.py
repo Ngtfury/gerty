@@ -106,7 +106,7 @@ async def snipe_error(ctx, error):
 
 @client.event
 async def on_ready():
-  await client.change_presence(status=discord.Status.online, activity=discord.Game(f'with {len(client.guilds)} servers and {len(client.users)} users | v9.0 | g!help'))
+  await client.change_presence(status=discord.Status.online, activity=discord.Game(f'v9.3 | g!help'))
   print('Gerty is ready')
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
