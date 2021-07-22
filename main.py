@@ -1308,7 +1308,7 @@ async def skip(ctx):
         embed = discord.Embed(description=f"> Stopped playing [{data[0].name}]({data[0].url}) nothing in the queue!", color=0x80ff00)
         await ctx.send(embed=embed)
 
-@slash.slash(name="whois", description="info about user", options=[
+@slash.slash(name="volume", description="change volume of current song", options=[
   create_option(
     name="volume",
     description="change volume of current playing music",
