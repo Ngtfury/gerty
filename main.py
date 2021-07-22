@@ -224,6 +224,14 @@ async def ping(ctx):
   await v.edit(f'**<a:gloading:855680101529944064> | Response in! {round(client.latency * 1000)}ms**')
 
 #8ball command
+@slash.slash(name="8ball", description="ask a question to me!", options=[
+  create_option(
+    name="question",
+    description="please give a question",
+    required=True,
+    option_type=3,
+  )
+])
 @client.command(aliases=['8ball'])
 async def _8ball(ctx, *, question):
   responses = ["It is certain.",
@@ -247,7 +255,9 @@ async def _8ball(ctx, *, question):
 "Outlook not so good.",
 "Very doubtful.",
 "I didn't understand please repeat"]
-  await ctx.reply(f':question: Question: {question}\n<a:ganswer:855676717368213564>  Answer: {random.choice(responses)}')
+  em = discord.Embed(description=f"**Question**: {question}\n **Reply**: {random.choice(responses)}")
+  await ctx.send(embed=em)
+
 
 
 #developer command
