@@ -314,7 +314,7 @@ async def avatar(ctx, member : discord.Member = None):
 
   memberAvatar = member.avatar_url
 
-  avaembed = discord.Embed(title = f"{member.name}'s avatar", color=0x00eeff, timestamp=ctx.message.created_at)
+  avaembed = discord.Embed(title = f"{member.name}'s avatar", color=0x00eeff)
   avaembed.set_image(url=memberAvatar )
 
   await ctx.reply(embed=avaembed)
@@ -958,6 +958,7 @@ async def slowmode_error(ctx, error):
     if isinstance(error, commands.MissingRequiredArgument):
         await ctx.send(f"> <a:gcooldown:855749809582768139> {ctx.author.mention} Please enter seconds")
 
+
 @client.command(pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def nick(ctx, member: discord.Member, *, arg):
@@ -978,6 +979,7 @@ async def nick_error(ctx, error):
     if isinstance(error, commands.MissingPermissions):
         await ctx.send(f"{ctx.author.mention} You cannot use this command you need manage nickname permission. Please contact {ctx.guild.name} admins")
 
+
 @client.command()
 @commands.cooldown(1,10,commands.BucketType.guild)
 @commands.has_permissions(administrator = True)
@@ -996,6 +998,15 @@ async def massunban_error(ctx, error):
   if isinstance(error, commands.MissingPermissions):
     await ctx.send(f"{ctx.author.mention} You have no permission to use this command")
 
+    
+@slash.slash(name="hack", description="stop it, get some help", options=[
+  create_option(
+    name="user",
+    description="select a user to hack",
+    required=True,
+    option_type=6,
+  )
+])
 @client.command()
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
