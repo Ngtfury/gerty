@@ -7,7 +7,6 @@ import time
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 
-slash = SlashCommand(client, sync_commands=True)
 
 class AFK(commands.Cog):
 
@@ -80,16 +79,7 @@ class AFK(commands.Cog):
         
         with open('afk.json', 'w') as f:
             json.dump(afk, f)
-    @slash.slash(name="afk", description="sets afk status for you", options=[
-        
-        create_option(
-            
-            name="reason",
-            description="specify a reason/message when sombody pings you",
-            required=True,
-            option_type=3,
-        )
-       ])
+
     @commands.command(aliases=["afkset"])
     async def afk(self, ctx, *, reason=None):
         with open('afk.json', 'r') as f:
