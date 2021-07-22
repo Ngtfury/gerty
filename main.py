@@ -1260,7 +1260,14 @@ async def dc(ctx):
   await ctx.send(embed=dc)
   await player.delete()
  
-
+@slash.slash(name="whois", description="join a vc run this command; bot will play a song for you", options=[
+  create_option(
+    name="url",
+    description="song name",
+    required=True,
+    option_type=3,
+  )
+])
 @client.command(aliases=["p"])
 async def play(ctx, *, url):
   try:
@@ -1289,14 +1296,13 @@ async def play(ctx, *, url):
     v.set_image(url=f"{song.thumbnail}")
     await s.edit(embed=v)
 
-@slash.slash(name="queue", description="check current player queue")
+
 @client.command()
 async def queue(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   em = discord.Embed(title="Queue", description=f"{',<:blank:862724961096695858>'.join([song.name for song in player.current_queue()])}", color=0xff0059)
   await ctx.send(embed=em)
-  
-@slash.slash(name="skip", description="skip current playing music")
+
 @client.command()
 async def skip(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
@@ -1338,7 +1344,7 @@ async def resume(self, ctx):
   embed = discord.Embed(title="Resumed playing", description=f"[{song.name}]({song.url})", color=0xfff700)
   await ctx.send(embed=embed)
 
-@slash.slash(name="loop", description="Toggle loop (loop/unloop)")
+
 @client.command()
 async def loop(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
@@ -1350,7 +1356,7 @@ async def loop(ctx):
     embed = discord.Embed(title="Stopped looping", description=f"[{song.name}]({song.url}) [{ctx.author.mention}]", color=0xfff700)
     return await ctx.send(embed=embed)
     
-@slash.slash(name="now playing", description="shows now playing music")
+
 @client.command(aliases=["np"])
 async def nowplaying(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
