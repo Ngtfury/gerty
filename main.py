@@ -299,6 +299,14 @@ async def brain_update(ctx):
 
 #avatar command
 
+@slash.slash(name="avatar", description="shows the image of mentioned users' avatar", options=[
+  create_option(
+    name="member",
+    description="select a user",
+    required=True,
+    option_type=6,
+  )
+])
 @client.command()
 async def avatar(ctx, member : discord.Member = None):
   if member == None:
@@ -729,7 +737,14 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
                      user_agent = "Gerty")
 
 
-
+@slash.slash(name="meme", description="sends a random meme", options=[
+  create_option(
+    name="subred",
+    description="keyword (optional)",
+    required=False,
+    option_type=3,
+  )
+])
 @client.command()
 @commands.cooldown(1,5,commands.BucketType.user)
 async def meme(ctx, subred = "memes"):
