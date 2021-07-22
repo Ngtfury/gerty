@@ -4,7 +4,10 @@ from discord.ext import commands
 import random
 import json
 import time
+from discord_slash import SlashCommand
+from discord_slash.utils.manage_commands import create_choice, create_option
 
+slash = SlashCommand(client, sync_commands=True)
 
 class AFK(commands.Cog):
 
