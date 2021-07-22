@@ -26,12 +26,15 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from discord.ext import commands
+from discord_slash import SlashCommand
+from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
 
 cogs = [covid, members, spotify, AFK, moderation]
 
 
 client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all())
+slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
 
 
@@ -816,8 +819,15 @@ async def dropdown(ctx):
     await m.edit("Timed out")
   
 #userinfo
+@slash.slash(name="whois", description="info about user", options=[
+  create_option(
+    name="member",
+    description="select a user",
+    required=True,
+    option_type=6,
+  )
+])
 @client.command()
-@commands.cooldown(1,5,commands.BucketType.user)
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     member = ctx.author
@@ -828,7 +838,7 @@ async def whois(ctx, member: discord.Member=None):
 
 
 
-  embed=discord.Embed(color=member.color, timestamp=ctx.message.created_at)
+  embed=discord.Embed(color=member.color)
 
   embed.set_author(name=f"User info - {member}")
   embed.set_thumbnail(url=member.avatar_url)
@@ -836,13 +846,13 @@ async def whois(ctx, member: discord.Member=None):
 
   embed.add_field(name="ID:", value=member.id)
   embed.add_field(name="Server Name:", value=member.display_name)
-  
 
   embed.add_field(name="Account created at:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
   embed.add_field(name="Joined this server at:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
 
   embed.add_field(name=f"Roles <:greactionrole:856129896106688522> ({len(roles)})", value=" ".join([role.mention for role in roles]))
   embed.add_field(name="Top role <:greactionrole:856129896106688522>", value=member.top_role.mention)
+
 
   embed.add_field(name="Is member a Bot? <:bot:860140819964887099>", value=member.bot)
   if member.public_flags.hypesquad_balance is True:
