@@ -1259,7 +1259,15 @@ async def dc(ctx):
   dc = discord.Embed(description=f"<:disconnect:857641894313984040> Disconnected",color=0xf5ed00)
   await ctx.send(embed=dc)
   await player.delete()
-
+ 
+@slash.slash(name="Play", description="Join a VC and ask bot to play music", options=[
+  create_option(
+    name="music",
+    description="what to you want to play",
+    required=True,
+    option_type=3,
+  )
+])
 @client.command(aliases=["p"])
 async def play(ctx, *, url):
   try:
