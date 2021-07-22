@@ -317,7 +317,7 @@ async def avatar(ctx, member : discord.Member = None):
   avaembed = discord.Embed(title = f"{member.name}'s avatar", color=0x00eeff)
   avaembed.set_image(url=memberAvatar )
 
-  await ctx.reply(embed=avaembed)
+  await ctx.send(embed=avaembed)
 #commands or help command
 
 #code command
@@ -327,6 +327,7 @@ async def code(ctx):
 
 
 #dm command
+
 @client.command(aliases=["dm"])
 async def mail(ctx, user: discord.User = None, *, msg):
       await user.send(f'You have a mail from **{ctx.author.name}** : {msg}')
@@ -999,14 +1000,7 @@ async def massunban_error(ctx, error):
     await ctx.send(f"{ctx.author.mention} You have no permission to use this command")
 
     
-@slash.slash(name="hack", description="stop it, get some help", options=[
-  create_option(
-    name="user",
-    description="select a user to hack",
-    required=True,
-    option_type=6,
-  )
-])
+
 @client.command()
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
