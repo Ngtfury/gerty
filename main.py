@@ -1260,14 +1260,7 @@ async def dc(ctx):
   await ctx.send(embed=dc)
   await player.delete()
  
-@slash.slash(name="play", description="join a vc run this command; bot will play a song for you", options=[
-  create_option(
-    name="url",
-    description="song name",
-    required=True,
-    option_type=3,
-  )
-])
+
 @client.command(aliases=["p"])
 async def play(ctx, *, url):
   try:
