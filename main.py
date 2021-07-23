@@ -106,7 +106,7 @@ async def snipe_error(ctx, error):
 
 @client.event
 async def on_ready():
-  await client.change_presence(status=discord.Status.online, activity=discord.Streaming(name="Released v44 | g!help", url="https://youtu.be/dQw4w9WgXcQ"))
+  
   print('Gerty is ready')
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
@@ -126,8 +126,8 @@ async def on_ready():
 filtered_words = ["fuck", "sex", "neger", "maadarchod", "thendi", "chetta", "Fuck", "Sex", "Neger", "Myr", "Maadarchod", "Thendi", "Chetta"]
 #react_words
 
-
-
+activity = discord.Streaming(name="Released v44 | g!help", url="https://youtu.be/dQw4w9WgXcQ")
+await client.change_presence(status=discord.Status.online, activity=activity)
 
 
 #mention help
