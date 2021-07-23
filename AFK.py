@@ -81,7 +81,7 @@ class AFK(commands.Cog):
             json.dump(afk, f)
     
     
-    @cog_ext.cog_slash(name="afk", description="sets' your status as afk", options=[
+    @slash.slash(name="afk", description="sets' your status as afk", options=[
         
         create_option(
             
