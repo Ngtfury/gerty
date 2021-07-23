@@ -80,17 +80,7 @@ class AFK(commands.Cog):
         with open('afk.json', 'w') as f:
             json.dump(afk, f)
     
-    
-    @slash.slash(name="afk", description="sets' your status as afk", options=[
-        
-        create_option(
-            
-            name="reason",
-            description="mention a message to show when you are pinged while in afk",
-            required=True,
-            option_type=3,
-        )
-        ])
+
     @commands.command(aliases=["afkset"])
     async def afk(self, ctx, *, reason=None):
         with open('afk.json', 'r') as f:
