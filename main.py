@@ -32,8 +32,8 @@ from googleapiclient.discovery import build
 
 cogs = [covid, members, spotify, AFK, moderation]
 
-
-client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all())
+activity = discord.Streaming(name="Released v46 | g!help", url="https://youtu.be/dQw4w9WgXcQ")
+client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
 
@@ -126,8 +126,8 @@ async def on_ready():
 filtered_words = ["fuck", "sex", "neger", "maadarchod", "thendi", "chetta", "Fuck", "Sex", "Neger", "Myr", "Maadarchod", "Thendi", "Chetta"]
 #react_words
 
-activity = discord.Streaming(name="Released v44 | g!help", url="https://youtu.be/dQw4w9WgXcQ")
-await client.change_presence(status=discord.Status.online, activity=activity)
+
+
 
 
 #mention help
