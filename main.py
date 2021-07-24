@@ -1467,6 +1467,24 @@ async def calc(ctx):
             f.set_footer(text="Exit calculator after use")
             await res.respond(content='', embed=f, components=buttons, type=7)
 
+            
+@slash.slash(name="moveme", description="moves you to another voice channel", options=[
+  create_option(
+    name="channel",
+    description="select a voice channel, don't select text channel nerd",
+    required=True,
+    option_type=7,
+  )
+])
+@client.command()
+async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
+  if member == None:
+    member = ctx.author
+  await member.move_to(channel)
+  em = discord.Embed(description=f"<:succes:867385889059504128> {member.mention} has been moved to {channel.mention}", color=ctx.author.color)
+  await ctx.send(embed=em)            
+           
+ 
 #wanted
 @client.command()
 async def wanted(ctx, user: discord.Member = None):
