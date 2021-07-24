@@ -1265,7 +1265,7 @@ async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChann
 #moosic
 music = DiscordUtils.Music()
 
-@slash.slash(description="the bot joins your vc")
+@slash.slash(name="join", description="the bot joins your vc")
 @client.command()
 async def join(ctx):
   voicetrue = ctx.author.voice
@@ -1275,7 +1275,7 @@ async def join(ctx):
   await ctx.send(embed=em)
   await ctx.author.voice.channel.connect()
   
-@slash.slash(description="disconnects the vc and deletes the player")
+@slash.slash(name="dc", description="disconnects the vc and deletes the player")
 @client.command(aliases=["disconnect"])
 async def dc(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
@@ -1320,14 +1320,14 @@ async def play(ctx, *, url):
     v.set_image(url=f"{song.thumbnail}")
     await s.edit(embed=v)
 
-@slash.slash(description="shows the list of songs in player queue")
+@slash.slash(name="queue", description="shows the list of songs in player queue")
 @client.command()
 async def queue(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   em = discord.Embed(title="Queue", description=f"{',<:blank:862724961096695858>'.join([song.name for song in player.current_queue()])}", color=0xff0059)
   await ctx.send(embed=em)
 
-@slash.slash(description="skips the song playing now in the player")
+@slash.slash(name="skip", description="skips the song playing now in the player")
 @client.command()
 async def skip(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
