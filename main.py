@@ -32,7 +32,7 @@ from googleapiclient.discovery import build
 
 cogs = [covid, members, spotify, AFK, moderation]
 
-activity = discord.Streaming(name="Released v48 | g!help", url="https://youtu.be/dQw4w9WgXcQ")
+activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
 client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
 client.remove_command("help")
@@ -1390,15 +1390,16 @@ async def nowplaying(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = player.now_playing()
   embed = discord.Embed(title="Now playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  embed.add_field(name="⏳ Duration", value=f"{song.duration/60} mins")
+  embed.add_field(name="⏳ Duration", value=f"{round(song.duration/60)} mins")
   embed.add_field(name="📌 Author", value=f"[{song.channel}]({song.channel_url})")
-  embed.add_field(name="🪄 Views", value=f"{song.views}")
+  embed.add_field(name="🪄 Views", value=f"{round(song.views)} [(rounded)](https://youtu.be/jeg_TJvkSjg)")
   if song.is_looping == True:
     embed.add_field(name="💽 Looping?", value="<:succes:867385889059504128>")
   else:
     embed.add_field(name="💽 Looping?", value="<:error:867269410644557834>")
   embed.set_image(url=f"{song.thumbnail}")
   await ctx.send(embed=embed)
+  
 
 @client.command()
 async def remove(ctx, index):
