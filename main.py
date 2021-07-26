@@ -1320,24 +1320,27 @@ async def play(ctx, *, url):
     v.set_image(url=f"{song.thumbnail}")
     await s.edit(embed=v)
 
-@slash.slash(name="queue", description="shows the list of songs in player queue")
+@slash.slash(name="queue")
 @client.command()
 async def queue(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   em = discord.Embed(title="Queue", description=f"{',<:blank:862724961096695858>'.join([song.name for song in player.current_queue()])}", color=0xff0059)
   await ctx.send(embed=em)
 
-@slash.slash(name="skip", description="skips the song playing now in the player")
+@slash.slash(name="skip")
 @client.command()
 async def skip(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
+    await player.skip(force=True)
     data = await player.skip(force=True)
     if len(data) == 2:
+      if len(data) == 2:
         embed = discord.Embed(title="Skipped", description=f"[{data[0].name}]({data[0].url})", color=0xfff700)
         await ctx.send(embed=embed)
     else:
         embed = discord.Embed(description=f"> Stopped playing [{data[0].name}]({data[0].url}) nothing in the queue!", color=0x80ff00)
         await ctx.send(embed=embed)
+    
 
 @slash.slash(name="volume", description="change volume of current song", options=[
   create_option(
@@ -1387,10 +1390,13 @@ async def nowplaying(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = player.now_playing()
   embed = discord.Embed(title="Now playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  embed.add_field(name="⏳ Duration", value=f"{song.duration} seconds")
-  embed.add_field(name="Channel Name <:youtube:865883178904059924>", value=f"[{song.channel}]({song.channel_url})")
-  embed.add_field(name="Views 👀", value=f"{song.views}")
-  embed.add_field(name="looping 🔂?", value=f"{song.is_looping}")
+  embed.add_field(name="⏳ Duration", value=f"{song.duration/60} mins")
+  embed.add_field(name="📌 Author", value=f"[{song.channel}]({song.channel_url})")
+  embed.add_field(name="🪄 Views", value=f"{song.views}")
+  if song.is_looping == True:
+    embed.add_field(name="💽 Looping?", value="<:succes:867385889059504128>")
+  else:
+    embed.add_field(name="💽 Looping?", value="<:error:867269410644557834>")
   embed.set_image(url=f"{song.thumbnail}")
   await ctx.send(embed=embed)
 
