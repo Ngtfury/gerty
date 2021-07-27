@@ -435,7 +435,7 @@ async def saymodonly(ctx, *, message):
 @commands.has_permissions(administrator=True)
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
   if ctx.author.guild_permissions.manage_roles:
-    emb = discord.Embed(title="React role", description=message, color=ctx.author.color, timestamp=ctx.message.created_at)
+    emb = discord.Embed(title="React role", description=message, color=ctx.author.color)
   msg = await ctx.channel.send(embed=emb)
   await msg.add_reaction(emoji)
 
