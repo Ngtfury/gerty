@@ -66,7 +66,7 @@ async def on_message_delete(message):
 
 @client.event
 async def on_guild_join(guild):
-  if guild.members < 8:
+  if len(guild.members) < 8:
     await ctx.send("I have automatically left this server because it does not have atleast 8 members")
     await guild.leave()
     
