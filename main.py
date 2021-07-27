@@ -365,7 +365,7 @@ async def mail(ctx, user: discord.User = None, *, message):
 @commands.has_permissions(manage_channels=True)
 async def deletechannel(ctx, channel: discord.TextChannel):
       if ctx.author.guild_permissions.manage_channels:
-        await ctx.message.add_reaction('✅')
+        
         await channel.delete()
 
 
@@ -382,7 +382,7 @@ async def deletechannel(ctx, channel: discord.TextChannel):
 @commands.has_permissions(manage_channels=True)
 async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
       if ctx.author.guild_permissions.manage_channels:
-        await ctx.message.add_reaction('✅')
+        
         await channel.delete()
 
 
@@ -423,6 +423,14 @@ async def saymodonly(ctx, *, message):
   await ctx.send(f'{message}' .format(message))
 
 #reactrole command
+@slash.slash(name="reactrole", description="adds role when reacting", options=[
+  create_option(
+    name="emoji",
+    description="which emoji do you want to react",
+    required=True,
+    option_type=3,
+  ), create_option(name="role", description="please mention a role", required=True, option_type=8), create_option(name="message", description="please enter a valid message", required=True, option_type=3)
+])
 @client.command()
 @commands.has_permissions(administrator=True)
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
