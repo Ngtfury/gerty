@@ -70,16 +70,16 @@ async def on_guild_join(guild):
     if len(guild.members) < 9:
       await guild.system_channel.send("I have automatically left this server because it does not have atleast 8 members")
       await guild.leave()
-    
-    if guild.system_channel:
-        embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
-        embed.set_author(name="Gerty bot", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/765996691098173440.png?v=1")
-        embed.add_field(name="Thanks for inviting me!", value=f"> _currently I'm in  {len(client.guilds)} discord servers_", inline=False)
-        embed.add_field(name="To get started:", value="> Command `g!help` will guide through the commands", inline=False)
-        embed.add_field(name="Useful links:", value="> :link: [support server](https://discord.gg/2nCcfeq3ED)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)\n > :link: [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands)", inline=False)
-        embed.set_footer(text="Gerty © 2021")
-        await guild.system_channel.send(embed=embed)
+    else:
+      if guild.system_channel:
+          embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
+          embed.set_author(name="Gerty bot", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+          embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/765996691098173440.png?v=1")
+          embed.add_field(name="Thanks for inviting me!", value=f"> _currently I'm in  {len(client.guilds)} discord servers_", inline=False)
+          embed.add_field(name="To get started:", value="> Command `g!help` will guide through the commands", inline=False)
+          embed.add_field(name="Useful links:", value="> :link: [support server](https://discord.gg/2nCcfeq3ED)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)\n > :link: [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands)", inline=False)
+          embed.set_footer(text="Gerty © 2021")
+          await guild.system_channel.send(embed=embed)
 
 
 
