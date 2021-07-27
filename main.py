@@ -66,9 +66,10 @@ async def on_message_delete(message):
 
 @client.event
 async def on_guild_join(guild):
-  if len(guild.members) < 8:
-    await guild.system_channel.send("I have automatically left this server because it does not have atleast 8 members")
-    await guild.leave()
+  if guild.system_channel:
+    if len(guild.members) < 9:
+      await guild.system_channel.send("I have automatically left this server because it does not have atleast 8 members")
+      await guild.leave()
     
     if guild.system_channel:
         embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
