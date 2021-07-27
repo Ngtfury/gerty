@@ -68,7 +68,7 @@ async def on_message_delete(message):
 async def on_guild_join(guild):
   if guild.system_channel:
     if len(guild.members) < 9:
-      await guild.system_channel.send("I have automatically left this server because it does not have atleast 8 members")
+      await guild.system_channel.send("I have automatically left this server because it does not have at least 8 members")
       await guild.leave()
     else:
       if guild.system_channel:
@@ -332,11 +332,19 @@ async def code(ctx):
 
 
 #dm command
-
+@slash.slash(name="mail", description="mail something to a user!", options=[
+  create_option(
+    name="user",
+    description="please mention a user",
+    required=True,
+    option_type=6,
+  ), create_option(name="message", description="please enter a message to mail", required=True, option_type=3)
+])
 @client.command(aliases=["dm"])
-async def mail(ctx, user: discord.User = None, *, msg):
-      await user.send(f'You have a mail from **{ctx.author.name}** : {msg}')
-      await ctx.reply('**Mail send <a:gdmsend:856043489187069952>**')
+async def mail(ctx, user: discord.User = None, *, message):
+      await user.send(f'You have a mail from **{ctx.author.name}** : {message}')
+      m = discord.Embed(description=f"<:succes:867385889059504128> Mail sent to {user.name}", color=ctx.author.color)
+      await ctx.send(embed=m)
 
 
 
@@ -345,6 +353,14 @@ async def mail(ctx, user: discord.User = None, *, msg):
 
 
 #delete channel command
+@slash.slash(name="deletechannel", description="deletes the mentioned channel", options=[
+  create_option(
+    name="channel",
+    description="select a channel to delete",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 @commands.has_permissions(manage_channels=True)
 async def deletechannel(ctx, channel: discord.TextChannel):
@@ -354,6 +370,14 @@ async def deletechannel(ctx, channel: discord.TextChannel):
 
 
 #delete voice channel command
+@slash.slash(name="deletevoicechannel", description="select a voice channel", options=[
+  create_option(
+    name="channel",
+    description="select a voice channel to delete",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command(aliases=["deletevc", "dvc"])
 @commands.has_permissions(manage_channels=True)
 async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
@@ -363,6 +387,14 @@ async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
 
 
 #emojify command
+@slash.slash(name="emojify", description="the bot emojifies the given text", options=[
+  create_option(
+    name="text",
+    description="text to emojify",
+    required=True,
+    option_type=3,
+  )
+])
 @client.command()
 async def emojify(ctx, *, text):
   emojis = []
@@ -378,7 +410,6 @@ async def emojify(ctx, *, text):
     else:
       emojis.append(s)
   await ctx.send(''.join(emojis))
-
 
 #say command
 @client.command()
