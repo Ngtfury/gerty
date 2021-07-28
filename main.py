@@ -367,6 +367,8 @@ async def deletechannel(ctx, channel: discord.TextChannel):
       if ctx.author.guild_permissions.manage_channels:
         
         await channel.delete()
+        m = discord.Embed(description=f"<:succes:867385889059504128> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
+        await ctx.send(embed=m)
 
 
 #delete voice channel command
@@ -384,6 +386,8 @@ async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
       if ctx.author.guild_permissions.manage_channels:
         
         await channel.delete()
+        m = discord.Embed(description=f"<:succes:867385889059504128> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
+        await ctx.send(embed=m)
 
 
 #emojify command
@@ -413,6 +417,14 @@ async def emojify(ctx, *, text):
 
 #say command
 @client.command()
+@slash.slash(name="say", description="the bot repeats the given text", options=[
+  create_option(
+    name="message",
+    description="message to echo!",
+    required=True,
+    option_type=3,
+  )
+])
 async def say(ctx, *, message):
   await ctx.message.delete()
   await ctx.send(f'**{ctx.author.name}** : {message}' .format(message))
@@ -434,6 +446,10 @@ async def saymodonly(ctx, *, message):
 @client.command()
 @commands.has_permissions(administrator=True)
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
+  d = discord.Embed(description=f"<:succes:867385889059504128> React role event created in {ctx.channel.mention}")
+  s = await ctx.send(embed=d)
+  await asyncio.sleep(3)
+  await s.delete()
   if ctx.author.guild_permissions.manage_roles:
     emb = discord.Embed(title="React role", description=message, color=ctx.author.color)
   msg = await ctx.channel.send(embed=emb)
@@ -464,6 +480,14 @@ async def reactrole_error(ctx, error):
 
 
   #mute command
+@slash.slash(name="mute", description="mutes a member", options=[
+  create_option(
+    name="member",
+    description="select the member you want to mute",
+    required=True,
+    option_type=6,
+  ), create_option(name="reason", description="please specify a reason", required=True, option_type=3)
+])
 @client.command()
 @commands.has_permissions(manage_channels=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
@@ -497,6 +521,14 @@ async def mute_error(ctx, error):
 
 
 #unmute command
+@slash.slash(name="unmute", description="unmutes a member", options=[
+  create_option(
+    name="member",
+    description="select the member you want to unmute",
+    required=True,
+    option_type=6,
+  )
+])
 @client.command()
 @commands.has_permissions(manage_channels=True)
 async def unmute(ctx, member: discord.Member):
@@ -641,6 +673,14 @@ winningConditions = [
     [2, 4, 6]
 ]
 
+@slash.slash(name="ttt", description="starts a tic tac toe match", options=[
+  create_option(
+    name="p1",
+    description="select player one",
+    required=True,
+    option_type=6,
+  ), create_option(name="p2", description="select player 2", required=True, option_type=6)
+])
 @client.command(aliases=['ttt'])
 async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
@@ -682,6 +722,14 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     else:
         await ctx.send("> **A game is already in progress! Finish it before starting a new one.**")
 
+@slash.slash(name="place", description="place a tile", options=[
+  create_option(
+    name="pos",
+    description="select the tile position",
+    required=True,
+    option_type=4,
+  ),
+])
 @client.command()
 async def place(ctx, pos: int):
     global turn
@@ -1433,9 +1481,9 @@ async def nowplaying(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = player.now_playing()
   embed = discord.Embed(title="Now playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  embed.add_field(name="⏳ Duration", value=f"{round(song.duration/60)} mins")
+  embed.add_field(name="⏳ Duration", value=f"{round(song.duration/60)} mins [`(rounded)`](https://youtu.be/jeg_TJvkSjg)")
   embed.add_field(name="📌 Author", value=f"[{song.channel}]({song.channel_url})")
-  embed.add_field(name="🪄 Views", value=f"{round(song.views)} [(rounded)](https://youtu.be/jeg_TJvkSjg)")
+  embed.add_field(name="🪄 Views", value=f"{song.views}")
   if song.is_looping == True:
     embed.add_field(name="💽 Looping?", value="<:succes:867385889059504128>")
   else:
