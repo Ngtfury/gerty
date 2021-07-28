@@ -440,12 +440,13 @@ async def saymodonly(ctx, *, message):
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
   d = discord.Embed(description=f"<:succes:867385889059504128> React role event created in {ctx.channel.mention}")
   s = await ctx.send(embed=d)
-  await asyncio.sleep(3)
-  await s.delete()
+ 
   if ctx.author.guild_permissions.manage_roles:
     emb = discord.Embed(title="React role", description=message, color=ctx.author.color)
   msg = await ctx.channel.send(embed=emb)
   await msg.add_reaction(emoji)
+  await asyncio.sleep(3)
+  await s.delete()
 
   with open('reactrole.json') as json_file:
     data = json.load(json_file)
@@ -1308,7 +1309,14 @@ client.ticket_configs = {}
 
     
 
-
+@slash.slash(name="ticket", description"creates a ticket event", options=[
+  create_option(
+    name="msg",
+    description="ID of message",
+    required=True,
+    option_type=4,
+  ), create_option(name="category", description="please provide a category ID", required=True, option_type=4)
+])
 @client.command()
 async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChannel=None):
     if msg is None or category is None:
@@ -1335,7 +1343,8 @@ async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChann
 #moosic
 music = DiscordUtils.Music()
 
-
+@slash.slash(name="join",
+             description="The bot joins the VC")
 @client.command()
 async def join(ctx):
   voicetrue = ctx.author.voice
