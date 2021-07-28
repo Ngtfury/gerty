@@ -417,14 +417,6 @@ async def emojify(ctx, *, text):
 
 #say command
 @client.command()
-@slash.slash(name="say", description="the bot repeats the given text", options=[
-  create_option(
-    name="message",
-    description="message to echo!",
-    required=True,
-    option_type=3,
-  )
-])
 async def say(ctx, *, message):
   await ctx.message.delete()
   await ctx.send(f'**{ctx.author.name}** : {message}' .format(message))
