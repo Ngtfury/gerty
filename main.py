@@ -1314,8 +1314,8 @@ client.ticket_configs = {}
     name="msg",
     description="ID of message",
     required=True,
-    option_type=4,
-  ), create_option(name="category", description="please provide a category ID", required=True, option_type=4)
+    option_type=3,
+  ), create_option(name="category", description="please provide a category ID", required=True, option_type=3)
 ])
 @client.command()
 async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChannel=None):
