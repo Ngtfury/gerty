@@ -665,14 +665,7 @@ winningConditions = [
     [2, 4, 6]
 ]
 
-@slash.slash(name="ttt", description="starts a tic tac toe match", options=[
-  create_option(
-    name="p1",
-    description="select player one",
-    required=True,
-    option_type=6,
-  ), create_option(name="p2", description="select player 2", required=True, option_type=6)
-])
+
 @client.command(aliases=['ttt'])
 async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
@@ -714,14 +707,7 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     else:
         await ctx.send("> **A game is already in progress! Finish it before starting a new one.**")
 
-@slash.slash(name="place", description="place a tile", options=[
-  create_option(
-    name="pos",
-    description="select the tile position",
-    required=True,
-    option_type=4,
-  ),
-])
+
 @client.command()
 async def place(ctx, pos: int):
     global turn
@@ -770,7 +756,7 @@ async def place(ctx, pos: int):
         else:
             await ctx.send("> **It is not your turn.**")
     else:
-        await ctx.send("> **Please start a new game using the !tictactoe command.**")
+        await ctx.send("> **Please start a new game using the g!ttt command.**")
 
 
 def checkWinner(winningConditions, mark):
