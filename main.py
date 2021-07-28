@@ -1309,7 +1309,7 @@ client.ticket_configs = {}
 
     
 
-@slash.slash(name="ticket", description"creates a ticket event", options=[
+@slash.slash(name="ticket", description="creates a ticket event", options=[
   create_option(
     name="msg",
     description="ID of message",
