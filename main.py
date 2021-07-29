@@ -781,7 +781,7 @@ async def place_error(ctx, error):
     elif isinstance(error, commands.BadArgument):
         await ctx.send("> **Please make sure to enter an integer**.")
 
-#img search
+
 @client.command(aliases=["show", "search", "img"])
 @commands.cooldown(1,5,commands.BucketType.user)
 async def showpic(ctx, *, search):
@@ -895,25 +895,7 @@ async def rps(ctx):
       components=[[Button(label="Oops", disabled=True)]],
     )
 
-@client.command()
-async def dropdown(ctx):
-  m = await ctx.send("Dropdown test",
-                  components=[
-                    Select(placeholder='Select something!', options=[SelectOption(label="first drop", value='a'), SelectOption(label="second drop", value='b')])
-                  ])
-  def check(res):
-    return ctx.author == res.user and res.channel == ctx.channel
 
-  try:
-    res = await client.wait_for("select_option", check=check, timeout=15)
-    value = res.component.label
-    if value == "second drop":
-      await res.respond("second")
-    if value == "first drop":
-      await res.respond("first")
-
-  except TimeoutError:
-    await m.edit("Timed out")
   
 #userinfo
 @slash.slash(name="whois", description="info about user", options=[
@@ -999,8 +981,8 @@ async def channelinfo(ctx):
 @slash.slash(name="lock", description="locks a channel", options=[
   create_option(
     name="channel",
-    description="select a channel to lock",
-    required=True,
+    description="(optional) select a channel to lock",
+    required=False,
     option_type=7,
   )
 ])
@@ -1013,11 +995,24 @@ async def lock(ctx, channel: discord.TextChannel = None):
   embed = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} is now locked", color=0x2bff00)
   await ctx.send(embed=embed)
 
+  
+
+@slash.slash(name="unlock", description="unlocks a channel", options=[
+  create_option(
+    name="channel",
+    description="(optional) select a channel to unlock",
+    required=False,
+    option_type=7,
+  )
+])
 @client.command()
 @commands.has_permissions(manage_channels = True)
-async def unlock(ctx):
-  await ctx.channel.set_permissions(ctx.guild.default_role, send_messages=True)
-  embed = discord.Embed(description=f"<:succes:867385889059504128> {ctx.channel.mention} is now unlocked", color=0x2bff00)
+async def unlock(ctx, channel: discord.TextChannel = None):
+  if channel == None:
+    channel = ctx.channel
+    
+  await channel.set_permissions(ctx.guild.default_role, send_messages=True)
+  embed = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} is now unlocked", color=0x2bff00)
   await ctx.send(embed=embed)
 
 @client.command(aliases=["flip"])
@@ -1028,11 +1023,20 @@ async def coin(ctx):
   await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
   
 
+@slash.slash(name="slowmode", description="sets slowmode to given integer", options=[
+  create_option(
+    name="seconds",
+    description="please specify seconds",
+    required=True,
+    option_type=4,
+  )
+])
 @client.command()
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
-  await ctx.send(f'Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>')
+  em = discord.Embed(description=f"<:succes:867385889059504128> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
+  await ctx.send(embed=em)
 
 @slowmode.error
 async def slowmode_error(ctx, error):
