@@ -16,6 +16,8 @@ import json
 import DiscordUtils
 import covid
 import asyncpg
+import googletrans
+from googletrans import Translator
 from PIL import Image
 from io import BytesIO
 from discord import asset
@@ -1702,7 +1704,27 @@ async def clone_error(ctx, error):
     await asyncio.sleep(3)
     await m.delete()
 
+@slash.slash(name="translate", description="translates given message to given lang", options=[
+  create_option(
+    name="lang",
+    description="specify a language",
+    required=True,
+    option_type=3,
+  ), create_option(name="args", description="message to translate", required=True, option_type=3)
+])
+@client.command()
+async def translate(ctx, lang, *, args):
+  t = Translator()
+  a = t.translate(args, dest=lang)
+  em = discord.Embed(description=f"> Translation: {a.text}\n > Source: [googletrans](https://printer.discord.com) ", color=ctx.author.color)
+  em.set_footer(text=f"Translated {args} to {lang} · {ctx.author.name}")
+  await ctx.send(embed=em)
 
+@translate.error
+async def translate_error(ctx, error):
+  print(error)
+  if isinstance(error, commands.CommandInvokeError):
+    await ctx.send(f"{ctx.author.mention} nerd which language you mean")
 
 
 #client.run
