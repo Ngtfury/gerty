@@ -18,3 +18,5 @@ dnspython==2.1.0
 lavalink==3.1.4
 Pillow==8.3.1
 googletrans==4.0.0-rc1
+mal-api==0.4.0
+mal==0.4.0
