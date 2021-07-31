@@ -17,6 +17,8 @@ import DiscordUtils
 import covid
 import asyncpg
 import googletrans
+import mal
+from mal import *
 from googletrans import Translator
 from PIL import Image
 from io import BytesIO
@@ -1152,7 +1154,7 @@ async def fun(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Fun Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip")
+  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
@@ -1732,8 +1734,32 @@ async def translate_error(ctx, error):
 
 
 #client.run
-
-
+@slash.slash(name="anime", description="search about the anime", options=[
+  create_option(
+    name="search",
+    description="please specify the anime name",
+    required=True,
+    option_type=3,
+  )
+])
+@client.command()
+async def anime(ctx, search):
+  embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
+  s = await ctx.send(embed=embed)
+  search = AnimeSearch(search)
+  anime = Anime(f"{search.results[0].mal_id}")
+  em = discord.Embed(title=f"{anime.title}", description=f"{str(anime.synopsis)}\n **Source**: {str(anime.source)}", url=anime.url, color=ctx.author.color)
+  em.add_field(name="🗂️ Type", value=str(anime.type))
+  em.add_field(name="⏳ Status", value=str(anime.status))
+  em.add_field(name="⭐ Rating/10", value=float(anime.score))
+  em.add_field(name=f"🏆 Rank", value=f"Top {int(anime.rank)}")
+  em.add_field(name="⏱️ Duration", value=str(anime.duration))
+  em.add_field(name="⚠️ Rated to", value=str(anime.rating))
+  em.add_field(name="💽 Episodes", value=int(anime.episodes))
+  em.add_field(name="🗓️ Aired", value=str(anime.aired))
+  em.add_field(name="➡️ Genres", value=str(anime.genres))
+  em.set_thumbnail(url=anime.image_url)
+  await s.edit(embed=em)
 
 
 
