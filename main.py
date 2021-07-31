@@ -18,8 +18,7 @@ import covid
 import asyncpg
 import googletrans
 import mal
-from mal import AnimeSearch
-from mal import Anime
+from mal import *
 from googletrans import Translator
 from PIL import Image
 from io import BytesIO
