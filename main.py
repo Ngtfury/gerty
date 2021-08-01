@@ -1743,7 +1743,7 @@ async def translate_error(ctx, error):
   )
 ])
 @client.command()
-async def anime(ctx, search):
+async def anime(ctx, *, search):
   embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
   s = await ctx.send(embed=embed)
   search = AnimeSearch(search)
