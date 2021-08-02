@@ -44,7 +44,7 @@ class moderation(commands.Cog):
 
 #clear command
     @commands.command(aliases=["purge"])
-    @commands.cooldown(1,5,commands.BucketType.user)
+    @commands.cooldown(1,10,commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=20):
         if amount > 1000:
