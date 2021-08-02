@@ -47,10 +47,14 @@ class moderation(commands.Cog):
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=20):
-      await ctx.channel.purge(limit=amount)
-      m = await ctx.send(f'Deleted `{amount}` messages in {ctx.channel.mention}')
-      await asyncio.sleep(3)
-      await m.delete()
+        if amount > 1000:
+            em = discord.Embed(description="<:error:867269410644557834> You are being rate limited. Maximum limit is `1000`.", color=ctx.author.color)
+            await ctx.send(embed=em)
+        else:
+            await ctx.channel.purge(limit=amount)
+            m = await ctx.send(f'Deleted `{amount}` messages in {ctx.channel.mention}')
+            await asyncio.sleep(3)
+            await m.delete()
 
     @clear.error
     async def clear_error(self, ctx, error):
