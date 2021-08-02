@@ -157,8 +157,8 @@ async def servers(ctx):
 @client.event
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
-    msg = "> <:slowmode:861261195621040138> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after)
-    await ctx.send(msg)
+    em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=ctx.author.color)
+    await ctx.send(embed=em)
 
 
 #on reaction add
