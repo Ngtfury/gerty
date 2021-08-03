@@ -941,7 +941,7 @@ async def whois(ctx, member: discord.Member=None):
   elif member.public_flags.hypesquad_brilliance is True:
     embed.add_field(name="Hypesquad", value="<:brilliance:866614979250487316>")
   try:
-    embed.add_field(name=f"Custom status:", value=f'{member.activities[0].name}')
+    embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji} {member.activities[0].name}')
   except:
     embed.add_field(name="Custom status:", value="<:error:867269410644557834> No status")
   await ctx.send(embed=embed)
@@ -1757,6 +1757,25 @@ async def anime(ctx, *, search):
   em.set_thumbnail(url=anime.image_url)
   await s.edit(embed=em)
 
+@slash.slash(name="timestamp", description="convert unixcode to timestamp", options=[
+  create_option(
+    name="unixcode",
+    description="please specify a unixcode",
+    required=True,
+    option_type=4,
+  )
+])
+@client.command()
+async def timestamp(ctx, unixcode: int):
+  em = discord.Embed(title="Unixcode to timestamp converter", description=f"Long Date   | <t:{unixcode}:D>\nShort Date   | <t:{unixcode}:d>\n---------------------------------------\nLong Date/Time   | <t:{unixcode}:F>\nShort Date/Time   | <t:{unixcode}:f>\n---------------------------------------\nLong Time   | <t:{unixcode}:T>\nShort Time   | <t:{unixcode}:t>\n---------------------------------------\nRelative Time   | <t:{unixcode}:R>", color=0xff00d4)
+  em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+  await ctx.send(embed=em)
+
+@timestamp.error
+async def timestamp_error(ctx, error):
+  em = discord.Embed(title="<:error:867269410644557834> Error", description=f"```{error}```", color=0xff00d4)
+  em.set_footer(text=f"This command is used like this - g!timestamp [unixcode]\n*unixcode must be integer\n")
+  await ctx.send(embed=em)
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
