@@ -131,10 +131,6 @@ async def on_ready():
 
 
 
-#filterd words
-filtered_words = ["fuck", "sex", "neger", "maadarchod", "thendi", "chetta", "Fuck", "Sex", "Neger", "Myr", "Maadarchod", "Thendi", "Chetta"]
-#react_words
-
 
 
 
@@ -323,8 +319,8 @@ async def avatar(ctx, member : discord.Member = None):
 
   memberAvatar = member.avatar_url
 
-  avaembed = discord.Embed(title = f"{member.name}'s avatar", color=0x00eeff)
-  avaembed.set_image(url=memberAvatar )
+  avaembed = discord.Embed(title = f"{member.name}'s avatar", description = "[Avatar link](memberAvatar)", color=0x00eeff)
+  avaembed.set_image(url=memberAvatar)
 
   await ctx.send(embed=avaembed)
 #commands or help command
