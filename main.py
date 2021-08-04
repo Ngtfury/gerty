@@ -266,15 +266,13 @@ async def _8ball(ctx, *, question):
 
 
 #developer command
-@client.command()
-async def dev(ctx):
-  await ctx.reply('**My developer is __Fury Alt#0143__ <a:fury_evil:855450553575407676>  <a:fury_dream:855450669090865163>**')
+
 
 
 
 @client.command(aliases=["invite", "info", "botinfo"])
 async def bot(ctx):
-  embed=discord.Embed(title="<:dot_2:862321994983669771> Gerty Information <:dot_2:862321994983669771>", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", description="The bot is developed by Fury Alt#0143", color=0xd400ff)
+  embed=discord.Embed(title="<:dot_2:862321994983669771> Gerty Information <:dot_2:862321994983669771>", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", description="The bot is developed by [Fury Alt#0143](https://discordapp.com/users/770646750804312105)", color=0xd400ff)
   embed.set_author(name="Gerty", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/783652973502922752.gif?v=1")
   embed.add_field(name="My ID:", value="> 855443275658166282", inline=True)
@@ -290,12 +288,7 @@ async def bot(ctx):
 
 #brain_update fun command
 
-@client.command()
-async def brain_update(ctx):
-  embed=discord.Embed(title="Brain Update", color=0xff0000, timestamp=ctx.message.created_at)
-  embed.set_author(name="Fury Alt#0143", icon_url="https://cdn.discordapp.com/avatars/770646750804312105/a_315213b92bc2fcebcbf393efe505c845.gif?size=256")
-  embed.add_field(name="Update your brain", value="**Your brain is __outdated__ [click here](https://youtu.be/dQw4w9WgXcQ) to __update your brain__**", inline=False)
-  await ctx.reply(embed=embed)
+
 
 
 
