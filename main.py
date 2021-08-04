@@ -934,7 +934,10 @@ async def whois(ctx, member: discord.Member=None):
   elif member.public_flags.hypesquad_brilliance is True:
     embed.add_field(name="Hypesquad", value="<:brilliance:866614979250487316>")
   try:
-    embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji} {member.activities[0].name}')
+    if member.activities[0].name == None:
+      embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji}')
+    else:
+      embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji} {member.activities[0].name}')
   except:
     embed.add_field(name="Custom status:", value="<:error:867269410644557834> No status")
   await ctx.send(embed=embed)
