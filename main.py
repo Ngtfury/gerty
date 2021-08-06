@@ -33,6 +33,7 @@ from discord.ext import commands
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
+from discordTogether import DiscordTogether
 
 cogs = [covid, members, spotify, AFK, moderation]
 
@@ -1136,7 +1137,7 @@ async def help(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Main Page <:stagechannel:861997716053032991>", description=" <:dot_2:862321994983669771> Bot prefix is `g!` <a:wumpycodes:862724245267283998> \n <:dot_2:862321994983669771> `g!help [category]` for specific category details <:wumplus:862723850693247016> \n <:dot_2:862321994983669771> `g!info` for my details <:dealwumpusit:862723850617487370> \n <:dot_2:862321994983669771> if there is any bug roaming around please report it by using `g!report` command <:cow_boy_bug:862723348928528464>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Categories:", value="> <:blurplemoderator:862212401080434698> _Fun commands_\n > <:blurplemoderator:862212401080434698> _Mod commands_\n > <:blurplemoderator:862212401080434698> _Music commands_\n > <:blurplemoderator:862212401080434698> _Miscellaneous commands_\n > <:blurplemoderator:862212401080434698> _Roleplay commands_", inline=False)
+  embed.add_field(name="Categories:", value="> <:blurplemoderator:862212401080434698> _Fun commands_\n > <:blurplemoderator:862212401080434698> _Mod commands_\n > <:blurplemoderator:862212401080434698> _Music commands_\n > <:blurplemoderator:862212401080434698> _Miscellaneous commands_\n > <:blurplemoderator:862212401080434698> _Roleplay commands_\n > <:blurplemoderator:862212401080434698> _Activity Commands_<:beta:872055526089981962>", inline=False)
   embed.add_field(name="Useful links:", value="> :link: [Invite me](https://bit.ly/3wGFgl7)\n > :link: [Support server](https://discord.gg/XkF3VFbQWU)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
@@ -1183,6 +1184,15 @@ async def role(ctx):
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
   embed.add_field(name="Roleplay commands:", value="> g!hug\n > g!kiss\n > g!slam\n > g!punch")
+  embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+  await ctx.send(embed=embed)
+  
+@help.command(aliases=["activity", "Activitycommand", "Activitycommand"])
+async def activity(ctx):
+  embed=discord.Embed(title="<:stagechannel:861997716053032991> Activity Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+  embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+  embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+  embed.add_field(name="Music commands:", value="> g!ytt<:beta:872055526089981962>\n > g!poker<:beta:872055526089981962>\n > g!chess<:beta:872055526089981962>\n > g!betrayal<:beta:872055526089981962>\n > g!fishing<:beta:872055526089981962>")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
@@ -1773,5 +1783,50 @@ async def timestamp_error(ctx, error):
   em.set_footer(text=f"This command is used like this - g!timestamp [unixcode]\n*unixcode must be integer\n")
   await ctx.send(embed=em)
 
+  
+@client.command()
+async def ytt(ctx, channel: discord.VoiceChannel=None):
+  if channel == None:
+    await ctx.send("Please mention a voice channel to start the activity")
+  else:
+    link = await togetherControl.create_link(channel.id, 'youtube')
+    em = discord.Embed(description=f"<:youtube:865883178904059924> [Click here to start Youtube Together activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
+
+@client.command()
+async def poker(ctx, channel: discord.VoiceChannel=None):
+  if channel == None:
+    await ctx.send("Please mention a voice channel to start the activity")
+  else:
+    link = await togetherControl.create_link(channel.id, 'poker')
+    em = discord.Embed(description=f"♠️ [Click here to start Poker night activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
+
+@client.command()
+async def chess(ctx, channel: discord.VoiceChannel=None):
+  if channel == None:
+    await ctx.send("Please mention a voice channel to start the activity")
+  else:
+    link = await togetherControl.create_link(channel.id, 'chess')
+    em = discord.Embed(description=f"♟️ [Click here to start Chess in the park activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
+
+@client.command()
+async def betrayal(ctx, channel: discord.VoiceChannel=None):
+  if channel == None:
+    await ctx.send("Please mention a voice channel to start the activity")
+  else:
+    link = await togetherControl.create_link(channel.id, 'betrayal')
+    em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start betrayal.io activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
+
+@client.command()
+async def fishing(ctx, channel: discord.VoiceChannel=None):
+  if channel == None:
+    await ctx.send("Please mention a voice channel to start the activity")
+  else:
+    link = await togetherControl.create_link(channel.id, 'fishing')
+    em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start fishington.io activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
