@@ -40,6 +40,7 @@ cogs = [covid, members, spotify, AFK, moderation]
 activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
 client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
+togetherControl = DiscordTogether(client)
 client.remove_command("help")
 
 
@@ -1783,7 +1784,14 @@ async def timestamp_error(ctx, error):
   em.set_footer(text=f"This command is used like this - g!timestamp [unixcode]\n*unixcode must be integer\n")
   await ctx.send(embed=em)
 
-  
+@slash.slash(name="ytt", description="Creates a youtube together activity", options=[
+  create_option(
+    name="channel",
+    description="please specify a channel",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 async def ytt(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
@@ -1792,7 +1800,15 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
     link = await togetherControl.create_link(channel.id, 'youtube')
     em = discord.Embed(description=f"<:youtube:865883178904059924> [Click here to start Youtube Together activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
-
+    
+@slash.slash(name="poker", description="Creates a poker night activity", options=[
+  create_option(
+    name="channel",
+    description="please specify a channel",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 async def poker(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
@@ -1802,6 +1818,14 @@ async def poker(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"♠️ [Click here to start Poker night activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
+@slash.slash(name="chess", description="Creates a chess in the park activity", options=[
+  create_option(
+    name="channel",
+    description="please specify a channel",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 async def chess(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
@@ -1811,6 +1835,14 @@ async def chess(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"♟️ [Click here to start Chess in the park activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
+@slash.slash(name="betrayal", description="Creates a betrayal.io activity", options=[
+  create_option(
+    name="channel",
+    description="please specify a channel",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 async def betrayal(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
@@ -1820,6 +1852,14 @@ async def betrayal(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start betrayal.io activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
+@slash.slash(name="fishing", description="Creates a fishington.io activity", options=[
+  create_option(
+    name="channel",
+    description="please specify a channel",
+    required=True,
+    option_type=7,
+  )
+])
 @client.command()
 async def fishing(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
