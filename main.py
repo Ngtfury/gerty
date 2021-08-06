@@ -1799,7 +1799,10 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
   else:
     link = await togetherControl.create_link(channel.id, 'youtube')
     em = discord.Embed(description=f"<:youtube:865883178904059924> [Click here to start Youtube Together activity]({link})", color=0xfd1212)
-    await ctx.send(embed=em)
+    s = await ctx.send(embed=em)
+    await asyncio.sleep(60)
+    embed = discord.Embed(description=f"This activity ended. Don't worry `/`ytt can help you out! <:wumpyyy:873171096176848967>", color=ctx.author.color)
+    await s.edit(embed=embed)
     
 @slash.slash(name="poker", description="Creates a poker night activity", options=[
   create_option(
