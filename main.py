@@ -1187,7 +1187,7 @@ async def role(ctx):
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
   
-@help.command(aliases=["Activity", "Activitycommand", "Activitycommand"])
+@help.command(aliases=["Activity", "activitycommand", "Activitycommand"])
 async def activity(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Activity Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
