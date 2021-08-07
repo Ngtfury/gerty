@@ -9,6 +9,7 @@ import math
 import spotify
 import moderation
 import AFK
+import requests
 import aiofiles
 import datetime
 import asyncio
@@ -77,6 +78,8 @@ async def on_guild_join(guild):
         await guild.system_channel.send("I have automatically left this server because it does not have at least 8 members")
     await guild.leave()
   else:
+    for channel in ctx.text_channels:
+      await channel.create_webhook(name="Gerty")
     if guild.system_channel:
         embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
         embed.set_author(name="Gerty bot", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
@@ -86,6 +89,7 @@ async def on_guild_join(guild):
         embed.add_field(name="Useful links:", value="> :link: [support server](https://discord.gg/2nCcfeq3ED)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)\n > :link: [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands)", inline=False)
         embed.set_footer(text="Gerty © 2021")
         await guild.system_channel.send(embed=embed)
+    
 
 
 
@@ -1870,6 +1874,27 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
   else:
     link = await togetherControl.create_link(channel.id, 'fishing')
     em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start fishington.io activity]({link})", color=0xfd1212)
+    await ctx.send(embed=em)
+    
+
+    
+@client.command()
+async def webhook(ctx, *, content):
+  if await ctx.channel.webhooks():
+    await ctx.message.delete()
+    for w in await ctx.channel.webhooks():
+      if w.name == "Gerty":
+        url = f"{w.url}"
+        data = {
+          "content" : f"{content}",
+          "username" : f"{ctx.author.name}",
+          "avatar_url": f"{ctx.author.avatar_url}"
+        }
+        requests.post(url, json = data)
+  else:
+    em = discord.Embed(description=f'1. Try kicking the bot and [inviting](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) again\n2. Else create a webhook named _"Gerty"_  in {ctx.channel.name}\n> In order to use emojis from other servers, the @everyone role needs permission to "Use External Emojis" in the **Channel Settings Permissions.**', color=0xf62323)
+    em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
+    em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     await ctx.send(embed=em)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
