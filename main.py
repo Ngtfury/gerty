@@ -8,6 +8,9 @@ import members
 import math
 import spotify
 import moderation
+import urllib.request
+import urllib.parse
+import hashlib
 import AFK
 import requests
 import aiofiles
@@ -1179,7 +1182,7 @@ async def misc(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Miscellaneous Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)")
+  embed.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
@@ -1895,5 +1898,39 @@ async def webhook(ctx, *, content):
     em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
     em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     await ctx.send(embed=em)
+    
+    
+    
+    
+
+def generate_screenshot_api_url(customer_key, secret_phrase, options):
+  api_url = 'https://api.screenshotmachine.com/?key=' + customer_key
+  if secret_phrase:
+    api_url = api_url + '&hash=' + hashlib.md5((options.get('url') + secret_phrase).encode('utf-8')).hexdigest()
+  api_url = api_url + '&' + urllib.parse.urlencode(options)
+  return api_url;
+
+
+@client.command()
+async def screenshot(ctx, url):
+  customer_key = 'aa94d2'
+  secret_phrase = 'gerty' # leave secret phrase empty, if not needed
+  options = {
+    'url': f'{url}', # mandatory parameter
+    # all next parameters are optional, see our website screenshot API guide for more details
+    'dimension': '1366x768', # or "1366xfull" for full length screenshot
+    'device': 'desktop',
+    'cacheLimit' : '0',
+    'delay' : '200',
+    'zoom' : '100'
+    }
+
+
+  api_url = generate_screenshot_api_url(customer_key, secret_phrase, options)
+
+  em = discord.Embed(color=ctx.author.color)
+  em.set_image(url=api_url)
+  s = await ctx.send("> <a:loading:865563025586389003> Loading screenshot...")
+  await s.edit(embed=em)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
