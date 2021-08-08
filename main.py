@@ -1880,23 +1880,19 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     
 @client.command()
 async def webhook(ctx, *, content):
-  if await ctx.channel.webhooks():
-    await ctx.message.delete()
-    for w in await ctx.channel.webhooks():
-      if w.name == "Gerty":
-        url = f"{w.url}"
-        data = {
-          "content" : f"{content}",
-          "username" : f"{ctx.author.name}",
-          "avatar_url": f"{ctx.author.avatar_url}"
-        }
-        requests.post(url, json = data)
-      else:
-        em = discord.Embed(description=f'1. Try kicking the bot and [inviting](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) again\n2. Else create a webhook named _"Gerty"_  in {ctx.channel.name}\n> In order to use emojis from other servers, the @everyone role needs permission to "Use External Emojis" in the **Channel Settings Permissions.**', color=0xf62323)
-        em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
-        em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-        await ctx.send(embed=em)
-  else:
+  try:
+    if await ctx.channel.webhooks():
+      await ctx.message.delete()
+      for w in await ctx.channel.webhooks():
+        if w.name == "Gerty":
+          url = f"{w.url}"
+          data = {
+            "content" : f"{content}",
+            "username" : f"{ctx.author.name}",
+            "avatar_url": f"{ctx.author.avatar_url}"
+          }
+          requests.post(url, json = data)
+  except:
     em = discord.Embed(description=f'1. Try kicking the bot and [inviting](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) again\n2. Else create a webhook named _"Gerty"_  in {ctx.channel.name}\n> In order to use emojis from other servers, the @everyone role needs permission to "Use External Emojis" in the **Channel Settings Permissions.**', color=0xf62323)
     em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
     em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
