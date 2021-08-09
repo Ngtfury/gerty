@@ -1979,7 +1979,7 @@ async def amongus(ctx, user: discord.Member = None):
   pfp = pfp.resize((204,171))
   sus.paste(pfp, (221,50))
 
-  affect.save("sus2.png")
+  sus.save("sus2.png")
   await ctx.send(file = discord.File("sus2.png"))
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
