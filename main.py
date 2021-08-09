@@ -1963,7 +1963,7 @@ async def child(ctx, user: discord.Member = None):
   pfp = pfp.resize((192,151))
   affect.paste(pfp, (166,355))
 
-  trash.save("affect2.png")
+  affect.save("affect2.png")
   await ctx.send(file = discord.File("affect2.png"))
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
