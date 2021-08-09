@@ -137,10 +137,17 @@ async def on_ready():
             client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
   print(f"{client.user.name} is ready.")
+  global startTime 
+  startTime = time.time()
 
 
 
+@client.command(name='Uptime')
+async def uptime(self,ctx):
+  uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
+  em = discord.Embed(description=f"⏱️ {uptime}")
 
+        
 
 
 
@@ -1142,13 +1149,145 @@ async def hack_error(ctx, error):
 
 @client.group(invoke_without_command=True)
 async def help(ctx):
-  embed=discord.Embed(title="<:stagechannel:861997716053032991> Main Page <:stagechannel:861997716053032991>", description=" <:dot_2:862321994983669771> Bot prefix is `g!` <a:wumpycodes:862724245267283998> \n <:dot_2:862321994983669771> `g!help [category]` for specific category details <:wumplus:862723850693247016> \n <:dot_2:862321994983669771> `g!info` for my details <:dealwumpusit:862723850617487370> \n <:dot_2:862321994983669771> if there is any bug roaming around please report it by using `g!report` command <:cow_boy_bug:862723348928528464>", color=0xff00ea)
-  embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
-  embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Categories:", value="> <:blurplemoderator:862212401080434698> _Fun commands_\n > <:blurplemoderator:862212401080434698> _Mod commands_\n > <:blurplemoderator:862212401080434698> _Music commands_\n > <:blurplemoderator:862212401080434698> _Miscellaneous commands_\n > <:blurplemoderator:862212401080434698> _Roleplay commands_\n > <:blurplemoderator:862212401080434698> _Activity Commands_ <:beta:872055526089981962>", inline=False)
-  embed.add_field(name="Useful links:", value="> :link: [Invite me](https://bit.ly/3wGFgl7)\n > :link: [Support server](https://discord.gg/XkF3VFbQWU)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
-  embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
-  await ctx.send(embed=embed)
+    embed=discord.Embed(title="<:stagechannel:861997716053032991> Main Page <:stagechannel:861997716053032991>", description=" <:dot_2:862321994983669771> Bot prefix is `g!` <a:wumpycodes:862724245267283998> \n <:dot_2:862321994983669771> `g!help [category]` for specific category details <:wumplus:862723850693247016> \n <:dot_2:862321994983669771> `g!info` for my details <:dealwumpusit:862723850617487370> \n <:dot_2:862321994983669771> if there is any bug roaming around please report it by using `g!report` command <:cow_boy_bug:862723348928528464>", color=0xff00ea)
+    embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed.add_field(name="Categories:", value="> <:blurplemoderator:862212401080434698> _Fun commands_\n > <:blurplemoderator:862212401080434698> _Mod commands_\n > <:blurplemoderator:862212401080434698> _Music commands_\n > <:blurplemoderator:862212401080434698> _Miscellaneous commands_\n > <:blurplemoderator:862212401080434698> _Roleplay commands_\n > <:blurplemoderator:862212401080434698> _Activity Commands_ <:beta:872055526089981962>", inline=False)
+    embed.add_field(name="Useful links:", value="> :link: [Invite me](https://bit.ly/3wGFgl7)\n > :link: [Support server](https://discord.gg/XkF3VFbQWU)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
+    embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed2=discord.Embed(title="<:stagechannel:861997716053032991> Fun Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed2.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed2.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed2.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect\n > g!sus, amongus")
+    embed2.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed3=discord.Embed(title="<:stagechannel:861997716053032991> Mod Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed3.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed3.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed3.add_field(name="Mod commands:", value="> g!clear\n > g!kick\n > g!ban\n > g!unban\n > g!announce\n > g!deletechannel\n > g!deletevc\n > g!reactrole\n > g!mute\n > g!unmute\n > g!giveaway\n > g!reroll -(giveaway sub command)\n > g!channelinfo, ci\n > g!lock\n > g!unlock\n > g!slowmode\n > g!massunban\n > g!members\n > g!nick\n > g!resetnick\n > g!ticket [message id] [category id]\n > g!addrole\n > g!removerole\n > g!snipe\n > g!nuke\n > g!clone")
+    embed3.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed4=discord.Embed(title="<:stagechannel:861997716053032991> Music Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed4.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed4.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed4.add_field(name="Music commands:", value="> g!join\n > g!play\n > g!pause\n > g!resume\n > g!queue\n > g!loop\n > g!remove [song position]\n > g!nowplaying, np\n > g!volume\n > g!skip\n > g!dc")
+    embed4.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed5=discord.Embed(title="<:stagechannel:861997716053032991> Miscellaneous Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed5.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed5.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed5.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]")
+    embed5.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed6=discord.Embed(title="<:stagechannel:861997716053032991> Roleplay Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed6.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed6.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed6.add_field(name="Roleplay commands:", value="> g!hug\n > g!kiss\n > g!slam\n > g!punch")
+    embed6.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+    embed7=discord.Embed(title="<:stagechannel:861997716053032991> Activity Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
+    embed7.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
+    embed7.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
+    embed7.add_field(name="Music commands:", value="> g!ytt <:beta:872055526089981962>\n > g!poker <:beta:872055526089981962>\n > g!chess <:beta:872055526089981962>\n > g!betrayal <:beta:872055526089981962>\n > g!fishing <:beta:872055526089981962>")
+    embed7.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
+
+
+    paginationList = [embed, embed2, embed3, embed4, embed5, embed6, embed7]
+    #Sets a default embed
+    current = 0
+    #Sending first message
+    #I used ctx.reply, you can use simply send as well
+    mainMessage = await ctx.send(
+        embed = paginationList[current],
+        components = [ #Use any button style you wish to :)
+            [
+                Button(
+                    label = "Prev",
+                    id = "back",
+                    style = ButtonStyle.red
+              
+                ),
+                Button(
+                    label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
+                    id = "cur",
+                    style = ButtonStyle.grey,
+                    disabled = True
+                ),
+                Button(
+                    label = "Next",
+                    id = "front",
+                    style = ButtonStyle.red
+                )
+            ]
+        ]
+    )
+    #Infinite loop
+    while True:
+        #Try and except blocks to catch timeout and break
+        try:
+            interaction = await client.wait_for(
+                "button_click",
+                check = lambda i: i.component.id in ["back", "front"], #You can add more
+                timeout = 10.0 #10 seconds of inactivity
+            )
+            #Getting the right list index
+            if interaction.component.id == "back":
+                current -= 1
+            elif interaction.component.id == "front":
+                current += 1
+            #If its out of index, go back to start / end
+            if current == len(paginationList):
+                current = 0
+            elif current < 0:
+                current = len(paginationList) - 1
+
+            #Edit to new page + the center counter changes
+            await interaction.respond(
+                type = InteractionType.UpdateMessage,
+                embed = paginationList[current],
+                components = [ #Use any button style you wish to :)
+                    [
+                        Button(
+                            label = "Prev",
+                            id = "back",
+                            style = ButtonStyle.red
+                        ),
+                        Button(
+                            label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
+                            id = "cur",
+                            style = ButtonStyle.grey,
+                            disabled = True
+                        ),
+                        Button(
+                            label = "Next",
+                            id = "front",
+                            style = ButtonStyle.red
+                        )
+                    ]
+                ]
+            )
+        except asyncio.TimeoutError:
+            #Disable and get outta here
+            await mainMessage.edit(
+                components = [
+                    [
+                        Button(
+                            label = "Prev",
+                            id = "back",
+                            style = ButtonStyle.red,
+                            disabled = True
+                        ),
+                        Button(
+                            label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
+                            id = "cur",
+                            style = ButtonStyle.grey,
+                            disabled = True
+                        ),
+                        Button(
+                            label = "Next",
+                            id = "front",
+                            style = ButtonStyle.red,
+                            disabled = True
+                        )
+                    ]
+                ]
+            )
+            break
 
 @help.command(aliases=["Funcommand", "Fun", "funcommand"])
 async def fun(ctx):
