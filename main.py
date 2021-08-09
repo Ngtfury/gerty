@@ -1155,7 +1155,7 @@ async def fun(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Fun Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash")
+  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
