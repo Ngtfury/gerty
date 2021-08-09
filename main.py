@@ -1932,5 +1932,21 @@ async def screenshot(ctx, url):
   em.set_image(url=api_url)
   s = await ctx.send("> <a:loading:865563025586389003> Loading screenshot...")
   await s.edit(embed=em)
+  
+@client.command(aliases=["delete"])
+async def trash(ctx, user: discord.Member = None):
+  if user == None:
+    user = ctx.author
+
+  trash = Image.open("delete.png")
+  asset  = user.avatar_url_as(size = 128)
+  data = BytesIO(await asset.read())
+  pfp = Image.open(data)
+
+  pfp = pfp.resize((218,209))
+  trash.paste(pfp, (109,129))
+
+  trash.save("delete2.png")
+  await ctx.send(file = discord.File("delete2.png"))
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
