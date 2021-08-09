@@ -22,6 +22,7 @@ import covid
 import asyncpg
 import googletrans
 import mal
+import datetime, time
 from mal import *
 from googletrans import Translator
 from PIL import Image
@@ -145,7 +146,7 @@ async def on_ready():
 @client.command(name='Uptime')
 async def uptime(self,ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-  em = discord.Embed(description=f"⏱️ {uptime}")
+  em = discord.Embed(description=f"⏱️ {uptime}", color=0x2F3136)
 
         
 
