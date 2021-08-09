@@ -1948,5 +1948,22 @@ async def trash(ctx, user: discord.Member = None):
 
   trash.save("delete2.png")
   await ctx.send(file = discord.File("delete2.png"))
+  
+  
+@client.command(aliases=["affect"])
+async def child(ctx, user: discord.Member = None):
+  if user == None:
+    user = ctx.author
+
+  affect = Image.open("affect.png")
+  asset  = user.avatar_url_as(size = 128)
+  data = BytesIO(await asset.read())
+  pfp = Image.open(data)
+
+  pfp = pfp.resize((192,151))
+  affect.paste(pfp, (166,355))
+
+  trash.save("affect2.png")
+  await ctx.send(file = discord.File("affect2.png"))
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
