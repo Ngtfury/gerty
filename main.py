@@ -20,6 +20,7 @@ import json
 import DiscordUtils
 import covid
 import asyncpg
+import PIL.ImageOps
 import googletrans
 import mal
 import datetime, time
@@ -39,6 +40,8 @@ from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
 from discordTogether import DiscordTogether
+from PIL import ImageFilter
+from PIL import Image
 
 cogs = [covid, members, spotify, AFK, moderation]
 
@@ -2121,5 +2124,37 @@ async def amongus(ctx, user: discord.Member = None):
 
   sus.save("sus2.png")
   await ctx.send(file = discord.File("sus2.png"))
+  
+  
+  
+
+@client.command()
+async def grayscale(ctx, user: discord.Member=None):
+    if user == None:
+      user = ctx.author
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    img = Image.open('avatar1.jpg').convert('L')
+    img.save('greyscale.jpg')
+    f = discord.File("greyscale.jpg", filename="greyscale.jpg")
+    em = discord.Embed(title=f"Image to gray", description=f"<:image:873933502435962880> Converted {user.name}'s [avatar]({user.avatar_url}) to gray", color=0x2F3136)
+    em.set_image(url="attachment://greyscale.jpg")
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em)
+
+@client.command()
+async def invert(ctx, user: discord.Member=None):
+  if user == None:
+    user = ctx.author
+  filename = "avatar1.jpg"
+  await user.avatar_url.save(filename)
+  image = Image.open('avatar1.jpg')
+  inverted_image = PIL.ImageOps.invert(image)
+  inverted_image.save('inverted.jpg')
+  f = discord.File("inverted.jpg", filename="inverted.jpg")
+  em = discord.Embed(title=f"Inverted image", description=f"<:image:873933502435962880> Inverted {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+  em.set_image(url="attachment://inverted.jpg")
+  em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+  await ctx.send(file=f, embed=em)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
