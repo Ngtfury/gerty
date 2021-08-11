@@ -36,6 +36,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from discord.ext import commands
+from PIL import Image, ImageEnhance
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
