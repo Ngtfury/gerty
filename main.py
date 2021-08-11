@@ -97,7 +97,9 @@ async def on_guild_join(guild):
         embed.set_footer(text="Gerty © 2021")
         await guild.system_channel.send(embed=embed)
     
-
+@client.command()
+async def jskusers(ctx):
+  await ctx.send(f"{client.users}")
 
 
 @client.command()
