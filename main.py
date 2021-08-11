@@ -1265,7 +1265,7 @@ async def help(ctx):
     embed2=discord.Embed(title="<:stagechannel:861997716053032991> Fun Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed2.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
     embed2.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-    embed2.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect\n > g!sus, amongus")
+    embed2.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect\n > g!sus, amongus\n > g!enhance\n > g!grayscale\n > g!invert")
     embed2.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
     embed3=discord.Embed(title="<:stagechannel:861997716053032991> Mod Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed3.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
@@ -1401,7 +1401,7 @@ async def fun(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Fun Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect\n > g!sus, amongus")
+  embed.add_field(name="Fun commands:", value="> g!emojify\n > g!meme, g!meme [keyword]\n > g!rps - (Rock paper scissors)\n > g!8ball\n > g!brain_update\n > g!ttt - (tic tac toe)\n > g!place - (tic tac toe sub command)\n > g!hack --new\n > g!calculate, calc --new\n > g!wanted\n > g!drake\n > g!spongebob, sponge\n > g!coin, flip\n > g!anime\n > g!delete, trash\n > g!child, affect\n > g!sus, amongus\n > g!enhance\n > g!grayscale\n > g!invert")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
@@ -2260,4 +2260,79 @@ async def invert(ctx, user: discord.Member=None):
   em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
   await ctx.send(file=f, embed=em)
 
+ 
+@client.group(invoke_without_command=True)
+async def enhance(ctx):
+    em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
+    await ctx.send(embed=em)
+
+
+@enhance.command()
+async def color(ctx, user: discord.Member):
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    image = Image.open('avatar1.jpg')
+    color = ImageEnhance.Color(image)
+    color.enhance(1.5).save('color.jpg')
+    f = discord.File("color.jpg", filename="color.jpg")
+    em2 = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced color of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em2.set_image(url="attachment://color.jpg")
+    em2.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em2)
+
+@enhance.command()
+async def contrast(ctx, user: discord.Member):
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    image = Image.open('avatar1.jpg')
+    contrast = ImageEnhance.Contrast(image)
+    contrast.enhance(1.5).save('contrast.jpg')
+    f = discord.File("contrast.jpg", filename="contrast.jpg")
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced contrast of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em.set_image(url="attachment://contrast.jpg")
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em)
+
+@enhance.command()
+async def brightness(ctx, user:discord.Member):
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    image = Image.open('avatar1.jpg')
+    brightness = ImageEnhance.Brightness(image)
+    brightness.enhance(1.5).save('brightness.jpg')
+    f = discord.File("brightness.jpg", filename="brightness.jpg")
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced brightness of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em.set_image(url="attachment://brightness.jpg")
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em)
+
+@enhance.command()
+async def sharpness(ctx, user:discord.Member):
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    image = Image.open('avatar1.jpg')
+    sharpness = ImageEnhance.Sharpness(image)
+    sharpness.enhance(1.5).save('sharpness.jpg')
+    f = discord.File("sharpness.jpg", filename="sharpness.jpg")
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced sharpness of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em.set_image(url="attachment://sharpness.jpg")
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em)
+
+@enhance.command()
+async def rgb(ctx, user:discord.Member):
+    filename = "avatar1.jpg"
+    await user.avatar_url.save(filename)
+    image = Image.open('avatar1.jpg')
+    red, green, blue = image.split()
+    new_image = Image.merge("RGB", (green, red, blue))
+    new_image.save('rbg.jpg')
+    f = discord.File("rbg.jpg", filename="rbg.jpg")
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced RGB of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em.set_image(url="attachment://rbg.jpg")
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    await ctx.send(file=f, embed=em)
+  
+  
+  
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
