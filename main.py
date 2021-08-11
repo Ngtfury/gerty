@@ -99,11 +99,7 @@ async def on_guild_join(guild):
     
 @client.command()
 async def users(ctx):
-  await ctx.send("command working")
-  try:
-    await ctx.send(client.users)
-  except:
-    await ctx.send("Error while running command")
+  await ctx.send(f"{len(client.users)}\n In {len(client.guilds)} servers")
     
   
 
