@@ -98,8 +98,14 @@ async def on_guild_join(guild):
         await guild.system_channel.send(embed=embed)
     
 @client.command()
-async def jskusers(ctx):
-  await ctx.send(f"{client.users}")
+async def users(ctx):
+  await ctx.send("command working")
+  try:
+    await ctx.send(client.users)
+  except:
+    await ctx.send("Error while running command")
+    
+  
 
 
 @client.command()
