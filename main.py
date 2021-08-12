@@ -2160,25 +2160,31 @@ def generate_screenshot_api_url(customer_key, secret_phrase, options):
 
 @client.command()
 async def screenshot(ctx, url):
-  customer_key = '21db02'
-  secret_phrase = 'gerty' # leave secret phrase empty, if not needed
-  options = {
-    'url': f'{url}', # mandatory parameter
-    # all next parameters are optional, see our website screenshot API guide for more details
-    'dimension': '1366x768', # or "1366xfull" for full length screenshot
-    'device': 'desktop',
-    'cacheLimit' : '0',
-    'delay' : '200',
-    'zoom' : '100'
-    }
+  if ctx.channel.is_nsfw():
+    customer_key = '8ac0ad'
+    secret_phrase = '' # leave secret phrase empty, if not needed
+    options = {
+      'url': f'{url}', # mandatory parameter
+      # all next parameters are optional, see our website screenshot API guide for more details
+      'dimension': '1366x768', # or "1366xfull" for full length screenshot
+      'device': 'desktop',
+      'cacheLimit' : '0',
+      'delay' : '200',
+      'zoom' : '100'
+      }
 
 
-  api_url = generate_screenshot_api_url(customer_key, secret_phrase, options)
+    api_url = generate_screenshot_api_url(customer_key, secret_phrase, options)
 
-  em = discord.Embed(color=ctx.author.color)
-  em.set_image(url=api_url)
-  s = await ctx.send("> <a:loading:865563025586389003> Loading screenshot...")
-  await s.edit(embed=em)
+    em = discord.Embed(color=ctx.author.color)
+    em.set_image(url=api_url)
+    s = await ctx.send("> <a:loading:865563025586389003> Loading screenshot...")
+    await s.edit(embed=em)
+  else:
+    em = discord.Embed(description='Uh oh! This command is NSFW', color=0xf62323)
+    em.set_image(url="https://i.imgur.com/oe4iK5i.gif")
+    em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+    await ctx.send(embed=em)
   
 @client.command(aliases=["delete"])
 async def trash(ctx, user: discord.Member = None):
