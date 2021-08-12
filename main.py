@@ -2160,7 +2160,7 @@ def generate_screenshot_api_url(customer_key, secret_phrase, options):
 
 @client.command()
 async def screenshot(ctx, url):
-  customer_key = 'aa94d2'
+  customer_key = '21db02'
   secret_phrase = 'gerty' # leave secret phrase empty, if not needed
   options = {
     'url': f'{url}', # mandatory parameter
