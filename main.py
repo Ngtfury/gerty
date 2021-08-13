@@ -70,6 +70,7 @@ user = discord.user
 snipe_message_author = {}
 snipe_message_content = {}
 
+client.load_extension('jishaku')
 
 @client.event
 async def on_message_delete(message):
