@@ -20,4 +20,4 @@ Pillow==8.3.1
 googletrans==4.0.0-rc1
 mal-api==0.4.0
 discord-together
-jishaku
+jishaku==2.2.0
