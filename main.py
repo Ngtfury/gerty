@@ -70,7 +70,7 @@ user = discord.user
 snipe_message_author = {}
 snipe_message_content = {}
 
-client.load_extension('jishaku')
+
 
 @client.event
 async def on_message_delete(message):
@@ -149,7 +149,8 @@ async def on_ready():
   print(f"{client.user.name} is ready.")
   global startTime 
   startTime = time.time()
-
+  
+client.load_extension('jishaku')
 
 
 @client.command(name='Uptime')
