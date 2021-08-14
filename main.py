@@ -2343,5 +2343,16 @@ async def rgb(ctx, user:discord.Member):
     await ctx.send(file=f, embed=em)
   
   
+@client.command(aliases=["doesnotexist", "thispersondoesnotexist"])
+async def persondoesnotexist(ctx):
+  from thispersondoesnotexist import get_online_person
+  picture = await get_online_person()
+  from thispersondoesnotexist import save_picture
+  await save_picture(picture, "doesnotexist.jpeg")
+  f = discord.File("doesnotexist.jpeg", filename="doesnotexist.jpeg")
+  em = discord.Embed(title='This person does not exist', color=0x2F3136)
+  em.set_image(url="attachment://doesnotexist.jpeg")
+  em.set_footer(text='Generative adversarial network')
+  await ctx.send(file=f, embed=em)
   
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
