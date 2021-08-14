@@ -2,7 +2,7 @@ discord.py==1.7.3
 discord.py[voice] ~= 1.4.0
 Flask==2.0.1
 google-api-python-client==2.11.0
-praw==7.3.0
+praw
 discord-py-slash-command==2.3.2
 youtube_dl==2021.6.6
 discord-components==1.0.1
@@ -21,3 +21,4 @@ googletrans==4.0.0-rc1
 mal-api==0.4.0
 discord-together
 jishaku==2.2.0
+thispersondoesnotexist
