@@ -1810,7 +1810,7 @@ async def calc(ctx):
     await asyncio.sleep(1)
     expression = '|'
     delta = datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
-    e = discord.Embed(title=f'{ctx.author.name}\'s calculator | {ctx.author.id}', description=```expression```,
+    e = discord.Embed(title=f'{ctx.author.name}\'s calculator | {ctx.author.id}', description=f"```{expression}```",
                         timestamp=delta, color=0xfbff00)
     e.set_footer(text="Exit calculator after use")
     await m.edit(components=buttons, embed=e)
@@ -1832,7 +1832,7 @@ async def calc(ctx):
                 expression = calculate(expression)
             else:
                 expression += res.component.label
-            f = discord.Embed(title=f'{res.author.name}\'s calculator | {res.author.id}', description=```expression```,
+            f = discord.Embed(title=f'{res.author.name}\'s calculator | {res.author.id}', description=f"```{expression}```",
                                 timestamp=delta, color=0xfbff00)
             f.set_footer(text="Exit calculator after use")
             await res.respond(content='', embed=f, components=buttons, type=7)
