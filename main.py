@@ -939,7 +939,7 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
   )
 ])
 @client.command()
-@commands.cooldown(1,5,commands.BucketType.user)
+@commands.cooldown(1,10000,commands.BucketType.channel)
 async def meme(ctx):
   emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_", color=0xeeff00)
   v = await ctx.send(embed=emm)
