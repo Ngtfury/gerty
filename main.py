@@ -1800,7 +1800,7 @@ def calculate(exp):
     try:
         result = str(eval(o))
     except:
-        result = '> <:discordpoop:860138531241328660> An error occurred.'
+        result = '<:discordpoop:860138531241328660> An error occurred.'
     return result
  
 @client.command(aliases=["calculate", "calculator"])
@@ -1808,9 +1808,9 @@ async def calc(ctx):
     embed = discord.Embed(description = "> <a:gloading:855680101529944064> Loading Calculators...", color=0x2bff00)
     m = await ctx.send(embed=embed)
     await asyncio.sleep(1)
-    expression = 'None'
+    expression = '|'
     delta = datetime.datetime.utcnow() + datetime.timedelta(minutes=5)
-    e = discord.Embed(title=f'{ctx.author.name}\'s calculator 🖩 | {ctx.author.id}', description=expression,
+    e = discord.Embed(title=f'{ctx.author.name}\'s calculator | {ctx.author.id}', description=```expression```,
                         timestamp=delta, color=0xfbff00)
     e.set_footer(text="Exit calculator after use")
     await m.edit(components=buttons, embed=e)
@@ -1819,7 +1819,7 @@ async def calc(ctx):
         if res.author.id == int(res.message.embeds[0].title.split('|')[1]) and res.message.embeds[
             0].timestamp < delta:
             expression = res.message.embeds[0].description
-            if expression == 'None' or expression == 'An error occurred.':
+            if expression == '|' or expression == 'An error occurred.':
                 expression = ''
             if res.component.label == 'Exit':
                 await res.respond(content='**> :closed_lock_with_key:  Calculator Closed**', type=7)
@@ -1827,12 +1827,12 @@ async def calc(ctx):
             elif res.component.label == '←':
                 expression = expression[:-1]
             elif res.component.label == 'Clear':
-                expression = 'None'
+                expression = '|'
             elif res.component.label == '=':
                 expression = calculate(expression)
             else:
                 expression += res.component.label
-            f = discord.Embed(title=f'{res.author.name}\'s calculator | {res.author.id}', description=expression,
+            f = discord.Embed(title=f'{res.author.name}\'s calculator | {res.author.id}', description=```expression```,
                                 timestamp=delta, color=0xfbff00)
             f.set_footer(text="Exit calculator after use")
             await res.respond(content='', embed=f, components=buttons, type=7)
