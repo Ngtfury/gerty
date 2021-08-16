@@ -6,7 +6,6 @@ import os
 import requests
 import members
 import math
-import spotify
 import moderation
 import urllib.request
 import urllib.parse
@@ -48,7 +47,7 @@ from discordTogether import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 
-cogs = [covid, members, spotify, AFK, moderation]
+cogs = [covid, members, AFK, moderation]
 
 activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
 client = commands.Bot(command_prefix = commands.when_mentioned_or('g!'), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
