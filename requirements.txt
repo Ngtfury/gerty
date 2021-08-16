@@ -22,3 +22,4 @@ mal-api==0.4.0
 discord-together
 jishaku==2.2.0
 thispersondoesnotexist
+python-dateutil
