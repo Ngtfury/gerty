@@ -2368,7 +2368,7 @@ async def spotify(ctx, user: discord.Member = None):
     user = ctx.author
   spotify_result = next((activity for activity in user.activities if isinstance(activity, discord.Spotify)), None)
   if spotify_result is None:
-    em = discord.Embed(description=f"<:error:867269410644557834> {user.name} is not listening to Spotify or He/She didn't connect spotify to discord account", color = 0xd70f0f)
+    em = discord.Embed(description=f"<:error:867269410644557834> {user.name} is not listening to Spotify or He/She didn't connect spotify to discord", color = 0xd70f0f)
     await ctx.send(embed=em)
 
   #images
