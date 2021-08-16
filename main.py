@@ -183,7 +183,11 @@ async def on_guild_join(guild):
     
 @client.command()
 async def users(ctx):
-  await ctx.send(f"{len(client.users)}\n In {len(client.guilds)} servers")
+  if await get_mute(ctx.author) != 0:
+        em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color =0x2F3136)
+        await ctx.send(embed=em)
+  else:
+    await ctx.send(f"{len(client.users)}\n In {len(client.guilds)} servers")
     
   
 
