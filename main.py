@@ -278,9 +278,20 @@ async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
     em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=ctx.author.color)
     await ctx.send(embed=em)
-  if isinstance (error, commands.CheckFailure):
+  elif isinstance (error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color =0x2F3136)
     await ctx.send(embed=em)
+  else:
+    if not isinstance(error, commands.CommandNotFound):
+      em = discord.Embed(description=f"```py\n{error}```", color=0xe1ff00)
+      em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+      em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+      await ctx.send(
+        embed=em,
+        components=[
+          Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/uGFeUJrtpk" , emoji=client.get_emoji(855714341155110942))
+        ]
+      )
 
 
 #on reaction add
