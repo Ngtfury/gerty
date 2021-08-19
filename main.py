@@ -2255,7 +2255,7 @@ def generate_screenshot_api_url(customer_key, secret_phrase, options):
 @check_user_blacklist()
 async def screenshot(ctx, url):
   if ctx.channel.is_nsfw():
-    customer_key = '8ac0ad'
+    customer_key = '5a808a'
     secret_phrase = '' # leave secret phrase empty, if not needed
     options = {
       'url': f'{url}', # mandatory parameter
