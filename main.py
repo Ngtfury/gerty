@@ -1495,7 +1495,7 @@ async def help(ctx):
                 components = [ #Use any button style you wish to :)
                     [
                         Button(
-                            label = "Prev",
+                            emoji=client.get_emoji(877843217092063245),
                             id = "back",
                             style = ButtonStyle.red
                         ),
@@ -1506,7 +1506,7 @@ async def help(ctx):
                             disabled = True
                         ),
                         Button(
-                            label = "Next",
+                            emoji=client.get_emoji(862271024472391700),
                             id = "front",
                             style = ButtonStyle.red
                         )
@@ -1519,7 +1519,7 @@ async def help(ctx):
                 components = [
                     [
                         Button(
-                            label = "Prev",
+                            emoji=client.get_emoji(872394940779474985),
                             id = "back",
                             style = ButtonStyle.red,
                             disabled = True
@@ -1531,7 +1531,7 @@ async def help(ctx):
                             disabled = True
                         ),
                         Button(
-                            label = "Next",
+                            emoji=client.get_emoji(872394940779474985),
                             id = "front",
                             style = ButtonStyle.red,
                             disabled = True
