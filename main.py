@@ -1438,8 +1438,8 @@ async def help(ctx):
         components = [ #Use any button style you wish to :)
             [
                 Button(
-                    label = "Prev",
                     id = "back",
+                    emoji=client.get_emoji(877843217092063245),
                     style = ButtonStyle.red
               
                 ),
@@ -1450,8 +1450,8 @@ async def help(ctx):
                     disabled = True
                 ),
                 Button(
-                    label = "Next",
                     id = "front",
+                    emoji=client.get_emoji(862271024472391700),
                     style = ButtonStyle.red
                 )
             ]
@@ -2516,7 +2516,7 @@ async def spotify(ctx, user: discord.Member = None):
 
   #send to discord
   f = discord.File("spotify.jpg", filename="spotify.jpg")
-  em = discord.Embed(title=f"{spotify_result.title}", description = f"<:spotify:861975105227849738> **Artists**: {', '. join(spotify_result.artists)}\n> **Album**: {spotify_result.album}", color=0x2bff00)
+  em = discord.Embed(title=f"{spotify_result.title}", description = f"<:dot_2:862321994983669771>**Artists**: {', '. join(spotify_result.artists)}\n<:dot_2:862321994983669771>**Album**: {spotify_result.album}", color=0x2bff00)
   em.set_image(url="attachment://spotify.jpg")
   em.set_footer(text=f"{user.name} listening to Spotify", icon_url=f"{user.avatar_url}")
   await ctx.channel.send(
