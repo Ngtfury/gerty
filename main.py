@@ -2523,7 +2523,7 @@ async def spotify(ctx, user: discord.Member = None):
     file=f,
     embed=em,
     components=[
-      Button(style=ButtonStyle.URL, label="Play on Spotify", url=f"https://open.spotify.com/track/{spotify_result.track_id}", emoji="🎶")
+      Button(style=ButtonStyle.URL, label="Play on Spotify", url=f"https://open.spotify.com/track/{spotify_result.track_id}", emoji=client.get_emoji(861975105227849738))
     ]
   )
   
