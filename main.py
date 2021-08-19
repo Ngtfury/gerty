@@ -1682,7 +1682,7 @@ async def punch_error(ctx, error):
 @client.command()
 @check_user_blacklist()
 async def report(ctx, *, report=None):
-  report_channel = client.get_channel(862593162618339329)
+  report_channel = client.get_channel(877795771171356692)
   invite = await ctx.channel.create_invite(max_age = 0, max_uses = 0)
   if report is None:
     return await ctx.send(f"{ctx.author.mention} Please include information about the report. Like g!report [information]")
