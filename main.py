@@ -278,7 +278,7 @@ async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
     em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=ctx.author.color)
     await ctx.send(embed=em)
-  if isinstance (error, commands.CheckFailure):
+  elif isinstance (error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color =0x2F3136)
     await ctx.send(embed=em)
   else:
