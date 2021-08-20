@@ -2612,4 +2612,10 @@ async def spotify(ctx, user: discord.Member = None):
     ]
   )
   
+  
+  
+@client.command()
+async def hehehe(ctx):
+  await ctx.send("UFF JSK OP SANAM MYR")
+  
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
