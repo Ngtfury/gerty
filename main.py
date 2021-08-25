@@ -1162,44 +1162,72 @@ async def whois(ctx, member: discord.Member=None):
   if member == None:
     member = ctx.author
 
-
-
   roles = [role for role in member.roles]
+  #general
+  embed=discord.Embed(color=0x2F3136)
+  embed.add_field(name="General Info", value=f"> **<:personadd:880087005520863263> User name**: {member.name}\n> **<:gtextchannel:856095565632765972> Discriminator**: #{member.discriminator}\n> **<:pencil:880087936043974716> Display name**: {member.display_name}\n> **<:graypin:880087574490808370> User ID**: {member.id}\n> <:image:873933502435962880> **Avatar URL**: [:link:]({member.avatar_url})", inline=False)
 
+  #other info
+  cdate = int(member.created_at.timestamp())
+  jdate = int(member.joined_at.timestamp())
+  if member.bot is True:
+    bot = "<:succes:867385889059504128>"
+  else:
+    bot = "<:error:867269410644557834>"
 
-
-  embed=discord.Embed(color=member.color)
-
-  embed.set_author(name=f"User info - {member}")
-  embed.set_thumbnail(url=member.avatar_url)
-  embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
-
-  embed.add_field(name="ID:", value=member.id)
-  embed.add_field(name="Server Name:", value=member.display_name)
-
-  embed.add_field(name="Account created at:", value=member.created_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
-  embed.add_field(name="Joined this server at:", value=member.joined_at.strftime("%a, %#d %B %Y, %I:%M %P UTC"))
-
-  embed.add_field(name=f"Roles <:greactionrole:856129896106688522> ({len(roles)})", value=" ".join([role.mention for role in roles]))
-  embed.add_field(name="Top role <:greactionrole:856129896106688522>", value=member.top_role.mention)
-
-
-  embed.add_field(name="Is member a Bot? <:bot:860140819964887099>", value=member.bot)
   if member.public_flags.hypesquad_balance is True:
-    embed.add_field(name="Hypesquad", value="<:balance:866614979214049290>")
+    hypesquad="Balance <:balance:866614979214049290>"
   elif member.public_flags.hypesquad_bravery is True:
-    embed.add_field(name="Hypesquad", value="<:bravery:866614978864873523>")
+    hypesquad="Bravery <:bravery:866614978864873523>"
   elif member.public_flags.hypesquad_brilliance is True:
-    embed.add_field(name="Hypesquad", value="<:brilliance:866614979250487316>")
+    hypesquad="Brilliance <:brilliance:866614979250487316>"
+  else:
+    hypesquad="<:error:867269410644557834>No hypesquad"
   try:
     if member.activities[0].name == None:
-      embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji}')
-    else:
-      embed.add_field(name=f"Custom status:", value=f'{member.activities[0].emoji} {member.activities[0].name}')
+      activ = f"{member.activities[0].emoji}"
+    elif {member.activities[0].emoji} == None:
+      activ = f"{member.activities[0].name}"
+    elif {member.activities[0].emoji} and {member.activities[0].name} != None:
+      activ = f"{member.activities[0].emoji} {member.activities[0].name}"
   except:
-    embed.add_field(name="Custom status:", value="<:error:867269410644557834> No status")
-  await ctx.send(embed=embed)
+    activ = "<:error:867269410644557834>No Activity/Status"
+  sts = f"{member.status}"
+  if sts == "dnd":
+    status = "Do not disturb <a:dnd:880119895872897044>"
+  elif sts == "idle":
+    status = "Idle <a:idle:880119894593650698>"
+  elif sts == "online":
+    status = "Online <a:online:880119894702690375>"
+  elif sts == "offline":
+    status = "Offline <:offline:880120737162231828>"
+  try:
+    mob = f"{member.mobile_status}"
+    des = f"{member.desktop_status}"
+    web = f"{member.web_status}"
+    if not mob == "offline":
+      stsresult = "Mobile :mobile_phone:"
+    elif not des == "offline":
+      stsresult = "Desktop <:desktop:880130561400766514>"
+    elif not web == "offline":
+      stsresult = "Web browser <:browser:880130561493069834>"
+  except:
+    stsresult = "Error retrieving info"
+  #embed
+  embed.add_field(name="Other info", value=f"> **<:plus:880083147893649468> Account created on**: <t:{cdate}:D>(<t:{cdate}:R>)\n> **<:plus:880083147893649468> Joined this server at**: <t:{jdate}:D>(<t:{jdate}:R>)\n> **:robot: Bot?**: {bot}\n> **<a:hypesquad:880084715690922074> hypesquad house**: {hypesquad}\n> **<:activity:880089919018659960> Activity/Custom status**: {activ}\n> **<:statusup:880122823719395348> User status**: {status}\n> **<:discordclient:880131587478528010> User client**: {stsresult}")
 
+  if member.joined_at is None:
+    pos = "<:error:867269410644557834>Could not locate position"
+  else:
+    pos = sum(m.joined_at < member.joined_at for m in ctx.guild.members if m.joined_at is not None)
+
+  #Info in server
+  r = " ".join([role.mention for role in roles if role != ctx.guild.default_role])
+  embed.add_field(name="Info regarding this server", value=f"> **<:greactionrole:856129896106688522> Top role**: {member.top_role.mention}\n> **<:greactionrole:856129896106688522> Roles ({len(roles)})**: {r}\n> **<:join:880111799314284634> Join position**: {pos}", inline=False)
+  embed.set_author(name=f"User info - {member}", icon_url=member.avatar_url)
+  embed.set_thumbnail(url=member.avatar_url)
+  embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+  await ctx.send(embed=embed)
 
 @mail.error
 async def mail_error(ctx, error):
