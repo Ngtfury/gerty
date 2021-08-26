@@ -1453,7 +1453,7 @@ async def help(ctx):
     embed5=discord.Embed(title="<:stagechannel:861997716053032991> Miscellaneous Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed5.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
     embed5.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-    embed5.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]")
+    embed5.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]\n > g!serverinfo")
     embed5.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
     embed6=discord.Embed(title="<:stagechannel:861997716053032991> Roleplay Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed6.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
@@ -1605,7 +1605,7 @@ async def misc(ctx):
   embed=discord.Embed(title="<:stagechannel:861997716053032991> Miscellaneous Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
   embed.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
   embed.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-  embed.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]")
+  embed.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]\n > g!serverinfo")
   embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
   await ctx.send(embed=embed)
 
@@ -2643,7 +2643,48 @@ async def spotify(ctx, user: discord.Member = None):
   
   
 @client.command()
-async def hehehe(ctx):
-  await ctx.send("UFF JSK OP SANAM MYR")
+@check_user_blacklist()
+async def serverinfo(ctx):
+  if ctx.guild.description is not None:
+    desc = f"> **<:tag:880100337745264680> Server Description**: {ctx.guild.description}"
+  else:
+    desc = ""
+  em = discord.Embed(description=f"{desc}", color=0x2F3136)
+  em.set_author(name=f"Server info - {ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
+  #fields
+  #general info
+  em.add_field(name="General Info", value=f"> **<:gsupportserver:855714629606703124> Server name**: {ctx.guild.name}\n> **<:graypin:880087574490808370> Server ID**: {ctx.guild.id}\n> **<:image:873933502435962880> Icon URL**: [:link:]({ctx.guild.icon_url})\n> **<:serverowner:880438839783600158> Server owner**: {ctx.guild.owner}({ctx.guild.owner.mention})", inline=False)
+  #other info
+  try:
+    if ctx.guild.afk_channel is not None:
+      afkch = f"{ctx.guild.afk_channel.mention}"
+      afkti = f"\n> **<:slowmode:861261195621040138> Afk timeout**: {int(ctx.guild.afk_timeout/60)} minutes"
+    else:
+      afkch = "<:error:867269410644557834> No afk channel"
+      afkti = ""
+  except:
+    afkch = "<:error:867269410644557834> cannot fetch info"
+    afkti = ""
+  c = f"{int(ctx.guild.created_at.timestamp())}"
+  em.add_field(name="Other info", value=f"> **:zzz: Afk channel**: {afkch}{afkti}\n> **:earth_africa:  Server region**: {ctx.guild.region}\n> **<:discord_member:860138883165061120> Server members**: {len(ctx.guild.members)}\n> **<:cancel:872394940779474985> Max members**: {ctx.guild.max_members}\n> **:video_camera:  Max video channel users**: {ctx.guild.max_video_channel_users}\n> **<:boost:880459171991003146> Boost level**: {ctx.guild.premium_tier}\n> **<:boost:880459171991003146> Total boosts**: {ctx.guild.premium_subscription_count}\n> **<:plus:880083147893649468> Created at**: <t:{c}:D>(<t:{c}:R>)", inline=False)
+  em.set_thumbnail(url=f"{ctx.guild.icon_url}")
+  #moderation
+  if f"{ctx.guild.mfa_level}" == "0":
+    mfa = "Does not require 2FA"
+  elif f"{ctx.guild.mfa_level}" == "1":
+    mfa = "Required 2FA for moderation"
+  #
+  if f"{ctx.guild.explicit_content_filter}" == "all_members":
+    filterf = "Scan media content from all members"
+  elif f"{ctx.guild.explicit_content_filter}" == "disabled":
+    filterf = "Don't scan any media content"
+  elif f"{ctx.guild.explicit_content_filter}" == "no_role":
+    filterf = "Scan media content from members without role"
+
+  em.add_field(name="Security info", value=f"> **<:staff:880448969921142845> 2FA authorisation level**: {mfa}\n> **<:blurplemoderator:862212401080434698> Verification level**: {ctx.guild.verification_level}\n> **<:nsfwchannel:880452038297804850> Explicit content filter**: {filterf}", inline=False)
+  await ctx.send(embed=em)
+  
+  
+
   
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
