@@ -1205,7 +1205,9 @@ async def whois(ctx, member: discord.Member=None):
     mob = f"{member.mobile_status}"
     des = f"{member.desktop_status}"
     web = f"{member.web_status}"
-    if not mob == "offline":
+    if f"{member.status}" == "offline":
+      stsresult = "<:error:867269410644557834>User is offline cannot retrieve info"
+    elif not mob == "offline":
       stsresult = "Mobile :mobile_phone:"
     elif not des == "offline":
       stsresult = "Desktop <:desktop:880130561400766514>"
