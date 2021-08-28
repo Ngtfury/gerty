@@ -219,14 +219,6 @@ async def snipe(ctx):
     await m.delete()
 
 
-@snipe.error
-async def snipe_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingPermissions):
-    v = await ctx.send(f"{ctx.author.mention} looks like you don't have permission to use this command. contact {ctx.guild.name} admins")
-    await asyncio.sleep(4)
-    await v.delete()
-
 
 @client.event
 async def on_ready():
@@ -276,14 +268,24 @@ async def servers(ctx):
 @client.event
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
-    em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=ctx.author.color)
+    em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance (error, commands.CheckFailure):
-    em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color =0x2F3136)
+    em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
+    await ctx.send(embed=em)
+  elif isinstance(error, commands.MissingRequiredArgument):
+    em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
+    em.set_author(name="You are missing a required argument", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    await ctx.send(embed=em)
+  elif isinstance(error, commands.MissingPermissions):
+    em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
+    em.set_author(name="You are missing a required permissions", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(embed=em)
   else:
     if not isinstance(error, commands.CommandNotFound):
-      em = discord.Embed(description=f"```py\n{error}```", color=0xe1ff00)
+      em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
       em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
       em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
       await ctx.send(
@@ -704,13 +706,6 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
   with open('reactrole.json', 'w') as j:
     json.dump(data,j,indent=4)
 
-@reactrole.error
-async def reactrole_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("> Please fill the required arguments correctly")
-    elif isinstance(error, commands.MissingPermissions):
-        await ctx.send(f"{ctx.author.mention} you have no permission to use this command")
 
 
   #mute command
@@ -745,13 +740,6 @@ async def mute(ctx, member: discord.Member, *, reason=None):
     await ctx.send(embed=embed2)
     await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
 
-@mute.error
-async def mute_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send("> **Please mention someone to mute.**")
-    elif isinstance(error, commands.MissingPermissions):
-        await ctx.send(f"{ctx.author.mention} you have no permission to use this command")
 
 
 
@@ -845,11 +833,7 @@ async def giveaway(ctx):
 
   await channel.send(f"**Congratulations!<a:ggiveaway:856509556632453120>** {winner.mention} won **__{prize}__** <:gpogpepe:856516618183376917>")
 
-@giveaway.error
-async def giveaway_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingAnyRole):
-    await ctx.send(f'You need admin permission to use this command. Please contact {ctx.guild.name} owner')
+
 #reroll command
 @client.command()
 @check_user_blacklist()
@@ -1231,21 +1215,7 @@ async def whois(ctx, member: discord.Member=None):
   embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
   await ctx.send(embed=embed)
 
-@mail.error
-async def mail_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.CommandInvokeError):
-        await ctx.send(f"> <a:gcooldown:855749809582768139> **{ctx.author.mention} That mentioned members' dm is off cannot send message**")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("> **<:discordPoop:813895205115265035> something went wrong**")
 
-@meme.error
-async def meme_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.CommandInvokeError):
-        await ctx.send(f"> **<:discordpoop:860138531241328660> something went wrong**")
-    elif isinstance(error, commands.BadArgument):
-        await ctx.send("> **<:discordPoop:813895205115265035> something went wrong**")
 
 @client.command(aliases=['ci'])
 @commands.cooldown(1,5,commands.BucketType.user)
@@ -1331,11 +1301,7 @@ async def slowmode(ctx, seconds: int):
   em = discord.Embed(description=f"<:succes:867385889059504128> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
   await ctx.send(embed=em)
 
-@slowmode.error
-async def slowmode_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(f"> <a:gcooldown:855749809582768139> {ctx.author.mention} Please enter seconds")
+
 
 
 @client.command(pass_content=True)
@@ -1352,13 +1318,7 @@ async def resetnick(ctx, member: discord.Member):
   await member.edit(nick=f"{member.name}")
   await ctx.send(f"Nickname reset to {member.name}")
 
-@nick.error
-async def nick_error(ctx, error):
-    print(error)
-    if isinstance(error, commands.MissingRequiredArgument):
-        await ctx.send(f"> <a:gcooldown:855749809582768139> {ctx.author.mention} Please mention a member and after a new nickname")
-    if isinstance(error, commands.MissingPermissions):
-        await ctx.send(f"{ctx.author.mention} You cannot use this command you need manage nickname permission. Please contact {ctx.guild.name} admins")
+
 
 
 @client.command()
@@ -1374,11 +1334,7 @@ async def massunban(ctx):
     except:
       pass
   await m.edit("Everyone unbanned")
-@massunban.error
-async def massunban_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingPermissions):
-    await ctx.send(f"{ctx.author.mention} You have no permission to use this command")
+
 
     
 
@@ -1420,11 +1376,7 @@ async def hack(ctx, user: discord.Member):
   await m.edit(f"Completed hacking {user.name} for {ctx.author.name}")
   await ctx.send(f"{user.mention} you will be logged out from your account within 3 days enjoy your last days in discord <a:evil_peepo:862347454980947998>")
 
-@hack.error
-async def hack_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send(f"{ctx.author.mention} Please mention a user to hack")
+
 
 
 
@@ -1652,11 +1604,7 @@ async def hug(ctx, user: discord.Member):
 
   await ctx.send(embed=embed)
 
-@hug.error
-async def hug_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send(f"{ctx.author.mention} please mention the user you want to hug")
+
 
 @client.command()
 @check_user_blacklist()
@@ -1673,11 +1621,7 @@ async def kiss(ctx, user: discord.Member):
   embed.set_image(url=random.choice(kissGifs))
   await ctx.send(embed=embed)
 
-@kiss.error
-async def kiss_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send(f"{ctx.author.mention} please mention the user you want to kiss")
+
 
 @client.command()
 @check_user_blacklist()
@@ -1691,11 +1635,7 @@ async def slam(ctx, member: discord.Member):
   embed.set_image(url=random.choice(slamGifs))
   await ctx.send(embed=embed)
 
-@slam.error
-async def slam_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send(f"{ctx.author.mention} please mention the user you want to slam")
+
 
 @client.command()
 @check_user_blacklist()
@@ -1710,12 +1650,6 @@ async def punch(ctx, user: discord.Member):
   embed.set_author(name=f"{ctx.author.name} gives {user.name} a punch!", icon_url=f"{ctx.author.avatar_url}")
   embed.set_image(url=random.choice(punchGifs))
   await ctx.send(embed=embed)
-
-@punch.error
-async def punch_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingRequiredArgument):
-    await ctx.send(f"{ctx.author.mention} please mention the user you want to punch")
 
 
 
@@ -2068,29 +2002,9 @@ async def clone(ctx, channel_name):
         await ctx.send(f'No channel named **{channel_name}** was found')
 
 
-@n.error
-async def n_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingPermissions):
-    v = await ctx.send(f"{ctx.author.mention} looks like you don't have permission to use this command. contact {ctx.guild.name} admins")
-    await asyncio.sleep(4)
-    await v.delete()
-  if isinstance(error, commands.MissingRequiredArgument):
-    m = await ctx.send(f"{ctx.author.mention} please mention a channel to nuke")
-    await asyncio.sleep(3)
-    await m.delete()
 
-@clone.error
-async def clone_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.MissingPermissions):
-    v = await ctx.send(f"{ctx.author.mention} looks like you don't have permission to use this command. contact {ctx.guild.name} admins")
-    await asyncio.sleep(4)
-    await v.delete()
-  if isinstance(error, commands.MissingRequiredArgument):
-    m = await ctx.send(f"{ctx.author.mention} please mention a channel to clone")
-    await asyncio.sleep(3)
-    await m.delete()
+
+
 
 @slash.slash(name="translate", description="translates given message to given lang", options=[
   create_option(
@@ -2109,11 +2023,7 @@ async def translate(ctx, lang, *, args):
   em.set_footer(text=f"Translated {args} to {lang} · {ctx.author.name}")
   await ctx.send(embed=em)
 
-@translate.error
-async def translate_error(ctx, error):
-  print(error)
-  if isinstance(error, commands.CommandInvokeError):
-    await ctx.send(f"{ctx.author.mention} nerd which language you mean")
+
 
 
 #client.run
@@ -2141,7 +2051,7 @@ async def anime(ctx, *, search):
   em.add_field(name="⚠️ Rated to", value=str(anime.rating))
   em.add_field(name="💽 Episodes", value=int(anime.episodes))
   em.add_field(name="🗓️ Aired", value=str(anime.aired))
-  em.add_field(name="➡️ Genres", value=str(anime.genres))
+  em.add_field(name="➡️ Genres", value=f"{', '.join(anime.genres)}")
   em.set_thumbnail(url=anime.image_url)
   await s.edit(embed=em)
 
@@ -2160,11 +2070,7 @@ async def timestamp(ctx, unixcode: int):
   em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
   await ctx.send(embed=em)
 
-@timestamp.error
-async def timestamp_error(ctx, error):
-  em = discord.Embed(title="<:error:867269410644557834> Error", description=f"```{error}```", color=0xff00d4)
-  em.set_footer(text=f"This command is used like this - g!timestamp [unixcode]\n*unixcode must be integer\n")
-  await ctx.send(embed=em)
+
 
 @slash.slash(name="ytt", description="Creates a youtube together activity", options=[
   create_option(
@@ -2436,6 +2342,8 @@ async def calc(ctx):
                 expression = ''
             if res.component.label == 'Exit':
                 await res.respond(content='Calculator Closed', type=7)
+                await asyncio.sleep(2)
+                await m.delete()
                 break
             elif res.component.label == '←':
                 expression = expression[:-1]
@@ -2668,7 +2576,7 @@ async def serverinfo(ctx):
     afkch = "<:error:867269410644557834> cannot fetch info"
     afkti = ""
   c = f"{int(ctx.guild.created_at.timestamp())}"
-  em.add_field(name="Other info", value=f"> **:zzz: Afk channel**: {afkch}{afkti}\n> **:earth_africa:  Server region**: {ctx.guild.region}\n> **<:discord_member:860138883165061120> Server members**: {len(ctx.guild.members)}\n> **<:cancel:872394940779474985> Max members**: {ctx.guild.max_members}\n> **:video_camera:  Max video channel users**: {ctx.guild.max_video_channel_users}\n> **<:boost:880459171991003146> Boost level**: {ctx.guild.premium_tier}\n> **<:boost:880459171991003146> Total boosts**: {ctx.guild.premium_subscription_count}\n> **<:plus:880083147893649468> Created at**: <t:{c}:D>(<t:{c}:R>)", inline=False)
+  em.add_field(name="Other info", value=f"> **:zzz: Afk channel**: {afkch}{afkti}\n> **:earth_africa:  Server regi-**: {ctx.guild.region}\n> **<:discord_member:860138883165061120> Server members**: {len(ctx.guild.members)}\n> **<:cancel:872394940779474985> Max members**: {ctx.guild.max_members}\n> **:video_camera:  Max video channel users**: {ctx.guild.max_video_channel_users}\n> **<:boost:880459171991003146> Boost level**: {ctx.guild.premium_tier}\n> **<:boost:880459171991003146> Total boosts**: {ctx.guild.premium_subscription_count}\n> **<:plus:880083147893649468> Created at**: <t:{c}:D>(<t:{c}:R>)", inline=False)
   em.set_thumbnail(url=f"{ctx.guild.icon_url}")
   #moderation
   if f"{ctx.guild.mfa_level}" == "0":
