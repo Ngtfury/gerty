@@ -49,14 +49,8 @@ from PIL import Image
 
 cogs = [covid, members, AFK, moderation]
 
-async def pre(client, msg):
-    if msg.author.id == 770646750804312105:
-        return commands.when_mentioned_or("g!"),  "", "g!"
-    else:
-        return "g!", commands.when_mentioned_or("g!")
-
 activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
-client = commands.Bot(command_prefix = pre, intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
+client = commands.Bot(command_prefix = commands.when_mentioned_or("g!"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
