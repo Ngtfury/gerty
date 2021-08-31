@@ -270,9 +270,6 @@ async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
     em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
-  elif isinstance (error, commands.CheckFailure):
-    em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
-    await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
     em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
     em.set_author(name="You are missing a required argument", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
@@ -282,6 +279,15 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
     em.set_author(name="You are missing a required permissions", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    await ctx.send(embed=em)
+  elif isinstance(error, commands.NotOwner):
+    em = discord.Embed(description="<:error:867269410644557834> Lol you are not my owner :joy:", color=0x2F3136)
+    await ctx.send(embed=em)
+  elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
+    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing permissions to run this command", color=0x2F3136)
+    await ctx.send(embed=em)
+  elif isinstance(error, commands.CheckFailure):
+    em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
   else:
     if not isinstance(error, commands.CommandNotFound):
@@ -295,6 +301,11 @@ async def on_command_error(ctx, error):
         ]
       )
 
+
+@client.event
+async def on_message_edit(before, after):
+    if before.content != after.content:
+        await client.process_commands(after)
 
 #on reaction add
 @client.event
