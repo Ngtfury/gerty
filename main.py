@@ -1036,7 +1036,7 @@ async def showpic(ctx, *, search):
     url = result["items"][ran]["link"]
     embed1 = discord.Embed(title=f"{search.title()}", color=0x2F3136)
     embed1.set_image(url=url)
-    embed1.set_footer(test=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
+    embed1.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(embed=embed1)
 
 
@@ -2606,5 +2606,4 @@ async def serverinfo(ctx):
   
 
 
-  
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
