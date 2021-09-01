@@ -10,7 +10,7 @@ from discord_slash.utils.manage_commands import create_choice, create_option
 
 class AFK(commands.Cog):
 
-    def __init__(self, client, *args, **kwargs):
+    def __init__(self, client):
         self.client = client
     #*
     async def update_data(self, afk, user):
@@ -44,7 +44,7 @@ class AFK(commands.Cog):
                 meth = int(time.time()) - int(afk[f'{user_mention.id}']['time'])
                 been_afk_for = await self.time_formatter(meth)
                 
-                await message.channel.send(f'{message.author.mention} {user_mention.name} Is currently AFK! | Reason : {reason} | For: {been_afk_for}')
+                await message.channel.send(f'{message.author.mention} {user_mention.name} Is currently AFK: {reason} | For: {been_afk_for}')
                 
                 meeeth = int(afk[f'{user_mention.id}']['mentions']) + 1
                 afk[f'{user_mention.id}']['mentions'] = meeeth
@@ -62,7 +62,7 @@ class AFK(commands.Cog):
 
               
 
-                await message.channel.send(f'Welcome Back {message.author.name}! | You\'ve been AFK for : {been_afk_for} | Mentions while in afk : {mentionz}')
+                await message.channel.send(f'Welcome Back {message.author.name}! | You\'ve been AFK for: {been_afk_for} | No. of mentions: {mentionz}')
                 
                 afk[f'{message.author.id}']['AFK'] = 'False'
                 afk[f'{message.author.id}']['reason'] = 'None'
@@ -96,7 +96,7 @@ class AFK(commands.Cog):
         afk[f'{ctx.author.id}']['mentions'] = 0
 
         
-        await ctx.send(f"I've set your AFK {ctx.message.author.name}! | Reason : {reason}")
+        await ctx.send(f"I've set your AFK {ctx.message.author.name}!: {reason}")
 
         with open('afk.json', 'w') as f:
             json.dump(afk, f)
