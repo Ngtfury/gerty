@@ -133,10 +133,10 @@ async def blacklist(ctx,user:discord.Member, *,reason=None):
     if await get_mute(user) == 0:
       await add_mute(user)
       if reason == None:
-        em = discord.Embed(description=f"Blacklisted {user.name}", color=0x2F3136)
+        em = discord.Embed(description=f"<:succes:867385889059504128> Blacklisted {user.name}", color=0x2F3136)
         await ctx.send(embed=em)
       else:
-        em = discord.Embed(description=f"Blacklisted {user.name} for reason {reason}", color=0x2F3136)
+        em = discord.Embed(description=f"<:succes:867385889059504128> Blacklisted {user.name} for reason {reason}", color=0x2F3136)
         await ctx.send(embed=em)
     else:
       await ctx.send("The person is already blacklisted.")
@@ -277,7 +277,7 @@ async def on_command_error(ctx, error):
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingPermissions):
     em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
-    em.set_author(name="You are missing a required permissions", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+    em.set_author(name="You are missing required permission(s)", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(embed=em)
   elif isinstance(error, commands.NotOwner):
@@ -458,7 +458,7 @@ async def bot(ctx):
     option_type=6,
   )
 ])
-@client.command()
+@client.command(aliases=["av"])
 @check_user_blacklist()
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
@@ -770,7 +770,7 @@ async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
 
   await member.remove_roles(mutedRole)
-  em = discord.Embed(description=f"✅ Unmuted {member.name}#{member.discriminator}", color=0x2bff00)
+  em = discord.Embed(description=f"<:succes:867385889059504128> Unmuted {member.name}#{member.discriminator}", color=0x2bff00)
   await ctx.send(embed=em)
   await member.send(f'You are now unmuted in the server **{ctx.guild.name}**')
 
@@ -1034,8 +1034,9 @@ async def showpic(ctx, *, search):
         q=f"{search}", cx="b53b2dd813c49255f", searchType="image"
     ).execute()
     url = result["items"][ran]["link"]
-    embed1 = discord.Embed(title=f"__{search.title()}__")
+    embed1 = discord.Embed(title=f"{search.title()}", color=0x2F3136)
     embed1.set_image(url=url)
+    embed1.set_footer(test=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(embed=embed1)
 
 
@@ -1151,7 +1152,7 @@ async def rps(ctx):
     option_type=6,
   )
 ])
-@client.command()
+@client.command(aliases=["userinfo", "ui"])
 @check_user_blacklist()
 async def whois(ctx, member: discord.Member=None):
   if member == None:
@@ -1191,7 +1192,7 @@ async def whois(ctx, member: discord.Member=None):
   if sts == "dnd":
     status = "Do not disturb <a:dnd:880119895872897044>"
   elif sts == "idle":
-    status = "Idle <a:idle:880119894593650698>"
+    status = "Idle/AFK <a:idle:880119894593650698>"
   elif sts == "online":
     status = "Online <a:online:880119894702690375>"
   elif sts == "offline":
@@ -1669,6 +1670,7 @@ async def punch(ctx, user: discord.Member):
 @check_user_blacklist()
 async def report(ctx, *, report=None):
   report_channel = client.get_channel(877795771171356692)
+  report_channel2 = client.get_channel(882608430202880031)
   invite = await ctx.channel.create_invite(max_age = 0, max_uses = 0)
   if report is None:
     return await ctx.send(f"{ctx.author.mention} Please include information about the report. Like g!report [information]")
@@ -1679,12 +1681,13 @@ async def report(ctx, *, report=None):
     embed.set_thumbnail(url=f"{ctx.author.avatar_url}")
     embed.add_field(name="More information:", value=f"{report}", inline=False)
     embed.add_field(name="Server invite:", value=f"[Server invite]({invite})", inline=False)
-    embed.add_field(name="Perm invite link:", value=f"{invite}", inline=False)
     embed.add_field(name="Server name:", value=f"{ctx.guild.name}", inline=False)
     embed.set_footer(icon_url=f"{ctx.author.avatar_url}", text=f" | ID: {ctx.author.name}#{ctx.author.discriminator}")
     await ctx.send(":incoming_envelope: | _Your report has been sent to staff team!_")
     report_message = await report_channel.send(embed=embed)
+    report_message2 = await report_channel2.send(embed=embed)
     await report_message.add_reaction('✅')
+    await report_message2.add_reaction('✅')
 
     try:
       def check(reaction, user):
@@ -1769,7 +1772,6 @@ async def dc(ctx):
   await ctx.message.add_reaction('<a:bye:857642966457253898>')
   dc = discord.Embed(description=f"<:disconnect:857641894313984040> Disconnected",color=0xf5ed00)
   await ctx.send(embed=dc)
-  await player.delete()
  
 
 @client.command(aliases=["p"])
@@ -2560,7 +2562,7 @@ async def spotify(ctx, user: discord.Member = None):
   
   
   
-@client.command()
+@client.command(aliases=["si"])
 @check_user_blacklist()
 async def serverinfo(ctx):
   if ctx.guild.description is not None:
