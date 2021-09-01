@@ -2605,7 +2605,9 @@ async def serverinfo(ctx):
   em.add_field(name="Security info", value=f"> **<:staff:880448969921142845> 2FA authorisation level**: {mfa}\n> **<:blurplemoderator:862212401080434698> Verification level**: {ctx.guild.verification_level}\n> **<:nsfwchannel:880452038297804850> Explicit content filter**: {filterf}", inline=False)
   await ctx.send(embed=em)
   
-  
+@client.command()
+async def git(ctx):
+  await ctx.send("Push worked :smile:")
 
   
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
