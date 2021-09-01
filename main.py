@@ -2493,10 +2493,7 @@ async def persondoesnotexist(ctx):
   em.set_footer(text='Generative adversarial network')
   await ctx.send(file=f, embed=em)
   
-  
-  
-  
-  
+
 @client.command()
 @check_user_blacklist()
 async def spotify(ctx, user: discord.Member = None):
@@ -2591,7 +2588,7 @@ async def serverinfo(ctx):
   em.set_thumbnail(url=f"{ctx.guild.icon_url}")
   #moderation
   if f"{ctx.guild.mfa_level}" == "0":
-    mfa = "Does not require 2FA"
+    mfa = "Does not require 2FA for moderation"
   elif f"{ctx.guild.mfa_level}" == "1":
     mfa = "Required 2FA for moderation"
   #
@@ -2605,9 +2602,7 @@ async def serverinfo(ctx):
   em.add_field(name="Security info", value=f"> **<:staff:880448969921142845> 2FA authorisation level**: {mfa}\n> **<:blurplemoderator:862212401080434698> Verification level**: {ctx.guild.verification_level}\n> **<:nsfwchannel:880452038297804850> Explicit content filter**: {filterf}", inline=False)
   await ctx.send(embed=em)
   
-@client.command()
-async def git(ctx):
-  await ctx.send("Push worked :smile:")
+
 
   
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
