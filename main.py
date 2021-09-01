@@ -1469,7 +1469,7 @@ async def help(ctx):
             interaction = await client.wait_for(
                 "button_click",
                 check = lambda i: i.component.id in ["back", "front"], #You can add more
-                timeout = 10.0 #10 seconds of inactivity
+                timeout = 5.0 
             )
             #Getting the right list index
             if interaction.component.id == "back":
@@ -2189,7 +2189,7 @@ async def webhook(ctx, *, content):
         url = f"{w.url}"
         data = {
           "content" : f"{content}",
-          "username" : f"{ctx.author.name}",
+          "username" : f"{ctx.author.display_name}",
           "avatar_url": f"{ctx.author.avatar_url}"
         }
         requests.post(url, json = data)
