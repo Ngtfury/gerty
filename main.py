@@ -196,7 +196,7 @@ async def on_guild_join(guild):
 @client.command()
 async def users(ctx):
 
-    await ctx.send(f"{len(client.users)}\n In {len(client.guilds)} servers")
+    await ctx.send(f"{len(client.users)}\nIn {len(client.guilds)} servers")
     
   
 
@@ -441,14 +441,6 @@ async def bot(ctx):
 
 #brain_update fun command
 
-
-
-
-
-
-
-
-#avatar command
 
 @slash.slash(name="avatar", description="shows the image of mentioned users' avatar", options=[
   create_option(
@@ -1309,6 +1301,8 @@ async def coin(ctx):
 @check_user_blacklist()
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
+  if seconds >= 21600:
+    .
   await ctx.channel.edit(slowmode_delay=seconds)
   em = discord.Embed(description=f"<:succes:867385889059504128> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
   await ctx.send(embed=em)
