@@ -1301,8 +1301,6 @@ async def coin(ctx):
 @check_user_blacklist()
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
-  if seconds >= 21600:
-    .
   await ctx.channel.edit(slowmode_delay=seconds)
   em = discord.Embed(description=f"<:succes:867385889059504128> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
   await ctx.send(embed=em)
