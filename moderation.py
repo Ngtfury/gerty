@@ -11,8 +11,12 @@ class moderation(commands.Cog):
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def addrole(self, ctx, role: discord.Role, user: discord.Member):
-      await user.add_roles(role)
-      await ctx.send(f"I have given {role} role to {user}")
+        if user.top_role >= role:
+            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to add role for that member", color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            await user.add_roles(role)
+            await ctx.send(f"I have given {role} role to {user}")
 
 
 
@@ -21,8 +25,12 @@ class moderation(commands.Cog):
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def removerole(self, ctx, role: discord.Role, user: discord.Member):
-      await user.remove_roles(role)
-      await ctx.send(f"I have removed {role} role from {user}")
+        if user.top_role >= role:
+            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to remove role for that member", color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            await user.remove_roles(role)
+            await ctx.send(f"I have removed {role} role from {user}")
 
 
 
@@ -55,7 +63,7 @@ class moderation(commands.Cog):
             if reason == None:
                 em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name}_**", color=0x2F3136)
             else:
-                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name} for {reason}_**", color=0x2F3136)
+                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name} for reason: {reason}_**", color=0x2F3136)
             await ctx.send(embed=em)
 
 
@@ -64,8 +72,16 @@ class moderation(commands.Cog):
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason=None):
-      await member.ban(reason=reason)
-      await ctx.reply(f'{member.mention} has been banned from {ctx.guild.name}')
+        if member.top_role >= ctx.author.top_role:
+            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to ban that member", color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            await member.ban(reason=reason)
+            if reason == None:
+                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is banned from {ctx.guild.name}_**", color=0x2F3136)
+            else:
+                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is banned from {ctx.guild.name} for reason: {reason}_**", color=0x2F3136)
+            await ctx.send(embed=em)
 
 
 #unban command
