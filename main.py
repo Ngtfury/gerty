@@ -242,9 +242,10 @@ client.load_extension('jishaku')
 
 
 @client.command(name='Uptime')
-async def uptime(self,ctx):
+async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
   em = discord.Embed(description=f"⏱️ {uptime}", color=0x2F3136)
+  await ctx.send(embed=em)
 
         
 
