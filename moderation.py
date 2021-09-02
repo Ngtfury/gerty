@@ -47,9 +47,16 @@ class moderation(commands.Cog):
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *, reason=None):
-      await member.kick(reason=reason)
-      await ctx.send(f'Member {member.name} has been kicked form {ctx.guild.name}')
-
+        if member.top_role >= ctx.author.top_role:
+            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to kick that member", color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            await member.kick(reason=reason)
+            if reason == None:
+                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name}_**", color=0x2F3136)
+            else:
+                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name} for {reason}_**", color=0x2F3136)
+            await ctx.send(embed=em)
 
 
 #ban command
