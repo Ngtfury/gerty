@@ -50,7 +50,7 @@ from PIL import Image
 cogs = [covid, members, AFK, moderation]
 
 def command_prefix(client, message: discord.Message):
-    if message.author.id == 770646750804312105:
+    if message.author.id == "770646750804312105":
         return ''
     else:
         return '!g'
@@ -724,7 +724,7 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def mute(ctx, member: discord.Member, *, reason=None):
-  if member.top_role >= ctx.author.top_role:
+  if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
     em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to mute that member", color=0x2F3136)
     await ctx.send(embed=em)
   else:

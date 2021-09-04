@@ -14,7 +14,7 @@ class moderation(commands.Cog):
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def addrole(self, ctx, role: discord.Role, user: discord.Member):
-        if user.top_role >= role:
+        if user.top_role >= role and not ctx.author == ctx.guild.owner:
             em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to add role for that member", color=0x2F3136)
             await ctx.send(embed=em)
         else:
@@ -28,7 +28,7 @@ class moderation(commands.Cog):
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def removerole(self, ctx, role: discord.Role, user: discord.Member):
-        if user.top_role >= role:
+        if user.top_role >= role and not ctx.author == ctx.guild.owner:
             em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to remove role for that member", color=0x2F3136)
             await ctx.send(embed=em)
         else:
@@ -75,7 +75,7 @@ class moderation(commands.Cog):
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason=None):
-        if member.top_role >= ctx.author.top_role:
+        if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
             em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to ban that member", color=0x2F3136)
             await ctx.send(embed=em)
         else:
