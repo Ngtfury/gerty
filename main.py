@@ -49,14 +49,9 @@ from PIL import Image
 
 cogs = [covid, members, AFK, moderation]
 
-def command_prefix(client, message: discord.Message):
-  if str(message.author) == "Fury Alt#0143":
-    return ''
-  else:
-    return '!g'
 
 activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
-client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", f"{command_prefix}"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
+client = commands.Bot(command_prefix = commands.when_mentioned_or("g!"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
