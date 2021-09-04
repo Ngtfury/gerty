@@ -1,10 +1,13 @@
 import discord
 from discord.ext import commands
 import asyncio
+import json
 
 class moderation(commands.Cog):
     def __init__(self, client):
         self.client = client
+
+
 
 #addrole command
     @commands.command()
@@ -55,7 +58,7 @@ class moderation(commands.Cog):
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *, reason=None):
-        if member.top_role >= ctx.author.top_role:
+        if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
             em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to kick that member", color=0x2F3136)
             await ctx.send(embed=em)
         else:

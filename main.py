@@ -241,20 +241,13 @@ async def on_ready():
 client.load_extension('jishaku')
 
 
-@client.command(name='Uptime')
+@client.command()
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
   em = discord.Embed(description=f"⏱️ {uptime}", color=0x2F3136)
   await ctx.send(embed=em)
 
         
-
-
-
-#mention help
-
-
-
 
 
 @client.command()
@@ -725,24 +718,28 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def mute(ctx, member: discord.Member, *, reason=None):
-  guild= ctx.guild
-  mutedRole = discord.utils.get(guild.roles, name='Muted')
-
-  if not mutedRole:
-    mutedRole = await guild.create_role(name="Muted")
-
-    for channel in guild.channels:
-      await channel.set_permissions(mutedRole, speak=False, send_messages=False)
-
-  await member.add_roles(mutedRole, reason=reason)
-  if reason == None:
-    embed = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator}", color=0x2bff00)
-    await ctx.send(embed=embed)
-    await member.send(f'You were muted in the server **{guild.name}**')
+  if member.top_role >= ctx.author.top_role:
+    em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to mute that member", color=0x2F3136)
+    await ctx.send(embed=em)
   else:
-    embed2 = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
-    await ctx.send(embed=embed2)
-    await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
+    guild= ctx.guild
+    mutedRole = discord.utils.get(guild.roles, name='Muted')
+
+    if not mutedRole:
+      mutedRole = await guild.create_role(name="Muted")
+
+      for channel in guild.channels:
+        await channel.set_permissions(mutedRole, speak=False, send_messages=False)
+
+    await member.add_roles(mutedRole, reason=reason)
+    if reason == None:
+      embed = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator}", color=0x2bff00)
+      await ctx.send(embed=embed)
+      await member.send(f'You were muted in the server **{guild.name}**')
+    else:
+      embed2 = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
+      await ctx.send(embed=embed2)
+      await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
 
 
 
