@@ -7,6 +7,7 @@ import requests
 import members
 import math
 import moderation
+import dyayoutube
 import urllib.request
 import urllib.parse
 import hashlib
@@ -47,7 +48,7 @@ from discordTogether import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 
-cogs = [covid, members, AFK, moderation]
+cogs = [covid, members, AFK, moderation, dyayoutube]
 
 
 activity = discord.Streaming(name="Beep boop. Boop beep?", url="https://youtu.be/jeg_TJvkSjg")
