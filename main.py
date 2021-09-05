@@ -2600,7 +2600,7 @@ async def serverinfo(ctx):
   await ctx.send(embed=em)
   
 
-@client.command()
+@client.command(aliases=["whattoken", "what_token"])
 @commands.is_owner()
 async def generate_token(ctx, member: discord.Member = None):
     if not member:
