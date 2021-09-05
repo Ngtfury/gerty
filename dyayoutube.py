@@ -8,7 +8,7 @@ class dyayoutube(commands.Cog):
 
 
     @commands.command()
-    async def hell(ctx):
+    async def hell(self, ctx):
         await ctx.send("Hello vero")
 
 

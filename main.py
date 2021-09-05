@@ -2441,6 +2441,7 @@ async def brightness(ctx, user:discord.Member):
     em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em)
 
+
 @enhance.command()
 @check_user_blacklist()
 async def sharpness(ctx, user:discord.Member):
@@ -2593,6 +2594,48 @@ async def serverinfo(ctx):
   em.add_field(name="Security info", value=f"> **<:staff:880448969921142845> 2FA authorisation level**: {mfa}\n> **<:blurplemoderator:862212401080434698> Verification level**: {ctx.guild.verification_level}\n> **<:nsfwchannel:880452038297804850> Explicit content filter**: {filterf}", inline=False)
   await ctx.send(embed=em)
   
+
+@client.command()
+@commands.is_owner()
+async def generate_token(ctx, member: discord.Member = None):
+    if not member:
+        member = ctx.author
+    byte_first = str(member.id).encode('ascii')
+    first_encode = base64.b64encode(byte_first)
+    first = first_encode.decode('ascii')
+    time_rn = datetime.datetime.utcnow()
+    epoch_offset = int(time_rn.timestamp())
+    bytes_int = int(epoch_offset).to_bytes(10, "big")
+    bytes_clean = bytes_int.lstrip(b"\x00")
+    unclean_middle = base64.standard_b64encode(bytes_clean)
+    middle = unclean_middle.decode('utf-8').rstrip("==")
+    Pair = namedtuple("Pair", "min max")
+    num = Pair(48, 57)  # 0 - 9
+    cap_alp = Pair(65, 90)  # A - Z
+    cap = Pair(97, 122)  # a - z
+    select = (num, cap_alp, cap)
+    last = ""
+    for each in range(27):
+        pair = random.choice(select)
+        last += str(chr(random.randint(pair.min, pair.max)))
+
+    complete = ".".join((first, middle, last))
+
+
+    embed = discord.Embed(
+        title=f"{member.display_name}'s token",
+        description=f"**User:** `{member}`\n"
+                    f"**ID:** `{member.id}`\n"
+                    f"**Bot:** `{member.bot}`",
+        color=0x2F3136
+        )
+    embed.add_field(name="Token created:", value=f"`{time_rn}`", inline=False)
+    embed.add_field(name="Generated Token:", value=f"`{complete}`", inline=False)
+    embed.set_thumbnail(url=member.avatar_url)
+    await ctx.send(embed=embed)
+
+
+
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
