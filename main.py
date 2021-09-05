@@ -23,6 +23,10 @@ import asyncpg
 import PIL.ImageOps
 import googletrans
 import mal
+import itertools
+import datetime
+import base64
+import functools
 import datetime, time
 import dateutil.parser
 from thispersondoesnotexist import get_online_person
@@ -47,6 +51,7 @@ from googleapiclient.discovery import build
 from discordTogether import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
+from collections import namedtuple
 
 cogs = [covid, members, AFK, moderation, dyayoutube]
 
