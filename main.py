@@ -4,6 +4,7 @@ import praw
 import urllib.parse, urllib.request, re
 import os
 import requests
+import aiohttp
 import members
 import math
 import moderation
@@ -1413,7 +1414,7 @@ async def help(ctx):
     embed5=discord.Embed(title="<:stagechannel:861997716053032991> Miscellaneous Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed5.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
     embed5.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-    embed5.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]\n > g!serverinfo")
+    embed5.add_field(name="Misc commands:", value="> g!ping\n > g!dev\n > g!avatar\n > g!code\n > g!mail\n > g!waifu\n > g!say\n > g!show\n > g!whois\n > g!nick\n > g!covid\n > g!spotify\n > g!afk\n > g!moveme\n > g!translate\n > g!webhook -- Talk like a bot in chat. And also nitro emotes for free :)\n > g!screenshot [website url]\n > g!serverinfo")
     embed5.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
     embed6=discord.Embed(title="<:stagechannel:861997716053032991> Roleplay Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed6.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
@@ -1423,7 +1424,7 @@ async def help(ctx):
     embed7=discord.Embed(title="<:stagechannel:861997716053032991> Activity Commands <:stagechannel:861997716053032991>", description="Bot prefix is `g!`,, `g!info` for details <a:gallset:857139110976290847>", color=0xff00ea)
     embed7.set_author(name="How can i help you?", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
     embed7.set_thumbnail(url="https://images-ext-1.discordapp.net/external/2SMx3hT4Tal6WPc8AaveG0ftBtGgR3Vowuzvd1ggEec/%3Fv%3D1/https/cdn.discordapp.com/emojis/850646273530658876.gif")
-    embed7.add_field(name="Music commands:", value="> g!ytt <:beta:872055526089981962>\n > g!poker <:beta:872055526089981962>\n > g!chess <:beta:872055526089981962>\n > g!betrayal <:beta:872055526089981962>\n > g!fishing <:beta:872055526089981962>")
+    embed7.add_field(name="Activity commands:", value="> g!ytt <:beta:872055526089981962>\n > g!poker <:beta:872055526089981962>\n > g!chess <:beta:872055526089981962>\n > g!betrayal <:beta:872055526089981962>\n > g!fishing <:beta:872055526089981962>")
     embed7.set_footer(text=f"Hello {ctx.author.name}! nice to meet you :]")
 
 
@@ -2639,7 +2640,15 @@ async def generate_token(ctx, member: discord.Member = None):
     embed.set_thumbnail(url=member.avatar_url)
     await ctx.send(embed=embed)
 
-
+@client.command()
+async def waifu(ctx):
+  async with aiohttp.ClientSession() as cs:
+      async with cs.get('https://api.waifu.pics/sfw/waifu') as r:
+          res = await r.json()  # returns dict
+          embed = discord.Embed(color=0x2F3136)
+          embed.set_image(url=f"{res['url']}")
+          embed.set_footer(text=f"Invoked by {ctx.author.name} · SFW - enabled", icon_url=f"{ctx.author.avatar_url}")
+          await ctx.send(embed=embed)
 
 
 
