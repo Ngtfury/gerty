@@ -2651,5 +2651,14 @@ async def waifu(ctx):
           await ctx.send(embed=embed)
 
 
+@client.command()
+async def status(ctx, status_code):
+  embed = discord.Embed(color=0x2F3136)
+  embed.set_image(url=f"https://http.cat/{status_code}")
+  embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
+  await ctx.send(embed=embed)
+
+
+
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
