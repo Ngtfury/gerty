@@ -1436,7 +1436,7 @@ async def help(ctx):
   embed=discord.Embed(description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\nReport bugs if any `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
   embed.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
   embed.add_field(name="<:modules:884784557822459985> Modules:", value="> <:cate:885482994452795413>  Fun\n> <:cate:885482994452795413>  Moderation\n> <:cate:885482994452795413>  Music\n> <:cate:885482994452795413>  Miscellaneous\n> <:cate:885482994452795413>  Roleplay\n> <:cate:885482994452795413>  Activity")
-  embed.add_field(name="<:news:885177157138145280> News, <t:1631113386:R>:", value="> New help command ui with selects")
+  embed.add_field(name="<:news:885177157138145280> News, <t:1631204037:R>:", value="> New help command ui with selects")
   embed.add_field(name="<:links:885161311456071750> Links:", value="> [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) | [Support server](https://discord.gg/ZScUFjBuvQ) | [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
   embed.set_footer(text=f"Invoked by {ctx.author.name} • Main Page", icon_url=f"{ctx.author.avatar_url}")
 
