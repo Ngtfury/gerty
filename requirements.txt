@@ -5,7 +5,7 @@ google-api-python-client==2.11.0
 praw
 discord-py-slash-command==2.3.2
 youtube_dl==2021.6.6
-discord-components==1.0.1
+discord-components==2.1.0
 PyNaCl==1.4.0
 oauth==1.0.1
 mod==0.3.0
