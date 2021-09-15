@@ -30,6 +30,7 @@ import base64
 import functools
 import datetime, time
 import dateutil.parser
+from gtts import gTTS
 from thispersondoesnotexist import get_online_person
 from mal import *
 from thispersondoesnotexist import save_picture
@@ -453,114 +454,14 @@ async def bot(ctx):
 @check_user_blacklist()
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
-      user = ctx.author
-    em = discord.Embed(title=f"{user.name}'s Avatar", description=f"[WEBP]({user.avatar_url_as(static_format='webp')}) | [JPEG]({user.avatar_url_as(static_format='jpeg')}) | [JPG](  {user.avatar_url_as(static_format='jpg')}) | [PNG]({user.avatar_url_as(static_format='png')})")
+      if ctx.message.reference:
+        user = ctx.message.reference.resolved.author
+      else:
+        user = ctx.author
+    em = discord.Embed(title=f"{user.name}'s Avatar", description=f"[WEBP]({user.avatar_url_as(static_format='webp')}) | [JPEG]({user.avatar_url_as(static_format='jpeg')}) | [PNG]({user.avatar_url_as(static_format='png')})", color=0x2F3136)
     em.set_image(url=f"{user.avatar_url}")
-    em2 = discord.Embed(title=f"{user.name}'s default avatar", description="This is calculated by the user’s discriminator.")
-    em2.set_image(url=f"{user.default_avatar_url}")
-
-    paginationList = [em, em2]
-    #Sets a default embed
-    current = 0
-    #Sending first message
-    #I used ctx.reply, you can use simply send as well
-    mainMessage = await ctx.send(
-        embed = paginationList[current],
-        components = [ #Use any button style you wish to :)
-            [
-                Button(
-                    label = "Prev",
-                    id = "back",
-                    style = ButtonStyle.red
-              
-                ),
-                Button(
-                    label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
-                    id = "cur",
-                    style = ButtonStyle.grey,
-                    disabled = True
-                ),
-                Button(
-                    label = "Next",
-                    id = "front",
-                    style = ButtonStyle.red
-                )
-            ]
-        ]
-    )
-    #Infinite loop
-    while True:
-        #Try and except blocks to catch timeout and break
-        try:
-            interaction = await client.wait_for(
-                "button_click",
-                check = lambda i: i.component.id in ["back", "front"], #You can add more
-                timeout = 10.0 #10 seconds of inactivity
-            )
-            #Getting the right list index
-            if interaction.component.id == "back":
-                current -= 1
-            elif interaction.component.id == "front":
-                current += 1
-            #If its out of index, go back to start / end
-            if current == len(paginationList):
-                current = 0
-            elif current < 0:
-                current = len(paginationList) - 1
-
-            #Edit to new page + the center counter changes
-            await interaction.respond(
-                type = InteractionType.UpdateMessage,
-                embed = paginationList[current],
-                components = [ #Use any button style you wish to :)
-                    [
-                        Button(
-                            label = "Prev",
-                            id = "back",
-                            style = ButtonStyle.red
-                        ),
-                        Button(
-                            label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
-                            id = "cur",
-                            style = ButtonStyle.grey,
-                            disabled = True
-                        ),
-                        Button(
-                            label = "Next",
-                            id = "front",
-                            style = ButtonStyle.red
-                        )
-                    ]
-                ]
-            )
-        except asyncio.TimeoutError:
-            #Disable and get outta here
-            await mainMessage.edit(
-                components = [
-                    [
-                        Button(
-                            label = "Prev",
-                            id = "back",
-                            style = ButtonStyle.red,
-                            disabled = True
-                        ),
-                        Button(
-                            label = f"Page {int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}",
-                            id = "cur",
-                            style = ButtonStyle.grey,
-                            disabled = True
-                        ),
-                        Button(
-                            label = "Next",
-                            id = "front",
-                            style = ButtonStyle.red,
-                            disabled = True
-                        )
-                    ]
-                ]
-            )
-            break
-#commands or help command
+    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    await ctx.send(embed=em)
 
 #code command
 @client.command()
@@ -658,17 +559,19 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.command()
+@client.command(aliases=["s"])
 @check_user_blacklist()
-async def say(ctx, *, message):
-  await ctx.message.delete()
-  await ctx.send(f'**{ctx.author.name}** : {message}' .format(message))
+async def say(ctx, *, content):
+  try:
+    await ctx.message.delete()
+  except:
+    pass
+  if ctx.message.reference:
+    await ctx.message.reference.resolved.reply(f"{content}", mention_author=True)
+  else:
+    await ctx.send(f"{content}")
 
-@client.command()
-@check_user_blacklist()
-async def saymodonly(ctx, *, message):
-  await ctx.message.delete()
-  await ctx.send(f'{message}' .format(message))
+
 
 #reactrole command
 @slash.slash(name="reactrole", description="adds role when reacting", options=[
@@ -1151,8 +1054,10 @@ async def rps(ctx):
 @check_user_blacklist()
 async def whois(ctx, member: discord.Member=None):
   if member == None:
-    member = ctx.author
-
+    if ctx.message.reference:
+      member = ctx.message.reference.resolved.author
+    else:
+      member = ctx.author
   roles = [role for role in member.roles]
   #general
   embed=discord.Embed(color=0x2F3136)
@@ -2421,7 +2326,12 @@ async def enhance(ctx):
 
 @enhance.command()
 @check_user_blacklist()
-async def color(ctx, user: discord.Member):
+async def color(ctx, user: discord.Member=None):
+  if user == None:
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
     filename = "avatar1.jpg"
     await user.avatar_url.save(filename)
     image = Image.open('avatar1.jpg')
@@ -2435,7 +2345,12 @@ async def color(ctx, user: discord.Member):
 
 @enhance.command()
 @check_user_blacklist()
-async def contrast(ctx, user: discord.Member):
+async def contrast(ctx, user: discord.Member=None):
+  if user == None:
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
     filename = "avatar1.jpg"
     await user.avatar_url.save(filename)
     image = Image.open('avatar1.jpg')
@@ -2449,7 +2364,12 @@ async def contrast(ctx, user: discord.Member):
 
 @enhance.command()
 @check_user_blacklist()
-async def brightness(ctx, user:discord.Member):
+async def brightness(ctx, user:discord.Member=None):
+  if user == None:
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
     filename = "avatar1.jpg"
     await user.avatar_url.save(filename)
     image = Image.open('avatar1.jpg')
@@ -2464,7 +2384,12 @@ async def brightness(ctx, user:discord.Member):
 
 @enhance.command()
 @check_user_blacklist()
-async def sharpness(ctx, user:discord.Member):
+async def sharpness(ctx, user:discord.Member=None):
+  if user == None:
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
     filename = "avatar1.jpg"
     await user.avatar_url.save(filename)
     image = Image.open('avatar1.jpg')
@@ -2478,7 +2403,12 @@ async def sharpness(ctx, user:discord.Member):
 
 @enhance.command()
 @check_user_blacklist()
-async def rgb(ctx, user:discord.Member):
+async def rgb(ctx, user:discord.Member=None):
+  if user == None:
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
     filename = "avatar1.jpg"
     await user.avatar_url.save(filename)
     image = Image.open('avatar1.jpg')
@@ -2510,7 +2440,10 @@ async def persondoesnotexist(ctx):
 @check_user_blacklist()
 async def spotify(ctx, user: discord.Member = None):
   if user == None:
-    user = ctx.author
+    if ctx.message.reference:
+      user = ctx.message.reference.resolved.author
+    else:
+      user = ctx.author
   spotify_result = next((activity for activity in user.activities if isinstance(activity, discord.Spotify)), None)
   if spotify_result is None:
     em = discord.Embed(description=f"<:error:867269410644557834> {user.name} is not listening to Spotify or He/She didn't connect spotify to discord", color = 0xd70f0f)
@@ -2655,6 +2588,7 @@ async def generate_token(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 @client.command()
+@check_user_blacklist()
 async def waifu(ctx):
   async with aiohttp.ClientSession() as cs:
       async with cs.get('https://api.waifu.pics/sfw/waifu') as r:
@@ -2666,11 +2600,87 @@ async def waifu(ctx):
 
 
 @client.command()
+@check_user_blacklist()
 async def status(ctx, status_code):
   embed = discord.Embed(color=0x2F3136)
   embed.set_image(url=f"https://http.cat/{status_code}")
   embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
   await ctx.send(embed=embed)
+
+
+
+@client.command()
+@check_user_blacklist()
+async def tts(ctx, *, text):
+  em = discord.Embed(description="<a:ttsloading:886607614111273010> Processing your tts", color=0x2F3136)
+  if len(text) >= 20:
+    d = await ctx.send(embed=em)
+  texttotts = f"{text}"
+  language='en'
+  output=gTTS(text=texttotts, lang=language, slow=False)
+  output.save('tts.mp3')
+  if len(text) >= 20:
+    await d.delete()
+  await ctx.send(f"{ctx.author.mention}",file=discord.File('tts.mp3'))
+
+
+
+@client.command(aliases=["upload-emoji", "upload_emoji", "create-emoji", "create_emoji"])
+@check_user_blacklist()
+async def createemoji(ctx, url: str, *, name=None):
+  embed=discord.Embed(color=0x2F3136)
+  embed.set_image(url=f"{url}")
+  main = await ctx.send(
+    "Is this right?",
+    embed=embed,
+    components=[[Button(style=ButtonStyle.green, label='Yes'), Button(style=ButtonStyle.grey, label='No')]]
+  )
+
+  while True:
+    res = await client.wait_for('button_click')
+    if res.author != ctx.author:
+      await res.respond(
+        content=f"This buttons can only be used by {ctx.author.mention}",
+        type=4
+      )
+    else:
+      if res.component.label == 'Yes':
+        async with aiohttp.ClientSession() as ses:
+          async with ses.get(url) as r:
+            try:
+              img_or_gif = BytesIO(await r.read())
+              b_value = img_or_gif.getvalue()
+              if r.status in range(200, 299):
+                try:
+                  d = await ctx.guild.create_custom_emoji(image=b_value, name=name)
+                except:
+                  await ctx.send("Bot doesn't have permissions to upload emoji")
+                  try:
+                   await main.delete()
+                  except:
+                    pass
+                  break
+                await ses.close()
+                if d.animated == True:
+                  e = f"<a:{d.name}:{d.id}>"
+                else:
+                  e = f"<:{d.name}:{d.id}>"
+                await main.delete()
+                await ctx.send(f"{ctx.author.name} uploaded {e}")
+              else:
+                await ctx.send(f'Error when making request | {r.status} response.')
+                await ses.close()
+            except discord.HTTPException:
+              print(f'{discord.HTTPException}')
+
+      elif res.component.label == 'No':
+        try:
+          await main.delete()
+        except:
+          pass
+        ff = await ctx.send("Cancelled")
+        await asyncio.sleep(3)
+        await ff.delete()
 
 
 
