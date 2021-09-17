@@ -183,24 +183,7 @@ async def on_message_delete(message):
   del snipe_message_author[message.channel.id]
   del snipe_message_content[message.channel.id]
 
-@client.event
-async def on_guild_join(guild):
-  if len(guild.members) < 9:
-    if guild.system_channel:
-        await guild.system_channel.send("I have automatically left this server because it does not have at least 8 members")
-    await guild.leave()
-  else:
-    for channel in guild.text_channels:
-      await channel.create_webhook(name="Gerty")
-    if guild.system_channel:
-        embed=discord.Embed(description="Hey <a:hey:867428025330827304>", color=0xd4ff00)
-        embed.set_author(name="Gerty bot", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
-        embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/765996691098173440.png?v=1")
-        embed.add_field(name="Thanks for inviting me!", value=f"> _currently I'm in  {len(client.guilds)} discord servers_", inline=False)
-        embed.add_field(name="To get started:", value="> Command `g!help` will guide through the commands", inline=False)
-        embed.add_field(name="Useful links:", value="> :link: [support server](https://discord.gg/2nCcfeq3ED)\n > :link: [Dashboard](https://magic-scythe-cuckoo.glitch.me/)\n > :link: [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot%20applications.commands)", inline=False)
-        embed.set_footer(text="Gerty © 2021")
-        await guild.system_channel.send(embed=embed)
+
     
 
     
@@ -1940,11 +1923,15 @@ async def clone(ctx, channel_name):
 ])
 @client.command()
 @check_user_blacklist()
-async def translate(ctx, lang, *, args):
+async def translate(ctx, lang, *, args=None):
+  if args == None:
+    if ctx.message.reference:
+      args = f"{ctx.message.reference.resolved.content}"
+    else:
+      args = "Please specify something to translate!!"
   t = Translator()
   a = t.translate(args, dest=lang)
-  em = discord.Embed(description=f"> Translation: {a.text}\n > Source: [googletrans](https://printer.discord.com) ", color=ctx.author.color)
-  em.set_footer(text=f"Translated {args} to {lang} · {ctx.author.name}")
+  em = discord.Embed(description=f"<:replyingto:888432748065353749> **Translation**: {a.text}", color=0x2F3136)
   await ctx.send(embed=em)
 
 
