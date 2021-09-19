@@ -2669,7 +2669,43 @@ async def createemoji(ctx, url: str, *, name=None):
         await asyncio.sleep(3)
         await ff.delete()
 
+@client.command()
+async def nitro(ctx):
+  em=discord.Embed(title="Nitro", description="Expires in 48 hours", color=0x2F3136)
+  em.set_author(name="A WILD GIFT APPEARS!")
+  em.set_thumbnail(url="https://media.discordapp.net/attachments/884423056934711326/888057999875244072/2Q.png")
 
+
+  components = [
+    Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀')
+  ]
+
+  main = await ctx.send(embed=em, components=components)
+
+  while True:
+    try:
+      event = await client.wait_for('button_click', check=None)
+      if event.component.label == '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀':
+        await event.respond(
+          content="Are you sure you want to claim?. This action is irreversible",
+          type=4,
+          components=[[Button(style=ButtonStyle.green, label='Yes'), Button(style=ButtonStyle.grey, label='No')]]
+        )
+        await main.edit(components=[
+          Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', disabled=True)
+        ])
+      elif event.component.label == 'Yes':
+        await event.respond(
+          content="https://tenor.com/view/rick-astly-rick-rolled-gif-22755440",
+          type=4
+        )
+      elif event.component.label == 'No':
+        await event.respond(
+          content="https://tenor.com/view/in-your-face-fuck-you-screw-you-fuck-off-middle-finger-gif-5474512",
+          type=4
+        )
+    except Exception as e:
+      print(e)
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
