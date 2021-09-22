@@ -550,9 +550,9 @@ async def say(ctx, *, content):
   except:
     pass
   if ctx.message.reference:
-    await ctx.message.reference.resolved.reply(f"{content}", mention_author=True)
+    await ctx.message.reference.resolved.reply(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
   else:
-    await ctx.send(f"{content}")
+    await ctx.send(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
 
 
 
@@ -1324,7 +1324,7 @@ async def help(ctx):
   embed=discord.Embed(description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\nReport bugs if any `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
   embed.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
   embed.add_field(name="<:modules:884784557822459985> Modules:", value="> <:cate:885482994452795413>  Fun\n> <:cate:885482994452795413>  Moderation\n> <:cate:885482994452795413>  Music\n> <:cate:885482994452795413>  Miscellaneous\n> <:cate:885482994452795413>  Roleplay\n> <:cate:885482994452795413>  Activity")
-  embed.add_field(name="<:news:885177157138145280> News, <t:1631204037:R>:", value="> New help command ui with selects")
+  embed.add_field(name="<:news:885177157138145280> News, <t:1632316584:R>:", value="> Update in afk command!")
   embed.add_field(name="<:links:885161311456071750> Links:", value="> [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) | [Support server](https://discord.gg/ZScUFjBuvQ) | [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
   embed.set_footer(text=f"Invoked by {ctx.author.name} • Main Page", icon_url=f"{ctx.author.avatar_url}")
 
@@ -2706,6 +2706,26 @@ async def nitro(ctx):
         )
     except Exception as e:
       print(e)
+
+
+
+@client.command()
+@commands.is_owner()
+async def delete_message(ctx, mid=None):
+  if mid == None:
+    if ctx.message.reference:
+      mid = ctx.message.reference.resolved.id
+    else:
+      await ctx.send("Please specify a message to delete")
+  d = ctx.channel.get_partial_message(mid)
+  try:
+    await d.delete()
+    await ctx.message.add_reaction("<:succes:867385889059504128>")
+  except:
+    await ctx.message.add_reaction("<:error:867269410644557834>")
+
+
+
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")

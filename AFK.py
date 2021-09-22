@@ -62,7 +62,7 @@ class AFK(commands.Cog):
                 mentionz = afk[f'{message.author.id}']['mentions']
 
               
-                emb = discord.Embed(description=f"<a:afk:890119774015717406> You've been AFK for: `{been_afk_for}`. And you were pinged **{mentionz}** times", color=0x2F3136)
+                emb = discord.Embed(description=f"<a:afk:890119774015717406> You've been AFK for: `{been_afk_for}`. And you were pinged **{mentionz}** time(s)", color=0x2F3136)
                 await message.channel.send(f'{message.author.mention} Welcome Back!', embed=emb)
                 
                 afk[f'{message.author.id}']['AFK'] = 'False'
