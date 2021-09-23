@@ -4,6 +4,7 @@ from discord.ext import commands
 import random
 import json
 import time
+import asyncio
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 
@@ -76,7 +77,7 @@ class AFK(commands.Cog):
                 try:
                     await message.author.edit(nick=f'{message.author.display_name[5:]}')
                 except:
-                    print(f'I wasnt able to edit [{message.author}].')
+                    pass
         
         with open('afk.json', 'w') as f:
             json.dump(afk, f)
@@ -98,12 +99,13 @@ class AFK(commands.Cog):
         em = discord.Embed(description=f"{reason}", color=0x2F3136)
         await ctx.send(f"{ctx.author.mention} I've set you as AFK <a:afk:890119774015717406>:", embed=em)
 
+        await asyncio.sleep(5)
         with open('afk.json', 'w') as f:
             json.dump(afk, f)
         try:
             await ctx.author.edit(nick=f'[AFK] {ctx.author.display_name}')
         except:
-            print(f'I wasnt able to edit [{ctx.message.author}].')
+            pass
 
 def setup(client):
     client.add_cog(AFK(client))
