@@ -1563,7 +1563,7 @@ async def punch(ctx, user: discord.Member):
 @client.command()
 @check_user_blacklist()
 async def report(ctx, *, report=None):
-  report_channel = client.get_channel(882608430202880031)
+  report_channel = client.get_channel(890595567825219584)
   time_when_report = datetime.datetime.now()
   timestamp_when_report = time_when_report.timestamp()
   try:
