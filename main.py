@@ -1563,25 +1563,29 @@ async def punch(ctx, user: discord.Member):
 @client.command()
 @check_user_blacklist()
 async def report(ctx, *, report=None):
-  report_channel = client.get_channel(877795771171356692)
-  report_channel2 = client.get_channel(882608430202880031)
-  invite = await ctx.channel.create_invite(max_age = 0, max_uses = 0)
+  report_channel = client.get_channel(882608430202880031)
+  time_when_report = datetime.datetime.now()
+  timestamp_when_report = time_when_report.timestamp()
+  try:
+    invite = await ctx.channel.create_invite(max_age = 0, max_uses = 0)
+  except:
+    invite = "none"
   if report is None:
-    return await ctx.send(f"{ctx.author.mention} Please include information about the report. Like g!report [information]")
+    return await ctx.send(f"{ctx.author.mention} Please include information about the report.")
   if len(ctx.message.content) < 20:
     await ctx.send("Your report must be at least 20 characters in length")
   else:
-    embed = discord.Embed(title="Bug reports", description=f"{ctx.author.name} has reported an issue regarding Gerty.", color=0xff0040)
-    embed.set_thumbnail(url=f"{ctx.author.avatar_url}")
-    embed.add_field(name="More information:", value=f"{report}", inline=False)
-    embed.add_field(name="Server invite:", value=f"[Server invite]({invite})", inline=False)
-    embed.add_field(name="Server name:", value=f"{ctx.guild.name}", inline=False)
-    embed.set_footer(icon_url=f"{ctx.author.avatar_url}", text=f" | ID: {ctx.author.name}#{ctx.author.discriminator}")
+    em = discord.Embed(title="Gerty report logs", description=f"Report by {ctx.author} ({ctx.author.mention}), on server **[{ctx.guild.name}]({invite})**. <t:{int(timestamp_when_report)}:D> (<t:{int(timestamp_when_report)}:R>)", color=0x2F3136)
+    em.set_thumbnail(url=f"{ctx.author.avatar_url}")
+    em.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
+    em.add_field(name="Report 📥", value=f"{report}")
+    em.set_footer(text=f"Invoker ID: {ctx.author.id}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(":incoming_envelope: | _Your report has been sent to staff team!_")
-    report_message = await report_channel.send(embed=embed)
-    report_message2 = await report_channel2.send(embed=embed)
+    report_message = await report_channel.send(embed=em)
+    ownerembed=discord.Embed(description=f"{ctx.author.name} has reported a bug!!! [Jump to report]]({report_message.jump_url})", color=0x2F3136)
+    fury = client.get_user(770646750804312105)
+    await fury.send(embed=ownerembed)
     await report_message.add_reaction('✅')
-    await report_message2.add_reaction('✅')
 
     try:
       def check(reaction, user):
@@ -1590,7 +1594,7 @@ async def report(ctx, *, report=None):
       reaction, user = await client.wait_for("reaction_add", timeout=604800, check=check)
 
       if str(reaction.emoji) == "✅":
-        await ctx.author.send(":envelope_with_arrow: | _Your report has been looked into and dealt with. Thanks for your report_")
+        await ctx.author.send(":envelope_with_arrow: | Your report has been looked into and dealt with. Thanks for your report")
     except Exception as e:
       print(e)
 
