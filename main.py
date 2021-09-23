@@ -1575,14 +1575,14 @@ async def report(ctx, *, report=None):
   if len(ctx.message.content) < 20:
     await ctx.send("Your report must be at least 20 characters in length")
   else:
-    em = discord.Embed(title="Gerty report logs", description=f"Report by {ctx.author} ({ctx.author.mention}), on server **[{ctx.guild.name}]({invite})**. <t:{int(timestamp_when_report)}:D> (<t:{int(timestamp_when_report)}:R>)", color=0x2F3136)
+    em = discord.Embed(title="Gerty report logs", description=f"Report by {ctx.author} ({ctx.author.mention})\nOn server **[{ctx.guild.name}]({invite})**\nReported on <t:{int(timestamp_when_report)}:D> (<t:{int(timestamp_when_report)}:R>)", color=0x2F3136)
     em.set_thumbnail(url=f"{ctx.author.avatar_url}")
     em.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
     em.add_field(name="Report 📥", value=f"{report}")
     em.set_footer(text=f"Invoker ID: {ctx.author.id}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(":incoming_envelope: | _Your report has been sent to staff team!_")
     report_message = await report_channel.send(embed=em)
-    ownerembed=discord.Embed(description=f"{ctx.author.name} has reported a bug!!! [Jump to report]]({report_message.jump_url})", color=0x2F3136)
+    ownerembed=discord.Embed(description=f"{ctx.author.name} has reported a bug!!! [Jump to report]({report_message.jump_url})", color=0x2F3136)
     fury = client.get_user(770646750804312105)
     await fury.send(embed=ownerembed)
     await report_message.add_reaction('✅')
