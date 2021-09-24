@@ -280,7 +280,7 @@ async def on_command_error(ctx, error):
       em = discord.Embed(description=f"Did you mean **{matches[0]}** ?\n> click on <:succes:867385889059504128> to run `{matches[0]}` command", color=0x2F3136)
       mainmessagecommand = await ctx.send(
         embed=em,
-        components=[[Button(style=ButtonStyle.blue, emoji=client.get_emoji(867385889059504128), id = "invokecommand"), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
+        components=[[Button(style=ButtonStyle.gray, emoji=client.get_emoji(867385889059504128), id = "invokecommand"), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
       )
       while True:
         try:
@@ -295,18 +295,16 @@ async def on_command_error(ctx, error):
             )
           else:
             if event.component.id == "invokecommand":
-              await mainmessagecommand.edit(
-                components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), id = "invokecommand", disabled=True), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage", disabled=True)]]
-              )
+              await mainmessagecommand.delete()
               cmd = client.get_command(f"{matches[0]}")
               await cmd(ctx)
             elif event.component.id == "deletecommandmessage":
               await mainmessagecommand.delete()
-              await mainmessagecommand.add_reaction("<:cancel:872394940779474985>")
+              await ctx.message.add_reaction("<:cancel:872394940779474985>")
         except asyncio.TimeoutError:
           try:
             await mainmessagecommand.edit(
-              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
+              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
             )
           except:
             pass
