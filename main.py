@@ -30,6 +30,7 @@ import base64
 import functools
 import datetime, time
 import dateutil.parser
+from difflib import get_close_matches
 from gtts import gTTS
 from thispersondoesnotexist import get_online_person
 from mal import *
@@ -272,17 +273,21 @@ async def on_command_error(ctx, error):
   elif isinstance(error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
+  elif isinstance(error, commands.CommandNotFound):
+    command_names = [str(x) for x in ctx.bot.commands]
+    matches = get_close_matches(ctx.invoked_with, command_names)
+    if matches:
+      return await ctx.send(f"Did you mean... `{matches[0]}`?")
   else:
-    if not isinstance(error, commands.CommandNotFound):
-      em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
-      em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-      em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-      await ctx.send(
-        embed=em,
-        components=[
-          Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/uGFeUJrtpk" , emoji=client.get_emoji(855714341155110942))
-        ]
-      )
+    em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
+    em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
+    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    await ctx.send(
+      embed=em,
+      components=[
+        Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/uGFeUJrtpk" , emoji=client.get_emoji(855714341155110942))
+      ]
+    )
 
 
 @client.event
