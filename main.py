@@ -278,9 +278,8 @@ async def on_command_error(ctx, error):
     matches = get_close_matches(ctx.invoked_with, command_names)
     if matches:
       em = discord.Embed(description=f"Did you mean **{matches[0]}**?", color=0x2F3136)
-      mainmessagecommand = await ctx.reply(
+      mainmessagecommand = await ctx.send(
         embed=em,
-        mention_author=False,
         components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), id = "invokecommand"), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
       )
       while True:
@@ -2764,7 +2763,6 @@ async def delete_message(ctx, mid=None):
     await ctx.message.add_reaction("<:succes:867385889059504128>")
   except:
     await ctx.message.add_reaction("<:error:867269410644557834>")
-
 
 
 
