@@ -281,26 +281,33 @@ async def on_command_error(ctx, error):
       mainmessagecommand = await ctx.reply(
         embed=em,
         mention_author=False,
-        components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand"), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage")]]
+        components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), id = "invokecommand"), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
       )
       while True:
         try:
-          event = await client.wait_for("button_click", check=None, timeout=20.0)
+          event = await client.wait_for(
+            "button_click",
+            check = lambda i: i.component.id in ["invokecommand", "deletecommandmessage"],
+          )
           if event.author != ctx.author:
             await event.respond(
               content="Sorry, this buttons cannot be controlled by you",
               type=4
             )
           else:
-            if event.custom_id == "invokecommand":
+            if event.component.id == "invokecommand":
+              await mainmessagecommand.delete()
               cmd = client.get_command(f"{matches[0]}")
               await cmd(ctx)
-            elif event.custom_id == "deletecommandmessage":
+            elif event.component.id == "deletecommandmessage":
               await mainmessagecommand.delete()
         except asyncio.TimeoutError:
-          await mainmessagecommand.edit(
-            components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
-          )
+          try:
+            await mainmessagecommand.edit(
+              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
+            )
+          except:
+            pass
           break
 
   else:
