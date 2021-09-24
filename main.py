@@ -277,7 +277,32 @@ async def on_command_error(ctx, error):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
     if matches:
-      return await ctx.send(f"Did you mean... `{matches[0]}`?")
+      em = discord.Embed(description=f"Did you mean **{matches[0]}**?", color=0x2F3136)
+      mainmessagecommand = await ctx.reply(
+        embed=em,
+        mention_author=False,
+        components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand"), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage")]]
+      )
+      while True:
+        try:
+          event = await client.wait_for("button_click", check=None, timeout=20.0)
+          if event.author != ctx.author:
+            await event.respond(
+              content="Sorry, this buttons cannot be controlled by you",
+              type=4
+            )
+          else:
+            if event.custom_id == "invokecommand":
+              cmd = client.get_command(f"{matches[0]}")
+              await cmd(ctx)
+            elif event.custom_id == "deletecommandmessage":
+              await mainmessagecommand.delete()
+        except asyncio.TimeoutError:
+          await mainmessagecommand.edit(
+            components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.grey, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
+          )
+          break
+
   else:
     em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
     em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
