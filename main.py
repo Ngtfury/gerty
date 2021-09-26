@@ -55,6 +55,7 @@ from discordTogether import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
+import mysql.connector
 
 cogs = [covid, members, AFK, moderation, dyayoutube]
 
@@ -64,6 +65,7 @@ client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "
 )
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
+db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
 client.remove_command("help")
 
 
@@ -188,10 +190,101 @@ async def on_message_delete(message):
 
     
 
+@client.event
+async def on_member_join(member):
+  cursor = db.cursor()
+  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {member.guild.id}")
+  result = cursor.fetchone()
+  if result is None:
+    return
+  else:
+    cursor.execute(f"SELECT msg FROM main WHERE guild_id = {member.guild.id}")
+    result1 = cursor.fetchone()
+    count = len(member.guild.members)
+    mention = member.mention
+    user = member.name
+    guild = member.guild
+    channel = client.get_channel(int(result[0]))
+    await channel.send(str(result1[0]).format(count=count, mention=mention, user=user, guild=guild))
+
+
     
-  
+@client.group(invoke_without_command=True)
+@commands.has_permissions(manage_channels=True)
+@check_user_blacklist()
+async def welcome(ctx):
+  cursor = db.cursor()
+  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
+  result = cursor.fetchone()
+  if result is None:
+    em = discord.Embed(description="<:error:867269410644557834> **This server do not have any welcome channels**\n\n<:dot_2:862321994983669771> To start out, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
+    await ctx.send(embed=em)
+  else:
+    d = client.get_channel(int(result[0]))
+    em = discord.Embed(description=f"<:succes:867385889059504128> **{d.mention} is the welcome channel in this server**\n\n<:dot_2:862321994983669771> To update channel, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
+    await ctx.send(embed=em)
 
 
+@welcome.command(aliases=["set-channel", "setchannel"])
+@commands.has_permissions(manage_channels=True)
+@check_user_blacklist()
+async def channelset(ctx, channel: discord.TextChannel):
+  cursor = db.cursor()
+  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
+  result = cursor.fetchone()
+  if result is None:
+    sql = ("INSERT INTO main(guild_id, msg, channel_id) VALUES(%s,%s,%s)")
+    val = (f"{ctx.guild.id}", "{mention} **Welcome!** to {guild}. You are `{count}th` member of this server!" ,f"{channel.id}")
+    cursor.execute(sql, val)
+    em = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} has been set as welcome channel", color=0x2F3136)
+    await ctx.send(embed=em)
+  elif result is not None:
+    cursor2 = db.cursor()
+    sql = (f"UPDATE main SET channel_id = {channel.id} WHERE guild_id = {ctx.guild.id}")
+    cursor2.execute(sql)
+    em = discord.Embed(description=f"<:succes:867385889059504128> Welcome channel has been updated to {channel.mention}", color=0x2F3136)
+    await ctx.send(embed=em)
+  db.commit()
+
+
+@welcome.command(aliases=["settext", "set-text"])
+@commands.has_permissions(manage_channels=True)
+@check_user_blacklist()
+async def textset(ctx, *, text):
+  if len(text) >= 100000:
+    em = discord.Embed(description=f"<:error:867269410644557834> Text cannot be more than 100000 charecters long", color=0x2F3136)
+    await ctx.send(embed=em)
+  else:
+    cursor = db.cursor(prepared=True)
+    cursor.execute(f"SELECT msg FROM main WHERE guild_id = {ctx.guild.id}")
+    result = cursor.fetchone()
+    if result is None:
+      sql = ("INSERT INTO main(guild_id, msg) VALUES(?,?)")
+      val = (ctx.guild.id, text)
+      cursor.execute(sql, val)
+      em = discord.Embed(description=f"<:succes:867385889059504128> Welcome text has been updated", color=0x2F3136)
+      await ctx.send(embed=em)
+    elif result is not None:
+      sql = (f"UPDATE main SET msg = ? WHERE guild_id = ?")
+      val=(text, ctx.guild.id)
+      cursor.execute(sql, val)
+      em = discord.Embed(description=f"<:succes:867385889059504128> Welcome text has been updated", color=0x2F3136)
+      await ctx.send(embed=em)
+    db.commit()
+
+
+@welcome.command()
+@commands.has_permissions(manage_channels=True)
+@check_user_blacklist()
+async def deletedata(ctx):
+  cursor = db.cursor(prepared=True)
+  cursor.execute(f"DELETE FROM main WHERE guild_id ='{ctx.guild.id}'")
+  db.commit()
+  em = discord.Embed(description=f"<:succes:867385889059504128> Welcome data has been deleted for **{ctx.guild.name}**", color=0x2F3136)
+  await ctx.send(embed=em)
+    
+    
+    
 @client.command()
 @commands.has_permissions(manage_messages=True)
 @commands.cooldown(1,10,commands.BucketType.channel)
