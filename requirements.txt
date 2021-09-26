@@ -25,3 +25,4 @@ thispersondoesnotexist
 python-dateutil
 gTTS==2.2.3
 PyNaCl==1.4.0
+mysql-connector==2.2.9
