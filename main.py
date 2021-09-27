@@ -27,6 +27,8 @@ import mal
 import itertools
 import datetime
 import base64
+import sys
+import os
 import functools
 import datetime, time
 import dateutil.parser
@@ -62,8 +64,7 @@ cogs = [covid, members, AFK, moderation, dyayoutube]
 
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")
-client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids = [770646750804312105, 815480311285547079]
-)
+client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
@@ -2938,7 +2939,18 @@ async def delete_message(ctx, mid=None):
   except:
     await ctx.message.add_reaction("<:error:867269410644557834>")
 
+def restart_program():
+    python = sys.executable
+    os.execl(python, python, * sys.argv)
 
+@client.command()
+@commands.is_owner()
+async def restart(ctx):
+    
+    await ctx.message.delete()
+    message = await ctx.send("Restarting... Allow up to 20 seconds")
+    
+    restart_program()
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
