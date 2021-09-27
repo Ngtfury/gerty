@@ -374,18 +374,6 @@ async def on_command_error(ctx, error):
             pass
           break
 
-  else:
-    em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
-    em.set_author(name="Unknown error occurred", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-    await ctx.send(
-      embed=em,
-      components=[
-        Button(style=ButtonStyle.URL, label="Support server", url="https://discord.gg/uGFeUJrtpk" , emoji=client.get_emoji(855714341155110942))
-      ]
-    )
-
-
 @client.event
 async def on_message_edit(before, after):
     if before.content != after.content:
@@ -1095,7 +1083,6 @@ async def google(ctx, *, search):
         )
         break
       except:
-        pass
         break
 
 
