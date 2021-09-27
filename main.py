@@ -2946,9 +2946,8 @@ def restart_program():
 @client.command()
 @commands.is_owner()
 async def restart(ctx):
-    
-    await ctx.message.delete()
-    message = await ctx.send("Restarting... Allow up to 20 seconds")
+    em = discord.Embed(description="<:succes:867385889059504128> Restarting... Allow up to 20 seconds", color=0x2F3136)
+    message = await ctx.send(embed=em)
     
     restart_program()
 
