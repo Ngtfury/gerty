@@ -72,6 +72,11 @@ client.remove_command("help")
 lastrestart = datetime.datetime.now().timestamp()
 
 
+async def db():
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+
+
+
 ch1 = ["Rock", "Scissors", "Paper"]
 
 for i in range(len(cogs)):
