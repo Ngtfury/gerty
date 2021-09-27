@@ -473,7 +473,7 @@ async def ping(ctx):
   time_delta = round((t_2-t_1)*1000)
   em = discord.Embed(color=0x2F3136)
   em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta}```")
-  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"{round(client.latency * 1000)}")
+  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"```{round(client.latency * 1000)}```")
   await ctx.send(embed=em)
 
 #8ball command
