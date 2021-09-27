@@ -2884,7 +2884,7 @@ async def nitro(ctx):
 
 
 
-@client.command(aliases=["d", "delete"])
+@client.command(aliases=["delete"])
 @commands.is_owner()
 async def delete_message(ctx, mid=None):
   if mid == None:
