@@ -56,6 +56,7 @@ from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
 import mysql.connector
+import async_cse
 
 cogs = [covid, members, AFK, moderation, dyayoutube]
 
@@ -1039,17 +1040,94 @@ async def place_error(ctx, error):
 @client.command(aliases=["show", "search", "img"])
 @commands.cooldown(1,5,commands.BucketType.user)
 @check_user_blacklist()
-async def showpic(ctx, *, search):
-    ran = random.randint(0, 9)
-    resource = build("customsearch", "v1", developerKey=api_key).cse()
-    result = resource.list(
-        q=f"{search}", cx="b53b2dd813c49255f", searchType="image"
-    ).execute()
-    url = result["items"][ran]["link"]
-    embed1 = discord.Embed(title=f"{search.title()}", color=0x2F3136)
-    embed1.set_image(url=url)
-    embed1.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
-    await ctx.send(embed=embed1)
+async def google(ctx, *, search):
+  try:
+    googleclient = async_cse.Search("AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio")
+    results = await googleclient.search(f"{search}", safesearch=True, image_search=True)
+  except:
+    return await ctx.send("No results, try including more keywords")
+    await googleclient.close()
+
+    #embeds 
+    #em1
+  em1 = discord.Embed(title=f"{results[0].title}", description=f"{results[0].description}", url=f"{results[0].url}", color=0x2F3136)
+  em1.set_image(url=f"{results[0].image_url}")
+    #em2
+  em2 = discord.Embed(title=f"{results[1].title}", description=f"{results[1].description}", url=f"{results[1].url}", color=0x2F3136)
+  em2.set_image(url=f"{results[1].image_url}")
+    #em3
+  em3 = discord.Embed(title=f"{results[2].title}", description=f"{results[2].description}", url=f"{results[2].url}", color=0x2F3136)
+  em3.set_image(url=f"{results[2].image_url}")
+
+  em4 = discord.Embed(title=f"{results[3].title}", description=f"{results[3].description}", url=f"{results[3].url}", color=0x2F3136)
+  em4.set_image(url=f"{results[3].image_url}")
+
+  em5 = discord.Embed(title=f"{results[4].title}", description=f"{results[4].description}", url=f"{results[4].url}", color=0x2F3136)
+  em5.set_image(url=f"{results[4].image_url}")
+
+  em6 = discord.Embed(title=f"{results[5].title}", description=f"{results[5].description}", url=f"{results[5].url}", color=0x2F3136)
+  em6.set_image(url=f"{results[5].image_url}")
+
+  em7 = discord.Embed(title=f"{results[6].title}", description=f"{results[6].description}", url=f"{results[6].url}", color=0x2F3136)
+  em7.set_image(url=f"{results[6].image_url}")
+
+  em8 = discord.Embed(title=f"{results[7].title}", description=f"{results[7].description}", url=f"{results[7].url}", color=0x2F3136)
+  em8.set_image(url=f"{results[7].image_url}")
+
+  em9 = discord.Embed(title=f"{results[8].title}", description=f"{results[8].description}", url=f"{results[8].url}", color=0x2F3136)
+  em9.set_image(url=f"{results[8].image_url}")
+
+  em10 = discord.Embed(title=f"{results[9].title}", description=f"{results[9].description}", url=f"{results[9].url}", color=0x2F3136)
+  em10.set_image(url=f"{results[9].image_url}")
+
+    #pagination
+  paginationList = [em1, em2, em3, em4, em5, em6, em7, em8, em9, em10]
+  current = 0
+
+
+  mainmessage = await ctx.send(embed=paginationList[current], components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]])
+
+  await googleclient.close()
+  while True:
+    try:
+      event = await client.wait_for("button_click", check = lambda i: i.component.id in ["back", "front", "delete"], timeout=60.0)
+
+      if event.author != ctx.author:
+        await event.respond(
+          type=4,
+          content="Sorry, this buttons cannot be controlled by you"
+        )
+      else:
+        if event.component.id == "back":
+          current -= 1
+        elif event.component.id == "front":
+          current += 1
+        elif event.component.id == "delete":
+          try:
+            await mainmessage.delete()
+          except:
+            pass
+          break
+
+        if current == len(paginationList):
+          current = 0
+        elif current < 0:
+          current = len(paginationList) - 1
+            
+        await event.respond(
+          type=7,
+          embed=paginationList[current],
+          components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]]
+        )
+    except asyncio.TimeoutError:
+      try:
+        await mainmessage.edit(
+          components=[[Button(style=ButtonStyle.grey, id = "back", label='<', disabled=True), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>', disabled=True), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114), disabled=True)]]
+        )
+        break
+      except:
+        pass
+
 
 
 #help command
