@@ -1037,7 +1037,7 @@ async def place_error(ctx, error):
         await ctx.send("> **Please make sure to enter an integer**.")
 
 
-@client.command(aliases=["show", "search", "img"])
+@client.command(aliases=["show", "search", "img", "googlesearch"])
 @commands.cooldown(1,5,commands.BucketType.user)
 @check_user_blacklist()
 async def google(ctx, *, search):
