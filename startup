@@ -1,7 +1,7 @@
 git init
 git remote add origin https://Ngtfury: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@github.com/Ngtfury/gerty.git
 git config branch.master.remote origin
-git config branch.master.merge refs/heads/master
+git config branch.master.merge refs/heads/main
 rm -fr *
 git pull
 python main.py
