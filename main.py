@@ -1127,6 +1127,7 @@ async def google(ctx, *, search):
         break
       except:
         pass
+        break
 
 
 
