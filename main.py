@@ -325,10 +325,8 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
-    em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
-    em.set_author(name="You are missing a required argument", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-    await ctx.send(embed=em)
+    em = discord.Embed(description=f"<:error:867269410644557834> You are missing a required argument `{error.param}`", color=0x2F3136)
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
     em = discord.Embed(description=f"```py\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
     em.set_author(name="You are missing required permission(s)", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
