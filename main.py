@@ -344,10 +344,8 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.BadArgument):
-    em = discord.Embed(description=f"```\n{error}```\n<:dot_2:862321994983669771> [Jump to message]({ctx.message.jump_url})", color=0x2F3136)
-    em.set_author(name="Bad argument", url=f"{ctx.message.jump_url}", icon_url=f"https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-    await ctx.send(embed=em)
+    em = discord.Embed(description=f"<:error:867269410644557834> {error}", color=0x2F3136)
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
