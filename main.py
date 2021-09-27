@@ -69,6 +69,7 @@ slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
 client.remove_command("help")
+lastrestart = datetime.datetime.now().timestamp()
 
 
 ch1 = ["Rock", "Scissors", "Paper"]
@@ -303,7 +304,7 @@ client.load_extension('jishaku')
 @client.command()
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-  em = discord.Embed(description=f"⏱️ {uptime}", color=0x2F3136)
+  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{lastrestart}:R>", color=0x2F3136)
   await ctx.send(embed=em)
 
         
