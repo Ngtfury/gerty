@@ -64,7 +64,7 @@ cogs = [covid, members, AFK, moderation, dyayoutube]
 
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")
-client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online)
+client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=["770646750804312105", "815480311285547079", "293468815130492928"])
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
@@ -336,25 +336,25 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<:error:867269410644557834> Lol you are not my owner :joy:", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.BotMissingPermissions):
-    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`")
+    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
   elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
-    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing permissions to run this command")
+    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing permissions to run this command", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.MemberNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Member `{error.argument}` was not found in this server")
+    em = discord.Embed(description=f"<:error:867269410644557834> Member `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.ChannelNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Channel `{error.argument}` was not found in this server")
+    em = discord.Embed(description=f"<:error:867269410644557834> Channel `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.ChannelNotReadable):
-    em = discord.Embed(description=f"<:error:867269410644557834> Bot does not have permissions to read messages in `{error.argument}`")
+    em = discord.Embed(description=f"<:error:867269410644557834> Bot does not have permissions to read messages in `{error.argument}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.RoleNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Role `{error.argument}` was not found in this server")
+    em = discord.Embed(description=f"<:error:867269410644557834> Role `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.BadArgument):
     em = discord.Embed(description=f"<:error:867269410644557834> {error}", color=0x2F3136)
