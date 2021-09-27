@@ -64,7 +64,7 @@ cogs = [covid, members, AFK, moderation, dyayoutube]
 
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")
-client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 815480311285547079])
+client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 815480311285547079, 343019667511574528])
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
