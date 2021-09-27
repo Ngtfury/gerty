@@ -82,6 +82,11 @@ for i in range(len(cogs)):
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
 
+os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
+
+# also 
+os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
+os.environ["JISHAKU_HIDE"] = "True"
 
 #blacklist
 async def open_muted(user):
@@ -2898,7 +2903,7 @@ def restart_program():
     python = sys.executable
     os.execl(python, python, * sys.argv)
 
-@client.command()
+@client.command(aliases=["reboot", "reloadall", "rall"])
 @commands.is_owner()
 async def restart(ctx):
     em = discord.Embed(description="<:succes:867385889059504128> Restarting... Allow up to 20 seconds", color=0x2F3136)
