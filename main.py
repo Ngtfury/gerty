@@ -81,12 +81,7 @@ for i in range(len(cogs)):
 
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
-user = discord.user
-####
-####
-#ai
-snipe_message_author = {}
-snipe_message_content = {}
+
 
 #blacklist
 async def open_muted(user):
@@ -181,16 +176,6 @@ def check_user_blacklist():
 
 
 
-@client.event
-async def on_message_delete(message):
-  snipe_message_author[message.channel.id]= message.author
-  snipe_message_content[message.channel.id]= message.content
-  await asyncio.sleep(60)
-  del snipe_message_author[message.channel.id]
-  del snipe_message_content[message.channel.id]
-
-
-    
 
 @client.event
 async def on_member_join(member):
@@ -286,23 +271,6 @@ async def deletedata(ctx):
   await ctx.send(embed=em)
     
     
-    
-@client.command()
-@commands.has_permissions(manage_messages=True)
-@commands.cooldown(1,10,commands.BucketType.channel)
-@check_user_blacklist()
-async def snipe(ctx):
-  channel = ctx.channel
-  try:
-    snipeEmbed = discord.Embed(description=f"Last deleted message within 60s in {channel.mention} :\n {snipe_message_content[channel.id]}", color=0xa6ff00, timestamp=datetime.datetime.utcnow())
-    snipeEmbed.set_footer(text=f"Requested by {ctx.author.name}#{ctx.author.discriminator}")
-    snipeEmbed.set_author(name=f"Message by {snipe_message_author[channel.id]}", icon_url=f"{snipe_message_author[channel.id].avatar_url}")
-    snipeEmbed.set_thumbnail(url=f"{snipe_message_author[channel.id].avatar_url}")
-    await ctx.send(embed=snipeEmbed)
-  except:
-    m = await ctx.send(f"{ctx.author.mention} There are no deleted messages within 60s in {channel.mention}")
-    await asyncio.sleep(4)
-    await m.delete()
 
 
 
