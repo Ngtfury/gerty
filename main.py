@@ -341,6 +341,8 @@ async def on_command_error(ctx, error):
   elif isinstance(error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
+  elif isinstance(error, commands.MemberNotFound):
+    em = discord.Embed(description=f"<:error:867269410644557834> Member `{error.argument}` was not found in this server")
   elif isinstance(error, commands.BadArgument):
     em = discord.Embed(description=f"<:error:867269410644557834> {error}", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
