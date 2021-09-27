@@ -467,11 +467,14 @@ async def on_raw_reaction_remove(payload):
 @client.command(aliases=['ms', 'latency'])
 @check_user_blacklist()
 async def ping(ctx):
-  v = await ctx.reply("PONG!! :joy:")
-  await asyncio.sleep(1)
-  await v.edit("LOL NO <:gavatar1:855833931726061588>")
-  await asyncio.sleep(1)
-  await v.edit(f'**<a:gloading:855680101529944064> | Response in! {round(client.latency * 1000)}ms**')
+  t_1 = time.perf_counter()
+  await ctx.trigger_typing()
+  t_2 = time.perf_counter()
+  time_delta = round((t_2-t_1)*1000)
+  em = discord.Embed(color=0x2F3136)
+  em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta}```")
+  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"{round(client.latency * 1000)}")
+  await ctx.send(embed=em)
 
 #8ball command
 @slash.slash(name="8ball", description="ask a question to me!", options=[
