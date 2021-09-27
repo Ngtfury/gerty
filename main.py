@@ -335,14 +335,24 @@ async def on_command_error(ctx, error):
   elif isinstance(error, commands.NotOwner):
     em = discord.Embed(description="<:error:867269410644557834> Lol you are not my owner :joy:", color=0x2F3136)
     await ctx.send(embed=em)
-  elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
-    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing permissions to run this command", color=0x2F3136)
-    await ctx.send(embed=em)
+  elif isinstance(error, commands.BotMissingPermissions):
+    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`")
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CheckFailure):
     em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MemberNotFound):
     em = discord.Embed(description=f"<:error:867269410644557834> Member `{error.argument}` was not found in this server")
+    await ctx.reply(embed=em, mention_author=False)
+  elif isinstance(error, commands.ChannelNotFound):
+    em = discord.Embed(description=f"<:error:867269410644557834> Channel `{error.argument}` was not found in this server")
+    await ctx.reply(embed=em, mention_author=False)
+  elif isinstance(error, commands.ChannelNotReadable):
+    em = discord.Embed(description=f"<:error:867269410644557834> Bot does not have permissions to read messages in `{error.argument}`")
+    await ctx.reply(embed=em, mention_author=False)
+  elif isinstance(error, commands.RoleNotFound):
+    em = discord.Embed(description=f"<:error:867269410644557834> Role `{error.argument}` was not found in this server")
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.BadArgument):
     em = discord.Embed(description=f"<:error:867269410644557834> {error}", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
