@@ -2942,18 +2942,5 @@ async def restart(ctx):
     
     restart_program()
 
-@client.command()
-@commands.is_owner()
-async def update(ctx):
-  start1 = time.perf_counter()
-  cmd = client.get_command("jsk git")
-  await ctx.invoke(cmd, argument=jishaku.codeblocks.codeblock_converter("pull"))
-  end1 = time.perf_counter()
-  pullMs = (end1 - start1) * 1000
-  em = discord.Embed(description=f"<:succes:867385889059504128> Git pull done and took `{round(pullMs)} ms`")
-  await ctx.send(embed=em, color=0x2F3136)
-  em2 = discord.Embed(description=f"<:succes:867385889059504128> Running reboot...")
-  await ctx.send(embed=em2, color=0x2F3136)
-  restart_program()
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
