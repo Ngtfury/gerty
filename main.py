@@ -31,6 +31,7 @@ import base64
 import sys
 import os
 import functools
+import typing
 import datetime, time
 import dateutil.parser
 from difflib import get_close_matches
@@ -2941,6 +2942,45 @@ async def restart(ctx):
     message = await ctx.send(embed=em)
     
     restart_program()
+
+@client.command()
+async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoji]):
+  if isinstance(emoji, discord.Emoji):
+    fetchedEmoji = await ctx.guild.fetch_emoji(emoji.id)
+    url = f"{emoji.url}"
+    available = "No"
+    managed = "No"
+    animated = "No"
+    user = f"{fetchedEmoji.user}"
+
+    emoji_created_at = int(emoji.created_at.timestamp())
+    compo = [Button(style=ButtonStyle.url, label="Emoji link", emoji="🔗", url=url)]
+
+    if fetchedEmoji.user is None:
+      user = "Couldn't get user"
+    if emoji.available:
+      available = "Yes"
+    if emoji.managed:
+      managed = "Yes"
+    if emoji.animated:
+      animated = "Yes"
+    
+    em = discord.Embed(description=f"Name: {emoji.name}\nID: {emoji.id}\nCreated at: <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R)\nLink: [Click here]({url}\nAnimated?: {animated}\nCreated by: {user}\nGuild: {emoji.guild} ({emoji.id})\nAvailable?: {available}\nManaged?: {managed}\Animated?: {animated}", color=0x2F3136)
+    em.set_image(url=emoji.url)
+    await ctx.send(embed=em, components=compo)
+
+  elif isinstance(emoji, discord.PartialEmoji):
+    url = f"{emoji.url}"
+    animated = "No"
+    if emoji.animated:
+      animated = "Yes"
+    emoji_created_at = int(emoji.created_at.timestamp())
+    compo = [Button(style=ButtonStyle.url, label="Emoji link", emoji="🔗", url=url)]
+    em = discord.Embed(description=f"Name: {emoji.name}\nID: {emoji.id}\nCreated at: <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R)\nLink: [Click here]({url}\nAnimated?: {animated}", color=0x2F3136)
+    em.set_image(url=emoji.url)
+    await ctx.send(embed=em, components=compo)
+  else:
+    await ctx.send("wtf?? whattttttt")
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
