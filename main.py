@@ -481,9 +481,9 @@ async def ping(ctx):
   db.close()
   dbtime_delta = round((dbt_2-dbt_1)*1000)
   em = discord.Embed(color=0x2F3136)
-  em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta}ms```")
-  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"```{round(client.latency * 1000)}ms```")
-  em.add_field(name="<:postgres:892392238825488514> Database", value=f"```{dbtime_delta}ms```")
+  em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta} ms```")
+  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"```{round(client.latency * 1000)} ms```")
+  em.add_field(name="<:postgres:892392238825488514> Database", value=f"```{dbtime_delta} ms```")
   await ctx.send(embed=em)
 
 #8ball command
@@ -2941,5 +2941,14 @@ async def restart(ctx):
     
     restart_program()
 
+@client.command()
+@commands.is_owner()
+async def update(ctx):
+  start1 = time.perf_counter()
+  cmd = client.get_command("jsk git")
+  await ctx.invoke(cmd, argument=jishaku.codeblocks.codeblock_converter("pull"))
+  end1 = time.perf_counter()
+  pullMs = (end1 - start1) * 1000
+  em = discord.Embed(description=f"<:succes:867385889059504128> Git pull done and took `{round(pullMs)} ms`")
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
