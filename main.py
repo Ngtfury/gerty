@@ -2951,5 +2951,8 @@ async def update(ctx):
   end1 = time.perf_counter()
   pullMs = (end1 - start1) * 1000
   em = discord.Embed(description=f"<:succes:867385889059504128> Git pull done and took `{round(pullMs)} ms`")
+  await ctx.send(embed=em, color=0x2F3136)
+  cmd2 = client.get_command("restart")
+  await cmd2(ctx)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
