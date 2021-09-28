@@ -2965,7 +2965,7 @@ async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoj
     if emoji.animated:
       animated = "Yes"
     
-    em = discord.Embed(description=f"Name: {emoji.name}\nID: {emoji.id}\nCreated at: <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R)\nLink: [Click here]({url}\nAnimated?: {animated}\nCreated by: {user}\nGuild: {emoji.guild} ({emoji.id})\nAvailable?: {available}\nManaged?: {managed}\Animated?: {animated}", color=0x2F3136)
+    em = discord.Embed(description=f"<:pencil:880087936043974716> **Name:** {emoji.name}\n<:graypin:880087574490808370> **ID:** {emoji.id}\n<:plus:880083147893649468> **Created at:** <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R>)\n:link: **Link:** [Click here]({url})\n<:nitro:892417079460888596> **Animated?:** {animated}\n<:personadd:880087005520863263> **Created by**: {user}\n<:gsupportserver:855714629606703124> **Guild**: {emoji.guild}\n<:twitch:892419054818689045> **Twitch managed?**: {managed}\n<:online:891215382914953247> **Available?**: {available}", color=0x2F3136)
     em.set_image(url=emoji.url)
     await ctx.send(embed=em, components=compo)
 
@@ -2976,7 +2976,7 @@ async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoj
       animated = "Yes"
     emoji_created_at = int(emoji.created_at.timestamp())
     compo = [Button(style=ButtonStyle.URL, label="Emoji link", emoji="🔗", url=url)]
-    em = discord.Embed(description=f"Name: {emoji.name}\nID: {emoji.id}\nCreated at: <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R)\nLink: [Click here]({url}\nAnimated?: {animated}", color=0x2F3136)
+    em = discord.Embed(description=f"<:pencil:880087936043974716> **Name:** {emoji.name}\n<:graypin:880087574490808370> **ID:** {emoji.id}\n<:plus:880083147893649468> **Created at:** <t:{emoji_created_at}:D> (<t:{emoji_created_at}:R>)\n:link: **Link:** [Click here]({url})\n<:nitro:892417079460888596> **Animated?:** {animated}", color=0x2F3136)
     em.set_image(url=emoji.url)
     await ctx.send(embed=em, components=compo)
   else:
