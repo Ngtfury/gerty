@@ -67,7 +67,6 @@ activity = discord.Activity(type=discord.ActivityType.competing, name="Discord s
 client = commands.Bot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 815480311285547079, 343019667511574528])
 slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
-db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
 client.remove_command("help")
 lastrestart = datetime.datetime.now().timestamp()
 
@@ -187,6 +186,7 @@ def check_user_blacklist():
 
 @client.event
 async def on_member_join(member):
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {member.guild.id}")
   result = cursor.fetchone()
@@ -208,6 +208,7 @@ async def on_member_join(member):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def welcome(ctx):
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
   result = cursor.fetchone()
@@ -224,6 +225,7 @@ async def welcome(ctx):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def channelset(ctx, channel: discord.TextChannel):
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
   result = cursor.fetchone()
@@ -246,6 +248,7 @@ async def channelset(ctx, channel: discord.TextChannel):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def textset(ctx, *, text):
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
   if len(text) >= 100000:
     em = discord.Embed(description=f"<:error:867269410644557834> Text cannot be more than 100000 charecters long", color=0x2F3136)
     await ctx.send(embed=em)
@@ -272,6 +275,7 @@ async def textset(ctx, *, text):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def deletedata(ctx):
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
   cursor = db.cursor(prepared=True)
   cursor.execute(f"DELETE FROM main WHERE guild_id ='{ctx.guild.id}'")
   db.commit()
@@ -471,9 +475,15 @@ async def ping(ctx):
   await ctx.trigger_typing()
   t_2 = time.perf_counter()
   time_delta = round((t_2-t_1)*1000)
+  dbt_1 = time.perf_counter()
+  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  dbt_2 = time.perf_counter()
+  db.close()
+  dbtime_delta = round((dbt_2-dbt_1)*1000)
   em = discord.Embed(color=0x2F3136)
-  em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta}```")
-  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"```{round(client.latency * 1000)}```")
+  em.add_field(name="<a:typing:597589448607399949> Typing", value=f"```{time_delta}ms```")
+  em.add_field(name="<a:discord:886308080260894751> Api latency", value=f"```{round(client.latency * 1000)}ms```")
+  em.add_field(name="<:postgres:892392238825488514> Database", value=f"```{dbtime_delta}ms```")
   await ctx.send(embed=em)
 
 #8ball command
