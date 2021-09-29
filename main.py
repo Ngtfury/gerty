@@ -668,9 +668,9 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.command(aliases=["s"])
+@client.group(invoke_without_command=True, aliases=["s"])
 @check_user_blacklist()
-async def say(ctx, *, content):
+async def say(ctx, *, content, embed: bool):
   try:
     await ctx.message.delete()
   except:
@@ -679,6 +679,21 @@ async def say(ctx, *, content):
     await ctx.message.reference.resolved.reply(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
   else:
     await ctx.send(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
+
+@say.command(aliases=["em"])
+@check_user_blacklist()
+async def embed(ctx, *, reply = "without reply"):
+  try:
+    await ctx.message.delete()
+  except:
+    pass
+  if ctx.message.reference:
+    if reply == "with reply":
+      await ctx.message.reference.resolved.reply(f"{ctx.message.reference.resolved.content}", embed=ctx.message.reference.resolved.embeds[0])
+    else:
+      await ctx.send(embed=ctx.message.reference.resolved.embeds[0])
+  else:
+    await ctx.send("I cant find any message with embeds")
 
 
 
