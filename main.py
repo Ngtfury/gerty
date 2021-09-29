@@ -670,7 +670,7 @@ async def emojify(ctx, *, text):
 #say command
 @client.group(invoke_without_command=True, aliases=["s"])
 @check_user_blacklist()
-async def say(ctx, *, content, embed: bool):
+async def say(ctx, *, content):
   try:
     await ctx.message.delete()
   except:
@@ -687,7 +687,7 @@ async def embed(ctx, *, reply = "without reply"):
     await ctx.message.delete()
   except:
     pass
-  if ctx.message.reference:
+  if ctx.message.reference.resolved.embeds[0]:
     if reply == "with reply":
       await ctx.message.reference.resolved.reply(f"{ctx.message.reference.resolved.content}", embed=ctx.message.reference.resolved.embeds[0])
     else:
