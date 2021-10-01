@@ -330,55 +330,56 @@ async def servers(ctx):
 @client.event
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
-    em = discord.Embed(description="<:error:867269410644557834> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
+    em = discord.Embed(description="<:error:893501396161290320> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
-    em = discord.Embed(description=f"<:error:867269410644557834> You are missing a required argument `{error.param.name}`", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> You are missing a required argument `{error.param.name}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
-    em = discord.Embed(description=f"<:error:867269410644557834> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.NotOwner):
-    em = discord.Embed(description="<:error:867269410644557834> Lol you are not my owner :joy:", color=0x2F3136)
+    em = discord.Embed(description="<:error:893501396161290320>Lol you are not my owner :joy:", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.BotMissingPermissions):
-    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320>The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CheckFailure):
-    em = discord.Embed(description="<:error:867269410644557834> You are blacklisted from using commands", color=0x2F3136)
+    em = discord.Embed(description="<:error:893501396161290320> You are blacklisted from using commands", color=0x2F3136)
     await ctx.send(embed=em)
   elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
-    em = discord.Embed(description=f"<:error:867269410644557834> The bot is missing permissions to run this command", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> The bot is missing permissions to run this command", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.MemberNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Member `{error.argument}` was not found in this server", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> Member `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.ChannelNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Channel `{error.argument}` was not found in this server", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> Channel `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.ChannelNotReadable):
-    em = discord.Embed(description=f"<:error:867269410644557834> Bot does not have permissions to read messages in `{error.argument}`", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> Bot does not have permissions to read messages in `{error.argument}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.RoleNotFound):
-    em = discord.Embed(description=f"<:error:867269410644557834> Role `{error.argument}` was not found in this server", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> Role `{error.argument}` was not found in this server", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.BadArgument):
-    em = discord.Embed(description=f"<:error:867269410644557834> {error}", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> {error}", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
     if matches:
-      em = discord.Embed(description=f"Did you mean **{matches[0]}** ?\n> click on <:succes:867385889059504128> to run `{matches[0]}` command", color=0x2F3136)
+      em = discord.Embed(description=f"Did you mean **{matches[0]}** ?\n> click on <:success:893501515107557466> to run `{matches[0]}` command", color=0x2F3136)
       mainmessagecommand = await ctx.send(
         embed=em,
-        components=[[Button(style=ButtonStyle.gray, emoji=client.get_emoji(867385889059504128), id = "invokecommand"), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
+        components=[[Button(style=ButtonStyle.gray, emoji=client.get_emoji(893501515107557466), id = "invokecommand"), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
       )
       while True:
         try:
           event = await client.wait_for(
             "button_click",
             check = lambda i: i.component.id in ["invokecommand", "deletecommandmessage"],
+            timeout=10.0
           )
           if event.author != ctx.author:
             await event.respond(
@@ -396,7 +397,7 @@ async def on_command_error(ctx, error):
         except asyncio.TimeoutError:
           try:
             await mainmessagecommand.edit(
-              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(867385889059504128), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
+              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(893501515107557466), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
             )
           except:
             pass
