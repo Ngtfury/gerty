@@ -152,10 +152,10 @@ async def blacklist(ctx,user:discord.Member, *,reason=None):
     if await get_mute(user) == 0:
       await add_mute(user)
       if reason == None:
-        em = discord.Embed(description=f"<:succes:867385889059504128> Blacklisted {user.name}", color=0x2F3136)
+        em = discord.Embed(description=f"<:success:893501515107557466> Blacklisted {user.name}", color=0x2F3136)
         await ctx.send(embed=em)
       else:
-        em = discord.Embed(description=f"<:succes:867385889059504128> Blacklisted {user.name} for reason {reason}", color=0x2F3136)
+        em = discord.Embed(description=f"<:success:893501515107557466> Blacklisted {user.name} for reason {reason}", color=0x2F3136)
         await ctx.send(embed=em)
     else:
       await ctx.send("The person is already blacklisted.")
@@ -219,7 +219,7 @@ async def welcome(ctx):
     await ctx.send(embed=em)
   else:
     d = client.get_channel(int(result[0]))
-    em = discord.Embed(description=f"<:succes:867385889059504128> **{d.mention} is the welcome channel in this server**\n\n<:dot_2:862321994983669771> To update channel, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
+    em = discord.Embed(description=f"<:success:893501515107557466> **{d.mention} is the welcome channel in this server**\n\n<:dot_2:862321994983669771> To update channel, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
@@ -235,13 +235,13 @@ async def channelset(ctx, channel: discord.TextChannel):
     sql = ("INSERT INTO main(guild_id, msg, channel_id) VALUES(%s,%s,%s)")
     val = (f"{ctx.guild.id}", "{mention} **Welcome!** to {guild}. You are `{count}th` member of this server!" ,f"{channel.id}")
     cursor.execute(sql, val)
-    em = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} has been set as welcome channel", color=0x2F3136)
+    em = discord.Embed(description=f"<:success:893501515107557466> {channel.mention} has been set as welcome channel", color=0x2F3136)
     await ctx.send(embed=em)
   elif result is not None:
     cursor2 = db.cursor()
     sql = (f"UPDATE main SET channel_id = {channel.id} WHERE guild_id = {ctx.guild.id}")
     cursor2.execute(sql)
-    em = discord.Embed(description=f"<:succes:867385889059504128> Welcome channel has been updated to {channel.mention}", color=0x2F3136)
+    em = discord.Embed(description=f"<:success:893501515107557466> Welcome channel has been updated to {channel.mention}", color=0x2F3136)
     await ctx.send(embed=em)
   db.commit()
 
@@ -262,13 +262,13 @@ async def textset(ctx, *, text):
       sql = ("INSERT INTO main(guild_id, msg) VALUES(?,?)")
       val = (ctx.guild.id, text)
       cursor.execute(sql, val)
-      em = discord.Embed(description=f"<:succes:867385889059504128> Welcome text has been updated", color=0x2F3136)
+      em = discord.Embed(description=f"<:success:893501515107557466> Welcome text has been updated", color=0x2F3136)
       await ctx.send(embed=em)
     elif result is not None:
       sql = (f"UPDATE main SET msg = ? WHERE guild_id = ?")
       val=(text, ctx.guild.id)
       cursor.execute(sql, val)
-      em = discord.Embed(description=f"<:succes:867385889059504128> Welcome text has been updated", color=0x2F3136)
+      em = discord.Embed(description=f"<:success:893501515107557466> Welcome text has been updated", color=0x2F3136)
       await ctx.send(embed=em)
     db.commit()
 
@@ -281,7 +281,7 @@ async def deletedata(ctx):
   cursor = db.cursor(prepared=True)
   cursor.execute(f"DELETE FROM main WHERE guild_id ='{ctx.guild.id}'")
   db.commit()
-  em = discord.Embed(description=f"<:succes:867385889059504128> Welcome data has been deleted for **{ctx.guild.name}**", color=0x2F3136)
+  em = discord.Embed(description=f"<:success:893501515107557466> Welcome data has been deleted for **{ctx.guild.name}**", color=0x2F3136)
   await ctx.send(embed=em)
     
     
@@ -599,7 +599,7 @@ async def code(ctx):
 @check_user_blacklist()
 async def mail(ctx, user: discord.User = None, *, message):
       await user.send(f'You have a mail from **{ctx.author.name}** : {message}')
-      m = discord.Embed(description=f"<:succes:867385889059504128> Mail sent to {user.name}", color=ctx.author.color)
+      m = discord.Embed(description=f"<:success:893501515107557466> Mail sent to {user.name}", color=ctx.author.color)
       await ctx.send(embed=m)
 
 
@@ -624,7 +624,7 @@ async def deletechannel(ctx, channel: discord.TextChannel):
       if ctx.author.guild_permissions.manage_channels:
         
         await channel.delete()
-        m = discord.Embed(description=f"<:succes:867385889059504128> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
+        m = discord.Embed(description=f"<:success:893501515107557466> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
         await ctx.send(embed=m)
 
 
@@ -644,7 +644,7 @@ async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
       if ctx.author.guild_permissions.manage_channels:
         
         await channel.delete()
-        m = discord.Embed(description=f"<:succes:867385889059504128> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
+        m = discord.Embed(description=f"<:success:893501515107557466> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
         await ctx.send(embed=m)
 
 
@@ -717,7 +717,7 @@ async def embed(ctx, *, reply = "without reply"):
 @check_user_blacklist()
 @commands.has_permissions(administrator=True)
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
-  d = discord.Embed(description=f"<:succes:867385889059504128> React role event created in {ctx.channel.mention}")
+  d = discord.Embed(description=f"<:success:893501515107557466> React role event created in {ctx.channel.mention}")
   s = await ctx.send(embed=d)
  
   if ctx.author.guild_permissions.manage_roles:
@@ -772,11 +772,11 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
     await member.add_roles(mutedRole, reason=reason)
     if reason == None:
-      embed = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator}", color=0x2bff00)
+      embed = discord.Embed(description=f"<:success:893501515107557466> Muted {member.name}#{member.discriminator}", color=0x2bff00)
       await ctx.send(embed=embed)
       await member.send(f'You were muted in the server **{guild.name}**')
     else:
-      embed2 = discord.Embed(description=f"<:succes:867385889059504128> Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
+      embed2 = discord.Embed(description=f"<:success:893501515107557466> Muted {member.name}#{member.discriminator} for reason **{reason}**", color=0x2bff00)
       await ctx.send(embed=embed2)
       await member.send(f'You were muted in the server **{guild.name}** for reason: __{reason}__')
 
@@ -799,7 +799,7 @@ async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
 
   await member.remove_roles(mutedRole)
-  em = discord.Embed(description=f"<:succes:867385889059504128> Unmuted {member.name}#{member.discriminator}", color=0x2bff00)
+  em = discord.Embed(description=f"<:success:893501515107557466> Unmuted {member.name}#{member.discriminator}", color=0x2bff00)
   await ctx.send(embed=em)
   await member.send(f'You are now unmuted in the server **{ctx.guild.name}**')
 
@@ -1275,7 +1275,7 @@ async def whois(ctx, member: discord.Member=None):
   cdate = int(member.created_at.timestamp())
   jdate = int(member.joined_at.timestamp())
   if member.bot is True:
-    bot = "<:succes:867385889059504128>"
+    bot = "<:success:893501515107557466>"
   else:
     bot = "<:error:867269410644557834>"
 
@@ -1372,7 +1372,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
   if channel == None:
     channel = ctx.channel
   await channel.set_permissions(ctx.guild.default_role, send_messages=False)
-  embed = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} is now locked", color=0x2bff00)
+  embed = discord.Embed(description=f"<:success:893501515107557466> {channel.mention} is now locked", color=0x2bff00)
   await ctx.send(embed=embed)
 
   
@@ -1393,7 +1393,7 @@ async def unlock(ctx, channel: discord.TextChannel = None):
     channel = ctx.channel
     
   await channel.set_permissions(ctx.guild.default_role, send_messages=True)
-  embed = discord.Embed(description=f"<:succes:867385889059504128> {channel.mention} is now unlocked", color=0x2bff00)
+  embed = discord.Embed(description=f"<:success:893501515107557466> {channel.mention} is now unlocked", color=0x2bff00)
   await ctx.send(embed=embed)
 
 @client.command(aliases=["flip"])
@@ -1418,7 +1418,7 @@ async def coin(ctx):
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
-  em = discord.Embed(description=f"<:succes:867385889059504128> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
+  em = discord.Embed(description=f"<:success:893501515107557466> Set the slowmode delay in {ctx.channel.mention} to {seconds} seconds! <:slowmode:861261195621040138>", color=0x2bff00)
   await ctx.send(embed=em)
 
 
@@ -2007,7 +2007,7 @@ async def nowplaying(ctx):
   embed.add_field(name="📌 Author", value=f"[{song.channel}]({song.channel_url})")
   embed.add_field(name="🪄 Views", value=f"{song.views}")
   if song.is_looping == True:
-    embed.add_field(name="💽 Looping?", value="<:succes:867385889059504128>")
+    embed.add_field(name="💽 Looping?", value="<:success:893501515107557466>")
   else:
     embed.add_field(name="💽 Looping?", value="<:error:867269410644557834>")
   embed.set_image(url=f"{song.thumbnail}")
@@ -2038,7 +2038,7 @@ async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None
   if member == None:
     member = ctx.author
   await member.move_to(channel)
-  em = discord.Embed(description=f"<:succes:867385889059504128> {member.mention} has been moved to {channel.mention}", color=ctx.author.color)
+  em = discord.Embed(description=f"<:success:893501515107557466> {member.mention} has been moved to {channel.mention}", color=ctx.author.color)
   await ctx.send(embed=em)            
            
  
@@ -2949,7 +2949,7 @@ async def delete_message(ctx, mid=None):
   d = ctx.channel.get_partial_message(mid)
   try:
     await d.delete()
-    await ctx.message.add_reaction("<:succes:867385889059504128>")
+    await ctx.message.add_reaction("<:success:893501515107557466>")
   except:
     await ctx.message.add_reaction("<:error:867269410644557834>")
 
@@ -2960,9 +2960,9 @@ def restart_program():
 @client.command(aliases=["reboot", "reloadall", "rall"])
 @commands.is_owner()
 async def restart(ctx):
-    em = discord.Embed(description="<:succes:867385889059504128> Restarting... Allow up to 20 seconds", color=0x2F3136)
+    em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
     message = await ctx.send(embed=em)
-    
+    #<:success:893501515107557466>
     restart_program()
 
 @client.command()
