@@ -60,7 +60,7 @@ class AFK(commands.Cog):
             try:
                 await self.update_data(afk, message.author)
 
-                if afk[f'{message.author.id}']['AFK'] == 'True':
+                if afk[f'{message.author.id}']['AFK'] == 'True' and afk[f'{user_mention.id}']['guild'] == f'{message.guild.id}':
                     
                     meth = int(time.time()) - int(afk[f'{message.author.id}']['time'])
                     been_afk_for = await self.time_formatter(meth)
