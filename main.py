@@ -1,5 +1,6 @@
 import discord
 import random
+from discord import components
 import praw
 import urllib.parse, urllib.request, re
 import os
@@ -3003,6 +3004,37 @@ async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoj
     await ctx.send(embed=em, components=compo)
   else:
     await ctx.send("wtf?? whattttttt")
+
+
+@client.command()
+async def lurking(ctx):
+  compo = [Button(style=ButtonStyle.gray, emoji="👀", id="lurk")]
+  mainmessage = await ctx.send(
+    "👀",
+    components=compo
+  )
+  lurkers = []
+  while True:
+    try:
+      event = await client.wait_for("button_click", check=lambda i: i.component.id in ["lurk"], timeout=10.0)
+      if event.component.id == "lurk":
+        if f"{event.author.name}" in lurkers:
+          await event.respond(
+            content="Why are you lurking? <:Kekw:832585380183408691>",
+            type=4
+          )
+        else:
+          await event.respond(
+            content=f"`{event.author.name}` is lurking 👀",
+            type=4,
+            ephemeral=False
+          )
+          lurkers.append(f"{event.author.name}")
+    except:
+      await mainmessage.edit(components=[Button(style=ButtonStyle.gray, emoji=client.get_emoji(759934286097809428), id="lurk", label="No one lurking", disabled=True)])
+      break
+
+
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
