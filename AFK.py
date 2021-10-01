@@ -19,6 +19,7 @@ class AFK(commands.Cog):
             afk[f'{user.id}'] = {}
             afk[f'{user.id}']['AFK'] = 'False'
             afk[f'{user.id}']['reason'] = 'None'
+            afk[f'{user.id}']['guild'] = 'None'
     
     async def time_formatter(self, seconds: float):
 
@@ -35,44 +36,50 @@ class AFK(commands.Cog):
     async def on_message(self, message):
         with open('afk.json', 'r') as f:
             afk = json.load(f)
-        
-        for user_mention in message.mentions:
-            if afk[f'{user_mention.id}']['AFK'] == 'True':
-                if message.author.bot: 
-                    return
-                
-                reason = afk[f'{user_mention.id}']['reason']
-                meth = int(time.time()) - int(afk[f'{user_mention.id}']['time'])
-                been_afk_for = await self.time_formatter(meth)
+        try:
+            for user_mention in message.mentions:
+                if afk[f'{user_mention.id}']['AFK'] == 'True' and afk[f'{user_mention.id}']['guild'] == f'{message.guild.id}':
+                    if message.author.bot:
+                        return
+                    
+                    reason = afk[f'{user_mention.id}']['reason']
+                    meth = int(time.time()) - int(afk[f'{user_mention.id}']['time'])
+                    been_afk_for = await self.time_formatter(meth)
 
-                embed=discord.Embed(description=f"{reason}", color=0x2F3136)
-                await message.channel.send(f'{message.author.mention}, **{user_mention.name}** went AFK <a:afk:890119774015717406> `{been_afk_for}` ago:', embed=embed)
-                
-                meeeth = int(afk[f'{user_mention.id}']['mentions']) + 1
-                afk[f'{user_mention.id}']['mentions'] = meeeth
-                with open('afk.json', 'w') as f:
-                    json.dump(afk, f)
+                    embed=discord.Embed(description=f"{reason}", color=0x2F3136)
+                    await message.channel.send(f'{message.author.mention}, **{user_mention.name}** went AFK <a:afk:890119774015717406> `{been_afk_for}` ago:', embed=embed)
+                    
+                    meeeth = int(afk[f'{user_mention.id}']['mentions']) + 1
+                    afk[f'{user_mention.id}']['mentions'] = meeeth
+                    with open('afk.json', 'w') as f:
+                        json.dump(afk, f)
+        except:
+            pass
         
         if not message.author.bot:
-            await self.update_data(afk, message.author)
+            try:
+                await self.update_data(afk, message.author)
 
-            if afk[f'{message.author.id}']['AFK'] == 'True':
-                
-                meth = int(time.time()) - int(afk[f'{message.author.id}']['time'])
-                been_afk_for = await self.time_formatter(meth)
-                mentionz = afk[f'{message.author.id}']['mentions']
+                if afk[f'{message.author.id}']['AFK'] == 'True':
+                    
+                    meth = int(time.time()) - int(afk[f'{message.author.id}']['time'])
+                    been_afk_for = await self.time_formatter(meth)
+                    mentionz = afk[f'{message.author.id}']['mentions']
 
-              
-                emb = discord.Embed(description=f"<a:afk:890119774015717406> You've been AFK for: `{been_afk_for}`. And you were pinged **{mentionz}** time(s)", color=0x2F3136)
-                await message.channel.send(f'{message.author.mention} Welcome Back!', embed=emb)
                 
-                afk[f'{message.author.id}']['AFK'] = 'False'
-                afk[f'{message.author.id}']['reason'] = 'None'
-                afk[f'{message.author.id}']['time'] = '0'
-                afk[f'{message.author.id}']['mentions'] = 0
-                
-                with open('afk.json', 'w') as f:
-                    json.dump(afk, f)
+                    emb = discord.Embed(description=f"<a:afk:890119774015717406> You've been AFK for: `{been_afk_for}`. And you were pinged **{mentionz}** time(s)", color=0x2F3136)
+                    await message.channel.send(f'{message.author.mention} Welcome Back!', embed=emb)
+                    
+                    afk[f'{message.author.id}']['AFK'] = 'False'
+                    afk[f'{message.author.id}']['reason'] = 'None'
+                    afk[f'{message.author.id}']['time'] = '0'
+                    afk[f'{message.author.id}']['mentions'] = 0
+                    afk[f'{message.author.id}']['guild'] = 'None'
+                    
+                    with open('afk.json', 'w') as f:
+                        json.dump(afk, f)
+            except:
+                pass
                 
                 try:
                     await message.author.edit(nick=f'{message.author.display_name[5:]}')
@@ -95,6 +102,7 @@ class AFK(commands.Cog):
         afk[f'{ctx.author.id}']['reason'] = f'{reason}'
         afk[f'{ctx.author.id}']['time'] = int(time.time())
         afk[f'{ctx.author.id}']['mentions'] = 0
+        afk[f'{ctx.author.id}']['guild'] = f'{ctx.guild.id}'
 
         em = discord.Embed(description=f"{reason}", color=0x2F3136)
         await ctx.send(f"{ctx.author.mention} I've set you as AFK <a:afk:890119774015717406>:", embed=em)
