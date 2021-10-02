@@ -1,6 +1,5 @@
 import discord
 import random
-from discord.components import SelectOption
 from discord.ext import commands
 import praw
 import urllib.parse, urllib.request, re
@@ -52,7 +51,6 @@ from discord import embeds, DMChannel
 from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
-from discord.ext import commands
 from PIL import Image, ImageEnhance
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
