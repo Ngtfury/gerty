@@ -187,23 +187,6 @@ def check_user_blacklist():
 
 
 
-@client.event
-async def on_member_join(member):
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  cursor = db.cursor()
-  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {member.guild.id}")
-  result = cursor.fetchone()
-  if result is None:
-    return
-  else:
-    cursor.execute(f"SELECT msg FROM main WHERE guild_id = {member.guild.id}")
-    result1 = cursor.fetchone()
-    count = len(member.guild.members)
-    mention = member.mention
-    user = member.name
-    guild = member.guild
-    channel = client.get_channel(int(result[0]))
-    await channel.send(str(result1[0]).format(count=count, mention=mention, user=user, guild=guild))
 
 
     
@@ -291,15 +274,7 @@ async def deletedata(ctx):
 
 @client.event
 async def on_ready():
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  cursor = db.cursor()
-  cursor.execute('''
-    CREATE TABLE IF NOT EXISTS main(
-    guild_id TEXT,
-    msg TEXT,
-    channel_id TEXT
-    )
-    ''')
+
   print('Gerty is ready')
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
