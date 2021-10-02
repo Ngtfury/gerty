@@ -3023,7 +3023,12 @@ async def select(ctx):
       label="select me?",
       emoji="👀",
       value="lurk2"
-    )
+    ),
+    SelectOption(
+      label="select me too?",
+      emoji="👀",
+      value="lurk3"
+    ),
   ])]
   lurkers = []
   mainmessage = await ctx.send("👀", components=compo)
@@ -3033,7 +3038,7 @@ async def select(ctx):
       event = await client.wait_for("select_option", check=None, timeout=60.0)
       value = event.values[0]
 
-      if value == "lurk2":
+      if value == "lurk2" or "lurk3":
         if f"{event.author.name}" in lurkers:
           await event.respond(
             content="Why are you lurking? <:Kekw:832585380183408691>",
