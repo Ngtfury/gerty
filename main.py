@@ -1,5 +1,6 @@
 import discord
 import random
+from discord import components
 from discord.ext import commands
 import praw
 import urllib.parse, urllib.request, re
@@ -3061,6 +3062,63 @@ async def select(ctx):
       ])]
       await mainmessage.edit(components=compo2)
       
+
+@client.command()
+@commands.is_owner()
+async def wtf(ctx):
+  em1 = discord.Embed(description="1")
+  em2 = discord.Embed(description="2")
+  em3 = discord.Embed(description="3")
+  em4 = discord.Embed(description="4")
+
+  paginationList = [em1, em2, em3, em4]
+  current = 0
+
+  mainmessage = await ctx.send(embed=paginationList[current], components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]])
+
+  while True:
+    try:
+      event = client.wait_for("button_click", check = lambda i: i.component.id in ["back", "front", "delete"], timeout=10.0)
+
+      if event.author != ctx.author:
+        await event.respond(
+          type=4,
+          content="Sorry, this buttons cannot be controlled by you"
+        )
+      else:
+        if event.component.id == "back":
+          current -= 1
+        elif event.component.id == "front":
+          current += 1
+        elif event.component.id == "delete":
+          try:
+            await mainmessage.delete()
+          except:
+            pass
+          break
+
+        if current == len(paginationList):
+          current = 0
+        elif current < 0:
+          current = len(paginationList) - 1
+      
+        await event.respond(
+            type=7,
+            embed=paginationList[current],
+            components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]]
+        )
+    except asyncio.TimeoutError:
+      try:
+        await mainmessage.edit(
+          components=[[Button(style=ButtonStyle.grey, id = "back", label='<', disabled=True), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>', disabled=True), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114), disabled=True)]]
+        )
+        break
+      except:
+        break
+
+
+
+
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
