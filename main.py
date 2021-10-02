@@ -3077,7 +3077,7 @@ async def wtf(ctx):
 
   while True:
     try:
-      event = client.wait_for("button_click", check = lambda i: i.component.id in ["back", "front", "delete"], timeout=10.0)
+      event = await client.wait_for("button_click", check = lambda i: i.component.id in ["back", "front", "delete"], timeout=10.0)
 
       if event.author != ctx.author:
         await event.respond(
