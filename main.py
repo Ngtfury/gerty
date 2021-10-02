@@ -3035,7 +3035,7 @@ async def select(ctx):
 
   while True:
     try:
-      event = await client.wait_for("select_option", check=None, timeout=60.0)
+      event = await client.wait_for("select_option", check=None, timeout=10.0)
       value = event.values[0]
 
       if value == "lurk2" or "lurk3":
