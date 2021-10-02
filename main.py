@@ -1,6 +1,5 @@
 import discord
 import random
-from discord import components
 from discord.ext import commands
 import praw
 import urllib.parse, urllib.request, re
