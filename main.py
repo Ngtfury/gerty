@@ -189,7 +189,7 @@ def check_user_blacklist():
 
 @client.event
 async def on_member_join(member):
-  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {member.guild.id}")
   result = cursor.fetchone()
@@ -211,7 +211,7 @@ async def on_member_join(member):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def welcome(ctx):
-  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
   result = cursor.fetchone()
@@ -228,7 +228,7 @@ async def welcome(ctx):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def channelset(ctx, channel: discord.TextChannel):
-  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   cursor = db.cursor()
   cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
   result = cursor.fetchone()
@@ -251,7 +251,7 @@ async def channelset(ctx, channel: discord.TextChannel):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def textset(ctx, *, text):
-  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   if len(text) >= 100000:
     em = discord.Embed(description=f"<:error:867269410644557834> Text cannot be more than 100000 charecters long", color=0x2F3136)
     await ctx.send(embed=em)
@@ -278,7 +278,7 @@ async def textset(ctx, *, text):
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
 async def deletedata(ctx):
-  db = mysql.connector.connect(user ='sql6440008', password= 'smiLjmifLL', host = 'sql6.freesqldatabase.com', port='3306', database='sql6440008')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   cursor = db.cursor(prepared=True)
   cursor.execute(f"DELETE FROM main WHERE guild_id ='{ctx.guild.id}'")
   db.commit()
@@ -291,7 +291,15 @@ async def deletedata(ctx):
 
 @client.event
 async def on_ready():
-  
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
+  cursor = db.cursor()
+  cursor.execute('''
+    CREATE TABLE IF NOT EXISTS main(
+    guild_id TEXT,
+    msg TEXT,
+    channel_id TEXT
+    )
+    ''')
   print('Gerty is ready')
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
