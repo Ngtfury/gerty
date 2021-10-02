@@ -1,5 +1,6 @@
 import discord
 import random
+from discord.components import SelectOption
 from discord.ext import commands
 import praw
 import urllib.parse, urllib.request, re
@@ -2989,7 +2990,7 @@ async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoj
     await ctx.send("wtf?? whattttttt")
 
 
-@client.command()
+@client.group(invoke_without_command=True)
 async def lurking(ctx):
   compo = [Button(style=ButtonStyle.gray, emoji="👀", id="lurk")]
   mainmessage = await ctx.send(
@@ -3017,7 +3018,46 @@ async def lurking(ctx):
       await mainmessage.edit(components=[Button(style=ButtonStyle.gray, emoji=client.get_emoji(759934286097809428), id="lurk", label="No one lurking", disabled=True)])
       break
 
+@lurking.command()
+async def select(ctx):
+  compo = [Select(placeholder="hello!", options=[
+    SelectOption(
+      label="select me?",
+      emoji="👀",
+      value="lurk2"
+    )
+  ])]
+  lurkers = []
+  mainmessage = await ctx.send("👀", components=compo)
 
+  while True:
+    try:
+      event = await client.wait_for("select_option", check=None, timeout=60.0)
+      value = event.values[0]
+
+      if value == "lurk2":
+        if f"{event.author.name}" in lurkers:
+          await event.respond(
+            content="Why are you lurking? <:Kekw:832585380183408691>",
+            type=4
+          )
+        else:
+          await event.respond(
+            content=f"`{event.author.name}` is lurking 👀",
+            type=4,
+            ephemeral=False
+          )
+          lurkers.append(f"{event.author.name}")
+    except asyncio.TimeoutError:
+      compo2 = [Select(placeholder="No one lurking :(", disabled=True, options=[
+        SelectOption(
+          label="select me?",
+          emoji="👀",
+          value="lurk2"
+        )
+      ])]
+      await mainmessage.edit(components=compo2)
+      
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
