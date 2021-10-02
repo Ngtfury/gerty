@@ -60,8 +60,8 @@ from discordTogether import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
-import mysql.connector
 import async_cse
+import psycopg2
 
 cogs = [covid, members, AFK, moderation, dyayoutube]
 
@@ -484,7 +484,7 @@ async def ping(ctx):
   t_2 = time.perf_counter()
   time_delta = round((t_2-t_1)*1000)
   dbt_1 = time.perf_counter()
-  db = mysql.connector.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', database='dcph9t30tehh6l')
+  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
   dbt_2 = time.perf_counter()
   db.close()
   dbtime_delta = round((dbt_2-dbt_1)*1000)
