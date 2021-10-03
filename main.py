@@ -3036,7 +3036,10 @@ async def wtf(ctx):
 async def tag(ctx, *, search):
   d = await client.db.fetchval("SELECT (res, uses) FROM tag_data WHERE tag = $1", f"{search}")
   if d is not None:
-    await ctx.send(f"{d[0]}")
+    if ctx.message.reference:
+      await ctx.message.reference.resolved.reply(f"{d[0]}")
+    else:
+      await ctx.send(f"{d[0]}")
     updateuses = int(d[1]) + 1
     await client.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
   else:
