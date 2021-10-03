@@ -306,6 +306,11 @@ async def on_message_edit(before, after):
     if before.content != after.content:
         await client.process_commands(after)
 
+
+@client.event
+async def on_message(message):
+  await bot.db.execute("")
+
 #on reaction add
 @client.event
 async def on_raw_reaction_add(payload):
@@ -381,9 +386,8 @@ async def ping(ctx):
   t_2 = time.perf_counter()
   time_delta = round((t_2-t_1)*1000)
   dbt_1 = time.perf_counter()
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
+
   dbt_2 = time.perf_counter()
-  db.close()
   dbtime_delta = round((dbt_2-dbt_1)*1000)
   em = discord.Embed(color=0x2F3136)
   em.add_field(name="<a:typing:597589448607399949> | Typing", value=f"```{time_delta} ms```", inline=False)
@@ -3031,7 +3035,33 @@ async def wtf(ctx):
         break
 
 
+@client.group(invoke_without_command=True)
+async def tag(ctx, *, search):
+  data = await client.db.fetchrow("SELECT (res,uses,guild_id) FROM tag_data WHERE tag = $1", f"{search}")
+  if data is not None and f"{data['guild_id']}" == f"{ctx.guild.id}":
+    await ctx.send(f"{data['res']}")
+    updateuses = int(data['uses']) + 1
+    await bot.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
+  else:
+    await ctx.send("Tag not found.")
 
+
+@tag.command()
+async def create(ctx, tag, *, res):
+  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, guild_id, uses) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, ctx.guild.id, 0)
+  await ctx.send(f"Tag {tag} created successfully.")
+
+
+@tag.command()
+async def info(ctx, *, tag):
+  data = await client.db.fetchrow("SELECT (owner_id,uses,guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  if data is not None and f"{data['guild_id']}" == f"{ctx.guild.id}":
+    em = discord.Embed(color=0x2F3136)
+    em.add_field(name="Owner", value=f"<@!{data['owner_id']}>")
+    em.add_field(name="Uses", value=f"{data['uses']}")
+    await ctx.send(embed=em)
+  else:
+    await ctx.send("Tag not found.")
 
 
 
