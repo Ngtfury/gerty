@@ -307,9 +307,6 @@ async def on_message_edit(before, after):
         await client.process_commands(after)
 
 
-@client.event
-async def on_message(message):
-  await bot.db.execute("")
 
 #on reaction add
 @client.event
