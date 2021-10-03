@@ -3051,7 +3051,7 @@ async def create(ctx, tag, *, res):
 
 @tag.command()
 async def info(ctx, *, tag):
-  d = await bot.db.fetchval("SELECT (owner_id, uses, created_at) FROM tag_data WHERE tag = $1", f"{tag}")
+  d = await client.db.fetchval("SELECT (owner_id, uses, created_at) FROM tag_data WHERE tag = $1", f"{tag}")
   if d is not None:
     em = discord.Embed(color=0x2F3136)
     em.add_field(name="Owner", value=f"<@!{d[0]}>")
