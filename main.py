@@ -3067,7 +3067,7 @@ async def info(ctx, *, tag):
 @tag.command(aliases=['delete'])
 async def remove(ctx, *, tag):
   try:
-    owner_id = await bot.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
   except:
     return await ctx.send('Tag does not exist.')
   if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
@@ -3079,7 +3079,7 @@ async def remove(ctx, *, tag):
 @tag.command()
 async def edit(ctx, tag, *, new):
   try:
-    owner_id = await bot.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
   except:
     return await ctx.send('Tag does not exist.')
   if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
