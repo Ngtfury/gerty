@@ -3053,10 +3053,10 @@ async def create(ctx, tag, *, res):
 async def info(ctx, *, tag):
   d = await client.db.fetchval("SELECT (owner_id, uses, created_at) FROM tag_data WHERE tag = $1", f"{tag}")
   if d is not None:
-    em = discord.Embed(color=0x2F3136)
-    em.add_field(name="Owner", value=f"<@!{d[0]}>")
-    em.add_field(name="Uses", value=f"{d[1]}")
-    em.add_field(name="Created at", value=f"<t:{d[2]}:D (<t:{d[2]}:R>)")
+    em = discord.Embed(title=f"Info {tag}", color=0x2F3136)
+    em.add_field(name="Owner", value=f"<@!{d[0]}>", inline=False)
+    em.add_field(name="Uses", value=f"{d[1]}", inline=False)
+    em.add_field(name="Created at", value=f"<t:{d[2]}:D> (<t:{d[2]}:R>)", inline=False)
     await ctx.send(embed=em)
   else:
     await ctx.send("Tag not found.")
