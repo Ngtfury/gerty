@@ -3112,4 +3112,18 @@ async def transfer(ctx, tag, member: discord.Member):
     await ctx.send(f'The tag with the name of "{tag}" is not owned by you.')
 
 
+@client.command()
+async def ocr(ctx, *, url):
+  async with aiohttp.ClientSession() as sess:
+      async with sess.get('https://api.openrobot.xyz/api/ocr', headers={'Authorization': 'X7gThnuWOuN9qWSd22VUm_NKmm1XQYMVHzxnIeJgP5XUCcayJ9XClwQdJUkGVcez0Sg'}, params={'url': f'{url}'}) as resp:
+        js = await resp.json() # {"text": "...", "languages":[...], "angles": [...], "styles": [...]}
+
+        em = discord.Embed(description=f"{js['text']}", color=0x2F3136)
+        em.add_field(name="Angles", value=f"{js['angles']}")
+        em.add_field(name="languages", value=f"{js['languuages']}")
+        em.add_field(name="Styles", value=f"{js['styles']}")
+        await ctx.send(embed=em)
+
+
+
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
