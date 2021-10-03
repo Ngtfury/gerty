@@ -3052,7 +3052,7 @@ async def create(ctx, tag, *, res):
   if len(res) > 2000:
     await ctx.send('Tag content is a maximum of 2000 characters.')
   elif results is None:
-    await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()))
+    await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at, guild_id) VALUES ($1, $2, $3, $4, $5, $6)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()), ctx.guild.id)
     await ctx.send(f"Tag {tag} created successfully.")
   else:
     await ctx.send("This tag already exists.")
@@ -3060,8 +3060,8 @@ async def create(ctx, tag, *, res):
 
 @tag.command()
 async def info(ctx, *, tag):
-  d = await client.db.fetchval("SELECT (owner_id, uses, created_at) FROM tag_data WHERE tag = $1", f"{tag}")
-  if d is not None:
+  d = await client.db.fetchval("SELECT (owner_id, uses, created_at, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  if d is not None and d[3] == ctx.guild.id:
     em = discord.Embed(title=f"Info {tag}", color=0x2F3136)
     em.add_field(name="Owner", value=f"<@!{d[0]}>", inline=False)
     em.add_field(name="Uses", value=f"{d[1]}", inline=False)
@@ -3105,7 +3105,6 @@ async def transfer(ctx, tag, member: discord.Member):
     await ctx.send(f"Successfully transferred tag ownership to {member.name}")
   else:
     await ctx.send(f'The tag with the name of "{tag}" is not owned by you.')
-
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
