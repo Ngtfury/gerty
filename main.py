@@ -3039,7 +3039,7 @@ async def tag(ctx, *, search):
     if ctx.message.reference:
       await ctx.message.reference.resolved.reply(f"{d[0]}")
     else:
-      await ctx.send(f"{d[0]}")
+      await ctx.reply(f"{d[0]}", mention_author=False)
     updateuses = int(d[1]) + 1
     await client.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
   else:
