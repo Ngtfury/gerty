@@ -383,7 +383,7 @@ async def ping(ctx):
   t_2 = time.perf_counter()
   time_delta = round((t_2-t_1)*1000)
   dbt_1 = time.perf_counter()
-
+  await bot.db.execute("SELECT * FROM tag_data")
   dbt_2 = time.perf_counter()
   dbtime_delta = round((dbt_2-dbt_1)*1000)
   em = discord.Embed(color=0x2F3136)
