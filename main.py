@@ -3034,8 +3034,8 @@ async def wtf(ctx):
 
 @client.group(invoke_without_command=True)
 async def tag(ctx, *, search):
-  d = await client.db.fetchval("SELECT (res, uses) FROM tag_data WHERE tag = $1", f"{search}")
-  if d is not None:
+  d = await client.db.fetchval("SELECT (res, uses, guild_id) FROM tag_data WHERE tag = $1", f"{search}")
+  if d is not None and d[3] == ctx.guild.id:
     if ctx.message.reference:
       await ctx.message.reference.resolved.reply(f"{d[0]}")
     else:
@@ -3048,10 +3048,10 @@ async def tag(ctx, *, search):
 
 @tag.command()
 async def create(ctx, tag, *, res):
-  results = await client.db.fetchval("SELECT * FROM tag_data WHERE tag = $1", f"{tag}")
+  results = await client.db.fetchval("SELECT guild_id FROM tag_data WHERE tag = $1", f"{tag}")
   if len(res) > 2000:
     await ctx.send('Tag content is a maximum of 2000 characters.')
-  elif results is None:
+  elif results != ctx.guild.id:
     await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at, guild_id) VALUES ($1, $2, $3, $4, $5, $6)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()), ctx.guild.id)
     await ctx.send(f"Tag {tag} created successfully.")
   else:
@@ -3073,14 +3073,18 @@ async def info(ctx, *, tag):
 @tag.command(aliases=['delete'])
 async def remove(ctx, *, tag):
   try:
-    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    data = await client.db.fetchval("SELECT (owner_id, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    owner_id = data[0]
   except:
     return await ctx.send('Tag does not exist.')
-  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
-    await client.db.execute("DELETE FROM tag_data WHERE tag = $1", f"{tag}")
-    await ctx.send('Tag and corresponding aliases successfully deleted.')
+  if data[1] == ctx.guild.id:
+    if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
+      await client.db.execute("DELETE FROM tag_data WHERE tag = $1", f"{tag}")
+      await ctx.send('Tag and corresponding aliases successfully deleted.')
+    else:
+      await ctx.send('Could not delete tag, You must be the tag owner to do that.')
   else:
-    await ctx.send('Could not delete tag, You must be the tag owner to do that.')
+    await ctx.send("Tag does not exist.")
 
 @tag.command()
 async def edit(ctx, tag, *, new):
