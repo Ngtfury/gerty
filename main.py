@@ -60,7 +60,7 @@ from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
 import async_cse
-import psycopg2
+import asyncpg
 
 cogs = [covid, members, AFK, moderation, dyayoutube]
 
@@ -71,6 +71,8 @@ slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
 lastrestart = datetime.datetime.now().timestamp()
+
+client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
 
 
@@ -181,93 +183,6 @@ def check_user_blacklist():
     return await get_mute(ctx.author) == 0
   return commands.check(user_blacklist)
 
-
-
-
-
-
-
-
-    
-@client.group(invoke_without_command=True)
-@commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
-async def welcome(ctx):
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  cursor = db.cursor()
-  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
-  result = cursor.fetchone()
-  if result is None:
-    em = discord.Embed(description="<:error:867269410644557834> **This server do not have any welcome channels**\n\n<:dot_2:862321994983669771> To start out, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
-    await ctx.send(embed=em)
-  else:
-    d = client.get_channel(int(result[0]))
-    em = discord.Embed(description=f"<:success:893501515107557466> **{d.mention} is the welcome channel in this server**\n\n<:dot_2:862321994983669771> To update channel, use command - `welcome channelset [channel]`\n<:dot_2:862321994983669771> To edit welcome message, use command `welcome textset [new text]`\n<:dot_2:862321994983669771> To delete all welcome data, use command `welcome deletedata`", color=0x2F3136)
-    await ctx.send(embed=em)
-
-
-@welcome.command(aliases=["set-channel", "setchannel"])
-@commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
-async def channelset(ctx, channel: discord.TextChannel):
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  cursor = db.cursor()
-  cursor.execute(f"SELECT channel_id FROM main WHERE guild_id = {ctx.guild.id}")
-  result = cursor.fetchone()
-  if result is None:
-    sql = ("INSERT INTO main(guild_id, msg, channel_id) VALUES(%s,%s,%s)")
-    val = (f"{ctx.guild.id}", "{mention} **Welcome!** to {guild}. You are `{count}th` member of this server!" ,f"{channel.id}")
-    cursor.execute(sql, val)
-    em = discord.Embed(description=f"<:success:893501515107557466> {channel.mention} has been set as welcome channel", color=0x2F3136)
-    await ctx.send(embed=em)
-  elif result is not None:
-    cursor2 = db.cursor()
-    sql = (f"UPDATE main SET channel_id = {channel.id} WHERE guild_id = {ctx.guild.id}")
-    cursor2.execute(sql)
-    em = discord.Embed(description=f"<:success:893501515107557466> Welcome channel has been updated to {channel.mention}", color=0x2F3136)
-    await ctx.send(embed=em)
-  db.commit()
-
-
-@welcome.command(aliases=["settext", "set-text"])
-@commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
-async def textset(ctx, *, text):
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  if len(text) >= 100000:
-    em = discord.Embed(description=f"<:error:867269410644557834> Text cannot be more than 100000 charecters long", color=0x2F3136)
-    await ctx.send(embed=em)
-  else:
-    cursor = db.cursor(prepared=True)
-    cursor.execute(f"SELECT msg FROM main WHERE guild_id = {ctx.guild.id}")
-    result = cursor.fetchone()
-    if result is None:
-      sql = ("INSERT INTO main(guild_id, msg) VALUES(?,?)")
-      val = (ctx.guild.id, text)
-      cursor.execute(sql, val)
-      em = discord.Embed(description=f"<:success:893501515107557466> Welcome text has been updated", color=0x2F3136)
-      await ctx.send(embed=em)
-    elif result is not None:
-      sql = (f"UPDATE main SET msg = ? WHERE guild_id = ?")
-      val=(text, ctx.guild.id)
-      cursor.execute(sql, val)
-      em = discord.Embed(description=f"<:success:893501515107557466> Welcome text has been updated", color=0x2F3136)
-      await ctx.send(embed=em)
-    db.commit()
-
-
-@welcome.command()
-@commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
-async def deletedata(ctx):
-  db = psycopg2.connect(user ='fejnxxnhwryzfy', password= '5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae', host = 'ec2-54-162-119-125.compute-1.amazonaws.com', port='5432', dbname='dcph9t30tehh6l')
-  cursor = db.cursor(prepared=True)
-  cursor.execute(f"DELETE FROM main WHERE guild_id ='{ctx.guild.id}'")
-  db.commit()
-  em = discord.Embed(description=f"<:success:893501515107557466> Welcome data has been deleted for **{ctx.guild.name}**", color=0x2F3136)
-  await ctx.send(embed=em)
-    
-    
 
 
 
