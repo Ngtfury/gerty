@@ -3034,7 +3034,7 @@ async def wtf(ctx):
 
 @client.group(invoke_without_command=True)
 async def tag(ctx, *, search):
-  data = await client.db.fetchrow("SELECT (res,uses,guild_id) FROM tag_data WHERE tag = $1", f"{search}")
+  data = await client.db.fetchrow("SELECT (res,uses) FROM tag_data WHERE tag = $1", f"{search}")
   if data is not None:
     await ctx.send(f"{data['res']}")
     updateuses = int(data['uses']) + 1
