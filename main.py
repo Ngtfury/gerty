@@ -3094,5 +3094,18 @@ async def edit(ctx, tag, *, new):
   else:
     await ctx.send('Could not edit that tag. Are you sure you own it?')
 
+@tag.command()
+async def transfer(ctx, tag, member: discord.Member):
+  try:
+    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  except:
+    return await ctx.send('Tag does not exist.')
+  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
+    await client.db.execute("UPDATE tag_data SET owner_id = $1 WHERE tag = $2", member.id, f"{tag}")
+    await ctx.send(f"Successfully transferred tag ownership to {member.name}")
+  else:
+    await ctx.send(f'The tag with the name of "{tag}" is not owned by you.')
+
+
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
