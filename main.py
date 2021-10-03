@@ -3048,11 +3048,14 @@ async def tag(ctx, *, search):
 
 @tag.command()
 async def create(ctx, tag, *, res):
+  results = await client.db.fetchval("SELECT * FROM tag_data WHERE tag = $1", f"{tag}")
   if len(res) > 2000:
     await ctx.send('Tag content is a maximum of 2000 characters.')
-  else:
+  elif results is None:
     await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()))
     await ctx.send(f"Tag {tag} created successfully.")
+  else:
+    await ctx.send("This tag already exists.")
 
 
 @tag.command()
