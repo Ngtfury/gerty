@@ -3035,7 +3035,7 @@ async def wtf(ctx):
 @client.group(invoke_without_command=True)
 async def tag(ctx, *, search):
   data = await client.db.fetchrow("SELECT (res,uses,guild_id) FROM tag_data WHERE tag = $1", f"{search}")
-  if data is not None and f"{data['guild_id']}" == f"{ctx.guild.id}":
+  if data is not None:
     await ctx.send(f"{data['res']}")
     updateuses = int(data['uses']) + 1
     await bot.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
@@ -3045,14 +3045,14 @@ async def tag(ctx, *, search):
 
 @tag.command()
 async def create(ctx, tag, *, res):
-  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, guild_id, uses) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, ctx.guild.id, 0)
+  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses) VALUES ($1, $2, $3, $4)", f"{tag}", f"{res}", ctx.author.id, 0)
   await ctx.send(f"Tag {tag} created successfully.")
 
 
 @tag.command()
 async def info(ctx, *, tag):
   data = await client.db.fetchrow("SELECT (owner_id,uses,guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
-  if data is not None and f"{data['guild_id']}" == f"{ctx.guild.id}":
+  if data is not None:
     em = discord.Embed(color=0x2F3136)
     em.add_field(name="Owner", value=f"<@!{data['owner_id']}>")
     em.add_field(name="Uses", value=f"{data['uses']}")
