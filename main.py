@@ -3034,11 +3034,11 @@ async def wtf(ctx):
 
 @client.group(invoke_without_command=True)
 async def tag(ctx, *, search):
-  data = await client.db.fetchrow("SELECT (res,uses) FROM tag_data WHERE tag = $1", f"{search}")
-  if data is not None:
-    await ctx.send(f"{data['res']}")
-    updateuses = int(data['uses']) + 1
-    await bot.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
+  d = await client.db.fetchval("SELECT (res, uses) FROM tag_data WHERE tag = $1", f"{search}")
+  if d is not None:
+    await ctx.send(f"{d[0]}")
+    updateuses = int(d[1]) + 1
+    await client.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
   else:
     await ctx.send("Tag not found.")
 
