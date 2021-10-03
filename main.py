@@ -3045,17 +3045,18 @@ async def tag(ctx, *, search):
 
 @tag.command()
 async def create(ctx, tag, *, res):
-  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses) VALUES ($1, $2, $3, $4)", f"{tag}", f"{res}", ctx.author.id, 0)
+  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()))
   await ctx.send(f"Tag {tag} created successfully.")
 
 
 @tag.command()
 async def info(ctx, *, tag):
-  data = await client.db.fetchrow("SELECT (owner_id, uses) FROM tag_data WHERE tag = $1", f"{tag}")
-  if data is not None:
+  d = await bot.db.fetchval("SELECT (owner_id, uses, created_at) FROM tag_data WHERE tag = $1", f"{tag}")
+  if d is not None:
     em = discord.Embed(color=0x2F3136)
-    em.add_field(name="Owner", value=f"<@!{data[0]}>")
-    em.add_field(name="Uses", value=f"{data[1]}")
+    em.add_field(name="Owner", value=f"<@!{d[0]}>")
+    em.add_field(name="Uses", value=f"{d[1]}")
+    em.add_field(name="Created at", value=f"<t:{d[2]}:D (<t:{d[2]}:R>)")
     await ctx.send(embed=em)
   else:
     await ctx.send("Tag not found.")
