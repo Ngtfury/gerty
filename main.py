@@ -3051,11 +3051,11 @@ async def create(ctx, tag, *, res):
 
 @tag.command()
 async def info(ctx, *, tag):
-  data = await client.db.fetchrow("SELECT (owner_id,uses,guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  data = await client.db.fetchrow("SELECT (owner_id, uses) FROM tag_data WHERE tag = $1", f"{tag}")
   if data is not None:
     em = discord.Embed(color=0x2F3136)
-    em.add_field(name="Owner", value=f"<@!{data['owner_id']}>")
-    em.add_field(name="Uses", value=f"{data['uses']}")
+    em.add_field(name="Owner", value=f"<@!{data[0]}>")
+    em.add_field(name="Uses", value=f"{data[1]}")
     await ctx.send(embed=em)
   else:
     await ctx.send("Tag not found.")
