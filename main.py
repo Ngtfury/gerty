@@ -3035,7 +3035,7 @@ async def wtf(ctx):
 @client.group(invoke_without_command=True)
 async def tag(ctx, *, search):
   d = await client.db.fetchval("SELECT (res, uses, guild_id) FROM tag_data WHERE tag = $1", f"{search}")
-  if d is not None and d[3] == ctx.guild.id:
+  if d is not None and d[2] == ctx.guild.id:
     if ctx.message.reference:
       await ctx.message.reference.resolved.reply(f"{d[0]}")
     else:
@@ -3089,10 +3089,11 @@ async def remove(ctx, *, tag):
 @tag.command()
 async def edit(ctx, tag, *, new):
   try:
-    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    d = await client.db.fetchval("SELECT (owner_id, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
+    owner_id = d[0]
   except:
     return await ctx.send('Tag does not exist.')
-  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
+  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id and d[1] == ctx.guild.id:
     await client.db.execute("UPDATE tag_data SET res = $1 WHERE tag = $2", f"{new}", f"{tag}")
     await ctx.send('Successfully edited tag.')
   else:
