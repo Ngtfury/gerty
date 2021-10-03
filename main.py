@@ -3045,8 +3045,11 @@ async def tag(ctx, *, search):
 
 @tag.command()
 async def create(ctx, tag, *, res):
-  await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()))
-  await ctx.send(f"Tag {tag} created successfully.")
+  if len(res) > 2000:
+    await ctx.send('Tag content is a maximum of 2000 characters.')
+  else:
+    await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at) VALUES ($1, $2, $3, $4, $5)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()))
+    await ctx.send(f"Tag {tag} created successfully.")
 
 
 @tag.command()
@@ -3061,6 +3064,29 @@ async def info(ctx, *, tag):
   else:
     await ctx.send("Tag not found.")
 
+@tag.command(aliases=['delete'])
+async def remove(ctx, *, tag):
+  try:
+    owner_id = await bot.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  except:
+    return await ctx.send('Tag does not exist.')
+  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
+    await client.db.execute("DELETE FROM tag_data WHERE tag = $1", f"{tag}")
+    await ctx.send('Tag and corresponding aliases successfully deleted.')
+  else:
+    await ctx.send('Could not delete tag, You must be the tag owner to do that.')
+
+@tag.command()
+async def edit(ctx, tag, *, new):
+  try:
+    owner_id = await bot.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
+  except:
+    return await ctx.send('Tag does not exist.')
+  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
+    await client.db.execute("UPDATE tag_data SET res = $1 WHERE tag = $2", f"{new}", f"{tag}")
+    await ctx.send('Successfully edited tag.')
+  else:
+    await ctx.send('Could not edit that tag. Are you sure you own it?')
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
