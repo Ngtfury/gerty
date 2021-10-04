@@ -3062,7 +3062,7 @@ async def list(ctx):
   todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
   if todo_data:
     for todo in todo_data:
-      todo_list.append(f"<:arrow:885193320068968508> <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
+      todo_list.append(f"<:arrow:885193320068968508> {todo[4]}. <t:{todo[3]}:t>| [{todo[0]}]({todo[2]})")
 
     em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
     em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
@@ -3084,31 +3084,31 @@ async def list(ctx):
 
 
 @todo.command()
-async def edit(ctx, todo, *, new):
+async def edit(ctx, todo_key: int, *, new):
   try:
-    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE todo = $1", f"{todo}")
+    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE key = $1", f"{todo_key}")
   except:
-    await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
+    await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
   else:
     if g[1] == ctx.author.id:
-      await client.db.execute("UPDATE todo_data SET todo = $1 WHERE todo = $2", f"{new}", f"{todo}")
+      await client.db.execute("UPDATE todo_data SET todo = $1 WHERE key = $2", f"{new}", f"{todo_key}")
       await ctx.send(f"Succesfully edited your to-do list.")
     else:
-      await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
+      await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
 
 
 @todo.command(aliases=["done"])
-async def remove(ctx, *, todo):
+async def remove(ctx, *, todo_key:int):
   try:
-    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE todo = $1", f"{todo}")
+    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE key = $1", f"{todo_key}")
   except:
-    await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
+    await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
   else:
     if g[1] == ctx.author.id:
-      await client.db.execute("DELETE FROM todo_data WHERE todo = $1", f"{todo}")
-      await ctx.send(f'Task "{todo}" removed from your to-do list.')
+      await client.db.execute("DELETE FROM todo_data WHERE key = $1", f"{todo_key}")
+      await ctx.send(f'Task "{todo_key}" removed from your to-do list.')
     else:
-      await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
+      await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
