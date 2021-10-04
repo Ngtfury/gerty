@@ -3060,7 +3060,7 @@ async def add(ctx, *, todo):
 async def list(ctx):
   todo_list = []
   todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
-  if not todo_data is None:
+  if todo_data:
     for todo in todo_data:
       todo_list.append(f"<:arrow:885193320068968508> <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
 
