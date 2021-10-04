@@ -3054,18 +3054,21 @@ async def todo(ctx, *, query):
 async def add(ctx, *, todo):
   created = int(datetime.datetime.now().timestamp())
   await client.db.execute("INSERT INTO todo_data (todo, author_id, jump_url, created_at) VALUES ($1,$2,$3,$4)", f"{todo}", ctx.author.id, f"{ctx.message.jump_url}", created)
-  await ctx.send(f"Alright I have added task!\n\n> {todo}")
+  await ctx.send(f"Alright I have added the task to your to-do list!\n\n> {todo}")
 
 @todo.command()
 async def list(ctx):
   todo_list = []
   todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
-  for todo in todo_data:
-    todo_list.append(f"<:arrow:885193320068968508> <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
+  if not todo_data is None:
+    for todo in todo_data:
+      todo_list.append(f"<:arrow:885193320068968508> <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
 
-  em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
-  em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-  await ctx.send(embed=em)
+    em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
+    em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    await ctx.send(embed=em)
+  else:
+    await ctx.send("You don't have any upcoming tasks")
 
 @todo.command(aliases=["done"])
 async def remove(ctx, *, todo):
@@ -3073,10 +3076,10 @@ async def remove(ctx, *, todo):
     d = await client.db.fetchrow("SELECT (jump_url) FROM todo_data WHERE todo = $1", f"{todo}")
     url = d[0]
   except:
-    await ctx.send(f'Todo named "{todo}" not found.')
+    await ctx.send(f'To-do named "{todo}" not found.')
   else:
     await client.db.execute("DELETE FROM todo_data WHERE todo = $1", f"{todo}")
-    await ctx.send(f'Todo "{todo}" removed\n\n{url}')
+    await ctx.send(f'To-do "{todo}" removed\n\n{url}')
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
