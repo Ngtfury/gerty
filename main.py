@@ -3032,91 +3032,12 @@ async def wtf(ctx):
         break
 
 
-@client.group(invoke_without_command=True)
-async def tag(ctx, *, search):
-  d = await client.db.fetchval("SELECT (res, uses, guild_id) FROM tag_data WHERE tag = $1", f"{search}")
-  if d is not None and d[2] == ctx.guild.id:
-    if ctx.message.reference:
-      await ctx.message.reference.resolved.reply(f"{d[0]}")
-    else:
-      await ctx.reply(f"{d[0]}", mention_author=False)
-    updateuses = int(d[1]) + 1
-    await client.db.execute("UPDATE tag_data SET uses = $1 WHERE tag = $2", updateuses, f"{search}")
-  else:
-    await ctx.send("Tag not found.")
-
-
-@tag.command()
-async def create(ctx, tag, *, res):
-  results = await client.db.fetchval("SELECT guild_id FROM tag_data WHERE tag = $1", f"{tag}")
-  if len(res) > 2000:
-    await ctx.send('Tag content is a maximum of 2000 characters.')
-  elif results != ctx.guild.id:
-    await client.db.execute("INSERT INTO tag_data (tag, res, owner_id, uses, created_at, guild_id) VALUES ($1, $2, $3, $4, $5, $6)", f"{tag}", f"{res}", ctx.author.id, 0, int(datetime.datetime.now().timestamp()), ctx.guild.id)
-    await ctx.send(f"Tag {tag} created successfully.")
-  else:
-    await ctx.send("This tag already exists.")
-
-
-@tag.command()
-async def info(ctx, *, tag):
-  d = await client.db.fetchval("SELECT (owner_id, uses, created_at, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
-  if d is not None and d[3] == ctx.guild.id:
-    em = discord.Embed(title=f"Info {tag}", color=0x2F3136)
-    em.add_field(name="Owner", value=f"<@!{d[0]}>", inline=False)
-    em.add_field(name="Uses", value=f"{d[1]}", inline=False)
-    em.add_field(name="Created at", value=f"<t:{d[2]}:D> (<t:{d[2]}:R>)", inline=False)
-    await ctx.send(embed=em)
-  else:
-    await ctx.send("Tag not found.")
-
-@tag.command(aliases=['delete'])
-async def remove(ctx, *, tag):
-  try:
-    data = await client.db.fetchval("SELECT (owner_id, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
-    owner_id = data[0]
-  except:
-    return await ctx.send('Tag does not exist.')
-  if data[1] == ctx.guild.id:
-    if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
-      await client.db.execute("DELETE FROM tag_data WHERE tag = $1", f"{tag}")
-      await ctx.send('Tag and corresponding aliases successfully deleted.')
-    else:
-      await ctx.send('Could not delete tag, You must be the tag owner to do that.')
-  else:
-    await ctx.send("Tag does not exist.")
-
-@tag.command()
-async def edit(ctx, tag, *, new):
-  try:
-    d = await client.db.fetchval("SELECT (owner_id, guild_id) FROM tag_data WHERE tag = $1", f"{tag}")
-    owner_id = d[0]
-  except:
-    return await ctx.send('Tag does not exist.')
-  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id and d[1] == ctx.guild.id:
-    await client.db.execute("UPDATE tag_data SET res = $1 WHERE tag = $2", f"{new}", f"{tag}")
-    await ctx.send('Successfully edited tag.')
-  else:
-    await ctx.send('Could not edit that tag. Are you sure you own it?')
-
-@tag.command()
-async def transfer(ctx, tag, member: discord.Member):
-  try:
-    owner_id = await client.db.fetchval("SELECT (owner_id) FROM tag_data WHERE tag = $1", f"{tag}")
-  except:
-    return await ctx.send('Tag does not exist.')
-  if ctx.author.id == 770646750804312105 or owner_id == ctx.author.id:
-    await client.db.execute("UPDATE tag_data SET owner_id = $1 WHERE tag = $2", member.id, f"{tag}")
-    await ctx.send(f"Successfully transferred tag ownership to {member.name}")
-  else:
-    await ctx.send(f'The tag with the name of "{tag}" is not owned by you.')
-
 
 @client.command()
 async def ocr(ctx, *, url):
   async with aiohttp.ClientSession() as sess:
       async with sess.get('https://api.openrobot.xyz/api/ocr', headers={'Authorization': 'X7gThnuWOuN9qWSd22VUm_NKmm1XQYMVHzxnIeJgP5XUCcayJ9XClwQdJUkGVcez0Sg'}, params={'url': f'{url}'}) as resp:
-        js = await resp.json() # {"text": "...", "languages":[...], "angles": [...], "styles": [...]}
+        js = await resp.json() 
 
         em = discord.Embed(description=f"{js['text']}", color=0x2F3136)
         em.add_field(name="Angles", value=f"{js['angles']}")
