@@ -3071,11 +3071,6 @@ async def list(ctx):
     await ctx.send("You don't have any upcoming tasks")
 
 
-@todo.command()
-async def edit(ctx, todo, *, new):
-  todo_data = await client.db.fetch("SELECT todo FROM todo_data WHERE author_id = $1", ctx.author.id)
-  if todo_data:
-    await client.db.execute("UPDATE todo_data SET todo = $1, jump_url = $2 WHERE todo = $3", f"{new}", )
 
 
 
