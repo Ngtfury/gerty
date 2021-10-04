@@ -3076,11 +3076,13 @@ async def edit(ctx, todo, *, new):
   try:
     g = await client.db.fetchrow("SELECT * FROM todo_data WHERE todo = $1", f"{todo}")
   except:
-    await ctx.send(f'To-do named "{todo}" not found.')
+    await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
   else:
     if g[1] == ctx.author.id:
       await client.db.execute("UPDATE todo_data SET todo = $1 WHERE todo = $2", f"{new}", f"{todo}")
       await ctx.send(f"Succesfully edited your to-do list.")
+    else:
+      await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
 
 
 @todo.command(aliases=["done"])
@@ -3088,13 +3090,13 @@ async def remove(ctx, *, todo):
   try:
     g = await client.db.fetchrow("SELECT * FROM todo_data WHERE todo = $1", f"{todo}")
   except:
-    await ctx.send(f'To-do named "{todo}" not found.')
+    await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
   else:
     if g[1] == ctx.author.id:
       await client.db.execute("DELETE FROM todo_data WHERE todo = $1", f"{todo}")
       await ctx.send(f'Task "{todo}" removed from your to-do list.')
     else:
-      await ctx.send(f'To-do named "{todo}" not found.')
+      await ctx.send(f'To-do named "{todo}" was not found in your to-do list.')
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
