@@ -3077,7 +3077,7 @@ async def list(ctx):
 @todo.command(aliases=["done"])
 async def remove(ctx, *, todo):
   try:
-    d = await client.db.fetchrow("SELECT (todo) FROM todo_data WHERE owner_id = $1", ctx.author.id)
+    d = await client.db.fetchrow("SELECT (todo) FROM todo_data WHERE author_id = $1", ctx.author.id)
   except:
     await ctx.send(f'To-do named "{todo}" not found.')
   else:
