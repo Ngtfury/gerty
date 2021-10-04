@@ -3068,7 +3068,7 @@ async def list(ctx):
     em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
     mainmessage = await ctx.send(embed=em, components=[Button(style=ButtonStyle.gray, emoji=client.get_emoji(890938576563503114), id="todolistdelete")])
     while True:
-      todoev = client.wait_for("button_click")
+      todoev = await client.wait_for("button_click")
       if todoev.author != ctx.author:
         await todoev.respond(content="Sorry, this buttons cannot be controlled by you", type=4)
       else:
