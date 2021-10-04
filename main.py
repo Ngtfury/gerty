@@ -3046,5 +3046,26 @@ async def ocr(ctx, *, url):
         await ctx.send(embed=em)
 
 
+@client.group(invoke_without_command=True)
+async def todo(ctx, *, query):
+  await ctx.send("...")
+
+@todo.command()
+async def add(ctx, *, todo):
+  jump = f"{ctx.message.jump_url}"
+  created = int(datetime.datetime.now().timestamp)
+  await client.db.execute("INSERT INTO todo_data (todo, author_id, jump_url, created_at) VALUES = ($1,$2,$3,$4)", f"{todo}", ctx.author.id, jump, created)
+
+
+@todo.command()
+async def list(ctx):
+  todo_list = []
+  todo_data = await client.db.execute("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
+  for todo in todo_data:
+    todo_list.append(f"{todo}")
+
+  await ctx.send('\n'.join(todo_list))
+
+
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
