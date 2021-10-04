@@ -3062,7 +3062,7 @@ async def list(ctx):
   todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
   if todo_data:
     for todo in todo_data:
-      todo_list.append(f"<:arrow:885193320068968508> {todo[4]}. <t:{todo[3]}:t>| [{todo[0]}]({todo[2]})")
+      todo_list.append(f"<:arrow:885193320068968508> **{todo[4]}**. <t:{todo[3]}:R>| [{todo[0]}]({todo[2]})")
 
     em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
     em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
