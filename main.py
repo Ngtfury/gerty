@@ -3053,7 +3053,7 @@ async def todo(ctx, *, query):
 @todo.command()
 async def add(ctx, *, todo):
   created = int(datetime.datetime.now().timestamp())
-  await client.db.execute("INSERT INTO todo_data (todo, author_id, jump_url, created_at) VALUES = ($1,$2,$3,$4)", f"{todo}", ctx.author.id, f"{ctx.message.jump_url}", created)
+  await client.db.execute("INSERT INTO todo_data (todo, author_id, jump_url, created_at) VALUES ($1,$2,$3,$4)", f"{todo}", ctx.author.id, f"{ctx.message.jump_url}", created)
   await ctx.send(f"**Added task**\n\n> {todo}")
 
 @todo.command()
