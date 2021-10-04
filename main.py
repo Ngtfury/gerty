@@ -3066,7 +3066,18 @@ async def list(ctx):
 
     em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
     em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-    await ctx.send(embed=em)
+    mainmessage = await ctx.send(embed=em, components=[Button(style=ButtonStyle.gray, emoji=client.get_emoji(890938576563503114), id="todolistdelete")])
+    while True:
+      todoev = client.wait_for("button_click")
+      if todoev.author != ctx.author:
+        await todoev.respond(content="Sorry, this buttons cannot be controlled by you", type=4)
+      else:
+        if todoev.component.id == "todolistdelete":
+          try:
+            await mainmessage.delete()
+          except:
+            pass
+          break
   else:
     await ctx.send("You don't have any upcoming tasks.")
 
