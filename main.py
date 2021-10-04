@@ -3047,9 +3047,9 @@ async def ocr(ctx, *, url):
 
 
 @client.group(invoke_without_command=True)
-async def todo(ctx, *, query):
-  await ctx.send("...")
-
+async def todo(ctx):
+  em = discord.Embed(title="To-do is here!", description="Now you can add your to-do in gerty and bot will show you the list of to-do tasks that you should complete", color=0x2F3136)
+  em.add_field(name="Commands", value="<:arrow:885193320068968508> `add` - Adds a task to your to-do list, usage: add [task]\n<:arrow:885193320068968508> `edit` - Edits the todo task, usage: edit [todo id] [new todo]\n<:arrow:885193320068968508> `remove` - Removes a task from your todo list, usage: remove [todo id]\n<:arrow:885193320068968508> `list` - Shows the list of tasks to do")
 @todo.command()
 async def add(ctx, *, todo):
   created = int(datetime.datetime.now().timestamp())
@@ -3062,7 +3062,7 @@ async def list(ctx):
   todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
   if todo_data:
     for todo in todo_data:
-      todo_list.append(f"<:arrow:885193320068968508> **{todo[4]}**. <t:{todo[3]}:R>| [{todo[0]}]({todo[2]})")
+      todo_list.append(f"<:arrow:885193320068968508> **{todo[4]}**. <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
 
     em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
     em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
