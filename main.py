@@ -3063,7 +3063,10 @@ async def list(ctx):
   for todo in todo_data:
     todo_list.append(f"[<:arrow:885193320068968508>]({todo[3]}) <t:{todo[3]}:R> | {todo[0]}")
 
-  await ctx.send('\n'.join(todo_list))
+  em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
+  em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+  await ctx.send(embed=em)
+
 
 
 
