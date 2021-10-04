@@ -3075,6 +3075,7 @@ async def list(ctx):
         if todoev.component.id == "todolistdelete":
           try:
             await mainmessage.delete()
+            await ctx.message.add_reaction("<:success:893501515107557466>")
           except:
             pass
           break
