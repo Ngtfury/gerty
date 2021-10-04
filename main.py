@@ -3067,7 +3067,16 @@ async def list(ctx):
   em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
   await ctx.send(embed=em)
 
-
+@todo.command(aliases=["done"])
+async def remove(ctx, *, todo):
+  try:
+    url = await client.db.fetch("SELECT (jump_url) FROM todo_data WHERE todo = $1", f"{todo}")
+  except:
+    await ctx.send(f'Todo named "{todo}" not found.')
+  else:
+    await client.db.execute("DELETE FROM todo_data WHERE todo = $1", f"{todo}")
+    await ctx.send(f'Todo "{todo}" removed\n\n{url}')
+  
 
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
