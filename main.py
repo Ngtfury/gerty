@@ -383,7 +383,7 @@ async def ping(ctx):
   t_2 = time.perf_counter()
   time_delta = round((t_2-t_1)*1000)
   dbt_1 = time.perf_counter()
-  await client.db.execute("SELECT * FROM tag_data")
+  await client.db.execute("SELECT 1")
   dbt_2 = time.perf_counter()
   dbtime_delta = round((dbt_2-dbt_1)*1000)
   em = discord.Embed(color=0x2F3136)
@@ -3049,7 +3049,7 @@ async def ocr(ctx, *, url):
 @client.group(invoke_without_command=True)
 async def todo(ctx):
   em = discord.Embed(title="To-do is here!", description="Now you can add your to-do in gerty and bot will show you the list of to-do tasks that you should complete", color=0x2F3136)
-  em.add_field(name="Commands", value="<:arrow:885193320068968508> `add` - Adds a task to your to-do list, usage: add [task]\n<:arrow:885193320068968508> `edit` - Edits the todo task, usage: edit [todo id] [new todo]\n<:arrow:885193320068968508> `remove` - Removes a task from your todo list, usage: remove [todo id]\n<:arrow:885193320068968508> `list` - Shows the list of tasks to do")
+  em.add_field(name="Commands", value="<:arrow:885193320068968508> `todo add` - Adds a task to your to-do list, usage: todo add [task]\n<:arrow:885193320068968508> `todo edit` - Edits the todo task, usage: todo edit [todo id] [new todo]\n<:arrow:885193320068968508> `todo remove` - Removes a task from your todo list, usage: todo remove [todo id]\n<:arrow:885193320068968508> `todo list` - Shows the list of tasks to do")
   await ctx.reply(embed=em, mention_author=False)
 
 @todo.command()
