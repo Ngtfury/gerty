@@ -59,7 +59,7 @@ class modlogs(commands.Cog):
     @commands.Cog.listener()
     async def on_message_delete(self, message):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", message.guild.id)
-        if result:
+        if result and not message.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar_url}")
             em.add_field(name=f"Message deleted in #{message.channel.name}", value=f"{message.content}")
