@@ -73,7 +73,7 @@ class modlogs(commands.Cog):
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
             em.add_field(name=f"Message edited in #{before.channel.name}", value=f"\n**Before**: {before.content}\n\n**After**: {after.content}")
-            em.add_field(name="Jump", value=f"[Jump to message]({before.jump_url})")
+            em.add_field(name="Jump", value=f"[Jump to message]({before.jump_url})", inline=False)
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
