@@ -9,7 +9,7 @@ import aiohttp
 import members
 import math
 import moderation
-import dyayoutube
+import modlogs
 import urllib.request
 import urllib.parse
 import hashlib
@@ -62,7 +62,7 @@ from collections import namedtuple
 import async_cse
 import asyncpg
 
-cogs = [covid, members, AFK, moderation, dyayoutube]
+cogs = [covid, members, AFK, moderation, modlogs]
 
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")#684108370034425925
