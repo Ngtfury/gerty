@@ -72,10 +72,31 @@ class modlogs(commands.Cog):
         if result and not before.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
-            em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
             em.add_field(name=f"Message edited in #{before.channel.name}", value=f"\n**Before**: {before.content}\n\n**After**: {after.content}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
-        
+
+    @commands.Cog.listener()
+    async def on_guild_channel_create(self, channel):
+        result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", channel.guild.id)
+        if result:
+            em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
+            em.add_field(name=f"New channel created #{channel.name}", value=f"**Created at**: <t:{int(datetime.datetime.now().timestamp())}:R>\n**Position**: {channel.position}\n")
+            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon_url}")
+            channel = self.client.get_channel(result[0])
+            await channel.send(embed=em)
+
+
+    @commands.Cog.listener()
+    async def on_guild_channel_delete(self, channel):
+        result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", channel.guild.id)
+        if result:
+            em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
+            em.add_field(name=f"Channel deleted #{channel.name}", value=f"**Created at**: <t:{int(channel.created_at.timestamp())}:R>\n**Deleted at**: <t:{int(datetime.datetime.now().timestamp())}:R>\n**Position**: {channel.position}\n")
+            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon_url}")
+            channel = self.client.get_channel(result[0])
+            await channel.send(embed=em)
+
+
 
