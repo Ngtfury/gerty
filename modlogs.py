@@ -48,7 +48,7 @@ class modlogs(commands.Cog):
     async def delete(self, ctx):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", ctx.guild.id)
         if result:
-            await self.db.execute("DELETE FROM mod_logs WHERE guild_id = $1", ctx.guild.id)
+            await self.client.db.execute("DELETE FROM mod_logs WHERE guild_id = $1", ctx.guild.id)
             em = discord.Embed(description=f"<:success:893501515107557466> Successfully **deleted** mod logs data for this server", color=0x2F3136)
             await ctx.send(embed=em)
         else:
