@@ -20,3 +20,20 @@ class modlogs(commands.Cog):
         dbtime_delta = round((dbt_2-dbt_1)*1000)
         await ctx.send(f"Done in {dbtime_delta} ms")
 
+
+    @commands.group(invoke_without_command=True)
+    async def modlog(self, ctx):
+        await ctx.send("Hm")
+
+    @modlog.command()
+    async def channel(self, ctx, channel: discord.TextChannel):
+        result = await self.bot.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", ctx.guild.id)
+        if not result:
+            await self.bot.db.execute("INSERT INTO mod_logs (guild_id, channel_id) VALUES ($1,$2)", ctx.guild.id, channel.id)
+            em = discord.Embed(description=f"<:success:893501515107557466> Mod logs channel **set** to {channel.mention}", color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            await self.bot.db.execute("UPDATE mod_logs SET channel_id = $1 WHERE guild_id = $2", channel.id, ctx.guild.id)
+            em = discord.Embed(description=f"<:success:893501515107557466> Mod logs channel **updated** to {channel.mention}", color=0x2F3136)
+            await ctx.send(embed=em)
+
