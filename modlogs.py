@@ -62,7 +62,18 @@ class modlogs(commands.Cog):
         if result and not message.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar_url}")
-            em.add_field(name=f"Message deleted in #{message.channel.name}", value=f"{message.content}")
+            em.add_field(name=f"Message deleted in #{message.channel.name}", value=f"\n{message.content}")
+            channel = self.client.get_channel(result[0])
+            await channel.send(embed=em)
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, before, after):
+        result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", before.guild.id)
+        if result and not before.author.bot:
+            em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
+            em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
+            em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
+            em.add_field(name=f"Message edited in #{before.channel.name}", value=f"\n**Before**: {before.content}\n\n**After**: {after.content}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
