@@ -3125,4 +3125,10 @@ async def remove(ctx, *, todo_key:int):
       await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
 
 
+@client.command(aliases=["src"])
+async def source(ctx):
+  em = discord.Embed(description="`**[Here, whole bot source code](https://gerty-github.web.app/)`**", color=0x2F3136)
+  await ctx.reply(embed=em, mention_author=False)
+
+
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
