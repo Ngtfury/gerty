@@ -3127,7 +3127,7 @@ async def remove(ctx, *, todo_key:int):
 
 @client.command(aliases=["src"])
 async def source(ctx):
-  em = discord.Embed(description="**`[Here, whole bot source code](https://gerty-github.web.app/)`**", color=0x2F3136)
+  em = discord.Embed(description="[`**Here, whole bot source code**`](https://gerty-github.web.app/)", color=0x2F3136)
   await ctx.reply(embed=em, mention_author=False)
 
 
