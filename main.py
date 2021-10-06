@@ -197,30 +197,6 @@ async def time_formatter(self, seconds: float):
 
 @client.event
 async def on_ready():
-  with open('restart.json', 'r') as f:
-    restart = json.load(f)
-
-    if restart['is_restart'] == 'True':
-      time = restart['time']
-      channel = restart['channel_id']
-      message = restart['message_id']
-
-      meth = int(time.time()) - int(time)
-      time_to_restart = time_formatter(meth)
-
-      c = await client.get_channel(channel)
-      d = c.get_partial_message(message)
-      em = discord.Embed(description=f"Done restart back in `{time_to_restart}`", color=0x2F3136)
-      await d.edit(embed=em)
-
-      restart['is_restart'] == 'False'
-      restart['time'] == 'None'
-      restart['channel'] == 'None'
-      restart['message_id'] == 'None'
-
-      with open('restart.json', 'w') as f:
-        json.dump(restart, f)
-
 
   print('Gerty is ready')
   DiscordComponents(client)
@@ -2897,16 +2873,6 @@ async def restart(ctx):
     em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
     message = await ctx.send(embed=em)
 
-    with open('restart.json', 'r') as f:
-      restart = json.load(f)
-
-    restart['is_restart'] == 'True'
-    restart['time'] == f'{int(time.time())}'
-    restart['channel'] == f'{ctx.channel.id}'
-    restart['message_id'] == f'{message.id}'
-
-    with open('restart.json', 'w') as f:
-      json.dump(restart, f)
 
     restart_program()
 
