@@ -184,10 +184,43 @@ def check_user_blacklist():
   return commands.check(user_blacklist)
 
 
+async def time_formatter(self, seconds: float):
 
+  minutes, seconds = divmod(int(seconds), 60)
+  hours, minutes = divmod(minutes, 60)
+  days, hours = divmod(hours, 24)
+  tmp = ((str(days) + "d, ") if days else "") + \
+        ((str(hours) + "h, ") if hours else "") + \
+        ((str(minutes) + "m, ") if minutes else "") + \
+        ((str(seconds) + "s, ") if seconds else "")
+  return tmp[:-2]
 
 @client.event
 async def on_ready():
+  with open('restart.json', 'r') as f:
+    restart = json.load(f)
+
+    if restart['is_restart'] == 'True':
+      time = restart['time']
+      channel = restart['channel_id']
+      message = restart['message_id']
+
+      meth = int(time.time()) - int(time)
+      time_to_restart = time_formatter(meth)
+
+      c = await client.get_channel(channel)
+      d = c.get_partial_message(message)
+      em = discord.Embed(description=f"Done restart back in `{time_to_restart}`", color=0x2F3136)
+      await d.edit(embed=em)
+
+      restart['is_restart'] == 'False'
+      restart['time'] == 'None'
+      restart['channel'] == 'None'
+      restart['message_id'] == 'None'
+
+      with open('restart.json', 'w') as f:
+        json.dump(restart, f)
+
 
   print('Gerty is ready')
   DiscordComponents(client)
@@ -2856,12 +2889,25 @@ def restart_program():
     python = sys.executable
     os.execl(python, python, * sys.argv)
 
+
+
 @client.command(aliases=["reboot", "reloadall", "rall"])
 @commands.is_owner()
 async def restart(ctx):
     em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
     message = await ctx.send(embed=em)
-    #<:success:893501515107557466>
+
+    with open('restart.json', 'r') as f:
+      restart = json.load(f)
+
+    restart['is_restart'] == 'True'
+    restart['time'] == f'{int(time.time())}'
+    restart['channel'] == f'{ctx.channel.id}'
+    restart['message_id'] == f'{message.id}'
+
+    with open('restart.json', 'w') as f:
+      json.dump(restart, f)
+
     restart_program()
 
 @client.command()
