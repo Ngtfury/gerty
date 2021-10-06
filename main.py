@@ -198,7 +198,6 @@ async def time_formatter(self, seconds: float):
 @client.event
 async def on_ready():
 
-  print('Gerty is ready')
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
         pass

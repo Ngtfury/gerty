@@ -99,5 +99,27 @@ class modlogs(commands.Cog):
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
+    @commands.Cog.listener()
+    async def on_member_join(self, member):
+        result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", member.guild.id)
+        if result:
+            em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
+            em.add_field(name=f"New member {member.name}", value=f"**Account age:**: <t:{int(member.created_at.timestamp())}:R>")
+            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar_url}")
+            channel = self.client.get_channel(result[0])
+            await channel.send(embed=em)
 
 
+    @commands.Cog.listener()
+    async def on_member_remove(self, member):
+        result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", member.guild.id)
+        if result:
+            rlist = []
+            for role in member.roles:
+                rlist.append(f"{role.mention}")
+            em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
+            em.add_field(name=f"Member left {member.name}", value=f"**Joined at:**: <t:{int(member.joined_at.timestamp())}:R>")
+            em.add_field(name="Roles", value=' '.join(rlist))
+            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar_url}")
+            channel = self.client.get_channel(result[0])
+            await channel.send(embed=em)
