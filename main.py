@@ -2705,8 +2705,9 @@ async def generate_token(ctx, member: discord.Member = None):
                     f"**Bot:** `{member.bot}`",
         color=0x2F3136
         )
-    embed.add_field(name="Token created:", value=f"`{time_rn}`", inline=False)
+    embed.add_field(name="Token created:", value=f"<t:{epoch_offset}> (<t:{epoch_offset}:R>)", inline=False)
     embed.add_field(name="Generated Token:", value=f"`{complete}`", inline=False)
+    embed.set_footer(text="This command is not a copy")
     embed.set_thumbnail(url=member.avatar_url)
     await ctx.send(embed=embed)
 
