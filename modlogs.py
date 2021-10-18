@@ -14,6 +14,7 @@ class modlogs(commands.Cog):
 
     
     @commands.command()
+    @commands.has_permissions(manage_channels=True)
     async def modping(self, ctx):
         dbt_1 = time.perf_counter()
         await self.client.db.execute("SELECT 1")
@@ -23,10 +24,12 @@ class modlogs(commands.Cog):
 
 
     @commands.group(invoke_without_command=True)
+    @commands.has_permissions(manage_channels=True)
     async def modlog(self, ctx):
         await ctx.send("Hm")
 
     @modlog.command()
+    @commands.has_permissions(manage_channels=True)
     async def channel(self, ctx, channel: discord.TextChannel):
         try:
             g = await channel.send(".")
@@ -45,6 +48,7 @@ class modlogs(commands.Cog):
                 await ctx.send(embed=em)
     
     @modlog.command()
+    @commands.has_permissions(manage_channels=True)
     async def delete(self, ctx):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", ctx.guild.id)
         if result:
