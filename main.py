@@ -55,7 +55,7 @@ from PIL import Image, ImageEnhance
 from discord_slash import SlashCommand
 from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
-from discordTogether import DiscordTogether
+from discord_together import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
