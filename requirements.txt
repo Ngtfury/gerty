@@ -26,4 +26,3 @@ gTTS==2.2.3
 PyNaCl==1.4.0
 asyncpg
 async-cse==0.3.0
-discordTogether
