@@ -2568,7 +2568,7 @@ async def spotify(ctx, user:discord.Member=None):
 
   spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
   if spotify_result is None:
-   em=discord.Embed(description='He/She is not listening to spotify or I can\'t detect', color=0x2F3136)
+   em=discord.Embed(description='<:error:893501396161290320> He/She is not listening to spotify or I can\'t detect', color=0x2F3136)
    return await ctx.reply(embed=em, mention_author=False)
 
   components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
