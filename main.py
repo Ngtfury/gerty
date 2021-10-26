@@ -2836,7 +2836,7 @@ def restart_program():
 
 
 
-@client.command(aliases=["reboot", "reloadall", "rall"])
+@client.command(aliases=["reboot", "reloadall", "rall", "fuckoff"])
 @commands.is_owner()
 async def restart(ctx):
     em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
