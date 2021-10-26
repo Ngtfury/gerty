@@ -2595,7 +2595,7 @@ async def spotify(ctx, user:discord.Member=None):
   background_image_color.paste(album_image_resize, (0,0),album_image_resize)
   background_image_color.convert('RGB').save('spotify.jpg','JPEG')
   f = discord.File("spotify.jpg",filename="spotify.jpg")
-  await ctx.send(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**',file=f, components=components)
+  await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**',file=f, components=components, mention_author=False)
   
 @client.command(aliases=["si"])
 @check_user_blacklist()
