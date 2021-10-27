@@ -52,8 +52,6 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from discord_slash import SlashCommand
-from discord_slash.utils.manage_commands import create_choice, create_option
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -85,7 +83,6 @@ def ready():
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")#684108370034425925
 client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928])
-slash = SlashCommand(client, sync_commands=True)
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
 lastrestart = datetime.datetime.now().timestamp()
@@ -420,15 +417,7 @@ async def ping(ctx):
   await mainmessage.delete()
   await ctx.send(embed=em)
 
-#8ball command
-@slash.slash(name="8ball", description="ask a question to me!", options=[
-  create_option(
-    name="question",
-    description="please give a question",
-    required=True,
-    option_type=3,
-  )
-])
+
 @client.command(aliases=['8ball'])
 @check_user_blacklist()
 async def _8ball(ctx, *, question):
@@ -483,14 +472,6 @@ async def bot(ctx):
 #brain_update fun command
 
 
-@slash.slash(name="avatar", description="shows the image of mentioned users' avatar", options=[
-  create_option(
-    name="user",
-    description="select a user",
-    required=True,
-    option_type=6,
-  )
-])
 @client.command(aliases=["av"])
 @check_user_blacklist()
 async def avatar(ctx, user: discord.Member=None):
@@ -512,14 +493,7 @@ async def code(ctx):
 
 
 #dm command
-@slash.slash(name="mail", description="mail something to a user!", options=[
-  create_option(
-    name="user",
-    description="please mention a user",
-    required=True,
-    option_type=6,
-  ), create_option(name="message", description="please enter a message to mail", required=True, option_type=3)
-])
+
 @client.command(aliases=["dm"])
 @check_user_blacklist()
 async def mail(ctx, user: discord.User = None, *, message):
@@ -534,14 +508,7 @@ async def mail(ctx, user: discord.User = None, *, message):
 
 
 #delete channel command
-@slash.slash(name="deletechannel", description="deletes the mentioned channel", options=[
-  create_option(
-    name="channel",
-    description="select a channel to delete",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 @commands.has_permissions(manage_channels=True)
@@ -554,14 +521,7 @@ async def deletechannel(ctx, channel: discord.TextChannel):
 
 
 #delete voice channel command
-@slash.slash(name="deletevoicechannel", description="select a voice channel", options=[
-  create_option(
-    name="channel",
-    description="select a voice channel to delete",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command(aliases=["deletevc", "dvc"])
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
@@ -574,14 +534,7 @@ async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
 
 
 #emojify command
-@slash.slash(name="emojify", description="the bot emojifies the given text", options=[
-  create_option(
-    name="text",
-    description="text to emojify",
-    required=True,
-    option_type=3,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def emojify(ctx, *, text):
@@ -629,15 +582,7 @@ async def embed(ctx, *, reply = "without reply"):
 
 
 
-#reactrole command
-@slash.slash(name="reactrole", description="adds role when reacting", options=[
-  create_option(
-    name="emoji",
-    description="which emoji do you want to react",
-    required=True,
-    option_type=3,
-  ), create_option(name="role", description="please mention a role", required=True, option_type=8), create_option(name="message", description="please enter a valid message", required=True, option_type=3)
-])
+
 @client.command()
 @check_user_blacklist()
 @commands.has_permissions(administrator=True)
@@ -669,15 +614,7 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
 
 
 
-  #mute command
-@slash.slash(name="mute", description="mutes a member", options=[
-  create_option(
-    name="member",
-    description="select the member you want to mute",
-    required=True,
-    option_type=6,
-  ), create_option(name="reason", description="please specify a reason", required=True, option_type=3)
-])
+
 @client.command()
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
@@ -708,15 +645,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 
 
-#unmute command
-@slash.slash(name="unmute", description="unmutes a member", options=[
-  create_option(
-    name="member",
-    description="select the member you want to unmute",
-    required=True,
-    option_type=6,
-  )
-])
+
 @client.command()
 @commands.has_permissions(manage_channels=True)
 @check_user_blacklist()
@@ -1084,14 +1013,6 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
                      user_agent = "Gerty")
 
 
-@slash.slash(name="meme", description="sends a random meme", options=[
-  create_option(
-    name="subred",
-    description="keyword (optional)",
-    required=False,
-    option_type=3,
-  )
-])
 @client.command()
 @commands.cooldown(1,10000,commands.BucketType.channel)
 @check_user_blacklist()
@@ -1175,14 +1096,7 @@ async def rps(ctx):
 
   
 #userinfo
-@slash.slash(name="whois", description="info about user", options=[
-  create_option(
-    name="member",
-    description="select a user",
-    required=True,
-    option_type=6,
-  )
-])
+
 @client.command(aliases=["userinfo", "ui"])
 @check_user_blacklist()
 async def whois(ctx, member: discord.Member=None):
@@ -1282,14 +1196,7 @@ async def channelinfo(ctx):
 
   await ctx.send(embed=embed)
 
-@slash.slash(name="lock", description="locks a channel", options=[
-  create_option(
-    name="channel",
-    description="(optional) select a channel to lock",
-    required=False,
-    option_type=7,
-  )
-])
+
 @client.command()
 @commands.has_permissions(manage_channels = True)
 @check_user_blacklist()
@@ -1302,14 +1209,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
 
   
 
-@slash.slash(name="unlock", description="unlocks a channel", options=[
-  create_option(
-    name="channel",
-    description="(optional) select a channel to unlock",
-    required=False,
-    option_type=7,
-  )
-])
+
 @client.command()
 @commands.has_permissions(manage_channels = True)
 @check_user_blacklist()
@@ -1330,14 +1230,6 @@ async def coin(ctx):
   await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
   
 
-@slash.slash(name="slowmode", description="sets slowmode to given integer", options=[
-  create_option(
-    name="seconds",
-    description="please specify seconds",
-    required=True,
-    option_type=4,
-  )
-])
 @client.command()
 @check_user_blacklist()
 @commands.has_permissions(manage_channels = True)
@@ -1759,14 +1651,7 @@ client.ticket_configs = {}
 
     
 
-@slash.slash(name="ticket", description="creates a ticket event", options=[
-  create_option(
-    name="msg",
-    description="ID of message",
-    required=True,
-    option_type=3,
-  ), create_option(name="category", description="please provide a category ID", required=True, option_type=3)
-])
+
 @client.command()
 @check_user_blacklist()
 async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChannel=None):
@@ -1794,8 +1679,6 @@ async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChann
 #moosic
 music = DiscordUtils.Music()
 
-@slash.slash(name="join",
-             description="The bot joins the VC")
 @client.command()
 @check_user_blacklist()
 async def join(ctx):
@@ -1875,14 +1758,7 @@ async def skip(ctx):
         await ctx.send(embed=embed)
     
 
-@slash.slash(name="volume", description="change volume of current song", options=[
-  create_option(
-    name="volume",
-    description="change volume of current playing music",
-    required=True,
-    option_type=3,
-  )
-])
+
 @client.command(aliases=["vol"])
 @check_user_blacklist()
 async def volume(ctx, volume):
@@ -1949,14 +1825,7 @@ async def remove(ctx, index):
 
 
             
-@slash.slash(name="moveme", description="moves you to another voice channel", options=[
-  create_option(
-    name="channel",
-    description="select a voice channel, don't select text channel nerd",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
@@ -2067,14 +1936,6 @@ async def clone(ctx, channel_name):
 
 
 
-@slash.slash(name="translate", description="translates given message to given lang", options=[
-  create_option(
-    name="lang",
-    description="specify a language",
-    required=True,
-    option_type=3,
-  ), create_option(name="args", description="message to translate", required=True, option_type=3)
-])
 @client.command()
 @check_user_blacklist()
 async def translate(ctx, lang, *, args=None):
@@ -2091,15 +1952,7 @@ async def translate(ctx, lang, *, args=None):
 
 
 
-#client.run
-@slash.slash(name="anime", description="search about the anime", options=[
-  create_option(
-    name="search",
-    description="please specify the anime name",
-    required=True,
-    option_type=3,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def anime(ctx, *, search):
@@ -2120,14 +1973,7 @@ async def anime(ctx, *, search):
   em.set_thumbnail(url=anime.image_url)
   await s.edit(embed=em)
 
-@slash.slash(name="timestamp", description="convert unixcode to timestamp", options=[
-  create_option(
-    name="unixcode",
-    description="please specify a unixcode",
-    required=True,
-    option_type=4,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def timestamp(ctx, unixcode: int):
@@ -2137,14 +1983,6 @@ async def timestamp(ctx, unixcode: int):
 
 
 
-@slash.slash(name="ytt", description="Creates a youtube together activity", options=[
-  create_option(
-    name="channel",
-    description="please specify a channel",
-    required=True,
-    option_type=7,
-  )
-])
 @client.command()
 @check_user_blacklist()
 async def ytt(ctx, channel: discord.VoiceChannel=None):
@@ -2157,15 +1995,7 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
     await asyncio.sleep(60)
     embed = discord.Embed(description=f"This activity ended. Don't worry `/`ytt can help you out! <:wumpyyy:873171096176848967>", color=ctx.author.color)
     await s.edit(embed=embed)
-    
-@slash.slash(name="poker", description="Creates a poker night activity", options=[
-  create_option(
-    name="channel",
-    description="please specify a channel",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def poker(ctx, channel: discord.VoiceChannel=None):
@@ -2176,14 +2006,7 @@ async def poker(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"♠️ [Click here to start Poker night activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
-@slash.slash(name="chess", description="Creates a chess in the park activity", options=[
-  create_option(
-    name="channel",
-    description="please specify a channel",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def chess(ctx, channel: discord.VoiceChannel=None):
@@ -2194,14 +2017,7 @@ async def chess(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"♟️ [Click here to start Chess in the park activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
-@slash.slash(name="betrayal", description="Creates a betrayal.io activity", options=[
-  create_option(
-    name="channel",
-    description="please specify a channel",
-    required=True,
-    option_type=7,
-  )
-])
+
 @client.command()
 @check_user_blacklist()
 async def betrayal(ctx, channel: discord.VoiceChannel=None):
@@ -2212,14 +2028,6 @@ async def betrayal(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start betrayal.io activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
-@slash.slash(name="fishing", description="Creates a fishington.io activity", options=[
-  create_option(
-    name="channel",
-    description="please specify a channel",
-    required=True,
-    option_type=7,
-  )
-])
 @client.command()
 @check_user_blacklist()
 async def fishing(ctx, channel: discord.VoiceChannel=None):
