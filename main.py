@@ -59,6 +59,7 @@ from PIL import Image
 from collections import namedtuple
 import async_cse
 import asyncpg
+import ast
 
 cogs = [covid, members, AFK, moderation, modlogs]
 
