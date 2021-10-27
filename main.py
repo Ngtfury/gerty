@@ -60,6 +60,7 @@ from collections import namedtuple
 import async_cse
 import asyncpg
 import ast
+import inspect
 
 cogs = [covid, members, AFK, moderation, modlogs]
 
