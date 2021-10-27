@@ -5,8 +5,6 @@ import random
 import json
 import time
 import asyncio
-from discord_slash import SlashCommand
-from discord_slash.utils.manage_commands import create_choice, create_option
 
 
 class AFK(commands.Cog):
