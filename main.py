@@ -65,24 +65,6 @@ import inspect
 cogs = [covid, members, AFK, moderation, modlogs]
 
 
-def source(o):
-    s = inspect.getsource(o).split("\n")
-    indent = len(s[0]) - len(s[0].lstrip())
-    return "\n".join(i[indent:] for i in s)
-
-
-def ready():
-  source_ = source(discord.gateway.DiscordWebSocket.identify)
-  patched = re.sub(
-      r'([\'"]\$browser[\'"]:\s?[\'"]).+([\'"])',
-      r"\1Discord Android\2",
-      source_
-  )
-  loc = {}
-  exec(compile(ast.parse(patched), "<string>", "exec"),
-       discord.gateway.__dict__, loc)
-  discord.gateway.DiscordWebSocket.identify = loc["identify"]
-
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")#684108370034425925
 client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928])
 togetherControl = DiscordTogether(client)
@@ -2930,5 +2912,4 @@ async def source(ctx):
   em = discord.Embed(description="[**`Here, whole bot source code`**](https://gerty-github.web.app/)", color=0x2F3136)
   await ctx.reply(embed=em, mention_author=False)
 
-ready()
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
