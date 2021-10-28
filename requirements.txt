@@ -2,7 +2,7 @@ Flask==2.0.1
 google-api-python-client==2.11.0
 praw
 youtube_dl==2021.6.6
-discord-components==2.1.0
+discord-components
 PyNaCl==1.4.0
 oauth==1.0.1
 mod==0.3.0
