@@ -1,3 +1,5 @@
+print('Starting up...')
+print('-------------------')
 import discord
 import random
 from discord.ext import commands
@@ -79,10 +81,15 @@ client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-
 ch1 = ["Rock", "Scissors", "Paper"]
 
 for i in range(len(cogs)):
-  cogs[i].setup(client)
-
-
-
+  try:
+    cogs[i].setup(client)
+    print(f'Module {i} loaded')
+  except:
+    print(f'Module {i} was not loaded')
+  print('-------------------')
+client.load_extension('jishaku')
+print('Module jishaku loaded')
+print('-------------------')
 
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
@@ -175,7 +182,7 @@ async def unblacklist(ctx,user:discord.Member, *,reason=None):
       await ctx.send("The person is not blacklisted.")
 
       
-      
+
       
 def check_user_blacklist():
   async def user_blacklist(ctx):
@@ -210,8 +217,7 @@ async def on_ready():
   print(f"{client.user.name} is ready.")
   global startTime 
   startTime = time.time()
-  
-client.load_extension('jishaku')
+
 
 
 @client.command()
