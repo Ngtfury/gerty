@@ -8,14 +8,10 @@ import urllib.parse, urllib.request, re
 import os
 import requests
 import aiohttp
-import members
 import math
-import moderation
-import modlogs
 import urllib.request
 import urllib.parse
 import hashlib
-import AFK
 import requests
 import aiofiles
 import datetime
@@ -23,7 +19,6 @@ import asyncio
 import json
 import jishaku
 import DiscordUtils
-import covid
 import asyncpg
 import PIL.ImageOps
 import googletrans
@@ -63,9 +58,6 @@ import async_cse
 import asyncpg
 import ast
 import inspect
-
-cogs = [covid, members, AFK, moderation, modlogs]
-
 
 activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")#684108370034425925
 client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928])
