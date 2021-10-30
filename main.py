@@ -75,21 +75,14 @@ lastrestart = datetime.datetime.now().timestamp()
 
 client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
-
+for cog in cogs:
+  client.load_extension(name=cog)
+  print(f'{cog} loaded')
 
 
 ch1 = ["Rock", "Scissors", "Paper"]
 
-for i in range(len(cogs)):
-  try:
-    cogs[i].setup(client)
-    print(f'Module {i} loaded')
-  except:
-    print(f'Module {i} was not loaded')
-  print('-------------------')
-client.load_extension('jishaku')
-print('Module jishaku loaded')
-print('-------------------')
+
 
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
