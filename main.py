@@ -1,5 +1,3 @@
-print('Starting up...')
-print('-------------------')
 import discord
 import random
 from discord.ext import commands
@@ -27,7 +25,6 @@ import itertools
 import datetime
 import base64
 import sys
-import os
 import functools
 import typing
 import datetime, time
@@ -69,9 +66,17 @@ client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-
 
 for filename in os.listdir('./cogs'):
   if filename.endswith('.py'):
-    client.load_extension(f'cogs.{filename[:-3]}')
+    try:
+      client.load_extension(f'cogs.{filename[:-3]}')
+      print(f'Loaded module {filename[:-3]} succesfully ✅')
+    except:
+      print(f'Module {filename[:-3]} didn\'t load properly ❌')
   else:
-    print(f'Unable to load {filename[:-3]}')
+    print(f'Unable to load {filename[:-3]} ❌')
+client.load_extension('jishaku')
+print(f'Loaded module jishaku succesfully ✅')
+print('--------------------------------')
+print('Connecting to bot...')
 
 
 ch1 = ["Rock", "Scissors", "Paper"]
@@ -201,7 +206,7 @@ async def on_ready():
             data = line.split(" ")
             client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
-  print(f"{client.user.name} is ready.")
+  print(f"Connected to {client.user.name}.")
   global startTime 
   startTime = time.time()
 
