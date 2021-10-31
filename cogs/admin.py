@@ -65,14 +65,23 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
-        em=discord.Embed(title='git sync', description='```shell\n$ git pull```', color=0x2F3136)
+        em=discord.Embed(title='Git sync', description='```shell\n$ git pull```', color=0x2F3136)
         main_message=await ctx.send(embed=em)
         await ctx.message.add_reaction('<:arrow:885193320068968508>')
+        await asyncio.sleep(0.5)
         runner=await self.run_process('git pull')
         runner_next_line='\n'.join(runner)
         em2=discord.Embed(title='git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
+        if runner_next_line.startswith('Already up-to-date.'):
+            pass
+        else:
+            def restart_program():
+                python = sys.executable
+                os.execl(python, python, * sys.argv)
+            restart_program()
+
 
 def setup(client):
     client.add_cog(Admin(client))
