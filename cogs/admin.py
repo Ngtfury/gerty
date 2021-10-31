@@ -71,10 +71,10 @@ class Admin(commands.Cog):
         await asyncio.sleep(0.5)
         runner=await self.run_process('git pull')
         runner_next_line='\n'.join(runner)
-        em2=discord.Embed(title='git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
+        em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
-        if runner_next_line.startswith('Already up-to-date.'):
+        if runner_next_line.startswith('Already up to date.'):
             return
         else:
             def restart_program():
