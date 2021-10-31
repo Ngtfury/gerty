@@ -306,73 +306,12 @@ async def on_command_error(ctx, error):
             pass
           break
 
-@client.event
-async def on_message_edit(before, after):
-    if before.content != after.content:
-        await client.process_commands(after)
 
 
 
-#on reaction add
-@client.event
-async def on_raw_reaction_add(payload):
-  if payload.member.id != client.user.id and str(payload.emoji) == u"\U0001F3AB":
-        msg_id, channel_id, category_id = client.ticket_configs[payload.guild_id]
 
-        if payload.message_id == msg_id:
-            guild = client.get_guild(payload.guild_id)
 
-            for category in guild.categories:
-                if category.id == category_id:
-                    break
-
-            channel = guild.get_channel(channel_id)
-
-            ticket_channel = await category.create_text_channel(f"ticket-{payload.member.display_name}", topic=f"A ticket for {payload.member.display_name}.", permission_synced=True)
-            
-            await ticket_channel.set_permissions(payload.member, read_messages=True, send_messages=True)
-
-            message = await channel.fetch_message(msg_id)
-            await message.remove_reaction(payload.emoji, payload.member)
-
-            await ticket_channel.send(f"{payload.member.mention} Thank you for creating a ticket! Use **'-close'** to close your ticket.")
-
-            try:
-                await client.wait_for("message", check=lambda m: m.channel == ticket_channel and m.author == payload.member and m.content == "-close", timeout=3600)
-
-            except asyncio.TimeoutError:
-                await ticket_channel.delete()
-
-            else:
-                await ticket_channel.delete()
-
-  if payload.member.bot:
-    pass
-
-  else:
-
-    with open('data/reactrole.json') as react_file:
-
-      data = json.load(react_file)
-      for x in data:
-        if x['emoji'] == payload.emoji.name and x['message_id'] == payload.message_id:
-          role = discord.utils.get(client.get_guild(payload.guild_id).roles, id=x['role_id'])
-
-          await payload.member.add_roles(role)
-
-        
 #on reaction remove
-@client.event
-async def on_raw_reaction_remove(payload):
-
-    with open('data/reactrole.json') as react_file:
-
-      data = json.load(react_file)
-      for x in data:
-        if x['emoji'] == payload.emoji.name and x['message_id'] == payload.message_id:
-          role = discord.utils.get(client.get_guild(payload.guild_id).roles, id=x['role_id'])
-
-          await client.get_guild(payload.guild_id).get_member(payload.user_id).remove_roles(role)
 
 
 #ping command
@@ -2365,7 +2304,7 @@ async def persondoesnotexist(ctx):
   em.set_image(url="attachment://doesnotexist.jpeg")
   em.set_footer(text='Generative adversarial network')
   await ctx.send(file=f, embed=em)
-  
+
 
 @client.command()
 @check_user_blacklist()
