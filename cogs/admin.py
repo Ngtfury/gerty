@@ -75,7 +75,7 @@ class Admin(commands.Cog):
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
         if runner_next_line.startswith('Already up-to-date.'):
-            pass
+            return
         else:
             def restart_program():
                 python = sys.executable
