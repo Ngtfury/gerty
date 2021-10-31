@@ -51,10 +51,23 @@ class Admin(commands.Cog):
             deleted=await ctx.channel.purge(limit=limit, check=lambda i: i.author==self.client.user, bulk=False)
         await ctx.send(f"<:success:893501515107557466> Deleted **{len(deleted)}** messages", delete_after=5)
 
+
+    async def run_process(self, command):
+        try:
+            process = await asyncio.create_subprocess_shell(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = await process.communicate()
+        except NotImplementedError:
+            process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            result = await self.bot.loop.run_in_executor(None, process.communicate)
+
+        return [output.decode() for output in result]
+
     @commands.command()
     @commands.is_owner()
-    async def sync(ctx):
-        await ctx.send('idk')
+    async def sync(self, ctx):
+        runner=await self.run_process('git pull')
+        runner_next_line='\n'.join(runner)
+        await ctx.send(f'```{runner_next_line}```')
 
 def setup(client):
     client.add_cog(Admin(client))
