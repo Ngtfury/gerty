@@ -34,7 +34,7 @@ class Misc(commands.Cog):
         em.add_field(name="<a:discord:886308080260894751> | Api latency", value=f"```{round(self.client.latency * 1000)} ms```", inline=False)
         em.add_field(name="<:postgres:892392238825488514> | Database", value=f"```{dbtime_delta} ms```", inline=False)
         em.add_field(name="📝 | Message", value=f"```{mtime_delta} ms```", inline=False)
-        await mainmessage.edit(embed=em)
+        await mainmessage.edit('\u200b', embed=em)
 
 
 
