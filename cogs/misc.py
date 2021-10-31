@@ -30,7 +30,7 @@ class Misc(commands.Cog):
         dbt_2 = time.perf_counter()
         dbtime_delta = round((dbt_2-dbt_1)*1000)
         em = discord.Embed(color=0x2F3136)
-        em.add_field(name="<a:typing:597589448607399949> | Typing", value=f"```{time_delta} ms```", inline=False)
+        em.add_field(name="<a:typing:856668509705863169> | Typing", value=f"```{time_delta} ms```", inline=False)
         em.add_field(name="<a:discord:886308080260894751> | Api latency", value=f"```{round(self.client.latency * 1000)} ms```", inline=False)
         em.add_field(name="<:postgres:892392238825488514> | Database", value=f"```{dbtime_delta} ms```", inline=False)
         em.add_field(name="📝 | Message", value=f"```{mtime_delta} ms```", inline=False)
