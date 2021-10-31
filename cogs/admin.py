@@ -5,6 +5,7 @@ import sys
 import importlib
 import asyncio
 import subprocess
+import re
 
 
 class Admin(commands.Cog):
@@ -22,6 +23,25 @@ class Admin(commands.Cog):
             result = await self.bot.loop.run_in_executor(None, process.communicate)
 
         return [output.decode() for output in result]
+
+    _GIT_PULL_REGEX = re.compile(r'\s*(?P<filename>.+?)\s*\|\s*[0-9]+\s*[+-]+')
+
+    def find_modules_from_git(self, output):
+        files = self._GIT_PULL_REGEX.findall(output)
+        ret = []
+        for file in files:
+            root, ext = os.path.splitext(file)
+            if ext != '.py':
+                continue
+
+            if root.startswith('cogs/'):
+                # A submodule is a directory inside the main cog directory for
+                # my purposes
+                ret.append((root.count('/') - 1, root.replace('/', '.')))
+
+        # For reload order, the submodules should be reloaded first
+        ret.sort(reverse=True)
+        return ret
 
 
     @commands.command(aliases=["delm"])
