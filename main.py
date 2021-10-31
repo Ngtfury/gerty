@@ -1665,7 +1665,7 @@ async def wanted(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
 
-  wanted = Image.open("wanted.jpg")
+  wanted = Image.open("images/wanted.jpg")
   asset  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
@@ -1683,7 +1683,7 @@ async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   if user2 == None:
     user2 = ctx.author
 
-  drake = Image.open("drake.jpg")
+  drake = Image.open("images/drake.jpg")
   asset1  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset1.read())
   pfp = Image.open(data)
@@ -1707,7 +1707,7 @@ async def sponge(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
 
-  sponge = Image.open("spongebob.jpg")
+  sponge = Image.open("images/spongebob.jpg")
   asset  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
@@ -1931,7 +1931,7 @@ async def trash(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
 
-  trash = Image.open("delete.png")
+  trash = Image.open("images/delete.png")
   asset  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
@@ -1949,7 +1949,7 @@ async def child(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
 
-  affect = Image.open("affect.png")
+  affect = Image.open("images/affect.png")
   asset  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
@@ -1966,7 +1966,7 @@ async def amongus(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
 
-  sus = Image.open("sus.png")
+  sus = Image.open("images/sus.png")
   asset  = user.avatar_url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
@@ -2221,7 +2221,7 @@ async def spotify(ctx, user:discord.Member=None):
 
   components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
 
-  track_background_image=Image.open('spotify_template.png')
+  track_background_image=Image.open('images/spotify_template.png')
   album_image=Image.open(requests.get(spotify_result.album_cover_url, stream=True).raw).convert('RGBA')
   title_font=ImageFont.truetype('theboldfont.ttf', 16)
   artist_font=ImageFont.truetype('theboldfont.ttf', 14)
