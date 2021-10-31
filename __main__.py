@@ -106,7 +106,7 @@ async def open_muted(user):
     
 
 
-  with open("muted.json","w") as f:
+  with open("data/muted.json","w") as f:
     json.dump(users,f)
   return True
 
@@ -119,7 +119,7 @@ async def get_mute(user):
     return wallet_amt
 
 async def get_muted_data():
-  with open("muted.json") as f:
+  with open("data/muted.json") as f:
     users = json.load(f)
 
   return users
@@ -132,7 +132,7 @@ async def add_mute(user):
 
     users[str(user.id)]['mute'] += 1
 
-    with open("muted.json","w") as f:
+    with open("data/muted.json","w") as f:
         json.dump(users, f)
 
 async def remove_mute(user):
@@ -143,7 +143,7 @@ async def remove_mute(user):
 
     users[str(user.id)]['mute'] -= 1
 
-    with open("muted.json","w") as f:
+    with open("data/muted.json","w") as f:
         json.dump(users, f)
 
 @client.command()
