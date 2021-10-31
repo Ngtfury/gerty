@@ -71,8 +71,6 @@ for filename in os.listdir('./cogs'):
       print(f'Loaded module {filename[:-3]} succesfully ✅')
     except:
       print(f'Module {filename[:-3]} didn\'t load properly ❌')
-  else:
-    print(f'Unable to load {filename[:-3]} ❌')
 client.load_extension('jishaku')
 print(f'Loaded module jishaku succesfully ✅')
 print('--------------------------------')
