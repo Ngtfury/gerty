@@ -16,7 +16,7 @@ class Admin(commands.Cog):
 
     @commands.command(aliases=["delm"])
     @commands.is_owner()
-    async def delete_message(ctx, mid=None):
+    async def delete_message(self, ctx, mid=None):
         if mid == None:
             if ctx.message.reference:
                 mid = ctx.message.reference.resolved.id
@@ -32,13 +32,13 @@ class Admin(commands.Cog):
 
     @commands.group(aliases=["reboot", "reloadall", "rall", "fuckoff"], invoke_without_command=True)
     @commands.is_owner()
-    async def restart(ctx):
+    async def restart(self, ctx):
         def restart_program():
             python = sys.executable
             os.execl(python, python, * sys.argv)
         em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
         message = await ctx.send(embed=em)
-    
+
         restart_program()
 
 def setup(client):
