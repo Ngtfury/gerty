@@ -331,15 +331,6 @@ async def avatar(ctx, user: discord.Member=None):
     await ctx.send(embed=em)
 
 
-
-
-
-#announce command
-
-
-
-#delete channel command
-
 @client.command()
 @check_user_blacklist()
 @commands.has_permissions(manage_channels=True)
