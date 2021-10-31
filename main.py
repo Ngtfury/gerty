@@ -351,7 +351,7 @@ async def on_raw_reaction_add(payload):
 
   else:
 
-    with open('reactrole.json') as react_file:
+    with open('data/reactrole.json') as react_file:
 
       data = json.load(react_file)
       for x in data:
@@ -365,7 +365,7 @@ async def on_raw_reaction_add(payload):
 @client.event
 async def on_raw_reaction_remove(payload):
 
-    with open('reactrole.json') as react_file:
+    with open('data/reactrole.json') as react_file:
 
       data = json.load(react_file)
       for x in data:
@@ -579,7 +579,7 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
   await asyncio.sleep(3)
   await s.delete()
 
-  with open('reactrole.json') as json_file:
+  with open('data/reactrole.json') as json_file:
     data = json.load(json_file)
 
     new_react_role = {
@@ -591,7 +591,7 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
 
     data.append(new_react_role)
 
-  with open('reactrole.json', 'w') as j:
+  with open('data/reactrole.json', 'w') as j:
     json.dump(data,j,indent=4)
 
 

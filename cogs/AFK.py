@@ -32,7 +32,7 @@ class AFK(commands.Cog):
     
     @commands.Cog.listener()
     async def on_message(self, message):
-        with open('afk.json', 'r') as f:
+        with open('data/afk.json', 'r') as f:
             afk = json.load(f)
         try:
             for user_mention in message.mentions:
@@ -49,7 +49,7 @@ class AFK(commands.Cog):
                     
                     meeeth = int(afk[f'{user_mention.id}']['mentions']) + 1
                     afk[f'{user_mention.id}']['mentions'] = meeeth
-                    with open('afk.json', 'w') as f:
+                    with open('data/afk.json', 'w') as f:
                         json.dump(afk, f)
         except:
             pass
@@ -74,7 +74,7 @@ class AFK(commands.Cog):
                     afk[f'{message.author.id}']['mentions'] = 0
                     afk[f'{message.author.id}']['guild'] = 'None'
                     
-                    with open('afk.json', 'w') as f:
+                    with open('data/afk.json', 'w') as f:
                         json.dump(afk, f)
             except:
                 pass
@@ -84,7 +84,7 @@ class AFK(commands.Cog):
                 except:
                     pass
         
-        with open('afk.json', 'w') as f:
+        with open('data/afk.json', 'w') as f:
             json.dump(afk, f)
     
 
@@ -92,7 +92,7 @@ class AFK(commands.Cog):
     async def afk(self, ctx, *, reason=None):
         if reason == None:
             reason = "AFK"
-        with open('afk.json', 'r') as f:
+        with open('data/afk.json', 'r') as f:
             afk = json.load(f)
         
         await self.update_data(afk, ctx.message.author)
@@ -106,7 +106,7 @@ class AFK(commands.Cog):
         await ctx.send(f"{ctx.author.mention} I've set you as AFK <a:afk:890119774015717406>:", embed=em)
 
         await asyncio.sleep(5)
-        with open('afk.json', 'w') as f:
+        with open('data/afk.json', 'w') as f:
             json.dump(afk, f)
         try:
             await ctx.author.edit(nick=f'[AFK] {ctx.author.display_name}')
