@@ -45,10 +45,8 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def cleanup(self, ctx, limit:int=10):
-        def check(m):
-            m.author==self.client.user
 
-        deleted=await ctx.channel.purge(limit=limit, check=check)
+        deleted=await ctx.channel.purge(limit=limit, check=lambda i: i.author==self.client.user)
         await ctx.send(f"<:success:893501515107557466> Deleted **{len(deleted)}** messaged", delete_after=5)
 
 def setup(client):
