@@ -41,5 +41,6 @@ class Admin(commands.Cog):
 
         restart_program()
 
+
 def setup(client):
     client.add_cog(Admin(client))

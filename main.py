@@ -173,9 +173,8 @@ async def unblacklist(ctx,user:discord.Member, *,reason=None):
     else:
       await ctx.send("The person is not blacklisted.")
 
-      
 
-      
+
 def check_user_blacklist():
   async def user_blacklist(ctx):
     return await get_mute(ctx.author) == 0
@@ -195,6 +194,7 @@ async def time_formatter(self, seconds: float):
 
 @client.event
 async def on_ready():
+  global check_user_blacklist
 
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
@@ -209,18 +209,6 @@ async def on_ready():
   print(f"Connected to {client.user.name}.")
   global startTime 
   startTime = time.time()
-
-
-
-@client.command()
-async def uptime(ctx):
-  uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(lastrestart)}:R>", color=0x2F3136)
-  await ctx.send(embed=em)
-
-        
-
-
 
 
 @client.event
@@ -301,37 +289,6 @@ async def on_command_error(ctx, error):
 
 
 
-
-
-
-#on reaction remove
-
-
-#ping command
-@client.command(aliases=['ms', 'latency'])
-@check_user_blacklist()
-async def ping(ctx):
-  m_1 = time.perf_counter()
-  mainmessage = await ctx.send("> Pinging <a:cursor:893391878614056991>")
-  m_2 = time.perf_counter()
-  mtime_delta = round((m_2-m_1)*1000)
-  t_1 = time.perf_counter()
-  await ctx.trigger_typing()
-  t_2 = time.perf_counter()
-  time_delta = round((t_2-t_1)*1000)
-  dbt_1 = time.perf_counter()
-  await client.db.execute("SELECT 1")
-  dbt_2 = time.perf_counter()
-  dbtime_delta = round((dbt_2-dbt_1)*1000)
-  em = discord.Embed(color=0x2F3136)
-  em.add_field(name="<a:typing:597589448607399949> | Typing", value=f"```{time_delta} ms```", inline=False)
-  em.add_field(name="<a:discord:886308080260894751> | Api latency", value=f"```{round(client.latency * 1000)} ms```", inline=False)
-  em.add_field(name="<:postgres:892392238825488514> | Database", value=f"```{dbtime_delta} ms```", inline=False)
-  em.add_field(name="📝 | Message", value=f"```{mtime_delta} ms```", inline=False)
-  await mainmessage.delete()
-  await ctx.send(embed=em)
-
-
 @client.command(aliases=['8ball'])
 @check_user_blacklist()
 async def _8ball(ctx, *, question):
@@ -374,12 +331,6 @@ async def avatar(ctx, user: discord.Member=None):
     await ctx.send(embed=em)
 
 
-@client.command(aliases=["dm"])
-@check_user_blacklist()
-async def mail(ctx, user: discord.User = None, *, message):
-      await user.send(f'You have a mail from **{ctx.author.name}** : {message}')
-      m = discord.Embed(description=f"<:success:893501515107557466> Mail sent to {user.name}", color=ctx.author.color)
-      await ctx.send(embed=m)
 
 
 
