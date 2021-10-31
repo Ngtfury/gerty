@@ -65,11 +65,13 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
-        main_message=await ctx.send('```shell\n$ git pull```')
+        em=discord.Embed(title='git sync', description='```shell\n$ git pull```', color=0x2F3136)
+        main_message=await ctx.send(embed=em)
         await ctx.message.add_reaction('<:arrow:885193320068968508>')
         runner=await self.run_process('git pull')
         runner_next_line='\n'.join(runner)
-        await main_message.edit(f'```shell$ git pull\n\n{runner_next_line}```')
+        em2=discord.Embed(title='git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
+        await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
 
 def setup(client):
