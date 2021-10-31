@@ -221,13 +221,6 @@ async def uptime(ctx):
         
 
 
-@client.command()
-@commands.is_owner()
-async def servers(ctx):
-    activeservers = client.guilds
-    for guild in activeservers:
-        await ctx.send(f"Guild name = `{guild.name}` | Guild id = `{guild.id}`")
-
 
 
 @client.event
@@ -367,32 +360,6 @@ async def _8ball(ctx, *, question):
   await ctx.send(embed=em)
 
 
-
-#developer command
-
-
-
-
-@client.command(aliases=["invite", "info", "botinfo"])
-@check_user_blacklist()
-async def bot(ctx):
-  embed=discord.Embed(title="<:dot_2:862321994983669771> Gerty Information <:dot_2:862321994983669771>", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", description="The bot is developed by [Fury Alt#0143](https://discordapp.com/users/770646750804312105)", color=0xd400ff)
-  embed.set_author(name="Gerty", url="https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot", icon_url="https://images-ext-1.discordapp.net/external/rr_qjkmIgbvvfmM9VFMX6bKvaO1yb6LoAadw81lOdjk/%3Fsize%3D1024/https/cdn.discordapp.com/avatars/855443275658166282/277983486fab2a474f49ed47fcdcc25b.webp?width=586&height=586")
-  embed.set_thumbnail(url="https://cdn.discordapp.com/emojis/783652973502922752.gif?v=1")
-  embed.add_field(name="My ID:", value="> 855443275658166282", inline=True)
-  embed.add_field(name="Username:", value="> Gerty", inline=True)
-  embed.add_field(name="Tag:", value="> Gerty#9317  <:bot:860140819964887099>", inline=True)
-  embed.add_field(name="Created at:", value="> Fri, 18 June 2021, 01:46 pm", inline=True)
-  embed.add_field(name="Servers in:", value=f"> {len(client.guilds)} Servers", inline=True)
-  embed.add_field(name="Invite Me:", value="> [Invite](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&scope=bot)", inline=True)
-  embed.add_field(name="Join support server", value="> [Support server](https://discord.gg/XkF3VFbQWU)", inline=True)
-  embed.set_footer(text=f"Hello {ctx.author.name}! nice to meet you")
-  await ctx.send(embed=embed)
-
-
-#brain_update fun command
-
-
 @client.command(aliases=["av"])
 @check_user_blacklist()
 async def avatar(ctx, user: discord.Member=None):
@@ -406,14 +373,6 @@ async def avatar(ctx, user: discord.Member=None):
     em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
     await ctx.send(embed=em)
 
-#code command
-@client.command()
-@check_user_blacklist()
-async def code(ctx):
-    await ctx.reply("**<:gpython:855690635351425034> i'm running in python __discord.py__**")
-
-
-#dm command
 
 @client.command(aliases=["dm"])
 @check_user_blacklist()
@@ -2565,35 +2524,9 @@ async def nitro(ctx):
 
 
 
-@client.command(aliases=["delm"])
-@commands.is_owner()
-async def delete_message(ctx, mid=None):
-  if mid == None:
-    if ctx.message.reference:
-      mid = ctx.message.reference.resolved.id
-    else:
-      await ctx.send("Please specify a message to delete")
-  d = ctx.channel.get_partial_message(mid)
-  try:
-    await d.delete()
-    await ctx.message.add_reaction("<:success:893501515107557466>")
-  except:
-    await ctx.message.add_reaction("<:error:867269410644557834>")
-
-def restart_program():
-    python = sys.executable
-    os.execl(python, python, * sys.argv)
 
 
 
-@client.command(aliases=["reboot", "reloadall", "rall", "fuckoff"])
-@commands.is_owner()
-async def restart(ctx):
-    em = discord.Embed(description="<:success:893501515107557466> Restarting... Allow up to 20 seconds", color=0x2F3136)
-    message = await ctx.send(embed=em)
-
-
-    restart_program()
 
 @client.command()
 async def emojiinfo(ctx, emoji : typing.Union[discord.Emoji, discord.PartialEmoji]):
@@ -2709,58 +2642,6 @@ async def select(ctx):
       await mainmessage.edit(components=compo2)
       
 
-@client.command()
-@commands.is_owner()
-async def wtf(ctx):
-  em1 = discord.Embed(description="1")
-  em2 = discord.Embed(description="2")
-  em3 = discord.Embed(description="3")
-  em4 = discord.Embed(description="4")
-
-  paginationList = [em1, em2, em3, em4]
-  current = 0
-
-  mainmessage = await ctx.send(embed=paginationList[current], components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]])
-
-  while True:
-    try:
-      event = await client.wait_for("button_click", check = lambda i: i.component.id in ["back", "front", "delete"], timeout=10.0)
-
-      if event.author != ctx.author:
-        await event.respond(
-          type=4,
-          content="Sorry, this buttons cannot be controlled by you"
-        )
-      else:
-        if event.component.id == "back":
-          current -= 1
-        elif event.component.id == "front":
-          current += 1
-        elif event.component.id == "delete":
-          try:
-            await mainmessage.delete()
-          except:
-            pass
-          break
-
-        if current == len(paginationList):
-          current = 0
-        elif current < 0:
-          current = len(paginationList) - 1
-      
-        await event.respond(
-            type=7,
-            embed=paginationList[current],
-            components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]]
-        )
-    except asyncio.TimeoutError:
-      try:
-        await mainmessage.edit(
-          components=[[Button(style=ButtonStyle.grey, id = "back", label='<', disabled=True), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>', disabled=True), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114), disabled=True)]]
-        )
-        break
-      except:
-        break
 
 
 
