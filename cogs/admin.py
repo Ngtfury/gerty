@@ -49,7 +49,12 @@ class Admin(commands.Cog):
             deleted=await ctx.channel.purge(limit=limit, check=lambda i: i.author==self.client.user)
         except:
             deleted=await ctx.channel.purge(limit=limit, check=lambda i: i.author==self.client.user, bulk=False)
-        await ctx.send(f"<:success:893501515107557466> Deleted **{len(deleted)}** messaged", delete_after=5)
+        await ctx.send(f"<:success:893501515107557466> Deleted **{len(deleted)}** messages", delete_after=5)
+
+    @commands.command()
+    @commands.is_owner()
+    async def sync(ctx):
+        await ctx.send('idk')
 
 def setup(client):
     client.add_cog(Admin(client))
