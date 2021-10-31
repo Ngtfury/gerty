@@ -65,9 +65,12 @@ class Admin(commands.Cog):
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
+        main_message=await ctx.send('```shell\n$ git pull```')
+        await ctx.message.add_reaction('<:arrow:885193320068968508>')
         runner=await self.run_process('git pull')
         runner_next_line='\n'.join(runner)
-        await ctx.send(f'```{runner_next_line}```')
+        await main_message.edit(f'```shell$ git pull\n\n{runner_next_line}```')
+        await ctx.message.add_reaction('<:success:893501515107557466>')
 
 def setup(client):
     client.add_cog(Admin(client))
