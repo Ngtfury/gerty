@@ -64,7 +64,7 @@ class Admin(commands.Cog):
         return [output.decode() for output in result]
 
 
-    def restart_program():
+    def restart_program(self):
         python = sys.executable
         os.execl(python, python, * sys.argv)
 
