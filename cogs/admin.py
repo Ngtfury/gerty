@@ -87,11 +87,11 @@ class Admin(commands.Cog):
             await asyncio.sleep(1)
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136, timestamp=datetime.datetime.now())
             em3.set_footer(text='Sync done at')
-            to_disable=await main_message.edit(embed=em3, components=compo)
+            await main_message.edit(embed=em3, components=compo)
             while True:
                 event=await self.client.wait_for('button_click', check=lambda i: i.component.id in ['rall'] and i.channel==ctx.channel and i.author==ctx.author)
                 if event.component.id=='rall':
-                    await to_disable.edit(components=[Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
+                    await main_message.disable_components()
                     self.restart_program()
                     break
 
