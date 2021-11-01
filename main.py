@@ -60,7 +60,7 @@ activity = discord.Activity(type=discord.ActivityType.competing, name="Discord s
 client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928])
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
-lastrestart = datetime.datetime.now().timestamp()
+
 
 client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
@@ -133,13 +133,12 @@ async def on_ready():
             client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
   print(f"Connected to {client.user.name}.")
-  global startTime 
-  startTime = time.time()
+  client.uptime = datetime.datetime.now()
 
 @client.command()
 async def uptime(ctx):
-  uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(lastrestart)}:R>", color=0x2F3136)
+  uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
+  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime.timestamp())}:R>", color=0x2F3136)
   await ctx.send(embed=em)
 
 
