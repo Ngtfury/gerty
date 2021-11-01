@@ -68,7 +68,7 @@ class Admin(commands.Cog):
         python = sys.executable
         os.execl(python, python, * sys.argv)
 
-    #ok
+    #ok bryh
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
@@ -81,20 +81,29 @@ class Admin(commands.Cog):
         em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
-        compo=[Button(style=ButtonStyle.gray, label='Restart', id='rall')]
         if runner_next_line.startswith('Already up to date.'):
             return
         else:
+            options=[]
+            for filename in os.listdir('./cogs'):
+                if filename.endswith('.py'):
+                    options.append(SelectOption(label=f'{filename[:-3]}', value=f'{filename[:-3]}'))
+            compo=[Select(placeholder='Reload extentions one by one', options=options), Button(style=ButtonStyle.gray, label='Restart', id='rall')]
             await asyncio.sleep(1)
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136, timestamp=datetime.datetime.now())
             em3.set_footer(text='Sync done at')
             await main_message.edit(embed=em3, components=compo)
             while True:
-                event=await self.client.wait_for('button_click', check=lambda i: i.component.id in ['rall'] and i.channel==ctx.channel and i.author==ctx.author)
-                if event.component.id=='rall':
-                    await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
-                    self.restart_program()
-                    break
+                event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
+                if isinstance(event.component, Select):
+                    if select.values[0] in options:
+                        self.client.reload_extension(f'cogs.{select.values[0]}')
+                        await event.respond(type=7, content=f'Reloaded {select.values[0]} successfully')
+                elif isinstance(event.component, Button):
+                    if event.component.id=='rall':
+                        await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
+                        self.restart_program()
+                        break
 
 
 def setup(client):
