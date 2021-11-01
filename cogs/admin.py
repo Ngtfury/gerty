@@ -113,9 +113,6 @@ class Admin(commands.Cog):
                     await main_message.edit(components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
                     break
 
-    @commands.command()
-    async def syncitplz(self, ctx):
-        await ctx.send("it worked!!!")
 
 def setup(client):
     client.add_cog(Admin(client))
