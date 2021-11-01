@@ -100,10 +100,11 @@ class Admin(commands.Cog):
                         if event.values[0]:
                             try:
                                 self.client.reload_extension(f'cogs.{str(event.values[0])}')
-                                loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
+                                loaded_or_not=f'<:success:893501515107557466> Reloaded {str(event.values[0])} successfully'
                             except:
-                                loaded_or_not=f'Coudn\'t load {str(event.values[0])}'
-                            await event.respond(type=4, content=f'{loaded_or_not}', ephemeral=False)
+                                loaded_or_not=f'<:error:893501396161290320> Coudn\'t load {str(event.values[0])}'
+                            nicmbed=discord.Embed(description=loaded_or_not, color=0x2F3136)
+                            await event.respond(type=4, embed=nicmbed, ephemeral=False)
                     elif isinstance(event.component, Button):
                         if event.component.id=='rall':
                             await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
