@@ -94,20 +94,24 @@ class Admin(commands.Cog):
             em3.set_footer(text='Sync done at')
             await main_message.edit(embed=em3, components=compo)
             while True:
-                event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author, timeout=20)
-                if isinstance(event.component, Select):
-                    if event.values[0]:
-                        try:
-                            self.client.reload_extension(f'cogs.{str(event.values[0])}')
-                            loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
-                        except:
-                            loaded_or_not=f'Coudn\'t load {str(event.values[0])}'
-                        await event.respond(type=4, content=f'{loaded_or_not}', ephemeral=False)
-                elif isinstance(event.component, Button):
-                    if event.component.id=='rall':
-                        await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
-                        self.restart_program()
-                        break
+                try:
+                    event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author, timeout=20)
+                    if isinstance(event.component, Select):
+                        if event.values[0]:
+                            try:
+                                self.client.reload_extension(f'cogs.{str(event.values[0])}')
+                                loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
+                            except:
+                                loaded_or_not=f'Coudn\'t load {str(event.values[0])}'
+                            await event.respond(type=4, content=f'{loaded_or_not}', ephemeral=False)
+                    elif isinstance(event.component, Button):
+                        if event.component.id=='rall':
+                            await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
+                            self.restart_program()
+                            break
+                except asyncio.TimeoutError:
+                    await main_message.disable_components()
+                    break
 
     @commands.command()
     async def diditwork(self, ctx):
