@@ -103,14 +103,6 @@ async def time_formatter(seconds: float):
   return tmp[:-2]
 
 
-@client.check
-def check_blacklisted(ctx):
-  async def data_blacklisted():
-    is_blacklisted=await client.db.execute('SELECT * FROM blacklisted WHERE user_id = $1', ctx.author.id)
-    return ctx.author.id not in is_blacklisted
-  loop = asyncio.get_event_loop()
-  loop.run_until_complete(data_blacklisted())
-
 
 
 @client.event
