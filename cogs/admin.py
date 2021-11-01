@@ -115,9 +115,5 @@ class Admin(commands.Cog):
                     break
 
 
-    @commands.command()
-    async def okduh(self, ctx):
-        await ctx.send('yo worked and admin reloaded')
-
 def setup(client):
     client.add_cog(Admin(client))

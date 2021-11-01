@@ -1727,43 +1727,17 @@ async def sponge(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("spongebob2.jpg"))
 
 
-@client.command(aliases=["nuke"])
+@client.command()
 @check_user_blacklist()
 @commands.has_permissions(manage_channels=True)
-async def n(ctx, channel_name=None):
-    channel_id = int(''.join(i for i in channel_name if i.isdigit())) 
-    existing_channel = client.get_channel(channel_id)
-    if existing_channel:
-        await existing_channel.delete()
-        clone_channel = await existing_channel.clone(reason="Has been nuked")
-        
-        embed = discord.Embed(title="Nuked", description=f"This channel was nuked by {ctx.author.mention}", color=ctx.author.color)
-        embed.add_field(name="New channel ID:", value=f"`{clone_channel.id}`")
-        await clone_channel.send(embed=embed)
-    else:
-        await ctx.send(f'No channel named **{channel_name}** was found')
-
-@client.command(aliases=["c"])
-@check_user_blacklist()
-@commands.has_permissions(manage_channels=True)
-async def clone(ctx, channel_name):
-    channel_id = int(''.join(i for i in channel_name if i.isdigit())) 
-    existing_channel = client.get_channel(channel_id)
-    if existing_channel:
-        clone_channel = await existing_channel.clone(reason="Has been cloned")
-        
-        embed = discord.Embed(title="Cloned", description=f"This channel was cloned by {ctx.author.mention}", color=ctx.author.color)
-        embed.add_field(name="channel ID:", value=f"`{clone_channel.id}`")
-        c = await clone_channel.send(embed=embed)
-
-        d = discord.Embed(description=f"{channel_name} was cloned [jump to channel]({c.jump_url})", color=ctx.author.color)
-        await ctx.channel.send(embed=d)
-    else:
-        await ctx.send(f'No channel named **{channel_name}** was found')
-
-
-
-
+async def nuke(ctx, channel: discord.TextChannel=None):
+  if channel==None:
+    channel=ctx.channel
+  await ctx.channel.delete(reason=f'Nuked by {ctx.author}')
+  clone_channel=await ctx.channel.clone(reason=f'Nuked by {ctx.author}')
+  await clone_channel.edit(position=ctx.channel.position)
+  await clone_channel.send(f'Channel nuked by `{ctx.author.name}`')
+  
 
 
 @client.command()
