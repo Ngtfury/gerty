@@ -88,7 +88,6 @@ class Admin(commands.Cog):
         compo=[Button(style=ButtonStyle.gray, label='Restart', id='rall')]
         if runner_next_line.startswith('Already up to date.'):
             return
-
         else:
             await asyncio.sleep(1)
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136, timestamp=datetime.datetime.now())
