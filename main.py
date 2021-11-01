@@ -64,6 +64,29 @@ client.remove_command("help")
 
 client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
+def source(o):
+  s = inspect.getsource(o).split("\n")
+  indent = len(s[0]) - len(s[0].lstrip())
+  return "\n".join(i[indent:] for i in s)
+
+def ready():
+  source_ = source(discord.gateway.DiscordWebSocket.identify)
+  patched = re.sub(
+      r'([\'"]\$browser[\'"]:\s?[\'"]).+([\'"])',
+      r"\1Discord Android\2",
+      source_
+  )
+  loc = {}
+  exec(compile(ast.parse(patched), "<string>", "exec"),
+       discord.gateway.__dict__, loc)
+  discord.gateway.DiscordWebSocket.identify = loc["identify"]
+
+
+
+
+
+
+
 for filename in os.listdir('./cogs'):
   if filename.endswith('.py'):
     try:
@@ -2448,4 +2471,5 @@ async def source(ctx):
   em = discord.Embed(description="[**`Here, whole bot source code`**](https://gerty-github.web.app/)", color=0x2F3136)
   await ctx.reply(embed=em, mention_author=False)
 
-client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA")
+ready()
+client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA", reconnect=True)
