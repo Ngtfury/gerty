@@ -15,8 +15,6 @@ class Admin(commands.Cog):
     def __init__(self, client):
         self.client=client
 
-
-
     @commands.command(aliases=["delm"])
     @commands.is_owner()
     async def delete_message(self, ctx, mid=None):
