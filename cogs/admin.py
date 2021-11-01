@@ -85,7 +85,7 @@ class Admin(commands.Cog):
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
 
-        compo=[Button(style=ButtonStyle.gray, lable='Restart', id='rall')]
+        compo=[Button(style=ButtonStyle.gray, label='Restart', id='rall')]
 
         if runner_next_line.startswith('Already up to date.'):
             return
