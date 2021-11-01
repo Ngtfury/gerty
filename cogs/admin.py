@@ -97,8 +97,12 @@ class Admin(commands.Cog):
                 event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
                 if isinstance(event.component, Select):
                     if event.values[0] in options:
-                        self.client.reload_extension(f'cogs.{event.values[0]}')
-                        await event.respond(type=7, content=f'Reloaded {event.values[0]} successfully')
+                        try:
+                            self.client.reload_extension(f'cogs.{str(event.values[0])}')
+                            loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
+                        except:
+                            loaded_or_not=f'Coudn\'t load {str(event.values[0])}'
+                        await event.respond(type=7, content=f'{loaded_or_not}')
                 elif isinstance(event.component, Button):
                     if event.component.id=='rall':
                         await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
