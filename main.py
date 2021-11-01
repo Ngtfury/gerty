@@ -102,7 +102,13 @@ async def time_formatter(seconds: float):
         ((str(seconds) + "s, ") if seconds else "")
   return tmp[:-2]
 
-
+@client.check
+async def check_blacklist(ctx):
+  is_blacklisted=await client.db.fetch('SELECT * FROM blacklisted WHERE user_id=$1', ctx.author.id)
+  if is_blacklisted:
+    return False
+  else:
+    return True
 
 
 @client.event
