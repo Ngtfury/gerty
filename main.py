@@ -298,7 +298,6 @@ async def on_command_error(ctx, error):
 
 
 @client.command(aliases=['8ball'])
-@check_user_blacklist()
 async def _8ball(ctx, *, question):
   responses = ["It is certain.",
 "It is decidedly so.",
@@ -326,7 +325,6 @@ async def _8ball(ctx, *, question):
 
 
 @client.command(aliases=["av"])
-@check_user_blacklist()
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
       if ctx.message.reference:
@@ -340,7 +338,6 @@ async def avatar(ctx, user: discord.Member=None):
 
 
 @client.command()
-@check_user_blacklist()
 @commands.has_permissions(manage_channels=True)
 async def deletechannel(ctx, channel: discord.TextChannel):
       if ctx.author.guild_permissions.manage_channels:
@@ -354,7 +351,6 @@ async def deletechannel(ctx, channel: discord.TextChannel):
 
 @client.command(aliases=["deletevc", "dvc"])
 @commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
 async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
       if ctx.author.guild_permissions.manage_channels:
         
@@ -366,7 +362,6 @@ async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
 #emojify command
 
 @client.command()
-@check_user_blacklist()
 async def emojify(ctx, *, text):
   emojis = []
   for s in text:
@@ -384,7 +379,6 @@ async def emojify(ctx, *, text):
 
 #say command
 @client.group(invoke_without_command=True, aliases=["s"])
-@check_user_blacklist()
 async def say(ctx, *, content):
   try:
     await ctx.message.delete()
@@ -396,7 +390,6 @@ async def say(ctx, *, content):
     await ctx.send(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
 
 @say.command(aliases=["em"])
-@check_user_blacklist()
 async def embed(ctx, *, reply = "without reply"):
   try:
     await ctx.message.delete()
@@ -414,7 +407,6 @@ async def embed(ctx, *, reply = "without reply"):
 
 
 @client.command()
-@check_user_blacklist()
 @commands.has_permissions(administrator=True)
 async def reactrole(ctx, emoji, role: discord.Role, *, message):
   d = discord.Embed(description=f"<:success:893501515107557466> React role event created in {ctx.channel.mention}")
@@ -447,7 +439,6 @@ async def reactrole(ctx, emoji, role: discord.Role, *, message):
 
 @client.command()
 @commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
 async def mute(ctx, member: discord.Member, *, reason=None):
   if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
     em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to mute that member", color=0x2F3136)
@@ -478,7 +469,6 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 @client.command()
 @commands.has_permissions(manage_channels=True)
-@check_user_blacklist()
 async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
 
@@ -491,7 +481,6 @@ async def unmute(ctx, member: discord.Member):
 #giveaway command main
 @client.command()
 @commands.has_permissions(administrator=True)
-@check_user_blacklist()
 async def giveaway(ctx):
   await ctx.send("**Let's start this Giveaway! answer these questions within __15 seconds__**")
 
@@ -560,7 +549,6 @@ async def giveaway(ctx):
 
 #reroll command
 @client.command()
-@check_user_blacklist()
 async def reroll(ctx, channel : discord.TextChannel, id_ : int):
     try:
       new_msg = await channel.fetch_message(id_)
@@ -621,7 +609,6 @@ winningConditions = [
 
 
 @client.command(aliases=['ttt'])
-@check_user_blacklist()
 async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
     global player1
@@ -664,7 +651,6 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 async def place(ctx, pos: int):
     global turn
     global player1
@@ -739,7 +725,6 @@ async def place_error(ctx, error):
 
 @client.command(aliases=["show", "search", "img", "googlesearch"])
 @commands.cooldown(1,5,commands.BucketType.user)
-@check_user_blacklist()
 async def google(ctx, *, search):
   try:
     googleclient = async_cse.Search("AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio")
@@ -845,7 +830,6 @@ reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
 
 @client.command()
 @commands.cooldown(1,10000,commands.BucketType.channel)
-@check_user_blacklist()
 async def meme(ctx):
   emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_", color=0xeeff00)
   v = await ctx.send(embed=emm)
@@ -874,7 +858,6 @@ async def meme(ctx):
 #rps try :sob:
 @client.command()
 @commands.cooldown(1,5,commands.BucketType.user)
-@check_user_blacklist()
 async def rps(ctx):
 
   comp = choice(ch1)
@@ -928,7 +911,6 @@ async def rps(ctx):
 #userinfo
 
 @client.command(aliases=["userinfo", "ui"])
-@check_user_blacklist()
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     if ctx.message.reference:
@@ -1008,7 +990,6 @@ async def whois(ctx, member: discord.Member=None):
 
 @client.command(aliases=['ci'])
 @commands.cooldown(1,5,commands.BucketType.user)
-@check_user_blacklist()
 async def channelinfo(ctx):
   
 
@@ -1029,7 +1010,6 @@ async def channelinfo(ctx):
 
 @client.command()
 @commands.has_permissions(manage_channels = True)
-@check_user_blacklist()
 async def lock(ctx, channel: discord.TextChannel = None):
   if channel == None:
     channel = ctx.channel
@@ -1042,7 +1022,6 @@ async def lock(ctx, channel: discord.TextChannel = None):
 
 @client.command()
 @commands.has_permissions(manage_channels = True)
-@check_user_blacklist()
 async def unlock(ctx, channel: discord.TextChannel = None):
   if channel == None:
     channel = ctx.channel
@@ -1052,7 +1031,6 @@ async def unlock(ctx, channel: discord.TextChannel = None):
   await ctx.send(embed=embed)
 
 @client.command(aliases=["flip"])
-@check_user_blacklist()
 async def coin(ctx):
   v = await ctx.send("> **<a:flip:867032673403142144> The coin is flipping**")
   await asyncio.sleep(3)
@@ -1061,7 +1039,6 @@ async def coin(ctx):
   
 
 @client.command()
-@check_user_blacklist()
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
@@ -1072,14 +1049,12 @@ async def slowmode(ctx, seconds: int):
 
 
 @client.command(pass_content=True)
-@check_user_blacklist()
 @commands.cooldown(1,5,commands.BucketType.user)
 async def nick(ctx, member: discord.Member, *, arg):
   await member.edit(nick=arg)
   await ctx.send(f'Nickname was changed for {member.mention} to {arg}')
 
 @client.command(pass_content=True)
-@check_user_blacklist()
 @commands.cooldown(1,5,commands.BucketType.user)
 async def resetnick(ctx, member: discord.Member):
   await member.edit(nick=f"{member.name}")
@@ -1089,7 +1064,6 @@ async def resetnick(ctx, member: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 @commands.cooldown(1,10,commands.BucketType.guild)
 @commands.has_permissions(administrator = True)
 async def massunban(ctx):
@@ -1106,7 +1080,6 @@ async def massunban(ctx):
     
 
 @client.command()
-@check_user_blacklist()
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
   await asyncio.sleep(1)
@@ -1146,7 +1119,6 @@ async def hack(ctx, user: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 async def help(ctx):
   components=[Select(placeholder="See commands of specific modules!",
                                     options=[
@@ -1364,7 +1336,6 @@ async def help(ctx):
 #roleplay
 #hug
 @client.command()
-@check_user_blacklist()
 async def hug(ctx, user: discord.Member):
   hugGifs = ["https://media1.tenor.com/images/1069921ddcf38ff722125c8f65401c28/tenor.gif?itemid=11074788",
   "https://media1.tenor.com/images/7db5f172665f5a64c1a5ebe0fd4cfec8/tenor.gif?itemid=9200935",
@@ -1385,7 +1356,6 @@ async def hug(ctx, user: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 async def kiss(ctx, user: discord.Member):
   kissGifs = ["https://media1.tenor.com/images/503bb007a3c84b569153dcfaaf9df46a/tenor.gif?itemid=17382412",
   "https://media1.tenor.com/images/f5167c56b1cca2814f9eca99c4f4fab8/tenor.gif?itemid=6155657",
@@ -1402,7 +1372,6 @@ async def kiss(ctx, user: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 async def slam(ctx, member: discord.Member):
   slamGifs = ["https://media1.tenor.com/images/89309d227081132425e5931fbbd7f59b/tenor.gif?itemid=4880762",
   "https://media.tenor.com/images/6d0c8075ea6f2f125449886099e2da4c/tenor.gif",
@@ -1416,7 +1385,6 @@ async def slam(ctx, member: discord.Member):
 
 
 @client.command()
-@check_user_blacklist()
 async def punch(ctx, user: discord.Member):
   punchGifs = ["https://media1.tenor.com/images/55507aea306782b916659085fc062909/tenor.gif?itemid=8932977",
   "https://media1.tenor.com/images/c621075def6ca41785ef4aaea20cc3a2/tenor.gif?itemid=7679409",
@@ -1433,7 +1401,6 @@ async def punch(ctx, user: discord.Member):
 
 #reports 
 @client.command()
-@check_user_blacklist()
 async def report(ctx, *, report=None):
   report_channel = client.get_channel(890595567825219584)
   time_when_report = datetime.datetime.now()
@@ -1483,7 +1450,6 @@ client.ticket_configs = {}
 
 
 @client.command()
-@check_user_blacklist()
 async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChannel=None):
     if msg is None or category is None:
         await ctx.channel.send("Failed to configure the ticket as an argument was not given or was invalid. i.e g!ticket [message id] [category id]")
@@ -1510,7 +1476,6 @@ async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChann
 music = DiscordUtils.Music()
 
 @client.command()
-@check_user_blacklist()
 async def join(ctx):
   voicetrue = ctx.author.voice
   if voicetrue is None:
@@ -1520,7 +1485,6 @@ async def join(ctx):
   await ctx.author.voice.channel.connect()
 
 @client.command(aliases=["disconnect"])
-@check_user_blacklist()
 async def dc(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   voicetrue = ctx.author.voice
@@ -1536,7 +1500,6 @@ async def dc(ctx):
  
 
 @client.command(aliases=["p"])
-@check_user_blacklist()
 async def play(ctx, *, url):
   try:
     voicetrue = ctx.author.voice
@@ -1566,7 +1529,6 @@ async def play(ctx, *, url):
 
 
 @client.command()
-@check_user_blacklist()
 async def queue(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   em = discord.Embed(title="Queue", description=f"{',<:blank:862724961096695858>'.join([song.name for song in player.current_queue()])}", color=0xff0059)
@@ -1574,7 +1536,6 @@ async def queue(ctx):
 
 
 @client.command()
-@check_user_blacklist()
 async def skip(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
     await player.skip(force=True)
@@ -1590,7 +1551,6 @@ async def skip(ctx):
 
 
 @client.command(aliases=["vol"])
-@check_user_blacklist()
 async def volume(ctx, volume):
     player = music.get_player(guild_id=ctx.guild.id)
     song, volumee = await player.change_volume(float(volume) / 100) # volume should be a float between 0 to 1
@@ -1599,7 +1559,6 @@ async def volume(ctx, volume):
 
 
 @client.command()
-@check_user_blacklist()
 async def pause(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = await player.pause()
@@ -1607,7 +1566,6 @@ async def pause(ctx):
   await ctx.send(embed=embed)
 
 @client.command()
-@check_user_blacklist()
 async def resume(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = await player.resume()
@@ -1616,7 +1574,6 @@ async def resume(ctx):
 
 
 @client.command()
-@check_user_blacklist()
 async def loop(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = await player.toggle_song_loop()
@@ -1629,7 +1586,6 @@ async def loop(ctx):
     
 
 @client.command(aliases=["np"])
-@check_user_blacklist()
 async def nowplaying(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = player.now_playing()
@@ -1646,7 +1602,6 @@ async def nowplaying(ctx):
   
 
 @client.command()
-@check_user_blacklist()
 async def remove(ctx, index):
   player = music.get_player(guild_id=ctx.guild.id)
   song = await player.remove_from_queue(int(index))
@@ -1657,7 +1612,6 @@ async def remove(ctx, index):
             
 
 @client.command()
-@check_user_blacklist()
 async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
   if member == None:
     member = ctx.author
@@ -1668,7 +1622,6 @@ async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None
  
 #wanted
 @client.command()
-@check_user_blacklist()
 async def wanted(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1686,7 +1639,6 @@ async def wanted(ctx, user: discord.Member = None):
 
 
 @client.command()
-@check_user_blacklist()
 async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   if user2 == None:
     user2 = ctx.author
@@ -1728,7 +1680,6 @@ async def sponge(ctx, user: discord.Member = None):
 
 
 @client.command()
-@check_user_blacklist()
 @commands.has_permissions(manage_channels=True)
 async def nuke(ctx, channel: discord.TextChannel=None):
   if channel==None:
@@ -1741,7 +1692,6 @@ async def nuke(ctx, channel: discord.TextChannel=None):
 
 
 @client.command()
-@check_user_blacklist()
 async def translate(ctx, lang, *, args=None):
   if args == None:
     if ctx.message.reference:
@@ -1758,7 +1708,6 @@ async def translate(ctx, lang, *, args=None):
 
 
 @client.command()
-@check_user_blacklist()
 async def anime(ctx, *, search):
   embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
   s = await ctx.send(embed=embed)
@@ -1779,7 +1728,6 @@ async def anime(ctx, *, search):
 
 
 @client.command()
-@check_user_blacklist()
 async def timestamp(ctx, unixcode: int):
   em = discord.Embed(title="Unixcode to timestamp converter", description=f"Long Date   | <t:{unixcode}:D>\nShort Date   | <t:{unixcode}:d>\n---------------------------------------\nLong Date/Time   | <t:{unixcode}:F>\nShort Date/Time   | <t:{unixcode}:f>\n---------------------------------------\nLong Time   | <t:{unixcode}:T>\nShort Time   | <t:{unixcode}:t>\n---------------------------------------\nRelative Time   | <t:{unixcode}:R>", color=0xff00d4)
   em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
@@ -1788,7 +1736,6 @@ async def timestamp(ctx, unixcode: int):
 
 
 @client.command()
-@check_user_blacklist()
 async def ytt(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1801,7 +1748,6 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
     await s.edit(embed=embed)
 
 @client.command()
-@check_user_blacklist()
 async def poker(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1812,7 +1758,6 @@ async def poker(ctx, channel: discord.VoiceChannel=None):
 
 
 @client.command()
-@check_user_blacklist()
 async def chess(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1823,7 +1768,6 @@ async def chess(ctx, channel: discord.VoiceChannel=None):
 
 
 @client.command()
-@check_user_blacklist()
 async def betrayal(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1833,7 +1777,6 @@ async def betrayal(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
 
 @client.command()
-@check_user_blacklist()
 async def fishing(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1844,7 +1787,6 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     
 
 @client.command()
-@check_user_blacklist()
 async def webhook(ctx, member: discord.Member = None, *, content):
   try:
     if member == None:
@@ -1879,7 +1821,6 @@ def generate_screenshot_api_url(customer_key, secret_phrase, options):
 
 
 @client.command()
-@check_user_blacklist()
 async def screenshot(ctx, url):
   if ctx.channel.is_nsfw():
     customer_key = '3fd3f1'
@@ -1908,7 +1849,6 @@ async def screenshot(ctx, url):
     await ctx.send(embed=em)
   
 @client.command(aliases=["delete"])
-@check_user_blacklist()
 async def trash(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1926,7 +1866,6 @@ async def trash(ctx, user: discord.Member = None):
   
   
 @client.command(aliases=["affect"])
-@check_user_blacklist()
 async def child(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1943,7 +1882,6 @@ async def child(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("affect2.png"))
   
 @client.command(aliases=["sus"])
-@check_user_blacklist()
 async def amongus(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -2004,7 +1942,6 @@ def calculate(exp):
     return result
  
 @client.command()
-@check_user_blacklist()
 async def calc(ctx):
     em = discord.Embed(description="> <a:gloading:855680101529944064> Loading calculator..")
     m = await ctx.send(embed=em)
@@ -2039,7 +1976,6 @@ async def calc(ctx):
   
 
 @client.command()
-@check_user_blacklist()
 async def grayscale(ctx, user: discord.Member=None):
     if user == None:
       user = ctx.author
@@ -2054,7 +1990,6 @@ async def grayscale(ctx, user: discord.Member=None):
     await ctx.send(file=f, embed=em)
 
 @client.command()
-@check_user_blacklist()
 async def invert(ctx, user: discord.Member=None):
   if user == None:
     user = ctx.author
@@ -2071,14 +2006,12 @@ async def invert(ctx, user: discord.Member=None):
 
  
 @client.group(invoke_without_command=True)
-@check_user_blacklist()
 async def enhance(ctx):
     em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
 @enhance.command()
-@check_user_blacklist()
 async def color(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -2097,7 +2030,6 @@ async def color(ctx, user: discord.Member=None):
     await ctx.send(file=f, embed=em2)
 
 @enhance.command()
-@check_user_blacklist()
 async def contrast(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -2116,7 +2048,6 @@ async def contrast(ctx, user: discord.Member=None):
     await ctx.send(file=f, embed=em)
 
 @enhance.command()
-@check_user_blacklist()
 async def brightness(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -2136,7 +2067,6 @@ async def brightness(ctx, user:discord.Member=None):
 
 
 @enhance.command()
-@check_user_blacklist()
 async def sharpness(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -2155,7 +2085,6 @@ async def sharpness(ctx, user:discord.Member=None):
     await ctx.send(file=f, embed=em)
 
 @enhance.command()
-@check_user_blacklist()
 async def rgb(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -2176,7 +2105,6 @@ async def rgb(ctx, user:discord.Member=None):
   
   
 @client.command(aliases=["doesnotexist", "thispersondoesnotexist"])
-@check_user_blacklist()
 async def persondoesnotexist(ctx):
   
   picture = await get_online_person()
@@ -2190,7 +2118,6 @@ async def persondoesnotexist(ctx):
 
 
 @client.command()
-@check_user_blacklist()
 async def spotify(ctx, user:discord.Member=None):
   if user==None:
     user=ctx.author
@@ -2231,7 +2158,6 @@ async def spotify(ctx, user:discord.Member=None):
   await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**',file=f, components=components, mention_author=False)
   
 @client.command(aliases=["si"])
-@check_user_blacklist()
 async def serverinfo(ctx):
   if ctx.guild.description is not None:
     desc = f"> **<:tag:880100337745264680> Server Description**: {ctx.guild.description}"
@@ -2314,7 +2240,6 @@ async def generate_token(ctx, member: discord.Member = None):
     await ctx.send(embed=embed)
 
 @client.command()
-@check_user_blacklist()
 async def waifu(ctx):
   async with aiohttp.ClientSession() as cs:
       async with cs.get('https://api.waifu.pics/sfw/waifu') as r:
@@ -2326,7 +2251,6 @@ async def waifu(ctx):
 
 
 @client.command()
-@check_user_blacklist()
 async def status(ctx, status_code):
   embed = discord.Embed(color=0x2F3136)
   embed.set_image(url=f"https://http.cat/{status_code}")
@@ -2336,7 +2260,6 @@ async def status(ctx, status_code):
 
 
 @client.command()
-@check_user_blacklist()
 async def tts(ctx, *, text):
   em = discord.Embed(description="<a:ttsloading:886607614111273010> Processing your tts", color=0x2F3136)
   if len(text) >= 20:
@@ -2350,63 +2273,6 @@ async def tts(ctx, *, text):
   await ctx.send(f"{ctx.author.mention}",file=discord.File('tts.mp3'))
 
 
-
-@client.command(aliases=["upload-emoji", "upload_emoji", "create-emoji", "create_emoji"])
-@check_user_blacklist()
-async def createemoji(ctx, url: str, *, name=None):
-  embed=discord.Embed(color=0x2F3136)
-  embed.set_image(url=f"{url}")
-  main = await ctx.send(
-    "Is this right?",
-    embed=embed,
-    components=[[Button(style=ButtonStyle.green, label='Yes'), Button(style=ButtonStyle.grey, label='No')]]
-  )
-
-  while True:
-    res = await client.wait_for('button_click')
-    if res.author != ctx.author:
-      await res.respond(
-        content=f"This buttons can only be used by {ctx.author.mention}",
-        type=4
-      )
-    else:
-      if res.component.label == 'Yes':
-        async with aiohttp.ClientSession() as ses:
-          async with ses.get(url) as r:
-            try:
-              img_or_gif = BytesIO(await r.read())
-              b_value = img_or_gif.getvalue()
-              if r.status in range(200, 299):
-                try:
-                  d = await ctx.guild.create_custom_emoji(image=b_value, name=name)
-                except:
-                  await ctx.send("Bot doesn't have permissions to upload emoji")
-                  try:
-                   await main.delete()
-                  except:
-                    pass
-                  break
-                await ses.close()
-                if d.animated == True:
-                  e = f"<a:{d.name}:{d.id}>"
-                else:
-                  e = f"<:{d.name}:{d.id}>"
-                await main.delete()
-                await ctx.send(f"{ctx.author.name} uploaded {e}")
-              else:
-                await ctx.send(f'Error when making request | {r.status} response.')
-                await ses.close()
-            except discord.HTTPException:
-              print(f'{discord.HTTPException}')
-
-      elif res.component.label == 'No':
-        try:
-          await main.delete()
-        except:
-          pass
-        ff = await ctx.send("Cancelled")
-        await asyncio.sleep(3)
-        await ff.delete()
 
 @client.command()
 async def nitro(ctx):
