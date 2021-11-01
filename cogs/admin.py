@@ -131,7 +131,7 @@ class Admin(commands.Cog):
             return await ctx.send('That user is not blacklisted')
 
         await self.client.db.execute('DELETE FROM blacklisted WHERE user_id=$1', user.id)
-        em=discord.Embed(description=f'<:success:893501515107557466> **Unblacklisted {user.name}', color=0x2F3136)
+        em=discord.Embed(description=f'<:success:893501515107557466> **Unblacklisted {user.name}**', color=0x2F3136)
         await ctx.send(embed=em)
 
 
