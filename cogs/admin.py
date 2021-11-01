@@ -106,5 +106,6 @@ class Admin(commands.Cog):
                         break
 
 
+#ok
 def setup(client):
     client.add_cog(Admin(client))
