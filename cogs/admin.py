@@ -1,4 +1,5 @@
 import discord
+from discord import components
 from discord.ext import commands 
 import os
 import sys
@@ -96,7 +97,7 @@ class Admin(commands.Cog):
             while True:
                 event=await self.client.wait_for('button_click', check=lambda i: i.component.id in ['rall'] and i.channel==ctx.channel and i.author==ctx.author)
                 if event.component.id=='rall':
-                    await to_disable.disable_components()
+                    await to_disable.edit(components=[Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
                     self.restart_program()
                     break
 
