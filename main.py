@@ -165,7 +165,7 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description=f"<:error:893501396161290320>The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, UserBlacklisted):
-    em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for **{error.reason}**", color=0x2F3136)
+    em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for reason `{error.reason}`", color=0x2F3136)
     await ctx.send(embed=em)
   elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
     em = discord.Embed(description=f"<:error:893501396161290320> The bot is missing permissions to run this command", color=0x2F3136)
