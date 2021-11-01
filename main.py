@@ -90,94 +90,6 @@ os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
 os.environ["JISHAKU_HIDE"] = "True"
 
-#blacklist
-async def open_muted(user):
-
-  users = await get_muted_data()
-
-  if str(user.id) in users:
-    return False
-  else:
-    users[str(user.id)] = {}
-    users[str(user.id)]["mute"] = 0
-
-    
-
-
-  with open("data/muted.json","w") as f:
-    json.dump(users,f)
-  return True
-
-async def get_mute(user):
-    
-    await open_muted(user)
-    users = await get_muted_data()
-
-    wallet_amt = users[str(user.id)]['mute']
-    return wallet_amt
-
-async def get_muted_data():
-  with open("data/muted.json") as f:
-    users = json.load(f)
-
-  return users
-
-async def add_mute(user):
-    
-    await open_muted(user)
-    
-    users = await get_muted_data()
-
-    users[str(user.id)]['mute'] += 1
-
-    with open("data/muted.json","w") as f:
-        json.dump(users, f)
-
-async def remove_mute(user):
-    
-    await open_muted(user)
-    
-    users = await get_muted_data()
-
-    users[str(user.id)]['mute'] -= 1
-
-    with open("data/muted.json","w") as f:
-        json.dump(users, f)
-
-@client.command()
-@commands.is_owner()
-async def blacklist(ctx,user:discord.Member, *,reason=None):
-    if await get_mute(user) == 0:
-      await add_mute(user)
-      if reason == None:
-        em = discord.Embed(description=f"<:success:893501515107557466> Blacklisted {user.name}", color=0x2F3136)
-        await ctx.send(embed=em)
-      else:
-        em = discord.Embed(description=f"<:success:893501515107557466> Blacklisted {user.name} for reason {reason}", color=0x2F3136)
-        await ctx.send(embed=em)
-    else:
-      await ctx.send("The person is already blacklisted.")
-
-@client.command()
-@commands.is_owner()
-async def unblacklist(ctx,user:discord.Member, *,reason=None):
-    if await get_mute(user) != 0:
-      await remove_mute(user)
-      if reason == None:
-        em = discord.Embed(description=f"{user.name} is now removed from blacklist", color=0x2F3136)
-        await ctx.send(embed=em)
-      else:
-        em = discord.Embed(description=f"{user.name} is now removed from blacklist for reason {reason}", color=0x2F3136)
-    else:
-      await ctx.send("The person is not blacklisted.")
-
-
-
-def check_user_blacklist():
-  async def user_blacklist(ctx):
-    return await get_mute(ctx.author) == 0
-  return commands.check(user_blacklist)
-
 
 async def time_formatter(seconds: float):
 
@@ -192,8 +104,6 @@ async def time_formatter(seconds: float):
 
 @client.event
 async def on_ready():
-  global check_user_blacklist
-
   DiscordComponents(client)
   async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
         pass
