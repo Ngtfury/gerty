@@ -68,7 +68,7 @@ class Admin(commands.Cog):
         python = sys.executable
         os.execl(python, python, * sys.argv)
 
-
+    #ok
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
