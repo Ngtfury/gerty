@@ -110,6 +110,5 @@ class Admin(commands.Cog):
                         break
 
 
-#okokidkbro
 def setup(client):
     client.add_cog(Admin(client))
