@@ -146,10 +146,6 @@ async def uptime(ctx):
     await main.edit(embed=em2)
     await asyncio.sleep(1)
 
-client.command_stats=0
-@client.event
-async def on_command(ctx):
-  client.command_stats=client.command_stats+1
 
 @client.event
 async def on_command_error(ctx, error):
