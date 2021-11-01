@@ -57,7 +57,7 @@ import asyncpg
 import ast
 import inspect
 
-activity = discord.Activity(type=discord.ActivityType.competing, name="Discord servers")#684108370034425925
+activity = discord.Activity(type=discord.ActivityType.watching, name="My mobile")
 client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or("g!", "g! ", "!g"), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928])
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
