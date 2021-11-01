@@ -102,7 +102,7 @@ class Admin(commands.Cog):
                             loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
                         except:
                             loaded_or_not=f'Coudn\'t load {str(event.values[0])}'
-                        await event.respond(type=7, content=f'{loaded_or_not}')
+                        await event.respond(type=4, content=f'{loaded_or_not}', ephemeral=False)
                 elif isinstance(event.component, Button):
                     if event.component.id=='rall':
                         await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
