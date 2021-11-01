@@ -92,7 +92,7 @@ class Admin(commands.Cog):
             while True:
                 event=await self.client.wait_for('button_click', check=lambda i: i.component.id in ['rall'] and i.channel==ctx.channel and i.author==ctx.author)
                 if event.component.id=='rall':
-                    await main_message.disable_components()
+                    await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
                     self.restart_program()
                     break
 
