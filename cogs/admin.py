@@ -109,6 +109,9 @@ class Admin(commands.Cog):
                         self.restart_program()
                         break
 
+    @commands.command()
+    async def uhhh(ctx):
+        await ctx.send("it worked!!!")
 
 def setup(client):
     client.add_cog(Admin(client))
