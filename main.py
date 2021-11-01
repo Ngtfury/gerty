@@ -102,10 +102,19 @@ async def time_formatter(seconds: float):
         ((str(seconds) + "s, ") if seconds else "")
   return tmp[:-2]
 
+
+class UserBlacklisted(commands.CheckFailure):
+  def __init__(self, user, reason, *args, **kwargs):
+    self.user=user
+    self.reason=reason
+    super().__init__(*args, **kwargs)
+
+
 @client.check
 async def check_blacklist(ctx):
-  is_blacklisted=await client.db.fetch('SELECT * FROM blacklisted WHERE user_id=$1', ctx.author.id)
+  is_blacklisted=await client.db.fetchrow('SELECT * FROM blacklisted WHERE user_id=$1', ctx.author.id)
   if is_blacklisted:
+    raise UserBlacklisted(ctx.author, reason=is_blacklisted['reason'])
     return False
   else:
     return True
@@ -155,8 +164,8 @@ async def on_command_error(ctx, error):
   elif isinstance(error, commands.BotMissingPermissions):
     em = discord.Embed(description=f"<:error:893501396161290320>The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
-  elif isinstance(error, commands.CheckFailure):
-    em = discord.Embed(description="<:error:893501396161290320> You are blacklisted from using commands", color=0x2F3136)
+  elif isinstance(error, UserBlacklisted):
+    em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for reason {error.reason}", color=0x2F3136)
     await ctx.send(embed=em)
   elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
     em = discord.Embed(description=f"<:error:893501396161290320> The bot is missing permissions to run this command", color=0x2F3136)
