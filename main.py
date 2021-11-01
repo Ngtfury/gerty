@@ -139,7 +139,10 @@ async def on_ready():
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
   em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
-  await ctx.send(embed=em)
+  main=await ctx.send(embed=em)
+  for x in range(5):
+    await main.edit(embed=em)
+    await asyncio.sleep(1)
 
 
 
