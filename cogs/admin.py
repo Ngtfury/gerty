@@ -1,5 +1,4 @@
 import discord
-from discord import components
 from discord.ext import commands 
 import os
 import sys
