@@ -140,7 +140,7 @@ async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
   em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
   main=await ctx.send(embed=em)
-  for x in range(5):
+  for x in range(7):
     up2 = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
     em2 = discord.Embed(description=f"⏱️ {up2}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
     await main.edit(embed=em2)
