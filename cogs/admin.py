@@ -95,7 +95,7 @@ class Admin(commands.Cog):
             await main_message.edit(embed=em3, components=compo)
             while True:
                 try:
-                    event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author, timeout=20)
+                    event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author, timeout=10)
                     if isinstance(event.component, Select):
                         if event.values[0]:
                             try:
