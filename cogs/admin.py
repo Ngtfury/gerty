@@ -87,7 +87,6 @@ class Admin(commands.Cog):
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136, timestamp=datetime.datetime.now())
             em3.set_footer(text='Sync done at')
             await main_message.edit(embed=em3)
-
             self.restart_program()
 
 
