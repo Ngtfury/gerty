@@ -94,7 +94,7 @@ class Admin(commands.Cog):
             em3.set_footer(text='Sync done at')
             await main_message.edit(embed=em3, components=compo)
             while True:
-                event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
+                event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author, timeout=20)
                 if isinstance(event.component, Select):
                     if event.values[0]:
                         try:
@@ -110,7 +110,7 @@ class Admin(commands.Cog):
                         break
 
     @commands.command()
-    async def uhh(self, ctx):
+    async def diditwork(self, ctx):
         await ctx.send("it worked!!!")
 
 def setup(client):
