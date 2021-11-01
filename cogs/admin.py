@@ -110,7 +110,7 @@ class Admin(commands.Cog):
                         break
 
     @commands.command()
-    async def uhhh(ctx):
+    async def uhh(self, ctx):
         await ctx.send("it worked!!!")
 
 def setup(client):
