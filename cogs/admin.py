@@ -114,6 +114,18 @@ class Admin(commands.Cog):
                     await main_message.edit(components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
                     break
 
+    @commands.command()
+    @commands.is_owner()
+    async def blacklist(self, ctx, user: discord.Member, *, reason):
+        if user==ctx.author:
+            return await ctx.send('You cannot blacklist yourself')
+    
+        await self.client.db.execute('INSERT INTO blacklisted (user_id,reason) VALUES ($1,$2)', user.id, reason)
+        em=discord.Embed(description=f'<:success:893501515107557466> **Blacklisted {user.name} for reason: {reason}', color=0x2F3136)
+        await ctx.send(embed=em)
 
+
+
+                
 def setup(client):
     client.add_cog(Admin(client))
