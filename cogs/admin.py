@@ -84,9 +84,7 @@ class Admin(commands.Cog):
         em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
-
         compo=[Button(style=ButtonStyle.gray, label='Restart', id='rall')]
-
         if runner_next_line.startswith('Already up to date.'):
             return
         else:
