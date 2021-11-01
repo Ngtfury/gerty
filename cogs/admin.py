@@ -62,6 +62,11 @@ class Admin(commands.Cog):
 
         return [output.decode() for output in result]
 
+
+    def restart_program():
+        python = sys.executable
+        os.execl(python, python, * sys.argv)
+
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
@@ -80,10 +85,8 @@ class Admin(commands.Cog):
             await asyncio.sleep(1)
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136)
             await main_message.edit(embed=em3)
-            def restart_program():
-                python = sys.executable
-                os.execl(python, python, * sys.argv)
-            restart_program()
+
+            self.restart_program()
 
 
 def setup(client):
