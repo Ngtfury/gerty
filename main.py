@@ -133,12 +133,12 @@ async def on_ready():
             client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
   print(f"Connected to {client.user.name}.")
-  client.uptime = datetime.datetime.now()
+  client.uptime = time.time()
 
 @client.command()
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
-  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime.timestamp())}:R>", color=0x2F3136)
+  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
   await ctx.send(embed=em)
 
 
