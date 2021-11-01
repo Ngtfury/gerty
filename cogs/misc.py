@@ -9,11 +9,7 @@ class Misc(commands.Cog):
         self.client=client
 
 
-    @commands.command()
-    async def uptime(self, ctx):
-        uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
-        em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(lastrestart)}:R>", color=0x2F3136)
-        await ctx.send(embed=em)
+
 
     @commands.command(aliases=['ms', 'latency'])
     async def ping(self, ctx):

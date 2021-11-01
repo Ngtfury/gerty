@@ -179,7 +179,7 @@ def check_user_blacklist():
   return commands.check(user_blacklist)
 
 
-async def time_formatter(self, seconds: float):
+async def time_formatter(seconds: float):
 
   minutes, seconds = divmod(int(seconds), 60)
   hours, minutes = divmod(minutes, 60)
@@ -207,6 +207,16 @@ async def on_ready():
   print(f"Connected to {client.user.name}.")
   global startTime 
   startTime = time.time()
+
+@client.command()
+async def uptime(ctx):
+  uptime = str(datetime.timedelta(seconds=int(round(time.time()-startTime))))
+  em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(lastrestart)}:R>", color=0x2F3136)
+  await ctx.send(embed=em)
+
+
+
+
 
 
 @client.event
@@ -1598,7 +1608,7 @@ async def pause(ctx):
 
 @client.command()
 @check_user_blacklist()
-async def resume(self, ctx):
+async def resume(ctx):
   player = music.get_player(guild_id=ctx.guild.id)
   song = await player.resume()
   embed = discord.Embed(title="Resumed playing", description=f"[{song.name}]({song.url})", color=0xfff700)
