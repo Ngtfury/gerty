@@ -11,8 +11,6 @@ import subprocess
 import re
 import datetime
 
-from discord_components import component
-
 
 class Admin(commands.Cog):
     def __init__(self, client):
