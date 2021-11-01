@@ -74,7 +74,7 @@ class Admin(commands.Cog):
         em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await asyncio.sleep(0.5)
-        em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n\n[status] Return code 0```', color=0x2F3136)
+        em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136)
         await main_message.edit(embed=em3)
         await ctx.message.add_reaction('<:success:893501515107557466>')
         if runner_next_line.startswith('Already up to date.'):
