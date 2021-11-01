@@ -121,7 +121,17 @@ class Admin(commands.Cog):
             return await ctx.send('You cannot blacklist yourself')
     
         await self.client.db.execute('INSERT INTO blacklisted (user_id,reason) VALUES ($1,$2)', user.id, reason)
-        em=discord.Embed(description=f'<:success:893501515107557466> **Blacklisted {user.name} for reason: {reason}', color=0x2F3136)
+        em=discord.Embed(description=f'<:success:893501515107557466> **Blacklisted {user.name} for {reason}**', color=0x2F3136)
+        await ctx.send(embed=em)
+
+    @commands.command()
+    async def unblacklist(self, ctx, user: discord.Member):
+        results=await self.client.db.fetch('SELECT * FROM blacklisted WHERE user_id=$1', user.id)
+        if not results:
+            return await ctx.send('That user is not blacklisted')
+
+        await self.client.db.execute('DELETE FROM blacklisted WHERE user_id=$1', user.id)
+        em=discord.Embed(description=f'<:success:893501515107557466> **Unblacklisted {user.name}', color=0x2F3136)
         await ctx.send(embed=em)
 
 
