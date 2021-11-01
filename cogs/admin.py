@@ -120,6 +120,10 @@ class Admin(commands.Cog):
         if user==ctx.author:
             return await ctx.send('You cannot blacklist yourself')
     
+        already=await self.client.db.fetch('SELECT * FROM blacklisted WHERE user_id=$1', user.id)
+        if already:
+            return await ctx.send('That user is already blacklisted')
+
         await self.client.db.execute('INSERT INTO blacklisted (user_id,reason) VALUES ($1,$2)', user.id, reason)
         em=discord.Embed(description=f'<:success:893501515107557466> **Blacklisted {user.name} for {reason}**', color=0x2F3136)
         await ctx.send(embed=em)
