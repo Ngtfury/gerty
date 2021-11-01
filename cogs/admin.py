@@ -96,7 +96,7 @@ class Admin(commands.Cog):
             while True:
                 event=await self.client.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
                 if isinstance(event.component, Select):
-                    if event.values[0] in options:
+                    if event.values[0]:
                         try:
                             self.client.reload_extension(f'cogs.{str(event.values[0])}')
                             loaded_or_not=f'Reloaded {str(event.values[0])} successfully'
