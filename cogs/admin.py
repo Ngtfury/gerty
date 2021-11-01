@@ -73,13 +73,13 @@ class Admin(commands.Cog):
         runner_next_line='\n'.join(runner)
         em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
-        await asyncio.sleep(1)
-        em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}[status] Return code 0```', color=0x2F3136)
-        await main_message.edit(embed=em3)
         await ctx.message.add_reaction('<:success:893501515107557466>')
         if runner_next_line.startswith('Already up to date.'):
             return
         else:
+            await asyncio.sleep(1)
+            em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136)
+            await main_message.edit(embed=em3)
             def restart_program():
                 python = sys.executable
                 os.execl(python, python, * sys.argv)
