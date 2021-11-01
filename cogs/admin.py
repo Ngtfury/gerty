@@ -3,10 +3,14 @@ from discord.ext import commands
 import os
 import sys
 import importlib
+import discord_components
+from discord_components import *
 import asyncio
 import subprocess
 import re
 import datetime
+
+from discord_components import component
 
 
 class Admin(commands.Cog):
@@ -80,14 +84,22 @@ class Admin(commands.Cog):
         em2=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}```', color=0x2F3136)
         await main_message.edit(embed=em2)
         await ctx.message.add_reaction('<:success:893501515107557466>')
+
+        compo=[Button(style=ButtonStyle.gray, lable='Restart', id='rall')]
+
         if runner_next_line.startswith('Already up to date.'):
             return
         else:
             await asyncio.sleep(1)
             em3=discord.Embed(title='Git sync', description=f'```shell\n$ git pull\n\n{runner_next_line}\n[status] Return code 0```', color=0x2F3136, timestamp=datetime.datetime.now())
             em3.set_footer(text='Sync done at')
-            await main_message.edit(embed=em3)
-            self.restart_program()
+            to_disable=await main_message.edit(embed=em3, components=compo)
+            while True:
+                event=await self.client.wait_for('button_click', check=lambda i: i.component.id in ['rall'] and i.channel==ctx.channel and i.author==ctx.author)
+                if event.component.id=='rall':
+                    await to_disable.disable_components()
+                    self.restart_program()
+                    break
 
 
 def setup(client):
