@@ -114,7 +114,7 @@ class Admin(commands.Cog):
                     break
 
     @commands.command()
-    async def diditwork(self, ctx):
+    async def syncitplz(self, ctx):
         await ctx.send("it worked!!!")
 
 def setup(client):
