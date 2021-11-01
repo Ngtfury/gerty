@@ -101,7 +101,7 @@ class Admin(commands.Cog):
                         await event.respond(type=7, content=f'Reloaded {event.values[0]} successfully')
                 elif isinstance(event.component, Button):
                     if event.component.id=='rall':
-                        await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
+                        await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
                         self.restart_program()
                         break
 
