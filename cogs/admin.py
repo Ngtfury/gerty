@@ -129,6 +129,7 @@ class Admin(commands.Cog):
                             self.restart_program()
                             break
                 except asyncio.TimeoutError:
+                    #
                     await main_message.disable_components()
                     break
 
