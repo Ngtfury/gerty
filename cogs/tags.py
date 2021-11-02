@@ -113,4 +113,4 @@ class Tags(commands.Cog):
             em.set_author(name=f'Tags by {member.name} in {ctx.guild.name}', icon_url=member.avatar_url)
             await ctx.send(embed=em)
         else:
-            await ctx.send(f'{ctx.author.name} does not have any tags in this server')
+            await ctx.send(f'{member.name} does not have any tags in this server')
