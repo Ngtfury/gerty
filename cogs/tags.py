@@ -12,7 +12,7 @@ class Tags(commands.Cog):
 
 
     async def get_tag(self, name:str, guild_id):
-        tag=await self.bot.db.fetchrow('SELECT * FROM tags WHERE guild=$1 AND name=$2', guild_id, name)
+        tag=await self.bot.db.fetchrow('SELECT * FROM tags WHERE guild_id=$1 AND name=$2', guild_id, name)
         return tag
 
     async def create_tag(self, ctx, name:str, content:str, guild_id, owner_id):
