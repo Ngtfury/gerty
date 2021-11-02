@@ -62,6 +62,8 @@ class modlogs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message):
+        if not message.guild:
+            return
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", message.guild.id)
         if result and not message.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
@@ -72,6 +74,8 @@ class modlogs(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before, after):
+        if not before.guild:
+            return
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", before.guild.id)
         if result and not before.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
