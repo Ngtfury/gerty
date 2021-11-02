@@ -83,12 +83,14 @@ class Rtfm(commands.Cog):
         cache = {}
         for key, page in page_types.items():
             sub = cache[key] = {}
-            async with aiohttp.ClientSession().get(page + '/objects.inv') as resp:
+            session = aiohttp.ClientSession()
+            async with session.get(page + '/objects.inv') as resp:
                 if resp.status != 200:
                     raise RuntimeError('Cannot build rtfm lookup table, try again later.')
 
                 stream = SphinxObjectFileReader(await resp.read())
                 cache[key] = self.parse_object_inv(stream, page)
+                await session.close()
 
         self._rtfm_cache = cache
 
