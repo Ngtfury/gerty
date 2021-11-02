@@ -167,6 +167,7 @@ class Admin(commands.Cog):
 
 
     @commands.command(pass_context=True, hidden=True, name='eval')
+    @command.is_owner()
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
 
