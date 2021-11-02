@@ -131,7 +131,7 @@ class Admin(commands.Cog):
                 except asyncio.TimeoutError:
                     #
                     #kwbgkwrkgrb
-                    await main_message.disable_components()
+                    await main_message.edit(components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
                     break
 
     @commands.command()
