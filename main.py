@@ -250,7 +250,7 @@ async def on_command_error(ctx, error):
     main_message=await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
     await main_message.add_reaction('🗑️')
     def check(reaction):
-      return str(reaction.emoji) in ["🗑️"] and reaction.message.channel==main_message.channel
+      return str(reaction.emoji) in ["🗑️"]
 
     await client.wait_for('reaction_add', check=check, timeout=604800)
     await main_message.edit(f'{main_message.content}\n```ml\n✅ MARKED AS FIXED BY DEVELOPERS```')
