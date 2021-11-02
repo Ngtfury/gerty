@@ -1595,9 +1595,9 @@ async def sponge(ctx, user: discord.Member = None):
 async def nuke(ctx, channel: discord.TextChannel=None):
   if channel==None:
     channel=ctx.channel
-  await ctx.channel.delete(reason=f'Nuked by {ctx.author}')
-  clone_channel=await ctx.channel.clone(reason=f'Nuked by {ctx.author}')
-  await clone_channel.edit(position=ctx.channel.position)
+  await channel.delete(reason=f'Nuked by {ctx.author}')
+  clone_channel=await channel.clone(reason=f'Nuked by {ctx.author}')
+  await clone_channel.edit(position=channel.position)
   await clone_channel.send(f'Channel nuked by `{ctx.author.name}`')
   
 

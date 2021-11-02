@@ -68,8 +68,6 @@ class Admin(commands.Cog):
         python = sys.executable
         os.execl(python, python, * sys.argv)
 
-    #ok bryh
-
     def load_or_reload(self, ext):
         try:
             self.client.reload_extension(ext)
