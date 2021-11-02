@@ -90,8 +90,8 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
             return await ctx.send(embed=em)
         owner=ctx.guild.get_member(is_tag['owner_id'])
-        time=tag['created_at']
-        uses=tag['tag_uses']
+        time=is_tag['created_at']
+        uses=is_tag['tag_uses']
         embed=discord.Embed(title=f'Tag info {tag}', description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
         await ctx.send(embed=embed)
 
