@@ -252,8 +252,9 @@ async def on_command_error(ctx, error):
     def check(reaction):
       return str(reaction.emoji) in ["🗑️"]
 
-    await client.wait_for('reaction_add', check=check, timeout=604800)
-    await main_message.edit(f'{main_message.content}\n```ml\n✅ MARKED AS FIXED BY DEVELOPERS```')
+    reaction=await client.wait_for('reaction_add', check=check, timeout=604800)
+    if str(reaction.emoji) == "🗑️":
+      await main_message.edit(f'{main_message.content}\n```ml\n✅ MARKED AS FIXED BY DEVELOPERS```')
 
 
 @client.command(aliases=['8ball'])
