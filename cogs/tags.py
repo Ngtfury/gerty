@@ -41,4 +41,4 @@ class Tags(commands.Cog):
     
     @tag.command(aliases=['make'])
     async def create(self, ctx, name:str, *, content):
-        await self.create_tag(name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
+        await self.create_tag(ctx, name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
