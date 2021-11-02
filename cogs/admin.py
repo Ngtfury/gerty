@@ -70,7 +70,7 @@ class Admin(commands.Cog):
             result = await process.communicate()
         except NotImplementedError:
             process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            result = await self.bot.loop.run_in_executor(None, process.communicate)
+            result = await self.client.loop.run_in_executor(None, process.communicate)
 
         return [output.decode() for output in result]
 
@@ -170,7 +170,7 @@ class Admin(commands.Cog):
         """Evaluates a code"""
 
         env = {
-            'bot': self.bot,
+            'bot': self.client,
             'ctx': ctx,
             'channel': ctx.channel,
             'author': ctx.author,
