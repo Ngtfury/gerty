@@ -351,38 +351,6 @@ async def embed(ctx, *, reply = "without reply"):
 
 
 
-
-@client.command()
-@commands.has_permissions(administrator=True)
-async def reactrole(ctx, emoji, role: discord.Role, *, message):
-  d = discord.Embed(description=f"<:success:893501515107557466> React role event created in {ctx.channel.mention}")
-  s = await ctx.send(embed=d)
- 
-  if ctx.author.guild_permissions.manage_roles:
-    emb = discord.Embed(title="React role", description=message, color=ctx.author.color)
-  msg = await ctx.channel.send(embed=emb)
-  await msg.add_reaction(emoji)
-  await asyncio.sleep(3)
-  await s.delete()
-
-  with open('data/reactrole.json') as json_file:
-    data = json.load(json_file)
-
-    new_react_role = {
-      'role_name':role.name,
-      'role_id':role.id,
-      'emoji':emoji,
-      'message_id':msg.id
-    }
-
-    data.append(new_react_role)
-
-  with open('data/reactrole.json', 'w') as j:
-    json.dump(data,j,indent=4)
-
-
-
-
 @client.command()
 @commands.has_permissions(manage_channels=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
