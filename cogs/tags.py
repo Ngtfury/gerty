@@ -42,3 +42,15 @@ class Tags(commands.Cog):
     @tag.command(aliases=['make'])
     async def create(self, ctx, name:str, *, content:commands.clean_content):
         await self.create_tag(ctx=ctx, name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
+
+
+    @tag.command(aliases=['del'])
+    async def delete(self, ctx, name:str):
+        tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
+        if not tag:
+            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists')
+            return await ctx.send(embed=em)
+        if tag['owner_id'] == ctx.author.id or 770646750804312105:
+            await self.bot.db.execute('DELETE FROM tags WHERE name=$1', name)
+            em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` deleted successfully')
+            await ctx.send(embed=em)
