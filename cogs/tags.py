@@ -35,7 +35,10 @@ class Tags(commands.Cog):
         is_tag=await self.get_tag(name=f'{tag}', guild_id=ctx.guild.id)
         if is_tag:
             content=is_tag['content']
-            return await ctx.send(f'{content}')
+            if ctx.message.reference:
+                return await ctx.message.reference.resolved.reply(f'{content}')
+            else:
+                return await ctx.send(content)
         else:
             return await ctx.send(f'Tag named `{tag}` does not exists')
     
@@ -48,9 +51,26 @@ class Tags(commands.Cog):
     async def delete(self, ctx, name:str):
         tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
         if not tag:
-            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists')
+            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
             return await ctx.send(embed=em)
         if tag['owner_id'] == ctx.author.id or 770646750804312105:
             await self.bot.db.execute('DELETE FROM tags WHERE name=$1', name)
-            em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` deleted successfully')
+            em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` deleted successfully', color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            em=discord.Embed(description=f'<:error:893501396161290320> Tag `{name}` is not owned by you', color=0x2F3136)
+            await ctx.send(embed=em)
+
+    @tag.command()
+    async def edit(self, ctx, name:str, content):
+        is_tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
+        if not is_tag:
+            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
+            return await ctx.send(embed=em)
+        elif is_tag['owner_id']==ctx.author.id:
+            await self.bot.db.execute('UPDATE tags SET content=$1 WHERE name=$2', content, name)
+            em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` edited successfully', color=0x2F3136)
+            await ctx.send(embed=em)
+        else:
+            em=discord.Embed(description=f'<:error:893501396161290320> Tag `{name}` is not owned by you', color=0x2F3136)
             await ctx.send(embed=em)
