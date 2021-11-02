@@ -12,6 +12,7 @@ import urllib.parse
 import hashlib
 import requests
 import re
+import traceback
 import aiofiles
 import datetime
 import asyncio
@@ -243,7 +244,9 @@ async def on_command_error(ctx, error):
   else:
     error_log_channel=client.get_channel(905004192404504586)
 
-    await error_log_channel.send(f'```py\n{error}```\n```ml\nINVOKED BY: {ctx.author} IN SERVER {ctx.guild.name}')
+    traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
+
+    await error_log_channel.send(f'```py\n{traceback_string}```\n```ml\nINVOKED BY: {ctx.author}\nIN SERVER {ctx.guild.name}\nCOMMAND: {ctx.command.name}```')
 
 
 @client.command(aliases=['8ball'])

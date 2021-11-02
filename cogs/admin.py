@@ -214,6 +214,9 @@ class Admin(commands.Cog):
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
-                
+    @commands.command()
+    async def error(ctx):
+        await ctx.send('')
+
 def setup(client):
     client.add_cog(Admin(client))
