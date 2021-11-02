@@ -76,7 +76,7 @@ class SphinxObjectFileReader:
 
 class Rtfm(commands.Cog):
     def __init__(self, bot):
-        self.client=bot
+        self.bot=bot
 
 
     async def build_rtfm_lookup_table(self, page_types):
@@ -239,6 +239,3 @@ class Rtfm(commands.Cog):
         """Gives you a documentation link for a pycord entity"""
         await self.do_rtfm(ctx, 'pycord', obj)
 
-    
-
-    
