@@ -97,7 +97,7 @@ class Tags(commands.Cog):
                 count=count+1
                 tag_list.append(f'{count}. {name}')
             em=discord.Embed(description='\n'.join(tag_list),color=0x2F3136)
-            em.set_footer(text=f'Invoked by {ctx.author}')
+            em.set_footer(text=f'Do “tag info [name]“ or “tag [name]“')
             em.set_author(name=f'Tags by {member.name} in {ctx.guild.name}', icon_url=member.avatar_url)
             await ctx.send(embed=em)
         else:
