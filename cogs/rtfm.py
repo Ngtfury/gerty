@@ -79,7 +79,6 @@ class Rtfm(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
-
     async def build_rtfm_lookup_table(self, page_types):
         cache = {}
         for key, page in page_types.items():
