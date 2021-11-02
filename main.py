@@ -481,9 +481,6 @@ async def reroll(ctx, channel : discord.TextChannel, id_ : int):
 #gend command
 
 
-
-
-#giveaway command time asyncio
 def convert(time):
   pos = ["s","m","h","d"]
 
