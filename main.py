@@ -242,12 +242,12 @@ async def on_command_error(ctx, error):
             pass
           break
   else:
-    await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False)
+    await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
     error_log_channel=client.get_channel(905004192404504586)
 
     traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
 
-    await error_log_channel.send(f'__**AN ERROR OCCURED**__\nInvoked by: `{ctx.author.name}`\nOn server: {ctx.guild.name}\nCommand: {ctx.command.name}\n__**ERROR TRACEBACK**__\n```py\n{traceback_string}```')
+    await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
 
 
 @client.command(aliases=['8ball'])
