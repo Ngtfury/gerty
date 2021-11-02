@@ -215,7 +215,7 @@ class Admin(commands.Cog):
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
     @commands.command()
-    async def error(ctx):
+    async def error(self, ctx):
         await ctx.send('')
 
 def setup(client):
