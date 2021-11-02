@@ -112,6 +112,5 @@ class AFK(commands.Cog):
             await ctx.author.edit(nick=f'[AFK] {ctx.author.display_name}')
         except:
             pass
-
 def setup(client):
     client.add_cog(AFK(client))
