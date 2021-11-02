@@ -42,9 +42,9 @@ class Tags(commands.Cog):
         if is_tag:
             content=is_tag['content']
             if ctx.message.reference:
-                return await ctx.message.reference.resolved.reply(f'{content}')
+                await ctx.message.reference.resolved.reply(f'{content}')
             else:
-                return await ctx.send(content)
+                await ctx.send(content)
             await self.bot.db.execute('UPDATE tags SET tag_uses=$1 WHERE name=$2 AND guild_id=$3', is_tag['tag_uses']+1, tag, ctx.guild.id)
         else:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
