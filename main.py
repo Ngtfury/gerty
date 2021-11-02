@@ -240,7 +240,10 @@ async def on_command_error(ctx, error):
           except:
             pass
           break
+  else:
+    error_log_channel=client.get_channel(905004192404504586)
 
+    await error_log_channel.send(f'```py\n{error}```\n```ml\nINVOKED BY: {ctx.author} IN SERVER {ctx.guild.name}')
 
 
 @client.command(aliases=['8ball'])
