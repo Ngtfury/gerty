@@ -248,7 +248,8 @@ async def on_command_error(ctx, error):
     traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
 
     main_message=await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
-    await client.wait_for('reaction_add', check=lambda i, reaction: i.message.channel==ctx.channel and str(reaction.emoji) in ["🗑️"])
+    await main_message.add_reaction('🗑️')
+    await client.wait_for('reaction_add', check=lambda i, reaction: i.message.channel==ctx.channel and str(reaction.emoji) in ["🗑️"], timeout=6000)
     await main_message.edit(f'{main_message.content}\n```ml\n✅ MARKED AS FIXED BY DEVELOPERS```')
 
 
