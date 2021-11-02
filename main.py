@@ -1615,9 +1615,6 @@ async def translate(ctx, lang, *, args=None):
   await ctx.send(embed=em)
 
 
-
-
-
 @client.command()
 async def anime(ctx, *, search):
   embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
@@ -1718,11 +1715,7 @@ async def webhook(ctx, member: discord.Member = None, *, content):
     em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
     em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     await ctx.send(embed=em)
-    
-    
-    
-    
-
+  
 def generate_screenshot_api_url(customer_key, secret_phrase, options):
   api_url = 'https://api.screenshotmachine.com/?key=' + customer_key
   if secret_phrase:
