@@ -65,7 +65,7 @@ def get_prefix(message: discord.Message):
     return 'g!'
 
 activity = discord.Activity(type=discord.ActivityType.watching, name="My mobile")
-client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or(get_prefix()), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928], strip_after_prefix=True)
+client = commands.AutoShardedBot(command_prefix = commands.when_mentioned_or(get_prefix(message=discord.Message)), intents=discord.Intents.all(), activity=activity, status=discord.Status.online, owner_ids=[770646750804312105, 343019667511574528, 293468815130492928], strip_after_prefix=True)
 togetherControl = DiscordTogether(client)
 client.remove_command("help")
 
