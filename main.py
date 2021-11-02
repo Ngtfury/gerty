@@ -120,7 +120,6 @@ async def time_formatter(seconds: float):
         ((str(seconds) + "s, ") if seconds else "")
   return tmp[:-2]
 
-client.session=aiohttp.ClientSession()
 
 class UserBlacklisted(commands.CheckFailure):
   def __init__(self, user, reason, *args, **kwargs):
