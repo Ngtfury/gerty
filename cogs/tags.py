@@ -15,6 +15,11 @@ class Tags(commands.Cog):
         tag=await self.bot.db.fetchrow('SELECT * FROM tags WHERE guild_id=$1 AND name=$2', guild_id, name)
         return tag
 
+
+    async def get_user_tags(self, user_id, guild_id):
+        tag=await self.bot.db.fetch('SELECT name FROM tags WHERE user_id=$1 AND guild_id=$2', user_id, guild_id)
+        return tag
+
     async def create_tag(self, ctx, name:str, content:str, guild_id, owner_id):
         root = self.bot.get_command('tag')
         if name in root.all_commands:
@@ -74,4 +79,20 @@ class Tags(commands.Cog):
             await ctx.send(embed=em)
         else:
             em=discord.Embed(description=f'<:error:893501396161290320> Tag `{name}` is not owned by you', color=0x2F3136)
+            await ctx.send(embed=em)
+
+
+    @commands.command()
+    async def tags(self, ctx, member: discord.Member=None):
+        if member==None:
+            member=ctx.author
+
+        tag_list=[]
+        tags=await self.get_user_tags(user_id=member.id, guild_id=ctx.guild.id)
+        if tags:
+            count=0
+            for x in tags:
+                count=count+1
+                tag_list.append(f'{count} {x}')
+            em=discord.Embed(title=f'Tags by {member.name} in {ctx.guild.name}', description='\n'.join(tag_list),color=0x2F3136)
             await ctx.send(embed=em)
