@@ -85,7 +85,7 @@ class Tags(commands.Cog):
 
     @tag.command()
     async def info(self, ctx, *, tag):
-        is_tag=self.get_tag(name=tag, guild_id=ctx.guild.id)
+        is_tag=await self.get_tag(name=tag, guild_id=ctx.guild.id)
         if not is_tag:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
             return await ctx.send(embed=em)
