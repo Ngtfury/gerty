@@ -17,7 +17,7 @@ class Tags(commands.Cog):
 
 
     async def get_user_tags(self, user_id, guild_id):
-        tag=await self.bot.db.fetch('SELECT name FROM tags WHERE user_id=$1 AND guild_id=$2', user_id, guild_id)
+        tag=await self.bot.db.fetch('SELECT name FROM tags WHERE owner_id=$1 AND guild_id=$2', user_id, guild_id)
         return tag
 
     async def create_tag(self, ctx, name:str, content:str, guild_id, owner_id):
