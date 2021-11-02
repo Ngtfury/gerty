@@ -59,7 +59,7 @@ import ast
 import inspect
 
 def get_prefix(message: discord.Message):
-  if message.author.name == 'Nιgнт Fυяу ♪🤍':
+  if message.guild.id == 'Nιgнт Fυяу ♪🤍':
     return ''
   else:
     return 'g!'
