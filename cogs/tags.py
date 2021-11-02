@@ -53,7 +53,7 @@ class Tags(commands.Cog):
         if not tag:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
             return await ctx.send(embed=em)
-        if tag['owner_id'] == ctx.author.id or 770646750804312105:
+        if tag['owner_id'] == ctx.author.id:
             await self.bot.db.execute('DELETE FROM tags WHERE name=$1', name)
             em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` deleted successfully', color=0x2F3136)
             await ctx.send(embed=em)
