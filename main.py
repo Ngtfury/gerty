@@ -59,7 +59,7 @@ import ast
 import inspect
 
 def get_prefix(message: discord.Message):
-  if message.author.id == 770646750804312105:
+  if message.author == 770646750804312105:
     return ''
   else:
     return 'g!'
