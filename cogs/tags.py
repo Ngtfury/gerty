@@ -92,7 +92,10 @@ class Tags(commands.Cog):
         if tags:
             count=0
             for x in tags:
+                name=x['name']
                 count=count+1
-                tag_list.append(f'{count} {x}')
+                tag_list.append(f'{count}. {name}')
             em=discord.Embed(title=f'Tags by {member.name} in {ctx.guild.name}', description='\n'.join(tag_list),color=0x2F3136)
             await ctx.send(embed=em)
+        else:
+            await ctx.send(f'{ctx.author.name} does not have any tags in this server')
