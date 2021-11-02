@@ -25,6 +25,7 @@ from contextlib import redirect_stdout
 class Admin(commands.Cog):
     def __init__(self, client):
         self.client=client
+        self._last_result = None
 
     @commands.command(aliases=["delm"])
     @commands.is_owner()
