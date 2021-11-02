@@ -40,7 +40,8 @@ class Tags(commands.Cog):
             else:
                 return await ctx.send(content)
         else:
-            return await ctx.send(f'Tag named `{tag}` does not exists')
+            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
+            return await ctx.send(embed=em)
     
     @tag.command(aliases=['make'])
     async def create(self, ctx, name:str, *, content:commands.clean_content):
@@ -48,7 +49,7 @@ class Tags(commands.Cog):
 
 
     @tag.command(aliases=['del'])
-    async def delete(self, ctx, name:str):
+    async def delete(self, ctx, *, name:str):
         tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
         if not tag:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
@@ -62,7 +63,7 @@ class Tags(commands.Cog):
             await ctx.send(embed=em)
 
     @tag.command()
-    async def edit(self, ctx, name:str, content):
+    async def edit(self, ctx, name:str, *, content):
         is_tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
         if not is_tag:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
