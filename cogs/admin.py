@@ -69,6 +69,14 @@ class Admin(commands.Cog):
         os.execl(python, python, * sys.argv)
 
     #ok bryh
+
+    def load_or_reload(self, ext):
+        try:
+            self.client.reload_extension(ext)
+        except commands.ExtensionNotLoaded:
+            self.client.load_extension(ext)
+            
+
     @commands.command()
     @commands.is_owner()
     async def sync(self, ctx):
@@ -99,7 +107,7 @@ class Admin(commands.Cog):
                     if isinstance(event.component, Select):
                         if event.values[0]:
                             try:
-                                self.client.reload_extension(f'cogs.{str(event.values[0])}')
+                                self.load_or_reload(f'cogs.{str(event.values[0])}')
                                 loaded_or_not=f'<:success:893501515107557466> Reloaded {str(event.values[0])} successfully'
                             except:
                                 loaded_or_not=f'<:error:893501396161290320> Coudn\'t load {str(event.values[0])}'
