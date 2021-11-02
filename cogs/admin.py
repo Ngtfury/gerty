@@ -130,6 +130,7 @@ class Admin(commands.Cog):
                             break
                 except asyncio.TimeoutError:
                     #
+                    #kwbgkwrkgrb
                     await main_message.disable_components()
                     break
 
