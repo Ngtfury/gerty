@@ -12,7 +12,7 @@ class Tags(commands.Cog):
 
 
     async def get_tag(self, name:str, guild_id):
-        tag=await self.bot.db.fetchrow('SELECT * FROM tags WHERE guild=$1 AND name $2', guild_id, name)
+        tag=await self.bot.db.fetchrow('SELECT * FROM tags WHERE guild=$1 AND name=$2', guild_id, name)
         return tag
 
     async def create_tag(self, ctx, name:str, content:str, guild_id, owner_id):
@@ -40,5 +40,5 @@ class Tags(commands.Cog):
             return await ctx.send(f'Tag named `{tag}` does not exists')
     
     @tag.command(aliases=['make'])
-    async def create(self, ctx, name:str, *, content):
-        await self.create_tag(ctx, name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
+    async def create(self, ctx, name:str, *, content:commands.clean_content):
+        await self.create_tag(ctx=ctx, name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
