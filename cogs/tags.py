@@ -1,5 +1,6 @@
 import datetime
 import discord
+from discord import user
 from discord.ext import commands
 
 def setup(client):
@@ -44,6 +45,7 @@ class Tags(commands.Cog):
                 return await ctx.message.reference.resolved.reply(f'{content}')
             else:
                 return await ctx.send(content)
+            await self.bot.db.execute('UPDATE tags SET tag_uses=$1 WHERE name=$2 AND guild_id=$3', is_tag['tag_uses']+1, tag, ctx.guild.id)
         else:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
             return await ctx.send(embed=em)
@@ -60,7 +62,7 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
             return await ctx.send(embed=em)
         if tag['owner_id'] == ctx.author.id:
-            await self.bot.db.execute('DELETE FROM tags WHERE name=$1', name)
+            await self.bot.db.execute('DELETE FROM tags WHERE name=$1 AND guild_id=$2', name, ctx.guild.id)
             em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` deleted successfully', color=0x2F3136)
             await ctx.send(embed=em)
         else:
@@ -74,14 +76,24 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
             return await ctx.send(embed=em)
         elif is_tag['owner_id']==ctx.author.id:
-            await self.bot.db.execute('UPDATE tags SET content=$1 WHERE name=$2', content, name)
+            await self.bot.db.execute('UPDATE tags SET content=$1 WHERE name=$2 AND guild_id=$3', content, name, ctx.guild.id)
             em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` edited successfully', color=0x2F3136)
             await ctx.send(embed=em)
         else:
             em=discord.Embed(description=f'<:error:893501396161290320> Tag `{name}` is not owned by you', color=0x2F3136)
             await ctx.send(embed=em)
 
-
+    @tag.command()
+    async def info(self, ctx, *, tag):
+        is_tag=self.get_tag(name=tag, guild_id=ctx.guild.id)
+        if not is_tag:
+            em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
+            return await ctx.send(embed=em)
+        owner=self.bot.get_user(tag['owner_id'])
+        time=tag['created_at']
+        uses=tag['tag_uses']
+        embed=discord.Embed(title=f'Tag info {tag}', description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
+        await ctx.send(embed=embed)
 
     @commands.command()
     async def tags(self, ctx, member: discord.Member=None):
