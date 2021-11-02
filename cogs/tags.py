@@ -32,9 +32,9 @@ class Tags(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     async def tag(self, ctx, *, tag):
-        tag=await self.get_tag(name=f'{tag}', guild_id=ctx.guild.id)
-        if tag:
-            content=tag['content']
+        is_tag=await self.get_tag(name=f'{tag}', guild_id=ctx.guild.id)
+        if is_tag:
+            content=is_tag['content']
             return await ctx.send(f'{content}')
         else:
             return await ctx.send(f'Tag named `{tag}` does not exists')
