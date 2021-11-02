@@ -159,7 +159,8 @@ class Rtfm(commands.Cog):
             'edpy': 'https://enhanced-dpy.readthedocs.io/en/latest/',
             'chai': 'https://chaidiscordpy.readthedocs.io/en/latest/',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
-            'pycord': 'https://pycord.readthedocs.io/en/latest/'
+            'pycord': 'https://pycord.readthedocs.io/en/latest/',
+            'discord-components': 'https://devkiki7000.gitbook.io/discord-components'
         }
 
         if obj is None:
@@ -240,4 +241,8 @@ class Rtfm(commands.Cog):
     async def rtfm_pycord(self, ctx, *, obj: str = None):
         """Gives you a documentation link for a pycord entity"""
         await self.do_rtfm(ctx, 'pycord', obj)
+
+    @rtfm.command(name='discord-components', aliases=['dc'])
+    async def rtfm_discord_components(self, ctx, *, obj:str=None):
+        await self.do_rtfm(ctx, 'discord-components', obj)
 
