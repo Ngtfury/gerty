@@ -9,7 +9,6 @@ def setup(client):
     client.add_cog(modlogs(client))
 
 class modlogs(commands.Cog):
-    """This is a description i think"""
     def __init__(self, client):
         self.client = client
 

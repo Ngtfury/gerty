@@ -244,5 +244,6 @@ class Rtfm(commands.Cog):
 
     @rtfm.command(name='discord-components', aliases=['dc'])
     async def rtfm_discord_components(self, ctx, *, obj:str=None):
+        """"Gives you a documentation link for a discord-components entity"""
         await self.do_rtfm(ctx, 'discord-components', obj)
 
