@@ -214,13 +214,6 @@ class Admin(commands.Cog):
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
-    @commands.group(invoke_without_command=True)
-    async def error(self, ctx):
-        await self.client.db.execute('SELECT WHERE %2')
-
-    @error.command()
-    async def b(self, ctx):
-        await ctx.send(' ')
 
 
 def setup(client):
