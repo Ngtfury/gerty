@@ -114,7 +114,9 @@ class Tags(commands.Cog):
         owner=ctx.guild.get_member(is_tag['owner_id'])
         time=is_tag['created_at']
         uses=is_tag['tag_uses']
-        embed=discord.Embed(title=f'Tag info {tag}', description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
+        embed=discord.Embed(description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
+        embed.set_author(name=f'{tag}', icon_url=owner.avatar_url)
+        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
     @commands.command()
