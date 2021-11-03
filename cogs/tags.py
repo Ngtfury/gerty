@@ -82,7 +82,7 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
             return await ctx.send(embed=em)
         elif is_tag['owner_id']==ctx.author.id:
-            await self.bot.db.execute('UPDATE tags SET owner_id=$1, WHERE name=$2 AND guild_id=$3', member.id, name, ctx.guild.id)  
+            await self.bot.db.execute('UPDATE tags SET owner_id=$1 WHERE name=$2 AND guild_id=$3', member.id, name, ctx.guild.id)  
             em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` transfered successfully to {member.mention}', color=0x2F3136)
             await ctx.send(embed=em)
         else:
