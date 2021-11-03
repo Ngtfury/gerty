@@ -24,6 +24,7 @@ import PIL.ImageOps
 import googletrans
 import mal
 import itertools
+import io
 import datetime
 import base64
 import sys
@@ -250,7 +251,14 @@ async def on_command_error(ctx, error):
 
     traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
 
-    main_message=await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
+    try:
+      await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
+    except (discord.Forbidden, discord.HTTPException):
+      await error_log_channel.send(
+        f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n',
+        file=discord.File(io.StringIO(traceback_string), filename='traceback.py')
+      )
+
 
 
 
@@ -1324,7 +1332,7 @@ async def punch(ctx, user: discord.Member):
 #reports 
 @client.command()
 async def report(ctx, *, report=None):
-  report_channel = client.get_channel(905007925444116520)
+  report_channel = client.get_channel(905063308300791819)
   time_when_report = datetime.datetime.now()
   timestamp_when_report = time_when_report.timestamp()
   try:
