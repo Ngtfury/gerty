@@ -22,6 +22,12 @@ class Tags(commands.Cog):
         return tag
 
     async def create_tag(self, ctx, name:str, content:str, guild_id, owner_id):
+        if len(name) > 100:
+            em=discord.Embed(description='<:error:893501396161290320> Tag name is a maximum of 100 characters', color=0x2F3136)
+            return await ctx.send(embed=em)
+        if len(content) > 2000:
+            em=discord.Embed(description='<:error:893501396161290320> Tag content is a maximum of 2000 characters', color=0x2F3136)
+            return await ctx.send(embed=em)
         root = self.bot.get_command('tag')
         if name in root.all_commands:
             NoMbed=discord.Embed(description='<:error:893501396161290320> This tag name starts with a reserved word', color=0x2F3136)
@@ -115,7 +121,7 @@ class Tags(commands.Cog):
         time=is_tag['created_at']
         uses=is_tag['tag_uses']
         embed=discord.Embed(description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
-        embed.set_author(name=f'{tag}', icon_url=owner.avatar_url)
+        embed.set_author(name=f'Info - {tag}', icon_url=owner.avatar_url)
         embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
 
