@@ -216,10 +216,10 @@ class Admin(commands.Cog):
 
     @commands.group(invoke_without_command=True)
     async def error(self, ctx):
-        await self.client.db.execute('SELECT WHERE ^^')
+        await self.client.db.execute('SELECT WHERE %2')
 
     @error.command()
-    async def b(ctx):
+    async def b(self, ctx):
         await ctx.send(' ')
 
 
