@@ -214,6 +214,14 @@ class Admin(commands.Cog):
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
 
+    @commands.group(invoke_without_command=True)
+    async def error(self, ctx):
+        await self.bot.db.execute('SELECT WHERE , ^^')
+
+    @error.command()
+    async def e2(ctx):
+        await ctx.send(' ')
+
 
 def setup(client):
     client.add_cog(Admin(client))
