@@ -1,6 +1,5 @@
 import datetime
 import discord
-from discord import user
 from discord.ext import commands
 
 def setup(client):
@@ -124,6 +123,7 @@ class Tags(commands.Cog):
         embed.set_author(name=f'Info - {tag}', icon_url=owner.avatar_url)
         embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=embed)
+
 
     @commands.command()
     async def tags(self, ctx, member: discord.Member=None):
