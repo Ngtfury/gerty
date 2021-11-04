@@ -35,7 +35,10 @@ class Giveaways(commands.Cog):
 
     @commands.command()
     async def gstart(self, ctx, time, *, prize):
-        await ctx.message.delete()
+        try:
+            await ctx.message.delete()
+        except:
+            pass
         timenow=int(datetime.datetime.now().timestamp())
 
         time=self.convert(time)
