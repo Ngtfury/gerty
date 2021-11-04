@@ -51,7 +51,7 @@ class Giveaways(commands.Cog):
         main_message=await ctx.send(embed=firstembed)
         await asyncio.sleep(1)
         
-        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
+        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
         em.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
         em.set_image(url='https://i.imgur.com/USGQsyz.png')
         await main_message.edit('🎉 **GIVEAWAY** 🎉', embed=em)
