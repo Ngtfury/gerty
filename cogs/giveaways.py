@@ -63,7 +63,7 @@ class Giveaways(commands.Cog):
         )
         entries=[]
         while True:
-            if datetime.datetime.now()==timenow+time:
+            if int(datetime.datetime.now().timestamp())==timenow+time:
                 break
             event=await self.bot.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.component.id in ['entergw'])
             if event.component.id=='entergw':
