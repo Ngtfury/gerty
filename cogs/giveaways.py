@@ -34,6 +34,7 @@ class Giveaways(commands.Cog):
         return val * time_dict[unit]
 
     @commands.command()
+    @commands.has_permissions(manage_channels=True)
     async def gstart(self, ctx, time, *, prize):
         try:
             await ctx.message.delete()
