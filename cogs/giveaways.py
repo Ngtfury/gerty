@@ -46,7 +46,7 @@ class Giveaways(commands.Cog):
 
         firstembed=discord.Embed(description='<a:timer:905859476257656872> **Loading giveaway** <a:timer:905859476257656872>', color=0x2F3136)
         main_message=await ctx.send(embed=firstembed)
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
         
         em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo end the giveaway, type:\n`g!end {main_message.id}`', color=0x2F3136)
         em.set_author(name=f'{ctx.channel.name} Giveaways!', icon_url=ctx.guild.icon_url)
@@ -65,4 +65,4 @@ class Giveaways(commands.Cog):
         await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}**!', embed=lastembed)
 
 
-        await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉', embed=main_message.embeds[0])
+        await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉')
