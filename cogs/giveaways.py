@@ -47,10 +47,9 @@ class Giveaways(commands.Cog):
         firstembed=discord.Embed(description='<a:timer:905859476257656872> **Loading giveaway** <a:timer:905859476257656872>', color=0x2F3136)
         main_message=await ctx.send(embed=firstembed)
         
-        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: {timenow+time}\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo end the giveaway, type:\ng!end {main_message.id}', timestamp=time+timenow)
+        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo end the giveaway, type:\ng!end {main_message.id}')
         em.set_author(name=f'{ctx.channel.name} Giveaways!', icon_url=ctx.channel.avatar_url)
         em.set_image(url='https://i.imgur.com/USGQsyz.png', color=0x2F3136)
-        em.set_footer(text='Ends at')
         await main_message.edit('🎉 **GIVEAWAY** 🎉', embed=em)
         await main_message.add_reaction('🎉')
 
