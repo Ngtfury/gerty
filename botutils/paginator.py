@@ -1,4 +1,5 @@
 import discord
+from discord import *
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -43,7 +44,7 @@ class Paginator:
         while True:
             right_disable2, left_disable2=await self.disable_check()
             try:
-                event=await self.bot.wait_for(self, event='button_click', check=lambda i: i.channel==self.ctx.channel and i.component.id in ['ButtonLeft', 'ButtonRight'], timeout=self.timeout)
+                event=asyncio.ensure_future(self.bot.wait_for("button_click", check=lambda i: i.channel==self.ctx.channel and i.component.id in ['ButtonLeft', 'ButtonRight']))
                 if event.component.id=='ButtonLeft':
                     current-=1
                 elif event.component.id=='ButtonRight':
