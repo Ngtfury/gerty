@@ -56,7 +56,8 @@ class Giveaways(commands.Cog):
 
         await asyncio.sleep(time)
         ok_message=await ctx.channel.fetch_message(main_message.id)
-        entries=ok_message.reactions[0].users().flatten()
+        entries=await ok_message.reactions[0].users().flatten()
+        entries.pop(entries.index(self.bot.user))
 
         winner=random.choice(entries)
 
