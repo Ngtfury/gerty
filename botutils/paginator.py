@@ -38,7 +38,7 @@ class Paginator:
         MainMessage=await self.ctx.send(
             content=self.content,
             embed=embed,
-            components=[[Button(style=ButtonStyle.green, label='<', value='ButtonLeft', disabled=left_disable), Button(style=ButtonStyle.gray, label=f'{int(self.embeds.index(self.embeds[current])) + 1}/{len(self.embeds)}', disabled=True), Button(style=ButtonStyle.green, label='>', value='ButtonRight', disabled=right_disable)]]
+            components=[[Button(style=ButtonStyle.green, label='<', id='ButtonLeft', disabled=left_disable), Button(style=ButtonStyle.gray, label=f'{int(self.embeds.index(self.embeds[current])) + 1}/{len(self.embeds)}', disabled=True), Button(style=ButtonStyle.green, label='>', id='ButtonRight', disabled=right_disable)]]
         )
         while True:
             right_disable2, left_disable2=await self.disable_check()
@@ -52,7 +52,7 @@ class Paginator:
                 await event.respond(
                     type=7,
                     embed=self.embeds[current],
-                    components=[[Button(style=ButtonStyle.green, label='<', value='ButtonLeft', disabled=left_disable2), Button(style=ButtonStyle.gray, label=f'{int(self.embeds.index(self.embeds[current])) + 1}/{len(self.embeds)}', disabled=True), Button(style=ButtonStyle.green, label='>', value='ButtonRight', disabled=right_disable2)]]
+                    components=[[Button(style=ButtonStyle.green, label='<', id='ButtonLeft', disabled=left_disable2), Button(style=ButtonStyle.gray, label=f'{int(self.embeds.index(self.embeds[current])) + 1}/{len(self.embeds)}', disabled=True), Button(style=ButtonStyle.green, label='>', id='ButtonRight', disabled=right_disable2)]]
                 )
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
