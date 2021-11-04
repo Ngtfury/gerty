@@ -158,7 +158,7 @@ async def on_ready():
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
 
-@client.command()
+@client.command(brief='misc', description='Gets the bot uptime', usage='uptime')
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
   em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
@@ -262,7 +262,7 @@ async def on_command_error(ctx, error):
 
 
 
-@client.command(aliases=['8ball'])
+@client.command(brief='fun', usage='8ball [question]', description='Ask the magic 8ball a question!', aliases=['8ball'])
 async def _8ball(ctx, *, question):
   responses = ["It is certain.",
 "It is decidedly so.",
@@ -289,7 +289,7 @@ async def _8ball(ctx, *, question):
   await ctx.send(embed=em)
 
 
-@client.command(aliases=["av"])
+@client.command(brief='utilities', usage='avatar (member)', description='Get a user\'s avatar', aliases=["av"])
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
       if ctx.message.reference:
@@ -302,31 +302,9 @@ async def avatar(ctx, user: discord.Member=None):
     await ctx.send(embed=em)
 
 
-@client.command()
-@commands.has_permissions(manage_channels=True)
-async def deletechannel(ctx, channel: discord.TextChannel):
-      if ctx.author.guild_permissions.manage_channels:
-        
-        await channel.delete()
-        m = discord.Embed(description=f"<:success:893501515107557466> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
-        await ctx.send(embed=m)
-
-
-#delete voice channel command
-
-@client.command(aliases=["deletevc", "dvc"])
-@commands.has_permissions(manage_channels=True)
-async def deletevoicechannel(ctx, channel: discord.VoiceChannel):
-      if ctx.author.guild_permissions.manage_channels:
-        
-        await channel.delete()
-        m = discord.Embed(description=f"<:success:893501515107557466> Deleted {channel.name} [{ctx.author.mention}]", color=0x2bff00)
-        await ctx.send(embed=m)
-
-
 #emojify command
 
-@client.command()
+@client.command(brief='fun', usage='emojify [text]', description='Make the bot say whatever you want with emojis!')
 async def emojify(ctx, *, text):
   emojis = []
   for s in text:
@@ -343,7 +321,7 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.group(invoke_without_command=True, aliases=["s"])
+@client.command(brief='utilities', usage='say [text]', description='Make the bot say whatevet you want', aliases=["s"])
 async def say(ctx, *, content):
   try:
     await ctx.message.delete()
@@ -354,23 +332,9 @@ async def say(ctx, *, content):
   else:
     await ctx.send(f"{content}", allowed_mentions=discord.AllowedMentions(everyone=False, roles=False))
 
-@say.command(aliases=["em"])
-async def embed(ctx, *, reply = "without reply"):
-  try:
-    await ctx.message.delete()
-  except:
-    pass
-  if ctx.message.reference.resolved.embeds[0]:
-    if reply == "with reply":
-      await ctx.message.reference.resolved.reply(f"{ctx.message.reference.resolved.content}", embed=ctx.message.reference.resolved.embeds[0])
-    else:
-      await ctx.send(embed=ctx.message.reference.resolved.embeds[0])
-  else:
-    await ctx.send("I cant find any message with embeds")
 
 
-
-@client.command()
+@client.command(brief='utilities', usage='mute [member] (reason)', description='Mutes a member so that they cannot talk or add reactions')
 @commands.has_permissions(manage_channels=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
   if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
@@ -399,8 +363,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 
 
-
-@client.command()
+@client.command(brief='utilities', usage='unmute [member]', description='Unmutes a member from mute')
 @commands.has_permissions(manage_channels=True)
 async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
@@ -412,7 +375,7 @@ async def unmute(ctx, member: discord.Member):
 
 
 #giveaway command main
-@client.command()
+@client.command(brief='mod', usage='giveaway', description='Starts a giveaway')
 @commands.has_permissions(administrator=True)
 async def giveaway(ctx):
   await ctx.send("**Let's start this Giveaway! answer these questions within __15 seconds__**")
@@ -481,7 +444,7 @@ async def giveaway(ctx):
 
 
 #reroll command
-@client.command()
+@client.command(brief='mod', usage='reroll [channel] [message id]', description='Rerolls a current giveaway')
 async def reroll(ctx, channel : discord.TextChannel, id_ : int):
     try:
       new_msg = await channel.fetch_message(id_)
@@ -538,7 +501,7 @@ winningConditions = [
 ]
 
 
-@client.command(aliases=['ttt'])
+@client.command(brief='fun', usage='ttt [player1] [player2]', description='Start to play a tic tac toe game with  your friend!', aliases=['ttt'])
 async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
     global player1
@@ -580,7 +543,7 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
         await ctx.send("> **A game is already in progress! Finish it before starting a new one.**")
 
 
-@client.command()
+@client.command(brief='fun', usage='place [tile number]', description='Place tic tac toe tile')
 async def place(ctx, pos: int):
     global turn
     global player1
@@ -653,7 +616,7 @@ async def place_error(ctx, error):
         await ctx.send("> **Please make sure to enter an integer**.")
 
 
-@client.command(aliases=["show", "search", "img", "googlesearch"])
+@client.command(brief='fun', usage='google [search]', description='Search for anything in google', aliases=["show", "search", "img", "googlesearch"])
 @commands.cooldown(1,5,commands.BucketType.user)
 async def google(ctx, *, search):
   try:
@@ -751,42 +714,8 @@ async def google(ctx, *, search):
 #memes
 
 
-reddit = praw.Reddit(client_id = "vuwfZiZXYnPZlg",
-                     client_secret = "aOLy1GQJrhCIPAe7UCeCMGvIoP0JLw",
-                     username = "Gerty_1",
-                     password = "82xPm!erQA$adt6",
-                     user_agent = "Gerty")
-
-
-@client.command()
-@commands.cooldown(1,10000,commands.BucketType.channel)
-async def meme(ctx):
-  emm = discord.Embed(description="<a:loading:865563025586389003> _Oh wait a sec! <:fekdankmemer:859078210619965501>_", color=0xeeff00)
-  v = await ctx.send(embed=emm)
-  subreddit = reddit.subreddit("memes")
-  all_subs = []
-
-  top = subreddit.top(limit = 50)
-
-  for submission in top:
-    all_subs.append(submission)
-
-  random_sub = random.choice(all_subs)
-
-  name = random_sub.title
-  url = random_sub.url
-
-  em = discord.Embed(title = name)
-
-  em.set_image(url = url)
-
-  await v.edit(embed=em)
-
-
-
-
 #rps try :sob:
-@client.command()
+@client.command(brief='fun', usage='rps', description='Stars a rock paper scissors game!')
 @commands.cooldown(1,5,commands.BucketType.user)
 async def rps(ctx):
 
@@ -840,7 +769,7 @@ async def rps(ctx):
   
 #userinfo
 
-@client.command(aliases=["userinfo", "ui"])
+@client.command(brief='utilities', usage='whois (member)', description='Get all info of a user', aliases=["userinfo", "ui"])
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     if ctx.message.reference:
@@ -918,27 +847,7 @@ async def whois(ctx, member: discord.Member=None):
 
 
 
-@client.command(aliases=['ci'])
-@commands.cooldown(1,5,commands.BucketType.user)
-async def channelinfo(ctx):
-  
-
-  embed = discord.Embed(title=f"**Info of channel __{ctx.channel.name}__**", description=f"{'Category: {}'.format(ctx.channel.category.name) if ctx.channel.category else 'This channel is not a category'}", color=0xa600ff, timestamp=ctx.message.created_at)
-  embed.add_field(name="Channel Guild", value=ctx.guild.name, inline=False)
-  embed.add_field(name="Channel ID", value=ctx.channel.id, inline=False)
-  embed.add_field(name="Channel Topic", value=f"{channel.topic if ctx.channel.topic else 'No Topic'}", inline=False)
-  embed.add_field(name="Channel Position", value=ctx.channel.position, inline=False)
-  embed.add_field(name="Channel Slowmode delay", value=ctx.channel.slowmode_delay, inline=False)
-  embed.add_field(name="Is channel NSFW?", value=ctx.channel.is_nsfw() , inline=False)
-  embed.add_field(name="Is this an announcement channel?", value=ctx.channel.is_news(), inline=False)
-  embed.add_field(name="Channel Created at", value=ctx.channel.created_at, inline=False)
-  embed.add_field(name="Channel Permissions (synced)", value=ctx.channel.permissions_synced, inline=False)
-  embed.add_field(name="Channel Hash", value=hash(ctx.channel), inline=False)
-
-  await ctx.send(embed=embed)
-
-
-@client.command()
+@client.command(brief='utilities', usage='lock (channel)', description='Locks a channel for @everyone role')
 @commands.has_permissions(manage_channels = True)
 async def lock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -950,7 +859,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
   
 
 
-@client.command()
+@client.command(brief='utilities', usage='unlock (channel)', description='Unlocks a locked channel')
 @commands.has_permissions(manage_channels = True)
 async def unlock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -968,7 +877,7 @@ async def coin(ctx):
   await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
   
 
-@client.command()
+@client.command(brief='utilities', usage='slowmode [seconds]', description='Sets slowmode in current channel')
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
@@ -978,38 +887,22 @@ async def slowmode(ctx, seconds: int):
 
 
 
-@client.command(pass_content=True)
+@client.command(brief='utilities', usage='nick [member] (new nick)', description='Sets new nickname to a member', pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def nick(ctx, member: discord.Member, *, arg):
   await member.edit(nick=arg)
   await ctx.send(f'Nickname was changed for {member.mention} to {arg}')
 
-@client.command(pass_content=True)
+@client.command(brief='utilities', usage='resetnick [member]', description='Resets nickname of a member'
+, pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def resetnick(ctx, member: discord.Member):
   await member.edit(nick=f"{member.name}")
   await ctx.send(f"Nickname reset to {member.name}")
 
 
-
-
-@client.command()
-@commands.cooldown(1,10,commands.BucketType.guild)
-@commands.has_permissions(administrator = True)
-async def massunban(ctx):
-  m = await ctx.send('<a:gloading:855680101529944064> Mass unbanning')
-  banlist = await ctx.guild.bans()
-  for users in banlist:
-    try:
-      await ctx.guild.unban(user=users.user)
-    except:
-      pass
-  await m.edit("Everyone unbanned")
-
-
     
-
-@client.command()
+@client.command(brief='utilities', usage='hack [member]', description='Please don\'t do this!!!')
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
   await asyncio.sleep(1)
@@ -1047,290 +940,7 @@ async def hack(ctx, user: discord.Member):
   await ctx.send(f"{user.mention} you will be logged out from your account within 3 days enjoy your last days in discord <a:evil_peepo:862347454980947998>")
 
 
-
-@client.command()
-async def help(ctx):
-  components=[Select(placeholder="See commands of specific modules!",
-                                    options=[
-                                      SelectOption(
-                                        label="Fun commands",
-                                        value="fun",
-                                        description="Commands that everyone can use",
-                                        emoji="😄"
-                                      ),
-                                      SelectOption(
-                                        label="Mod commands",
-                                        value="mod",
-                                        description="Commands for admins/mods",
-                                        emoji=client.get_emoji(885156113656479784)
-                                      ),
-                                      SelectOption(
-                                        label="Music commands",
-                                        value="music",
-                                        description="Music player commands",
-                                        emoji=client.get_emoji(857925385726197760)
-                                      ),
-                                      SelectOption(
-                                        label="Miscellaneous Commands",
-                                        value="misc",
-                                        description="Some other stuffs",
-                                        emoji="🧩"
-                                      ),
-                                      SelectOption(
-                                        label="Role-play commands",
-                                        value="role",
-                                        description="See some social commands",
-                                        emoji=client.get_emoji(885157475354021959),
-                                      ),
-                                      SelectOption(
-                                        label="Activity commands",
-                                        value="activity",
-                                        description="Games that you can play in a vc",
-                                        emoji=client.get_emoji(880089919018659960),
-                                      ),
-                                      SelectOption(
-                                        label="Back to Home",
-                                        value="home",
-                                        description="Go back to the main page",
-                                        emoji=client.get_emoji(885166192661266452),
-                                      ),
-                                    ])]
-  embed=discord.Embed(description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\nReport bugs if any `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  embed.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  embed.add_field(name="<:modules:884784557822459985> Modules:", value="> <:cate:885482994452795413>  Fun\n> <:cate:885482994452795413>  Moderation\n> <:cate:885482994452795413>  Music\n> <:cate:885482994452795413>  Miscellaneous\n> <:cate:885482994452795413>  Roleplay\n> <:cate:885482994452795413>  Activity")
-  embed.add_field(name="<:news:885177157138145280> News, <t:1632316584:R>:", value="> Update in afk command!")
-  embed.add_field(name="<:links:885161311456071750> Links:", value="> [Invite me](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) | [Support server](https://discord.gg/ZScUFjBuvQ) | [Dashboard](https://magic-scythe-cuckoo.glitch.me/)", inline=False)
-  embed.set_footer(text=f"Invoked by {ctx.author.name} • Main Page", icon_url=f"{ctx.author.avatar_url}")
-
-
-  e1 = discord.Embed(title="Fun commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e1.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e1.set_footer(text=f"Invoked by {ctx.author.name} • Page 1/6", icon_url=f"{ctx.author.avatar_url}")
-  e1.add_field(name="Commands 1/2", value="<:arrow:885193320068968508> `emojify` - Emojifies the given text, usage: emojify [text]\n<:arrow:885193320068968508> `meme` - Sends a random meme\n<:arrow:885193320068968508> `rps` - Starts a rock paper scissors game with the bot\n<:arrow:885193320068968508> `ttt` - Stats a tic tac toe game, usage: ttt [user1] (user2)\n<:arrow:885193320068968508> `place` - Tic tac toe sub command, usage: place [tile position]\n<:arrow:885193320068968508> `hack` - A funny unreal hack command, usage: hack [user]\n<:arrow:885193320068968508> `calc` - Enhanced calculator with interactions\n<:arrow:885193320068968508> `wanted` - Generates an image, usage: wanted [user]\n<:arrow:885193320068968508> `spongebob` - Generates an image, usage: spongebob [user]")
-  e1.add_field(name="Commands 2/2", value="<:arrow:885193320068968508> `coin` - Flips a coin and chooses heads or tails\n<:arrow:885193320068968508> `anime` - Get details of an anime/manga, usage: anime [name]\n<:arrow:885193320068968508> `trash` - Generates an image, usage: trash [user]\n<:arrow:885193320068968508> `affect` - Generates an image, usage: affect [user]\n<:arrow:885193320068968508> `amongus` - Generates an image, usage: amongus [user]\n<:arrow:885193320068968508> `enhance` - Enhances user's avatar, usage: enhance [sub command] [user]\n<:arrow:885193320068968508> `grayscale` - Grayscales user's avatar, usage: grayscale [user]\n<:arrow:885193320068968508> `invert` - Inverts color of the user's avatar, usage: invert [user]", inline=False)
-#mod commands
-  e2 = discord.Embed(title="Moderation commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e2.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e2.set_footer(text=f"Invoked by {ctx.author.name} • Page 2/6", icon_url=f"{ctx.author.avatar_url}")
-  e2.add_field(name="Commands 1/3", value="<:arrow:885193320068968508> `clear` - Clears messages in the current channel, usage: clear [amount]\n<:arrow:885193320068968508> `kick` - Kicks a user from the guild, usage: kick [user] (reason)\n<:arrow:885193320068968508> `ban` - Bans a user from the guild, usage: ban [user] (reason)\n<:arrow:885193320068968508> `unban` - Unbans a user from the guild, usage: unban [user]\n<:arrow:885193320068968508> `announce` - Announce something, usage: announce [channel] [message]\n<:arrow:885193320068968508> `deletechannel` - Deletes a \"Text\" channel, usage: deletechannel [channel]\n<:arrow:885193320068968508> `deletevc` - Deletes a \"voice\" channel, usage: deletevc [channel]\n<:arrow:885193320068968508> `nuke` - Deletes a channel and creates a clone, usage: nuke [channel]\n<:arrow:885193320068968508> `clone` - Make a clone of a channel, usage: clone [channel]")
-  e2.add_field(name="Commands 2/3", value="<:arrow:885193320068968508> `reactrole` - Starts a react role event, usage: reactrole [emoji] [role] [message]\n<:arrow:885193320068968508> `mute` - Mutes a member, usage: mute [user] (reason)\n<:arrow:885193320068968508> `unmute` - Unmutes a member, usage: unmute [user]\n<:arrow:885193320068968508> `giveaway` - Starts a giveaway event\n<:arrow:885193320068968508> `reroll` - rerolls the giveaway, usage: reroll [message id]\n<:arrow:885193320068968508> `channelinfo` - Shows full info of a channel, usage: channelinfo (channel)\n<:arrow:885193320068968508> `lock` - Makes a channel lockdown, usage: lock (channel)\n<:arrow:885193320068968508> `snipe` - Snipes a deleted message from current channel", inline=False)
-  e2.add_field(name="Commands 3/3", value="<:arrow:885193320068968508> `unlock` - Unlocks a channel from lockdown, usage: unlock (channel)\n<:arrow:885193320068968508> `slowmode` - Sets slowmode delay, usage: slowmode [seconds]\n<:arrow:885193320068968508> `nick` - Changes nickname, usage: nick (user) [nick]\n<:arrow:885193320068968508> `resetnick` - Resets nickname, usage: resetnick [user]\n<:arrow:885193320068968508> `ticket` - Creates a ticket event, usage: nick [message id] [category id]\n<:arrow:885193320068968508> `massunban` - Unbans everyone from the guild\n<:arrow:885193320068968508> `members` - Shows how many members are in the guild\n<:arrow:885193320068968508> `addrole` - Adds role to given member, usage: addrole [role] [user]\n<:arrow:885193320068968508> `removerole` - Removes a role from the user, usage: removerole [role] [user]")
-
-  e3 = discord.Embed(title="Music commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e3.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e3.set_footer(text=f"Invoked by {ctx.author.name} • Page 3/6", icon_url=f"{ctx.author.avatar_url}")
-  e3.add_field(name="Commands 1/1", value="<:arrow:885193320068968508> `join` - The bot joines your VC\n<:arrow:885193320068968508> `play` - The player starts playing, usage: play [url/song name]\n<:arrow:885193320068968508> `pause` - The player pauses\n<:arrow:885193320068968508> `resume` - The player resumes\n<:arrow:885193320068968508> `queue` - Shows a list of queued songs\n<:arrow:885193320068968508> `loop` - Loops the current song\n<:arrow:885193320068968508> `remove` - Removes a song from the queue, usage: remove [song position]\n<:arrow:885193320068968508> `nowplaying` - Shows details of now playing song in the player\n<:arrow:885193320068968508> `volume` - Changes the volume of the player, usage: volume [percentage]\n<:arrow:885193320068968508> `skip` - Skips the current song to next in the queue\n<:arrow:885193320068968508> `dc` - The bot disconnects and player stops")
-
-  e4 = discord.Embed(title="Misc commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e4.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e4.set_footer(text=f"Invoked by {ctx.author.name} • Page 4/6", icon_url=f"{ctx.author.avatar_url}")
-  e4.add_field(name="Commands 1/2", value="<:arrow:885193320068968508> `ping` - Shows the bot latency\n<:arrow:885193320068968508> `avatar` - Shows the avatar of a user, usage: avatar [user]\n<:arrow:885193320068968508> `code` - Shows which lang bot is using\n<:arrow:885193320068968508> `mail` - Sends a mail to a user, usage: mail [user] (message)\n<:arrow:885193320068968508> `say` - The bot echo you, usage: say [message]\n<:arrow:885193320068968508> `show` - The bot shows an image from google, usage: show [keyword]\n<:arrow:885193320068968508> `covid` - See covid status of a country, usage: covid [country]")
-  e4.add_field(name="Commands 2/2", value="<:arrow:885193320068968508> `spotify` - Shows the details of music user listening to, usage: spotify [user]\n<:arrow:885193320068968508> `afk` - Sets your status as afk, usage: afk (message)\n<:arrow:885193320068968508> `moveme` - Moves you from a vc to another, usage: moveme [channel]\n<:arrow:885193320068968508> `translate` - Translates, usage: translate [To language] [message]\n<:arrow:885193320068968508> `webhook` - Sends a message from webhook, usage: webhook (user) [message]\n<:arrow:885193320068968508> `screenshot` - Shows screenshot of a website, usage screenshot [url]\n<:arrow:885193320068968508> `serverinfo` - Shows everything of the server\n<:arrow:885193320068968508> `report` - Report something to bot dev, usage: report [message]", inline=False)
-
-  e5 = discord.Embed(title="Role-play commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e5.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e5.set_footer(text=f"Invoked by {ctx.author.name} • Page 5/6", icon_url=f"{ctx.author.avatar_url}")
-  e5.add_field(name="Commands 1/1", value="<:arrow:885193320068968508> `hug` - Gives a hug to the user, usage: hug [user]\n<:arrow:885193320068968508> `kiss` - Mmuuuah!, usage: kiss [user]\n<:arrow:885193320068968508> `slam` - And his name is john cena, usage: slam [user]\n<:arrow:885193320068968508> `punch` - Dishooom Dishooomm!, usage: punch [user]")
-
-  e6 = discord.Embed(title="Activity commands", description="`g!help [module/category]` - View specific module.\nHover below categories for more information.\n```ml\n[] - Required Argument | () - Optional Argument```", color=0x2F3136)
-  e6.set_author(name="Gerty Helpdesk", icon_url=f"{client.user.avatar_url}")
-  e6.set_footer(text=f"Invoked by {ctx.author.name} • Page 6/6", icon_url=f"{ctx.author.avatar_url}")
-  e6.add_field(name="Commands 1/1", value="<:arrow:885193320068968508> `ytt` - Youtube together activity, usage: ytt [voice channel]\n<:arrow:885193320068968508> `poker` - Poker night activity, usage: poker [voice channel]\n<:arrow:885193320068968508> `chess` - Chess in the park activity, usage: chess [voice channel]\n<:arrow:885193320068968508> `betrayal` - Betrayal.io activity, usage: betrayal [voice channel]\n<:arrow:885193320068968508> `fishing` - Fishington.io activity, usage: fishing [voice channel]")
-
-  mainmessage = await ctx.send(embed=embed, components=components)
-
-
-
-  while True:
-    try:
-      event = await client.wait_for("select_option", check=None, timeout=60.0)
-      value = event.values[0]
-
-      
-
-      if value == "fun":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e1
-        )
-
-      elif value == "mod":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e2
-        )
-
-      elif value == "music":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e3
-        )
-      elif value == "home":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=embed
-        )
-      elif value == "misc":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e4
-        )
-      elif value == "role":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e5
-        )
-
-      elif value == "activity":
-        if event.author != ctx.author:
-          await event.respond(
-            content=f"{event.author.mention} This is not your select menu. Type `g!help` for yours",
-            type = 4,
-        )
-        else:
-          await event.respond(
-            type = 7,
-            embed=e6
-        )
-
-    except asyncio.TimeoutError:
-      await mainmessage.edit(
-        components=[Select(placeholder="This Menu expired, use command again", disabled=True,
-                                    options=[
-                                      SelectOption(
-                                        label="Back to Home",
-                                        value="home",
-                                        description="Go back to where you started",
-                                        emoji=client.get_emoji(885166192661266452)
-                                      ),
-                                      SelectOption(
-                                        label="Fun commands",
-                                        value="fun",
-                                        description="Commands that everyone can use",
-                                        emoji="😄"
-                                      ),
-                                      SelectOption(
-                                        label="Mod commands",
-                                        value="mod",
-                                        description="Moderation commands for admins/mods",
-                                        emoji=client.get_emoji(885156113656479784)
-                                      ),
-                                      SelectOption(
-                                        label="Music commands",
-                                        value="music",
-                                        description="Music player commands",
-                                        emoji=client.get_emoji(857925385726197760)
-                                      ),
-                                    ])]
-      )
-      break
-
-
-
-#roleplay
-#hug
-@client.command()
-async def hug(ctx, user: discord.Member):
-  hugGifs = ["https://media1.tenor.com/images/1069921ddcf38ff722125c8f65401c28/tenor.gif?itemid=11074788",
-  "https://media1.tenor.com/images/7db5f172665f5a64c1a5ebe0fd4cfec8/tenor.gif?itemid=9200935",
-  "https://media1.tenor.com/images/daffa3b7992a08767168614178cce7d6/tenor.gif?itemid=15249774",
-  "https://media.tenor.com/images/3a9d2bd1bde9ed8ea02b2222988be6da/tenor.gif",
-  "https://media.tenor.com/images/7766f3d163f651b6d9d7c3b718d8e6fb/tenor.gif",
-  "https://media1.tenor.com/images/552c49f523d61c01da04bb1128b42cbf/tenor.gif?itemid=13747286",
-  "https://media1.tenor.com/images/c1058ebe89313d50dfc878d38630036b/tenor.gif?itemid=13976210",
-  "https://media1.tenor.com/images/08de7ad3dcac4e10d27b2c203841a99f/tenor.gif?itemid=4874598",
-  "https://media1.tenor.com/images/efdd8f53689b1bb3437054d608156e95/tenor.gif?itemid=4885269",
-  "https://cdn.weeb.sh/images/S1DyFuQD-.gif"]
-  embed = discord.Embed(color=0xff0040)
-  embed.set_author(name=f"{ctx.author.name} hugs {user.name}!", icon_url=f"{ctx.author.avatar_url}")
-  embed.set_image(url=random.choice(hugGifs))
-
-  await ctx.send(embed=embed)
-
-
-
-@client.command()
-async def kiss(ctx, user: discord.Member):
-  kissGifs = ["https://media1.tenor.com/images/503bb007a3c84b569153dcfaaf9df46a/tenor.gif?itemid=17382412",
-  "https://media1.tenor.com/images/f5167c56b1cca2814f9eca99c4f4fab8/tenor.gif?itemid=6155657",
-  "https://media1.tenor.com/images/621ceac89636fc46ecaf81824f9fee0e/tenor.gif?itemid=4958649",
-  "https://media.tenor.com/images/68d59bb29d7d8f7895ce385869989852/tenor.gif",
-  "https://media.tenor.com/images/5a6a04fc81d70ef353d928a87ed25f6b/tenor.gif",
-  "https://media1.tenor.com/images/47cb6c6e70765343835e5b2d1955e804/tenor.gif?itemid=17747859",
-  "https://media.tenor.com/images/de18124ebe36764446ee2dbf54a672bf/tenor.gif"]
-  embed = discord.Embed(color=0xff0040)
-  embed.set_author(name=f"{ctx.author.name} kisses {user.name}!", icon_url=f"{ctx.author.avatar_url}")
-  embed.set_image(url=random.choice(kissGifs))
-  await ctx.send(embed=embed)
-
-
-
-@client.command()
-async def slam(ctx, member: discord.Member):
-  slamGifs = ["https://media1.tenor.com/images/89309d227081132425e5931fbbd7f59b/tenor.gif?itemid=4880762",
-  "https://media.tenor.com/images/6d0c8075ea6f2f125449886099e2da4c/tenor.gif",
-  "https://media.tenor.com/images/bc850e301bd742c42097c97b054b4d2f/tenor.gif",
-  "https://media.tenor.com/images/8b231fc7b71e03204143c6f6a96d406b/tenor.gif"]
-  embed = discord.Embed(color=0xff0040)
-  embed.set_author(name=f"{ctx.author.name} slams {member.name}!", icon_url=f"{ctx.author.avatar_url}")
-  embed.set_image(url=random.choice(slamGifs))
-  await ctx.send(embed=embed)
-
-
-
-@client.command()
-async def punch(ctx, user: discord.Member):
-  punchGifs = ["https://media1.tenor.com/images/55507aea306782b916659085fc062909/tenor.gif?itemid=8932977",
-  "https://media1.tenor.com/images/c621075def6ca41785ef4aaea20cc3a2/tenor.gif?itemid=7679409",
-  "https://media.tenor.com/images/04a3cf11736bfa9083b91f2d41b76774/tenor.gif",
-  "https://media1.tenor.com/images/f03329d8877abfde62b1e056953724f3/tenor.gif?itemid=13785833",
-  "https://media1.tenor.com/images/abb5363c1f59268e3f94521247eace30/tenor.gif?itemid=16346949",
-  "https://media1.tenor.com/images/36430033b3549744ce109929cbd6694e/tenor.gif?itemid=17053376"]
-  embed = discord.Embed(color=0xff0040)
-  embed.set_author(name=f"{ctx.author.name} gives {user.name} a punch!", icon_url=f"{ctx.author.avatar_url}")
-  embed.set_image(url=random.choice(punchGifs))
-  await ctx.send(embed=embed)
-
-
-
-#reports 
-@client.command()
+@client.command(brief='misc', usage='report [your report]', description='Reports something to bot devs')
 async def report(ctx, *, report=None):
   report_channel = client.get_channel(905063308300791819)
   time_when_report = datetime.datetime.now()
@@ -1370,179 +980,10 @@ async def report(ctx, *, report=None):
 #new music
 
 
-#ticket 
 
 
-client.ticket_configs = {}
-
-
-    
-
-
-@client.command()
-async def ticket(ctx, msg: discord.Message=None, category: discord.CategoryChannel=None):
-    if msg is None or category is None:
-        await ctx.channel.send("Failed to configure the ticket as an argument was not given or was invalid. i.e g!ticket [message id] [category id]")
-        return
-
-    client.ticket_configs[ctx.guild.id] = [msg.id, msg.channel.id, category.id] # this resets the configuration
-
-    async with aiofiles.open("ticket_configs.txt", mode="r") as file:
-        data = await file.readlines()
-
-    async with aiofiles.open("ticket_configs.txt", mode="w") as file:
-        await file.write(f"{ctx.guild.id} {msg.id} {msg.channel.id} {category.id}\n")
-
-        for line in data:
-            if int(line.split(" ")[0]) != ctx.guild.id:
-                await file.write(line)
-                
-    await msg.add_reaction(u"\U0001F3AB")
-    await ctx.channel.send("Succesfully configured the ticket system.")
-
-
-
-#moosic
-music = DiscordUtils.Music()
-
-@client.command()
-async def join(ctx):
-  voicetrue = ctx.author.voice
-  if voicetrue is None:
-    return await ctx.send("You are not connected to a voice channel")
-  em = discord.Embed(description=f"Joined {ctx.author.voice.channel.mention}", color=0x25f500)
-  await ctx.send(embed=em)
-  await ctx.author.voice.channel.connect()
-
-@client.command(aliases=["disconnect"])
-async def dc(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  voicetrue = ctx.author.voice
-  mevoicetrue = ctx.guild.me.voice
-  if voicetrue is None:
-    return await ctx.send("You are not connected to a voice channel")
-  if mevoicetrue is None:
-    return await ctx.send("I am not currently in a voice channel")
-  await ctx.voice_client.disconnect()
-  await ctx.message.add_reaction('<a:bye:857642966457253898>')
-  dc = discord.Embed(description=f"<:disconnect:857641894313984040> Disconnected",color=0xf5ed00)
-  await ctx.send(embed=dc)
- 
-
-@client.command(aliases=["p"])
-async def play(ctx, *, url):
-  try:
-    voicetrue = ctx.author.voice
-    if voicetrue is None:
-      return await ctx.send("You are not connected to a voice channel")
-    em = discord.Embed(description=f"Joined {ctx.author.voice.channel.mention}", color=0x25f500)
-    await ctx.author.voice.channel.connect()
-    await ctx.send(embed=em)
-  except:
-    pass
-  x = discord.Embed(description=f"<a:loading:865563025586389003>  Searching requested song", color=0xff0059)
-  s = await ctx.send(embed=x)
-  player = music.get_player(guild_id=ctx.guild.id)
-  if not player:
-    player = music.create_player(ctx, ffmpeg_error_betterfix=True)
-    if not ctx.voice_client.is_playing():
-      await player.queue(url, search=True)
-    song = await player.play()
-    m = discord.Embed(title="Started playing", description=f"> <a:music:857925385726197760> [{song.name}]({song.url}) [{ctx.author.mention}]", color=0xff0059)
-    m.set_image(url=f"{song.thumbnail}")
-    await s.edit(embed=m)
-  else:
-    song  = await player.queue(url, search=True)
-    v = discord.Embed(title="Added to Queue", description=f"> <a:music:857925385726197760> [{song.name}]({song.url}) has been added to queue! [{ctx.author.mention}]", color=0xff0059)
-    v.set_image(url=f"{song.thumbnail}")
-    await s.edit(embed=v)
-
-
-@client.command()
-async def queue(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  em = discord.Embed(title="Queue", description=f"{',<:blank:862724961096695858>'.join([song.name for song in player.current_queue()])}", color=0xff0059)
-  await ctx.send(embed=em)
-
-
-@client.command()
-async def skip(ctx):
-    player = music.get_player(guild_id=ctx.guild.id)
-    await player.skip(force=True)
-    data = await player.skip(force=True)
-    if len(data) == 2:
-      if len(data) == 2:
-        embed = discord.Embed(title="Skipped", description=f"[{data[0].name}]({data[0].url})", color=0xfff700)
-        await ctx.send(embed=embed)
-    else:
-        embed = discord.Embed(description=f"> Stopped playing [{data[0].name}]({data[0].url}) nothing in the queue!", color=0x80ff00)
-        await ctx.send(embed=embed)
-    
-
-
-@client.command(aliases=["vol"])
-async def volume(ctx, volume):
-    player = music.get_player(guild_id=ctx.guild.id)
-    song, volumee = await player.change_volume(float(volume) / 100) # volume should be a float between 0 to 1
-    embed = discord.Embed(description=f"Set volume to {volumee*100}%", color=0xfff700)
-    await ctx.send(embed=embed)
-
-
-@client.command()
-async def pause(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  song = await player.pause()
-  embed = discord.Embed(title="Paused playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  await ctx.send(embed=embed)
-
-@client.command()
-async def resume(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  song = await player.resume()
-  embed = discord.Embed(title="Resumed playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  await ctx.send(embed=embed)
-
-
-@client.command()
-async def loop(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  song = await player.toggle_song_loop()
-  if song.is_looping:
-    embed = discord.Embed(title="Now looping", description=f"[{song.name}]({song.url}) [{ctx.author.mention}]", color=0xfff700)
-    return await ctx.send(embed=embed)
-  else:
-    embed = discord.Embed(title="Stopped looping", description=f"[{song.name}]({song.url}) [{ctx.author.mention}]", color=0xfff700)
-    return await ctx.send(embed=embed)
-    
-
-@client.command(aliases=["np"])
-async def nowplaying(ctx):
-  player = music.get_player(guild_id=ctx.guild.id)
-  song = player.now_playing()
-  embed = discord.Embed(title="Now playing", description=f"[{song.name}]({song.url})", color=0xfff700)
-  embed.add_field(name="⏳ Duration", value=f"{round(song.duration/60)} mins [`(rounded)`](https://youtu.be/jeg_TJvkSjg)")
-  embed.add_field(name="📌 Author", value=f"[{song.channel}]({song.channel_url})")
-  embed.add_field(name="🪄 Views", value=f"{song.views}")
-  if song.is_looping == True:
-    embed.add_field(name="💽 Looping?", value="<:success:893501515107557466>")
-  else:
-    embed.add_field(name="💽 Looping?", value="<:error:867269410644557834>")
-  embed.set_image(url=f"{song.thumbnail}")
-  await ctx.send(embed=embed)
-  
-
-@client.command()
-async def remove(ctx, index):
-  player = music.get_player(guild_id=ctx.guild.id)
-  song = await player.remove_from_queue(int(index))
-  embed = discord.Embed(title="Removed from Queue", description=f"[{song.name}]({song.url}) has been removed from queue! [{ctx.author.mention}]", color=0xfff700)
-  await ctx.send(embed=embed)
-
-
-            
-
-@client.command()
-async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
+@client.command(brief='meta', usage='moveme [channel] (member)', description='Moves a member or you to another channel')
+async def move(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
   if member == None:
     member = ctx.author
   await member.move_to(channel)
@@ -1551,7 +992,7 @@ async def moveme(ctx , channel: discord.VoiceChannel, member:discord.Member=None
            
  
 #wanted
-@client.command()
+@client.command(brief='fun', usage='wanted (member)', description='WANTED!!!')
 async def wanted(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1568,7 +1009,7 @@ async def wanted(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("profile.jpg"))
 
 
-@client.command()
+@client.command(brief='fun', usage='drake (member 1) (member2)', description='Generates a drake meme')
 async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   if user2 == None:
     user2 = ctx.author
@@ -1592,7 +1033,7 @@ async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   drake.save("drake2.jpg")
   await ctx.send(file = discord.File("drake2.jpg"))
 
-@client.command(aliases=["spongebob"])
+@client.command(brief='fun', usage='sponge (member)', description='Generates a spongebob meme', aliases=["spongebob"])
 async def sponge(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1609,7 +1050,7 @@ async def sponge(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("spongebob2.jpg"))
 
 
-@client.command()
+@client.command(brief='utilities', usage='nuke (channel)', description='Deletes a channel and create a clone of it')
 @commands.has_permissions(manage_channels=True)
 async def nuke(ctx, channel: discord.TextChannel=None):
   if channel==None:
@@ -1621,7 +1062,7 @@ async def nuke(ctx, channel: discord.TextChannel=None):
   
 
 
-@client.command()
+@client.command(brief='meta', usage='translate [to language] [text]', description='Translates given text to given language')
 async def translate(ctx, lang, *, args=None):
   if args == None:
     if ctx.message.reference:
@@ -1634,7 +1075,7 @@ async def translate(ctx, lang, *, args=None):
   await ctx.send(embed=em)
 
 
-@client.command()
+@client.command(brief='fun', usage='anime [search]', description='Shows details of an anime')
 async def anime(ctx, *, search):
   embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
   s = await ctx.send(embed=embed)
@@ -1654,15 +1095,7 @@ async def anime(ctx, *, search):
   await s.edit(embed=em)
 
 
-@client.command()
-async def timestamp(ctx, unixcode: int):
-  em = discord.Embed(title="Unixcode to timestamp converter", description=f"Long Date   | <t:{unixcode}:D>\nShort Date   | <t:{unixcode}:d>\n---------------------------------------\nLong Date/Time   | <t:{unixcode}:F>\nShort Date/Time   | <t:{unixcode}:f>\n---------------------------------------\nLong Time   | <t:{unixcode}:T>\nShort Time   | <t:{unixcode}:t>\n---------------------------------------\nRelative Time   | <t:{unixcode}:R>", color=0xff00d4)
-  em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
-  await ctx.send(embed=em)
-
-
-
-@client.command()
+@client.command(brief='meta', usage='ytt [channel]', description='Starts a youtube together activity')
 async def ytt(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1674,7 +1107,7 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
     embed = discord.Embed(description=f"This activity ended. Don't worry `/`ytt can help you out! <:wumpyyy:873171096176848967>", color=ctx.author.color)
     await s.edit(embed=embed)
 
-@client.command()
+@client.command(brief='meta', usage='poker [channel]', description='Starts a poker night activity')
 async def poker(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1684,7 +1117,7 @@ async def poker(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
 
 
-@client.command()
+@client.command(brief='meta', usage='chess [channel]', description='Starts a chess-in-the-park activity')
 async def chess(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1694,7 +1127,7 @@ async def chess(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
 
 
-@client.command()
+@client.command(brief='meta', usage='betrayal [channel]', description='Starts a betrayal activity')
 async def betrayal(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1703,7 +1136,7 @@ async def betrayal(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start betrayal.io activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
-@client.command()
+@client.command(brief='meta', usage='fishing', description='Starts a fishington.io activity')
 async def fishing(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1713,7 +1146,7 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
     
 
-@client.command()
+@client.command(brief='meta', usage='webhook (member) [content]', description='Sends content from a webhook as the member')
 async def webhook(ctx, member: discord.Member = None, *, content):
   try:
     if member == None:
@@ -1735,43 +1168,8 @@ async def webhook(ctx, member: discord.Member = None, *, content):
     em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
     await ctx.send(embed=em)
   
-def generate_screenshot_api_url(customer_key, secret_phrase, options):
-  api_url = 'https://api.screenshotmachine.com/?key=' + customer_key
-  if secret_phrase:
-    api_url = api_url + '&hash=' + hashlib.md5((options.get('url') + secret_phrase).encode('utf-8')).hexdigest()
-  api_url = api_url + '&' + urllib.parse.urlencode(options)
-  return api_url;
-
-
-@client.command()
-async def screenshot(ctx, url):
-  if ctx.channel.is_nsfw():
-    customer_key = '3fd3f1'
-    secret_phrase = '' # leave secret phrase empty, if not needed
-    options = {
-      'url': f'{url}', # mandatory parameter
-      # all next parameters are optional, see our website screenshot API guide for more details
-      'dimension': '1366x768', # or "1366xfull" for full length screenshot
-      'device': 'desktop',
-      'cacheLimit' : '0',
-      'delay' : '200',
-      'zoom' : '100'
-      }
-
-
-    api_url = generate_screenshot_api_url(customer_key, secret_phrase, options)
-
-    em = discord.Embed(color=ctx.author.color)
-    em.set_image(url=api_url)
-    s = await ctx.send("> <a:loading:865563025586389003> Loading screenshot...")
-    await s.edit(embed=em)
-  else:
-    em = discord.Embed(description='Uh oh! This command is NSFW', color=0xf62323)
-    em.set_image(url="https://i.imgur.com/oe4iK5i.gif")
-    em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-    await ctx.send(embed=em)
   
-@client.command(aliases=["delete"])
+@client.command(brief='fun', usage='trash (member)', description='Are you sure to delete this trash?', aliases=["delete"])
 async def trash(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1788,7 +1186,7 @@ async def trash(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("delete2.png"))
   
   
-@client.command(aliases=["affect"])
+@client.command(brief='fun', usage='child [member]', description='ewwww!!!', aliases=["affect"])
 async def child(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1804,7 +1202,7 @@ async def child(ctx, user: discord.Member = None):
   affect.save("affect2.png")
   await ctx.send(file = discord.File("affect2.png"))
   
-@client.command(aliases=["sus"])
+@client.command(brief='fun', usage='amoungus [user]', description='He is a sussy baka!!', aliases=["sus"])
 async def amongus(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1864,7 +1262,7 @@ def calculate(exp):
         result = 'An error occurred.'
     return result
  
-@client.command()
+@client.command(brief='meta', usage='calc', description='Sends an interactive calculator')
 async def calc(ctx):
     em = discord.Embed(description="> <a:gloading:855680101529944064> Loading calculator..")
     m = await ctx.send(embed=em)
@@ -1898,7 +1296,7 @@ async def calc(ctx):
             await res.respond(content='', embed=f, components=buttons, type=7)
   
 
-@client.command()
+@client.command(brief='fun', usage='grayscale [user]', description='Grayscales a users avatar')
 async def grayscale(ctx, user: discord.Member=None):
     if user == None:
       user = ctx.author
@@ -1912,7 +1310,7 @@ async def grayscale(ctx, user: discord.Member=None):
     em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em)
 
-@client.command()
+@client.command(brief='fun', usage='invert [user]', description='Inverts a users avatar')
 async def invert(ctx, user: discord.Member=None):
   if user == None:
     user = ctx.author
@@ -1928,13 +1326,13 @@ async def invert(ctx, user: discord.Member=None):
   await ctx.send(file=f, embed=em)
 
  
-@client.group(invoke_without_command=True)
+@client.group(brief='fun', usage='enhance [subcommand]', description='Enhances a users avatar', invoke_without_command=True)
 async def enhance(ctx):
     em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
-@enhance.command()
+@enhance.command(brief='fun', usage='enhance color [user]', description='Enhances color of the users avatar')
 async def color(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:
