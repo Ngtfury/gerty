@@ -44,7 +44,7 @@ class Paginator:
         while True:
             right_disable2, left_disable2=await self.disable_check()
             try:
-                event=asyncio.ensure_future(self.bot.wait_for(event="button_click", check=lambda i: i.channel==self.ctx.channel and i.component.id in ['ButtonLeft', 'ButtonRight']))
+                event=asyncio.ensure_future(self.bot.wait_for(self, event="button_click", check=lambda i: i.channel==self.ctx.channel and i.component.id in ['ButtonLeft', 'ButtonRight']))
                 if event.component.id=='ButtonLeft':
                     current-=1
                 elif event.component.id=='ButtonRight':
