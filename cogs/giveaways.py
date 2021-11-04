@@ -3,8 +3,6 @@ from discord.ext import commands
 import datetime
 import asyncio
 import random
-import discord_components
-from discord_components import *
 
 def setup(client):
     client.add_cog(Giveaways(client))
@@ -53,26 +51,16 @@ class Giveaways(commands.Cog):
         main_message=await ctx.send(embed=firstembed)
         await asyncio.sleep(1)
         
-        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nClick on below button to participate 🎉!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
+        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize**: {prize}\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
         em.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
         em.set_image(url='https://i.imgur.com/USGQsyz.png')
-        await main_message.edit(
-            '🎉 **GIVEAWAY** 🎉',
-            embed=em,
-            components=[Button(style=ButtonStyle.green, label='Enter', emoji='🎉', id='entergw')]
-        )
-        entries=[]
-        while True:
-            if int(datetime.datetime.now().timestamp())==timenow+time:
-                break
-            event=await self.bot.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.component.id in ['entergw'])
-            if event.component.id=='entergw':
-                if not event.author.bot and event.author not in entries:
-                    entries.append(event.author)
-                    await event.respond(type=4, content='You entered this giveaway 🎉!')
-                else:
-                    entries.remove(event.author)
-                    await event.respond(type=4, content='You left from this giveaway')
+        await main_message.edit('🎉 **GIVEAWAY** 🎉', embed=em)
+        await main_message.add_reaction('🎉')
+
+        await asyncio.sleep(time)
+        ok_message=await ctx.channel.fetch_message(main_message.id)
+        entries=await ok_message.reactions[0].users().flatten()
+        entries.pop(entries.index(self.bot.user))
 
         winner=random.choice(entries)
 
