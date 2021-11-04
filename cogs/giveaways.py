@@ -56,13 +56,9 @@ class Giveaways(commands.Cog):
 
         await asyncio.sleep(time)
         ok_message=await ctx.channel.fetch_message(main_message.id)
-        win=[]
         entries=ok_message.reactions[0].users().flatten()
-        for x in entries:
-            if not x.user==self.bot.user:
-                win.append(x)
 
-        winner=random.choice(win)
+        winner=random.choice(entries)
 
         lastembed=discord.Embed(description=f'**🎉 [Link to giveaway]({main_message.jump_url}) | [Invite me!]({discord.utils.oauth_url(self.bot.user.id)})', color=0x2F3136)
         await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}** 🥳', embed=lastembed)
