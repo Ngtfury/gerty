@@ -74,7 +74,7 @@ class Giveaways(commands.Cog):
                 return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
         for x in range(winners):
-            no_winners()
+            no_winners(ctx)
             winner=random.choice(entries)
             entries.pop(entries.index(winner))
 
