@@ -74,6 +74,7 @@ class Giveaways(commands.Cog):
 
             lastembed=discord.Embed(description=f'**🎉 [Link to giveaway]({main_message.jump_url}) | [Invite me!]({discord.utils.oauth_url(self.bot.user.id)})**', color=0x2F3136)
             await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}**!', embed=lastembed)
+            await asyncio.sleep(0.5)
 
 
         await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉')
