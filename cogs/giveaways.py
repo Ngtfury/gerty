@@ -74,6 +74,7 @@ class Giveaways(commands.Cog):
 
 
     @commands.command()
+    @commands.has_permissions(manage_channels=True)
     async def greroll(self, ctx, message_id:discord.Message):
         if message_id.author != self.bot.user:
             return await ctx.send('That is not a message sent by me!')
