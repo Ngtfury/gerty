@@ -35,7 +35,7 @@ class Giveaways(commands.Cog):
 
     @commands.command()
     @commands.has_permissions(manage_channels=True)
-    async def gstart(self, ctx, time, *, prize):
+    async def gstart(self, ctx, time, winners:int, *, prize):
         timenow=int(datetime.datetime.now().timestamp())
 
         time=self.convert(time)
@@ -53,7 +53,7 @@ class Giveaways(commands.Cog):
         main_message=await ctx.send(embed=firstembed)
         await asyncio.sleep(1)
         
-        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
+        em=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Winners: {winners}\nHost: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
         em.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
         em.set_image(url='https://i.imgur.com/USGQsyz.png')
         await main_message.edit('🎉 **GIVEAWAY** 🎉', embed=em)
@@ -69,10 +69,11 @@ class Giveaways(commands.Cog):
             noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
             return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
-        winner=random.choice(entries)
+        for x in range(winners):
+            winner=random.choice(entries)
 
-        lastembed=discord.Embed(description=f'**🎉 [Link to giveaway]({main_message.jump_url}) | [Invite me!]({discord.utils.oauth_url(self.bot.user.id)})**', color=0x2F3136)
-        await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}**!', embed=lastembed)
+            lastembed=discord.Embed(description=f'**🎉 [Link to giveaway]({main_message.jump_url}) | [Invite me!]({discord.utils.oauth_url(self.bot.user.id)})**', color=0x2F3136)
+            await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}**!', embed=lastembed)
 
 
         await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉')
