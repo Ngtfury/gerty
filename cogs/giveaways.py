@@ -33,6 +33,8 @@ class Giveaways(commands.Cog):
 
         return val * time_dict[unit]
 
+
+
     @commands.command()
     @commands.has_permissions(manage_channels=True)
     async def gstart(self, ctx, time, winners:int, *, prize):
@@ -63,14 +65,18 @@ class Giveaways(commands.Cog):
         ok_message=await ctx.channel.fetch_message(main_message.id)
         entries=await ok_message.reactions[0].users().flatten()
         entries.pop(entries.index(self.bot.user))
-        if len(entries) <=0:
-            noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.', color=0x2F3136)
-            noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
-            noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
-            return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
+
+        async def no_winners(ctx):
+            if len(entries) <=0:
+                noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.', color=0x2F3136)
+                noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
+                noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
+                return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
         for x in range(winners):
+            no_winners()
             winner=random.choice(entries)
+            entries.pop(entries.index(winner))
 
             lastembed=discord.Embed(description=f'**🎉 [Link to giveaway]({main_message.jump_url}) | [Invite me!]({discord.utils.oauth_url(self.bot.user.id)})**', color=0x2F3136)
             await ctx.send(f'Congratulations 🎉 {winner.mention}! You won **{prize}**!', embed=lastembed)
