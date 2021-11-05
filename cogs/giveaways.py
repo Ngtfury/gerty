@@ -70,15 +70,13 @@ class Giveaways(commands.Cog):
         entries=await ok_message.reactions[0].users().flatten()
         entries.pop(entries.index(self.bot.user))
 
-
+        if len(entries) < winners:
+            noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.\nMust be at least **{winners}** participation(s)', color=0x2F3136)
+            noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
+            noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
+            return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
         for x in range(winners):
-            if len(entries) < winners:
-                noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.\nMust be at least **{winners}** participation(s)', color=0x2F3136)
-                noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
-                noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
-                return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
-
             winner=random.choice(entries)
             entries.pop(entries.index(winner))
 
