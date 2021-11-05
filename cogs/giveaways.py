@@ -64,10 +64,10 @@ class Giveaways(commands.Cog):
         entries=await ok_message.reactions[0].users().flatten()
         entries.pop(entries.index(self.bot.user))
         if len(entries) <=0:
-            noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R>\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nNo enough participants for this giveaway, giveaway has been cancelled\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
+            noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.', color=0x2F3136)
             noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
             noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
-            return await main_message.edit(embed=noentries)
+            return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
         winner=random.choice(entries)
 
