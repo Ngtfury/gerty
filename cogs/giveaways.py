@@ -38,7 +38,7 @@ class Giveaways(commands.Cog):
     @commands.command()
     @commands.has_permissions(manage_channels=True)
     async def gstart(self, ctx, time, winners:int, *, prize):
-        if winners < 0:
+        if winners <= 0:
             return await ctx.send('There must be at least 1 winner')
         if winners > 5:
             return await ctx.send('5 winners is maximum for this giveaway') 
