@@ -270,7 +270,7 @@ class Misc(commands.Cog):
                             affichage='|'
                         else:
                             expression=expression.replace('|','')
-                            expression = calculate(expression)
+                            expression = self.calculate(expression)
                             affichage=f"{affichage.replace('|','')}={expression}"
                             expression=''
                     elif res.component.id == '❮':
@@ -306,7 +306,7 @@ class Misc(commands.Cog):
                     else:
                         if '=' in affichage:
                             affichage=''
-                        expression = input_formatter(original=affichage, new=res.component.label)
+                        expression = self.input_formatter(original=affichage, new=res.component.label)
                         affichage=expression
                     if res.component.id != '400' and res.component.id!='401':
                         e = discord.Embed(title=f'{ctx.author}\'s calculator', description=f'```{affichage}```', color=int("2f3136", 16))
