@@ -18,7 +18,7 @@ class GertyHelpCommand:
             _des='No description provided for this command'
         em.add_field(name='Description', value=f'{_des}', inline=False)
         if _command.usage:
-            _usage=f'{t}{t}{t}{ctx.prefix}{_command.qualified_name}{_command.usage}{t}{t}{t}'
+            _usage=f'{t}{t}{t}{ctx.prefix}{_command.qualified_name} {_command.usage}{t}{t}{t}'
         else:
             _usage=f'```{ctx.prefix}{_command.qualified_name}```'
         em.add_field(name='Usage', value=_usage)
