@@ -16,7 +16,7 @@ class GertyHelpCommand:
             _des=_command.description
         else:
             _des='No description provided for this command'
-            em.add_field(name='Description', value=f'{_des}', inline=False)
+        em.add_field(name='Description', value=f'{_des}', inline=False)
         if _command.usage:
             _usage=f'{t}{t}{t}{ctx.prefix}{_command.usage}{t}{t}{t}'
         else:
