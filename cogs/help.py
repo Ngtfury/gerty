@@ -52,7 +52,6 @@ class Help(commands.Cog):
         self.bot=bot
 
     @commands.command(brief='utility', description='Stop it get some help!', usage='(command)')
-    @commands.is_owner()
     async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
