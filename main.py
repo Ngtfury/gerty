@@ -148,7 +148,7 @@ class DisabledCommand(commands.CheckFailure):
 @client.check
 async def disabled_command(ctx):
   is_disabled=await client.db.fetchrow('SELECT * FROM disabled WHERE channel_id=$1', ctx.channel.id)
-  if is_disabled:
+  if is_disabled and ctx.command.name != 'toggle_commands':
     raise DisabledCommand
     return False
   else:
@@ -177,7 +177,7 @@ async def uptime(ctx):
 
 @client.command(brief='mod', description='Toggle disable/enable commands per channel', usage='(channel)', aliases=['toggle', 'toggle-commands', 'toggle-all'])
 @commands.has_permissions(manage_messages=True)
-async def disable_commands(ctx, channel:discord.TextChannel=None):
+async def toggle_commands(ctx, channel:discord.TextChannel=None):
   if channel==None:
     channel=ctx.channel
   is_already_disabled=await client.db.fetch('SELECT * FROM disabled WHERE channel_id=$1', channel.id)
