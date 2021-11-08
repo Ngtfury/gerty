@@ -161,6 +161,7 @@ class Rtfm(commands.Cog):
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
             'pycord': 'https://pycord.readthedocs.io/en/latest/',
             'discord-components': 'https://discord-components.readthedocs.io/en/0.5.2.4/',
+            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
         }
 
         if obj is None:
@@ -244,7 +245,7 @@ a cruddy fuzzy algorithm.""", usage='[query]', aliases=['rtfd', 'rtdm'], invoke_
         """"Gives you a documentation link for a discord-components entity"""
         await self.do_rtfm(ctx, 'discord-components', obj)
 
-    @rtfm.command(name='postgresql', aliases=['psql'])
-    async def rtfm_postgresql(self, ctx, *, obj:str=None):
-        await self.do_rtfm(ctx, 'postgresql', obj)
+    @rtfm.command(name='aiohttp')
+    async def rtfm_aiohttp(self, ctx, *, obj:str=None):
+        await self.do_rtfm(ctx, 'aiohttp', obj)
 
