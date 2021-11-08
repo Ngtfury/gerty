@@ -10,7 +10,7 @@ class moderation(commands.Cog):
 
 
 #addrole command
-    @commands.command()
+    @commands.command(brief='mod', description='Add roles to a user', usage='[role] [user]')
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def addrole(self, ctx, role: discord.Role, user: discord.Member):
@@ -24,7 +24,7 @@ class moderation(commands.Cog):
 
 
 #removerole command
-    @commands.command()
+    @commands.command(brief='mod', description='Removes roles from a user', usage='[role] [user]')
     @commands.cooldown(1,5,commands.BucketType.user)
     @commands.has_permissions(manage_roles=True)
     async def removerole(self, ctx, role: discord.Role, user: discord.Member):
@@ -38,7 +38,7 @@ class moderation(commands.Cog):
 
 
 #clear command
-    @commands.command(aliases=["purge"])
+    @commands.command(brief='mod', description='Purges messages in channel', usage='[amount]', aliases=["purge"])
     @commands.cooldown(1,10,commands.BucketType.user)
     @commands.has_permissions(manage_messages=True)
     async def clear(self, ctx, amount=20):
@@ -54,7 +54,7 @@ class moderation(commands.Cog):
 
 
 #kick command
-    @commands.command()
+    @commands.command(brief='mod', description='Kicks a user from the server', usage='[member] (reason)')
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *, reason=None):
@@ -71,7 +71,7 @@ class moderation(commands.Cog):
 
 
 #ban command
-    @commands.command()
+    @commands.command(brief='mod', description='Bans a member from the server', usage='[member] (reason)')
     @commands.cooldown(1,10,commands.BucketType.guild)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason=None):
@@ -105,7 +105,7 @@ class moderation(commands.Cog):
 
 
 #announcement command
-    @commands.command()
+    @commands.command(brief='mod', description='Announces something to a channel', usage='[channel] [message]')
     @commands.has_permissions(manage_channels=True)
     async def announce(self, ctx, channel: discord.TextChannel, *, msg):
       embed=discord.Embed(description=f"This is an announcement from moderator {ctx.author.name}", color=ctx.author.color)

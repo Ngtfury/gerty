@@ -55,10 +55,6 @@ class Help(commands.Cog):
     async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
-    @commands.command()
-    async def kwbgwkghb(self, ctx):
-        await ctx.send('sync worked!!!')
-
 
 def setup(bot):
     bot.add_cog(Help(bot))

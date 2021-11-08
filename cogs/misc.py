@@ -85,7 +85,7 @@ class Misc(commands.Cog):
 
 
 
-    @commands.command(aliases=['ms', 'latency'])
+    @commands.command(brief='misc', description='Gets the latency of the bot', aliases=['ms', 'latency'])
     async def ping(self, ctx):
         t_1 = time.perf_counter()
         await ctx.trigger_typing()
@@ -219,7 +219,7 @@ class Misc(commands.Cog):
         original=''.join(lst)
         return original
     
-    @commands.command(aliases=['calc', 'calculator'])
+    @commands.command(brief='fun', description='Yields a interactive calculator', aliases=['calc', 'calculator'])
     @commands.max_concurrency(1, per=commands.BucketType.user)
     async def calcu(self,ctx):
         affichage='|'

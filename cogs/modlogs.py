@@ -13,22 +13,13 @@ class modlogs(commands.Cog):
         self.client = client
 
     
-    @commands.command()
-    @commands.has_permissions(manage_channels=True)
-    async def modping(self, ctx):
-        dbt_1 = time.perf_counter()
-        await self.client.db.execute("SELECT 1")
-        dbt_2 = time.perf_counter()
-        dbtime_delta = round((dbt_2-dbt_1)*1000)
-        await ctx.send(f"Done in {dbtime_delta} ms")
 
-
-    @commands.group(invoke_without_command=True)
+    @commands.group(brief='mod', description='Set modlogs', usage='[sub command]', aliases=['modlogs', 'logs', 'log'], invoke_without_command=True)
     @commands.has_permissions(manage_channels=True)
     async def modlog(self, ctx):
-        await ctx.send("Hm")
+        await ctx.send("please provide sub commands")
 
-    @modlog.command()
+    @modlog.command(brief='mod', description='Sets modlog channel', usage='[channel]', aliases=['channelset', 'setchannel'])
     @commands.has_permissions(manage_channels=True)
     async def channel(self, ctx, channel: discord.TextChannel):
         try:
@@ -47,7 +38,7 @@ class modlogs(commands.Cog):
                 em = discord.Embed(description=f"<:success:893501515107557466> Mod logs channel **updated** to {channel.mention}", color=0x2F3136)
                 await ctx.send(embed=em)
     
-    @modlog.command()
+    @modlog.command(brief='mod', description='Delets modlogs data for current server')
     @commands.has_permissions(manage_channels=True)
     async def delete(self, ctx):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", ctx.guild.id)

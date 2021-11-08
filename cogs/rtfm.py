@@ -194,22 +194,19 @@ class Rtfm(commands.Cog):
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
         await ctx.send(embed=e)
 
-    @commands.group(aliases=['rtfd', 'rtdm'], invoke_without_command=True)
-    async def rtfm(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a discord.py entity.
+    @commands.group(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.
         Events, objects, and functions are all supported through
-        a cruddy fuzzy algorithm.
-        """
+a cruddy fuzzy algorithm.""", usage='[query]', aliases=['rtfd', 'rtdm'], invoke_without_command=True)
+    async def rtfm(self, ctx, *, obj: str = None):
         await self.do_rtfm(ctx, 'latest', obj)
 
-    @rtfm.command(name='jp')
+    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a discord.py entity (Japanese).""", usage='[query]', name='jp')
     async def rtfm_jp(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a discord.py entity (Japanese)."""
+        
         await self.do_rtfm(ctx, 'latest-jp', obj)
 
-    @rtfm.command(name='python', aliases=['py'])
+    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a Python entity.""", name='python', aliases=['py'])
     async def rtfm_python(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a Python entity."""
         await self.do_rtfm(ctx, 'python', obj)
 
     @rtfm.command(name='py-jp', aliases=['py-ja'])
