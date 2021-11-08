@@ -46,7 +46,7 @@ class GertyHelpCommand:
         return await ctx.send(embed=em)
 
 
-class Help(commands.Cog):
+class Utils(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
