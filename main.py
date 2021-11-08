@@ -247,7 +247,7 @@ async def on_command_error(ctx, error):
           break
   else:
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
-    error_log_channel=client.get_channel(905004192404504586)
+    error_log_channel=client.get_channel(906874671847333899)
 
     traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
 
@@ -854,7 +854,7 @@ async def hack(ctx, user: discord.Member):
 
 @client.command(brief='misc', usage='report [your report]', description='Reports something to bot devs')
 async def report(ctx, *, report=None):
-  report_channel = client.get_channel(905063308300791819)
+  report_channel = client.get_channel(906874684119859230)
   time_when_report = datetime.datetime.now()
   timestamp_when_report = time_when_report.timestamp()
   try:
