@@ -146,14 +146,6 @@ async def check_blacklist(ctx):
 @client.event
 async def on_ready():
   DiscordComponents(client)
-  async with aiofiles.open("ticket_configs.txt", mode="a") as temp:
-        pass
-
-  async with aiofiles.open("ticket_configs.txt", mode="r") as file:
-        lines = await file.readlines()
-        for line in lines:
-            data = line.split(" ")
-            client.ticket_configs[int(data[0])] = [int(data[1]), int(data[2]), int(data[3])]
 
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
