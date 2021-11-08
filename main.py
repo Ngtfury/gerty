@@ -49,6 +49,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
+from cogs.help import GertyHelpCommand
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -203,7 +204,7 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description=f"<:error:893501396161290320> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.NotOwner):
-    em = discord.Embed(description="<:error:893501396161290320>Lol you are not my owner :joy:", color=0x2F3136)
+    em = discord.Embed(description="<:error:893501396161290320> This is an owner-only command and you don't look like `Nιgнт Fυяу ♪🤍#4371` <a:zpanda_heart:907292207604723743>", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.BotMissingPermissions):
     em = discord.Embed(description=f"<:error:893501396161290320>The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
