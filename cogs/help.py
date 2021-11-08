@@ -1,5 +1,7 @@
 import discord
 from discord.ext import commands
+import discord_components
+from discord_components import *
 
 class GertyHelpCommand:
     def __init__(self, bot):
@@ -15,7 +17,11 @@ class GertyHelpCommand:
         else:
             _des='No description provided for this command'
             em.add_field(name='Description', value=f'{_des}', inline=False)
-        em.add_field(name='Usage', value=f'{t}{t}{t}{ctx.prefix}{_command.usage}{t}{t}{t}')
+        if _command.usage:
+            _usage=f'{t}{t}{t}{ctx.prefix}{_command.usage}{t}{t}{t}'
+        else:
+            _usage='No usage description provided'
+        em.add_field(name='Usage', value=_usage)
         em.set_author(name=f'Help - {_command.qualified_name}', icon_url=self.bot.user.avatar_url)
         if _command.aliases:
             aliases=[]

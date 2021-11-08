@@ -1164,7 +1164,7 @@ buttons = [
 ]
  
  
-
+#brief='fun', usage='', description=''
 @client.command(brief='fun', usage='grayscale [user]', description='Grayscales a users avatar')
 async def grayscale(ctx, user: discord.Member=None):
     if user == None:
