@@ -142,6 +142,17 @@ async def check_blacklist(ctx):
   else:
     return True
 
+class DisabledCommand(commands.CheckFailure):
+  pass
+
+@client.check
+async def disabled_command(ctx):
+  is_disabled=await client.db.fetchrow('SELECT * FROM disabled WHERE channel_id=$1', ctx.channel.id)
+  if is_disabled:
+    raise DisabledCommand
+    return False
+  else:
+    return True
 
 @client.event
 async def on_ready():
@@ -161,6 +172,22 @@ async def uptime(ctx):
     await main.edit(embed=em2)
     await asyncio.sleep(1)
 
+
+
+
+@client.command(brief='mod', description='Toggle disable/enable commands per channel', usage='(channel)', aliases=['toggle', 'toggle-commands', 'toggle-all'])
+@commands.has_permissions(manage_messages=True)
+async def disable_commands(ctx, channel:discord.TextChannel=None):
+  if channel==None:
+    channel=ctx.channel
+  is_already_disabled=await client.db.fetch('SELECT * FROM disabled WHERE channel_id=$1', channel.id)
+  if is_already_disabled:
+    await client.db.execute('DELETE FROM disabled WHERE channel_id=$1', channel.id)
+    disembed=discord.Embed(description=f'<:success:893501515107557466> Enabled commands in {channel.mention}', color=0x2F3136)
+    return await ctx.send(embed=disembed)
+  await client.db.execute("INSERT INTO disabled (channel_id) VALUES ($1)", channel.id)
+  em=discord.Embed(description=f'<:success:893501515107557466> Disabled commands in {channel.mention}', color=0x2F3136)
+  await ctx.send(embed=em)
 
 @client.event
 async def on_command_error(ctx, error):
@@ -200,6 +227,9 @@ async def on_command_error(ctx, error):
   elif isinstance(error, commands.BadArgument):
     em = discord.Embed(description=f"<:error:893501396161290320> {error}", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
+  elif isinstance(error, DisabledCommand):
+    em=discord.Embed(description=f'<:error:893501396161290320> Commands in {ctx.channel.mention} are disabled', color=0x2F3136)
+    await ctx.send(embed=em)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
