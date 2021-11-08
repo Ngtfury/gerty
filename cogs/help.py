@@ -19,7 +19,7 @@ class GertyHelpCommand:
             _des='No description provided for this command'
         em.add_field(name='Description', value=f'{_des}', inline=False)
         if f'{ctx.prefix}' == f'<@!{self.bot.user.id}> ':
-            _prefix=f'@{self.bot.user.name}'
+            _prefix=f'@{self.bot.user.name} '
         else:
             _prefix=ctx.prefix
         if _command.usage:
