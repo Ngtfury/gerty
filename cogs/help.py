@@ -47,7 +47,7 @@ class Help(commands.Cog):
 
     @commands.command()
     @commands.is_owner()
-    async def help(self, ctx, command:str):
+    async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
 
