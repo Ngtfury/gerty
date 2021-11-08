@@ -158,7 +158,7 @@ async def on_ready():
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
 
-@client.command(brief='misc', description='Gets the bot uptime', usage='uptime')
+@client.command(brief='misc', description='Gets the bot uptime')
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
   em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
@@ -262,7 +262,7 @@ async def on_command_error(ctx, error):
 
 
 
-@client.command(brief='fun', usage='8ball [question]', description='Ask the magic 8ball a question!', aliases=['8ball'])
+@client.command(brief='fun', usage='[question]', description='Ask the magic 8ball a question!', aliases=['8ball'])
 async def _8ball(ctx, *, question):
   responses = ["It is certain.",
 "It is decidedly so.",
@@ -289,7 +289,7 @@ async def _8ball(ctx, *, question):
   await ctx.send(embed=em)
 
 
-@client.command(brief='utilities', usage='avatar (member)', description='Get a user\'s avatar', aliases=["av"])
+@client.command(brief='utilities', usage='(member)', description='Get a user\'s avatar', aliases=["av"])
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
       if ctx.message.reference:
@@ -304,7 +304,7 @@ async def avatar(ctx, user: discord.Member=None):
 
 #emojify command
 
-@client.command(brief='fun', usage='emojify [text]', description='Make the bot say whatever you want with emojis!')
+@client.command(brief='fun', usage='[text]', description='Make the bot say whatever you want with emojis!')
 async def emojify(ctx, *, text):
   emojis = []
   for s in text:
@@ -321,7 +321,7 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.command(brief='utilities', usage='say [text]', description='Make the bot say whatevet you want', aliases=["s"])
+@client.command(brief='utilities', usage='[text]', description='Make the bot say whatevet you want', aliases=["s"])
 async def say(ctx, *, content):
   try:
     await ctx.message.delete()
@@ -334,7 +334,7 @@ async def say(ctx, *, content):
 
 
 
-@client.command(brief='utilities', usage='mute [member] (reason)', description='Mutes a member so that they cannot talk or add reactions')
+@client.command(brief='utilities', usage='[member] (reason)', description='Mutes a member so that they cannot talk or add reactions')
 @commands.has_permissions(manage_channels=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
   if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
@@ -363,7 +363,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 
 
-@client.command(brief='utilities', usage='unmute [member]', description='Unmutes a member from mute')
+@client.command(brief='utilities', usage='[member]', description='Unmutes a member from mute')
 @commands.has_permissions(manage_channels=True)
 async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
@@ -413,7 +413,7 @@ winningConditions = [
 ]
 
 
-@client.command(brief='fun', usage='ttt [player1] [player2]', description='Start to play a tic tac toe game with  your friend!', aliases=['ttt'])
+@client.command(brief='fun', usage='[player1] [player2]', description='Start to play a tic tac toe game with  your friend!', aliases=['ttt'])
 async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
     global count
     global player1
@@ -455,7 +455,7 @@ async def tictactoe(ctx, p1: discord.Member, p2: discord.Member):
         await ctx.send("> **A game is already in progress! Finish it before starting a new one.**")
 
 
-@client.command(brief='fun', usage='place [tile number]', description='Place tic tac toe tile')
+@client.command(brief='fun', usage='[tile number]', description='Place tic tac toe tile')
 async def place(ctx, pos: int):
     global turn
     global player1
@@ -528,7 +528,7 @@ async def place_error(ctx, error):
         await ctx.send("> **Please make sure to enter an integer**.")
 
 
-@client.command(brief='fun', usage='google [search]', description='Search for anything in google', aliases=["show", "search", "img", "googlesearch"])
+@client.command(brief='fun', usage='[search]', description='Search for anything in google', aliases=["show", "search", "img", "googlesearch"])
 @commands.cooldown(1,5,commands.BucketType.user)
 async def google(ctx, *, search):
   try:
@@ -627,7 +627,7 @@ async def google(ctx, *, search):
 
 
 #rps try :sob:
-@client.command(brief='fun', usage='rps', description='Stars a rock paper scissors game!')
+@client.command(brief='fun', description='Stars a rock paper scissors game!')
 @commands.cooldown(1,5,commands.BucketType.user)
 async def rps(ctx):
 
@@ -681,7 +681,7 @@ async def rps(ctx):
   
 #userinfo
 
-@client.command(brief='utilities', usage='whois (member)', description='Get all info of a user', aliases=["userinfo", "ui"])
+@client.command(brief='utilities', usage='(member)', description='Get all info of a user', aliases=["userinfo", "ui"])
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     if ctx.message.reference:
@@ -759,7 +759,7 @@ async def whois(ctx, member: discord.Member=None):
 
 
 
-@client.command(brief='utilities', usage='lock (channel)', description='Locks a channel for @everyone role')
+@client.command(brief='utilities', usage='(channel)', description='Locks a channel for @everyone role')
 @commands.has_permissions(manage_channels = True)
 async def lock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -771,7 +771,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
   
 
 
-@client.command(brief='utilities', usage='unlock (channel)', description='Unlocks a locked channel')
+@client.command(brief='utilities', usage='(channel)', description='Unlocks a locked channel')
 @commands.has_permissions(manage_channels = True)
 async def unlock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -789,7 +789,7 @@ async def coin(ctx):
   await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
   
 
-@client.command(brief='utilities', usage='slowmode [seconds]', description='Sets slowmode in current channel')
+@client.command(brief='utilities', usage='[seconds]', description='Sets slowmode in current channel')
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
@@ -799,13 +799,13 @@ async def slowmode(ctx, seconds: int):
 
 
 
-@client.command(brief='utilities', usage='nick [member] (new nick)', description='Sets new nickname to a member', pass_content=True)
+@client.command(brief='utilities', usage='[member] (new nick)', description='Sets new nickname to a member', pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def nick(ctx, member: discord.Member, *, arg):
   await member.edit(nick=arg)
   await ctx.send(f'Nickname was changed for {member.mention} to {arg}')
 
-@client.command(brief='utilities', usage='resetnick [member]', description='Resets nickname of a member'
+@client.command(brief='utilities', usage='[member]', description='Resets nickname of a member'
 , pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def resetnick(ctx, member: discord.Member):
@@ -814,7 +814,7 @@ async def resetnick(ctx, member: discord.Member):
 
 
     
-@client.command(brief='utilities', usage='hack [member]', description='Please don\'t do this!!!')
+@client.command(brief='utilities', usage='[member]', description='Please don\'t do this!!!')
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
   await asyncio.sleep(1)
@@ -852,7 +852,7 @@ async def hack(ctx, user: discord.Member):
   await ctx.send(f"{user.mention} you will be logged out from your account within 3 days enjoy your last days in discord <a:evil_peepo:862347454980947998>")
 
 
-@client.command(brief='misc', usage='report [your report]', description='Reports something to bot devs')
+@client.command(brief='misc', usage='[your report]', description='Reports something to bot devs')
 async def report(ctx, *, report=None):
   report_channel = client.get_channel(906874684119859230)
   time_when_report = datetime.datetime.now()
@@ -894,7 +894,7 @@ async def report(ctx, *, report=None):
 
 
 
-@client.command(brief='meta', usage='moveme [channel] (member)', description='Moves a member or you to another channel')
+@client.command(brief='meta', usage='[channel] (member)', description='Moves a member or you to another channel')
 async def move(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
   if member == None:
     member = ctx.author
@@ -904,7 +904,7 @@ async def move(ctx , channel: discord.VoiceChannel, member:discord.Member=None):
            
  
 #wanted
-@client.command(brief='fun', usage='wanted (member)', description='WANTED!!!')
+@client.command(brief='fun', usage='(member)', description='WANTED!!!')
 async def wanted(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -921,7 +921,7 @@ async def wanted(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("profile.jpg"))
 
 
-@client.command(brief='fun', usage='drake (member 1) (member2)', description='Generates a drake meme')
+@client.command(brief='fun', usage='(member 1) (member2)', description='Generates a drake meme')
 async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   if user2 == None:
     user2 = ctx.author
@@ -945,7 +945,7 @@ async def drake(ctx, user: discord.Member = None, user2: discord.Member = None):
   drake.save("drake2.jpg")
   await ctx.send(file = discord.File("drake2.jpg"))
 
-@client.command(brief='fun', usage='sponge (member)', description='Generates a spongebob meme', aliases=["spongebob"])
+@client.command(brief='fun', usage='(member)', description='Generates a spongebob meme', aliases=["spongebob"])
 async def sponge(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -962,7 +962,7 @@ async def sponge(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("spongebob2.jpg"))
 
 
-@client.command(brief='utilities', usage='nuke (channel)', description='Deletes a channel and create a clone of it')
+@client.command(brief='utilities', usage='(channel)', description='Deletes a channel and create a clone of it')
 @commands.has_permissions(manage_channels=True)
 async def nuke(ctx, channel: discord.TextChannel=None):
   if channel==None:
@@ -974,7 +974,7 @@ async def nuke(ctx, channel: discord.TextChannel=None):
   
 
 
-@client.command(brief='meta', usage='translate [to language] [text]', description='Translates given text to given language')
+@client.command(brief='meta', usage='[to language] [text]', description='Translates given text to given language')
 async def translate(ctx, lang, *, args=None):
   if args == None:
     if ctx.message.reference:
@@ -987,7 +987,7 @@ async def translate(ctx, lang, *, args=None):
   await ctx.send(embed=em)
 
 
-@client.command(brief='fun', usage='anime [search]', description='Shows details of an anime')
+@client.command(brief='fun', usage='[search]', description='Shows details of an anime')
 async def anime(ctx, *, search):
   embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
   s = await ctx.send(embed=embed)
@@ -1007,7 +1007,7 @@ async def anime(ctx, *, search):
   await s.edit(embed=em)
 
 
-@client.command(brief='meta', usage='ytt [channel]', description='Starts a youtube together activity')
+@client.command(brief='meta', usage='[channel]', description='Starts a youtube together activity')
 async def ytt(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1019,7 +1019,7 @@ async def ytt(ctx, channel: discord.VoiceChannel=None):
     embed = discord.Embed(description=f"This activity ended. Don't worry `/`ytt can help you out! <:wumpyyy:873171096176848967>", color=ctx.author.color)
     await s.edit(embed=embed)
 
-@client.command(brief='meta', usage='poker [channel]', description='Starts a poker night activity')
+@client.command(brief='meta', usage='[channel]', description='Starts a poker night activity')
 async def poker(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1029,7 +1029,7 @@ async def poker(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
 
 
-@client.command(brief='meta', usage='chess [channel]', description='Starts a chess-in-the-park activity')
+@client.command(brief='meta', usage='[channel]', description='Starts a chess-in-the-park activity')
 async def chess(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1039,7 +1039,7 @@ async def chess(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
 
 
-@client.command(brief='meta', usage='betrayal [channel]', description='Starts a betrayal activity')
+@client.command(brief='meta', usage='[channel]', description='Starts a betrayal activity')
 async def betrayal(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1048,7 +1048,7 @@ async def betrayal(ctx, channel: discord.VoiceChannel=None):
     em = discord.Embed(description=f"<:games:873121470308569168> [Click here to start betrayal.io activity]({link})", color=0xfd1212)
     await ctx.send(embed=em)
 
-@client.command(brief='meta', usage='fishing', description='Starts a fishington.io activity')
+@client.command(brief='meta', description='Starts a fishington.io activity')
 async def fishing(ctx, channel: discord.VoiceChannel=None):
   if channel == None:
     await ctx.send("Please mention a voice channel to start the activity")
@@ -1058,7 +1058,7 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     await ctx.send(embed=em)
     
 
-@client.command(brief='meta', usage='webhook (member) [content]', description='Sends content from a webhook as the member')
+@client.command(brief='meta', usage='(member) [content]', description='Sends content from a webhook as the member')
 async def webhook(ctx, member: discord.Member = None, *, content):
   try:
     if member == None:
@@ -1081,7 +1081,7 @@ async def webhook(ctx, member: discord.Member = None, *, content):
     await ctx.send(embed=em)
   
   
-@client.command(brief='fun', usage='trash (member)', description='Are you sure to delete this trash?', aliases=["delete"])
+@client.command(brief='fun', usage='(member)', description='Are you sure to delete this trash?', aliases=["delete"])
 async def trash(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1098,7 +1098,7 @@ async def trash(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("delete2.png"))
   
   
-@client.command(brief='fun', usage='child [member]', description='ewwww!!!', aliases=["affect"])
+@client.command(brief='fun', usage='[member]', description='ewwww!!!', aliases=["affect"])
 async def child(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1114,7 +1114,7 @@ async def child(ctx, user: discord.Member = None):
   affect.save("affect2.png")
   await ctx.send(file = discord.File("affect2.png"))
   
-@client.command(brief='fun', usage='amoungus [user]', description='He is a sussy baka!!', aliases=["sus"])
+@client.command(brief='fun', usage='[user]', description='He is a sussy baka!!', aliases=["sus"])
 async def amongus(ctx, user: discord.Member = None):
   if user == None:
     user = ctx.author
@@ -1165,7 +1165,7 @@ buttons = [
  
  
 #brief='fun', usage='', description=''
-@client.command(brief='fun', usage='grayscale [user]', description='Grayscales a users avatar')
+@client.command(brief='fun', usage='[user]', description='Grayscales a users avatar')
 async def grayscale(ctx, user: discord.Member=None):
     if user == None:
       user = ctx.author
@@ -1179,7 +1179,7 @@ async def grayscale(ctx, user: discord.Member=None):
     em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em)
 
-@client.command(brief='fun', usage='invert [user]', description='Inverts a users avatar')
+@client.command(brief='fun', usage='[user]', description='Inverts a users avatar')
 async def invert(ctx, user: discord.Member=None):
   if user == None:
     user = ctx.author
@@ -1195,13 +1195,13 @@ async def invert(ctx, user: discord.Member=None):
   await ctx.send(file=f, embed=em)
 
  
-@client.group(brief='fun', usage='enhance [subcommand]', description='Enhances a users avatar', invoke_without_command=True)
+@client.group(brief='fun', description='Enhances a users avatar', invoke_without_command=True)
 async def enhance(ctx):
     em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
-@enhance.command(brief='fun', usage='enhance color [user]', description='Enhances color of the users avatar')
+@enhance.command(brief='fun', usage='[user]', description='Enhances color of the users avatar')
 async def color(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:

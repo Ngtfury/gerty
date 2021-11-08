@@ -18,9 +18,9 @@ class GertyHelpCommand:
             _des='No description provided for this command'
         em.add_field(name='Description', value=f'{_des}', inline=False)
         if _command.usage:
-            _usage=f'{t}{t}{t}{ctx.prefix}{_command.usage}{t}{t}{t}'
+            _usage=f'{t}{t}{t}{ctx.prefix}{command.qualified_name}{_command.usage}{t}{t}{t}'
         else:
-            _usage='No usage description provided'
+            _usage=f'```{ctx.prefix}{_command.qualified_name}```'
         em.add_field(name='Usage', value=_usage)
         em.set_author(name=f'Help - {_command.qualified_name}', icon_url=self.bot.user.avatar_url)
         if _command.aliases:
@@ -40,7 +40,7 @@ class GertyHelpCommand:
             pass
         return await ctx.send(embed=em)
 
-    
+
 class Help(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
