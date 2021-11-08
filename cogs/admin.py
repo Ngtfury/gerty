@@ -125,7 +125,8 @@ class Admin(commands.Cog):
                             await event.respond(type=4, embed=nicmbed, ephemeral=False)
                     elif isinstance(event.component, Button):
                         if event.component.id=='rall':
-                            await event.respond(type=7, components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.green, label='Restart', id='rall', disabled=True)])
+                            disableMessage=await main_message.channel.fetch_message(main_message.id)
+                            await disableMessage.disable_components()
                             self.restart_program()
                             break
                 except asyncio.TimeoutError:
