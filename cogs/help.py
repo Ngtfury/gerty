@@ -21,7 +21,7 @@ class GertyHelpCommand:
             aliases=[]
             for x in _command.aliases:
                 aliases.append(f'`{x}`')
-                em.add_field(name='Aliases', value=', '.join(aliases))
+            em.add_field(name='Aliases', value=', '.join(aliases))
         try:
             subcommands=[]
             for cmd in _command.commands:
