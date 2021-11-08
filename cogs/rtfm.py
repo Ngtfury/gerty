@@ -161,7 +161,6 @@ class Rtfm(commands.Cog):
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
             'pycord': 'https://pycord.readthedocs.io/en/latest/',
             'discord-components': 'https://discord-components.readthedocs.io/en/0.5.2.4/',
-            'postgresql': 'https://www.postgresql.org/docs/current/index.html'
         }
 
         if obj is None:
