@@ -15,7 +15,7 @@ class BotEmbed:
 class GertyHelpCommand:
     def __init__(self, bot):
         self.bot=bot
-    async def send_command_help(self, ctx, command:str):
+    async def send_command_help(self, ctx, command:str, embed:bool=False):
         _command=self.bot.get_command(f'{command}')
         if not _command:
             return await ctx.send(embed=BotEmbed.error(f'There is no command called “{command}“'))
@@ -52,7 +52,11 @@ class GertyHelpCommand:
             em.add_field(name='Subcommands', value=', '.join(_subcommands), inline=False)
         except AttributeError:
             pass
-        return await ctx.send(embed=em)
+        if embed==True:
+            return em
+        else:
+            return await ctx.send(embed=em)
+    
 
 
 class Utils(commands.Cog):
