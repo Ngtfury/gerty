@@ -147,10 +147,12 @@ class DisabledCommand(commands.CheckFailure):
 
 @client.check
 async def disabled_command(ctx):
+  if ctx.author.id == 770646750804312105:
+    return True
   is_disabled=await client.db.fetchrow('SELECT * FROM disabled WHERE channel_id=$1', ctx.channel.id)
-  if is_disabled and ctx.command.name != 'toggle_commands' and ctx.author not in client.owner_ids:
-    raise DisabledCommand
-    return False
+  if is_disabled and ctx.command.name != 'toggle_commands':
+      raise DisabledCommand
+      return False
   else:
     return True
 
