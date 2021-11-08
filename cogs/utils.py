@@ -3,6 +3,13 @@ from discord.ext import commands
 import discord_components
 from discord_components import *
 
+class BotEmbed:
+    def error(description:str):
+        em=discord.Embed(description=f'<:error:893501396161290320> {description}', color=0x2F3136)
+        return em
+    def success(description:str):
+        em=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
+
 class GertyHelpCommand:
     def __init__(self, bot):
         self.bot=bot
