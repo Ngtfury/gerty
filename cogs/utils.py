@@ -18,13 +18,13 @@ class Webhook:
         self.url=url
         self.username=username
         self.avatar_url=avatar_url
-    async def embed(title:str=None,description:str=None,url:str=None):
-        data=[{
+    def embed(title:str=None,description:str=None,url:str=None):
+        embed=[{
             "title": title,
             "description": description,
             "url": url
             }]
-        return data
+        return embed
     async def send(self,content=None, embeds=None):
         data={
             'username': self.username,
