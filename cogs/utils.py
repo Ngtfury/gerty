@@ -18,11 +18,12 @@ class Webhook:
         self.url=url
         self.username=username
         self.avatar_url=avatar_url
-    async def send(self,content):
+    async def send(self,content, embeds:discord.Embed=None):
         data={
             'username': self.username,
             'avatar_url': self.avatar_url,
-            'content': content
+            'content': content,
+            'embeds': embeds.to_dict()
         }
         async with aiohttp.ClientSession() as ses:
             async with ses.post(url=self.url, json=data) as rep:
