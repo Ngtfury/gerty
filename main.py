@@ -199,8 +199,8 @@ async def on_command_error(ctx, error):
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
     em = discord.Embed(description=f"<:error:893501396161290320> You are missing a required argument `{error.param.name}`", color=0x2F3136)
-    await ctx.reply(embed=em, mention_author=False)
-    await GertyHelpCommand(client).send_command_help(ctx, command=ctx.command)
+    em2=await GertyHelpCommand(client).send_command_help(ctx, command=ctx.command, embed=True)
+    await ctx.reply(embeds=[em,em2], mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
     em = discord.Embed(description=f"<:error:893501396161290320> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
