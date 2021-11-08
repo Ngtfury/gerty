@@ -12,14 +12,13 @@ class GertyHelpCommand:
             return await ctx.send(f'There is no command called `{command}`')
         t='`'
         em=discord.Embed(description=f'{t}{t}{t}ml\n[] - Required Argument | () - Optional Argument\n{t}{t}{t}', color=0x2F3136)
-        em.set_thumbnail(url='https://cdn.discordapp.com/emojis/884514691609677914.gif?size=128')
         em.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=ctx.author.avatar_url)
         if _command.description:
             _des=_command.description
         else:
             _des='No description provided for this command'
         em.add_field(name='Description', value=f'{_des}', inline=False)
-        if f'{ctx.prefix}' == f'<@!{self.bot.user.id}>':
+        if f'{ctx.prefix}' == f'<@!{self.bot.user.id}> ':
             _prefix=f'@{self.bot.user.name}'
         else:
             _prefix=ctx.prefix
