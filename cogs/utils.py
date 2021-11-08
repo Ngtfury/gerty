@@ -24,7 +24,7 @@ class Webhook:
             'avatar_url': self.avatar_url,
             'content': content
         }
-        async with asyncio.ClientSession() as ses:
+        async with aiohttp.ClientSession() as ses:
             async with ses.post(url=self.url, json=data) as rep:
                 pass
 
