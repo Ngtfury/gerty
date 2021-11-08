@@ -129,7 +129,8 @@ class Admin(commands.Cog):
                             self.restart_program()
                             break
                 except asyncio.TimeoutError:
-                    await main_message.edit(components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
+                    disableMessage=await main_message.channel.fetch_message(main_message.id)
+                    await disableMessage.disable_components()
                     break
 
     @commands.command(brief='admin', description='Blacklists/Bot bans a user', usage='[user] [reason]', aliases=['bl', 'botban'])
