@@ -17,10 +17,14 @@ class GertyHelpCommand:
         else:
             _des='No description provided for this command'
         em.add_field(name='Description', value=f'{_des}', inline=False)
-        if _command.usage:
-            _usage=f'{t}{t}{t}{ctx.prefix}{_command.qualified_name} {_command.usage}{t}{t}{t}'
+        if f'{ctx.prefix}' == f'<@!{self.bot.user.id}>':
+            _prefix=f'@{self.bot.user.name}'
         else:
-            _usage=f'```{ctx.prefix}{_command.qualified_name}```'
+            _prefix=ctx.prefix
+        if _command.usage:
+            _usage=f'{t}{t}{t}{_prefix}{_command.qualified_name} {_command.usage}{t}{t}{t}'
+        else:
+            _usage=f'```{_prefix}{_command.qualified_name}```'
         em.add_field(name='Usage', value=_usage)
         em.set_author(name=f'Help - {_command.qualified_name}', icon_url=self.bot.user.avatar_url)
         if _command.aliases:
