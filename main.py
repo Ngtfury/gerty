@@ -49,7 +49,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from cogs.help import GertyHelpCommand
+from cogs.utils import GertyHelpCommand
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
