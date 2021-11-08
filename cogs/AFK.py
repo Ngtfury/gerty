@@ -88,7 +88,7 @@ class AFK(commands.Cog):
             json.dump(afk, f)
     
 
-    @commands.command(aliases=["afkset"])
+    @commands.command(brief='misc', description='Sets user stats as afk', usage='(reason)', aliases=["afkset"])
     async def afk(self, ctx, *, reason=None):
         if reason == None:
             reason = "AFK"

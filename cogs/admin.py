@@ -27,7 +27,7 @@ class Admin(commands.Cog):
         self.client=client
         self._last_result = None
 
-    @commands.command(aliases=["delm"])
+    @commands.command(brief='admin', description='Deletes a message sent by the bot', usage='[message]', aliases=["delm"])
     @commands.is_owner()
     async def delete_message(self, ctx, mid=None):
         if mid == None:
@@ -43,7 +43,7 @@ class Admin(commands.Cog):
             await ctx.message.add_reaction("<:error:867269410644557834>")
 
 
-    @commands.group(aliases=["reboot", "reloadall", "rall", "fuckoff"], invoke_without_command=True)
+    @commands.command(brief='admin', description='Restarts the bot', aliases=["reboot", "reloadall", "rall", "fuckoff"])
     @commands.is_owner()
     async def restart(self, ctx):
         def restart_program():
@@ -55,7 +55,7 @@ class Admin(commands.Cog):
         restart_program()
 
 
-    @commands.command()
+    @commands.command(brief='admin', description='Cleans message sent by the bot', usage='(limit)')
     @commands.is_owner()
     async def cleanup(self, ctx, limit:int=10):
         try:
@@ -87,7 +87,7 @@ class Admin(commands.Cog):
             self.client.load_extension(ext)
             
 
-    @commands.command()
+    @commands.command(brief='admin', description='Syncs code from github')
     @commands.is_owner()
     async def sync(self, ctx):
         em=discord.Embed(title='Git sync', description='```shell\n$ git pull```', color=0x2F3136)
@@ -132,7 +132,7 @@ class Admin(commands.Cog):
                     await main_message.edit(components=[Select(placeholder='Reload extentions one by one', disabled=True, options=[SelectOption(label='ok', value='ok')]), Button(style=ButtonStyle.gray, label='Restart', id='rall', disabled=True)])
                     break
 
-    @commands.command()
+    @commands.command(brief='admin', description='Blacklists/Bot bans a user', usage='[user] [reason]', aliases=['bl', 'botban'])
     @commands.is_owner()
     async def blacklist(self, ctx, user: discord.Member, *, reason):
         if user==ctx.author:
@@ -146,7 +146,7 @@ class Admin(commands.Cog):
         em=discord.Embed(description=f'<:success:893501515107557466> **Blacklisted {user.name} for {reason}**', color=0x2F3136)
         await ctx.send(embed=em)
 
-    @commands.command()
+    @commands.command(brief='admin', description='Unblacklists/Bot unbans a user', usage='[user]', aliases=['unbl', 'botunban'])
     async def unblacklist(self, ctx, user: discord.Member):
         results=await self.client.db.fetch('SELECT * FROM blacklisted WHERE user_id=$1', user.id)
         if not results:
@@ -166,7 +166,7 @@ class Admin(commands.Cog):
         return content.strip('` \n')
 
 
-    @commands.command(pass_context=True, hidden=True, name='eval')
+    @commands.command(brief='admin', description='Evals the code given', usage='[code]', pass_context=True, hidden=True, name='eval')
     @commands.is_owner()
     async def _eval(self, ctx, *, body: str):
         """Evaluates a code"""
