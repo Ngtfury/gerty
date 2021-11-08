@@ -1,8 +1,9 @@
+import asyncio
 import discord
-from discord.embeds import Embed
 from discord.ext import commands
 import discord_components
 from discord_components import *
+import aiohttp
 
 class BotEmbed:
     def error(description:str):
@@ -11,6 +12,22 @@ class BotEmbed:
     def success(description:str):
         embed=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
         return embed
+
+class Webhook:
+    def __init__(self, url:str, username:str=None, avatar_url:str=None):
+        self.url=url
+        self.username=username
+        self.avatar_url=avatar_url
+    async def send(self,content):
+        data={
+            'username': self.username,
+            'avatar_url': self.avatar_url,
+            'content': content
+        }
+        async with asyncio.ClientSession() as ses:
+            async with ses.post(url=self.url, json=data) as rep:
+                pass
+
 
 class GertyHelpCommand:
     def __init__(self, bot):
