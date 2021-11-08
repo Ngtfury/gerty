@@ -18,7 +18,7 @@ class GertyHelpCommand:
     async def send_command_help(self, ctx, command:str):
         _command=self.bot.get_command(f'{command}')
         if not _command:
-            return await ctx.send(f'There is no command called `{command}`')
+            return await ctx.send(embed=BotEmbed.error(f'There is no command called “{command}“'))
         t='`'
         em=discord.Embed(description=f'{t}{t}{t}ml\n[] - Required Argument | () - Optional Argument\n{t}{t}{t}', color=0x2F3136)
         em.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=ctx.author.avatar_url)
