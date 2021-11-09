@@ -106,7 +106,7 @@ class Utils(commands.Cog):
     async def on_shard_disconnect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'<@&907682091595096084>\n⚠ SHARD ID **{shard_id}** HAS BEEN DISCONNECTED', username='Gerty status logs', avatar_url=self.bot.user.avatar_url)
+            await web.send(content=f'⚠ <@&907682091595096084>\nSHARD ID **{shard_id}** HAS BEEN DISCONNECTED', username='Gerty status logs', avatar_url=self.bot.user.avatar_url)
 
 def setup(bot):
     bot.add_cog(Utils(bot))
