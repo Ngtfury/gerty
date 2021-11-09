@@ -49,7 +49,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from cogs.utils import GertyHelpCommand
+from cogs.utils import BotEmbed, GertyHelpCommand
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -238,39 +238,12 @@ async def on_command_error(ctx, error):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
     if matches:
-      em = discord.Embed(description=f"Did you mean **{matches[0]}** ?\n> click on <:success:893501515107557466> to run `{matches[0]}` command", color=0x2F3136)
-      mainmessagecommand = await ctx.send(
-        embed=em,
-        components=[[Button(style=ButtonStyle.gray, emoji=client.get_emoji(893501515107557466), id = "invokecommand"), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), id = "deletecommandmessage")]]
-      )
-      while True:
-        try:
-          event = await client.wait_for(
-            "button_click",
-            check = lambda i: i.component.id in ["invokecommand", "deletecommandmessage"],
-            timeout=10.0
-          )
-          if event.author != ctx.author:
-            await event.respond(
-              content="Sorry, this buttons cannot be controlled by you",
-              type=4
-            )
-          else:
-            if event.component.id == "invokecommand":
-              await mainmessagecommand.delete()
-              cmd = client.get_command(f"{matches[0]}")
-              await cmd(ctx)
-            elif event.component.id == "deletecommandmessage":
-              await mainmessagecommand.delete()
-              await ctx.message.add_reaction("<:cancel:872394940779474985>")
-        except asyncio.TimeoutError:
-          try:
-            await mainmessagecommand.edit(
-              components=[[Button(style=ButtonStyle.green, emoji=client.get_emoji(893501515107557466), custom_id = "invokecommand", disabled=True), Button(style=ButtonStyle.red, emoji=client.get_emoji(890938576563503114), custom_id = "deletecommandmessage", disabled=True)]]
-            )
-          except:
-            pass
-          break
+      _matches=[]
+      for x in matches:
+        _matches.append(f'{x}')
+      embi=BotEmbed.error(f'Command called `{ctx.invoked_with}` does\'t exists')
+      embi.add_field(name='Did you mean?', value='\n'.join(matches))
+      await ctx.send(embeds=embi)
   else:
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
     error_log_channel=client.get_channel(906874671847333899)

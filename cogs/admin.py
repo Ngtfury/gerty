@@ -125,6 +125,7 @@ class Admin(commands.Cog):
                             await event.respond(type=4, embed=nicmbed, ephemeral=False)
                     elif isinstance(event.component, Button):
                         if event.component.id=='rall':
+                            await event.respond(type=6)
                             disableMessage=await main_message.channel.fetch_message(main_message.id)
                             await disableMessage.disable_components()
                             self.restart_program()

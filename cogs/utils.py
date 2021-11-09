@@ -73,6 +73,8 @@ class Utils(commands.Cog):
     async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
+        
+
 
 
 
