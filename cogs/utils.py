@@ -74,15 +74,7 @@ class Utils(commands.Cog):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
 
-    @commands.Cog.listener()
-    async def on_command(self,ctx):
-        em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author.name}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel **{ctx.channel.name}** ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', color=0x2F3136, timestamp=datetime.datetime.now())
-        em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        em.set_footer(text='Used command at')
-        em.set_thumbnail(url=f'{ctx.guild.icon_url}')
-        async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
-            await webhook.send(username='Gerty command logs', embed=em, avatar_url=f'{self.bot.avatar_url}')
+
 
 def setup(bot):
     bot.add_cog(Utils(bot))
