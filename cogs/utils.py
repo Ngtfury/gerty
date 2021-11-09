@@ -1,8 +1,10 @@
 import asyncio
+import datetime
 import discord
 from discord.ext import commands
 import discord_components
 from discord_components import *
+from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 
 class BotEmbed:
@@ -13,31 +15,7 @@ class BotEmbed:
         embed=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
         return embed
 
-class Webhook:
-    def __init__(self, url:str, username:str=None, avatar_url:str=None):
-        self.url=url
-        self.username=username
-        self.avatar_url=avatar_url
-    def embed(title:str=None,description:str=None,url:str=None, color=None):
-        embed=[
-            {
-                'title': title,
-                'description': description,
-                'url': url,
-                'color': color
-            }
-        ]
-        return embed
-    async def send(self,content=None, embeds=None):
-        data={
-            'username': self.username,
-            'avatar_url': self.avatar_url,
-            'content': content,
-            'embeds': embeds
-        }
-        async with aiohttp.ClientSession() as ses:
-            async with ses.post(url=self.url, json=data) as rep:
-                pass
+
 
 
 class GertyHelpCommand:
@@ -95,6 +73,16 @@ class Utils(commands.Cog):
     async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 
+
+    @commands.Cog.listener()
+    async def on_command(self,ctx):
+        em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author.name}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel **{ctx.channel.name}** ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', color=0x2F3136, timestamp=datetime.datetime.now())
+        em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        em.set_footer(text='Used command at')
+        em.set_thumbnail(url=f'{ctx.guild.icon_url}')
+        async with aiohttp.ClientSession() as session:
+            webhook = Webhook.from_url('https://discord.com/api/webhooks/907598996799889408/6PBavxJsMaGesiCEN948rYX5nKLj5tZjmGdmLXE2BVRzPKnsIdfjijJBTRnacI9bbfeZ', adapter=AsyncWebhookAdapter(session))
+            await webhook.send(username='Gerty command logs', embed=em, avatar_url=f'{self.bot.avatar_url}')
 
 def setup(bot):
     bot.add_cog(Utils(bot))
