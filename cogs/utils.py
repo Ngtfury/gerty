@@ -84,7 +84,7 @@ class Utils(commands.Cog):
         em.set_thumbnail(url=ctx.guild.icon_url)
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
-            await webhook.send(embed=em, username='Gerty command logs', avatar_url=self.bot.avatar_url)
+            await webhook.send(embed=em, username='Gerty command logs', avatar_url=self.bot.user.avatar_url)
 
 
 
