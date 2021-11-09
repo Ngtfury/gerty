@@ -15,7 +15,9 @@ class BotEmbed:
         embed=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
         return embed
 
-
+class BotColors:
+    def invis():
+        return 0x2F3136
 
 
 class GertyHelpCommand:

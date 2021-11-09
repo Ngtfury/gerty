@@ -49,7 +49,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from cogs.utils import BotEmbed, GertyHelpCommand
+from cogs.utils import BotEmbed, GertyHelpCommand, BotColors
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -241,7 +241,7 @@ async def on_command_error(ctx, error):
       _matches=[]
       for x in matches:
         _matches.append(f'{x}')
-      embi=BotEmbed.error(f'Command called `{ctx.invoked_with}` does\'t exists')
+      embi=discord.Embed(description=f'Command called `{ctx.invoked_with}` does\'t exists', color=BotColors.invis)
       embi.add_field(name='Did you mean?', value='\n'.join(matches))
       await ctx.send(embeds=embi)
   else:
