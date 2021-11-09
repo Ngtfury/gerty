@@ -241,8 +241,8 @@ async def on_command_error(ctx, error):
       _matches=[]
       for x in matches:
         _matches.append(f'{x}')
-      embi=discord.Embed(description=f'Command called `{ctx.invoked_with}` does\'t exists', color=BotColors.invis)
-      embi.add_field(name='Did you mean?', value='\n'.join(matches))
+      embi=discord.Embed(description=f'Command called `{ctx.invoked_with}` does\'t exists', color=BotColors.invis())
+      embi.add_field(name='Did you mean?', value='\n'.join(_matches))
       await ctx.send(embeds=embi)
   else:
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
