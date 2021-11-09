@@ -103,6 +103,12 @@ class Utils(commands.Cog):
 
 
     @commands.Cog.listener()
+    async def on_ready(self):
+        async with aiohttp.ClientSession() as session:
+            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
+            await web.send(content=f'⚠ <@&907682091595096084>\n<:success:893501515107557466> **Gerty is connected**')
+
+    @commands.Cog.listener()
     async def on_shard_disconnect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
