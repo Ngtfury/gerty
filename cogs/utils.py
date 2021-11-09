@@ -78,13 +78,26 @@ class Utils(commands.Cog):
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author.name}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=BotColors.invis())
+        if ctx.author.id in self.bot.owner_ids:
+            return
+        em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=BotColors.invis())
         em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Used command at')
         em.set_thumbnail(url=ctx.guild.icon_url)
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
             await webhook.send(embed=em, username='Gerty command logs', avatar_url=self.bot.user.avatar_url)
+
+
+    @commands.Cog.listener()
+    async def on_guild_join(self, guild):
+        em=discord.Embed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=BotColors.invis(), timestamp=datetime.datetime.now())
+        em.set_author(name=guild.name, icon_url=guild.icon_url)
+        em.set_thumbnail(url=guild.icon_url)
+        em.set_footer(text='Joined server at')
+        async with aiohttp.ClientSession() as session:
+            web=Webhook.from_url(url='https://discord.com/api/webhooks/907593485224386560/T6k31rtY8Yf_WsSjH77OW27bteM7Gnl7ve7q6rcRXfyQj6s5bLXsoYO97kHqo70MOtdH', adapter=AsyncWebhookAdapter(session))
+            await web.send(embed=em, username='Gerty guild logs', avatar_url=self.bot.user.avatar_url)
 
 
 
