@@ -80,6 +80,8 @@ class Utils(commands.Cog):
     async def on_command(self, ctx):
         if ctx.author.id in self.bot.owner_ids:
             return
+        if not ctx.guild:
+            return
         em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=BotColors.invis())
         em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Used command at')
