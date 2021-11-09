@@ -81,7 +81,7 @@ class Utils(commands.Cog):
         em.set_footer(text='Used command at')
         em.set_thumbnail(url=f'{ctx.guild.icon_url}')
         async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url('https://discord.com/api/webhooks/907598996799889408/6PBavxJsMaGesiCEN948rYX5nKLj5tZjmGdmLXE2BVRzPKnsIdfjijJBTRnacI9bbfeZ', adapter=AsyncWebhookAdapter(session))
+            webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
             await webhook.send(username='Gerty command logs', embed=em, avatar_url=f'{self.bot.avatar_url}')
 
 def setup(bot):
