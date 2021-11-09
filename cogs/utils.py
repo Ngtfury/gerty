@@ -79,7 +79,7 @@ class Utils(commands.Cog):
     @commands.Cog.listener()
     async def on_command(self, ctx):
         em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author.name}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=BotColors.invis())
-        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Used command at')
         em.set_thumbnail(url=ctx.guild.icon_url)
         async with aiohttp.ClientSession() as session:
