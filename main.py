@@ -238,7 +238,12 @@ async def on_command_error(ctx, error):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
     if matches:
-      _matches='\n'.join(matches)
+      matches_=[]
+      num=0
+      for x in matches:
+        num=num+1
+        matches_.append(f'> {num}. {x}')
+      _matches='\n'.join(matches_)
       await ctx.send(embed=BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
   else:
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
