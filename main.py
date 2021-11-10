@@ -1481,8 +1481,8 @@ async def nitro(ctx):
     try:
       event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel, timeout=40) #
       if event.author==ctx.author:
-        return await event.respond(type=4, content="You cannot claim your gift yourself!")
-      if event.component.id=='NitroButton':
+        event.respond(type=4, content="You cannot claim your gift yourself!")
+      elif event.component.id=='NitroButton':
         await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
         em=discord.Embed(title=f'Congrads! you\'ve been rickrolled by {ctx.author.name}', color=BotColors.invis())
         em.set_image(url='https://imgur.com/NQinKJB')
