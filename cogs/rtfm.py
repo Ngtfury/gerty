@@ -99,21 +99,7 @@ class Rtfm(commands.Cog):
         # n.b.: key doesn't have `discord` or `discord.ext.commands` namespaces
         result = {}
 
-        # first line is version info
-        inv_version = stream.readline().rstrip()
 
-        if inv_version != '# Sphinx inventory version 2':
-            raise RuntimeError('Invalid objects.inv file version.')
-
-        # next line is "# Project: <name>"
-        # then after that is "# Version: <version>"
-        projname = stream.readline().rstrip()[11:]
-        version = stream.readline().rstrip()[11:]
-
-        # next line says if it's a zlib header
-        line = stream.readline()
-        if 'zlib' not in line:
-            raise RuntimeError('Invalid objects.inv file, not z-lib compatible.')
 
         # This code mostly comes from the Sphinx repository.
         entry_regex = re.compile(r'(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+(\S+)\s+(.*)')
