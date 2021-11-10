@@ -257,7 +257,7 @@ class Utils(commands.Cog):
                         await MainMessage.delete()
                         break
                     elif event.component.id=='Links':
-                        await event.respond(type=6)
+                        await event.respond(type=4, content='coming soon!')
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
                 break
