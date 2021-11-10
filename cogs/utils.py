@@ -75,53 +75,57 @@ class GertyHelpCommand:
         rtfm=[]
         for command in self.bot.commands:
             if command.brief:
+                if command.description:
+                    _des=command.description
+                else:
+                    _des='No description provided'
                 if command.brief=='util':
-                    util.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    util.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            util.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            util.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='meta':
-                    misc.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    misc.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            misc.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            misc.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='fun':
-                    fun.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    fun.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            fun.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            fun.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='mod':
-                    mod.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    mod.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            mod.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            mod.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='tags':
-                    tags.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    tags.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            tags.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            tags.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='admin':
-                    admin.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    admin.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            admin.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            admin.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
                 elif command.brief=='rtfm':
-                    rtfm.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    rtfm.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
-                            rtfm.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                            rtfm.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
         return util, misc, fun, mod, tags, admin, rtfm
