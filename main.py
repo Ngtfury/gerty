@@ -1481,13 +1481,16 @@ async def nitro(ctx):
     try:
       event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel, timeout=40) #
       if event.author==ctx.author:
-        event.respond(type=4, content="You cannot claim your gift yourself!")
+        await event.respond(type=4, content="You cannot claim your gift yourself!")
       elif event.component.id=='NitroButton':
-        await event.respond(type=7, components=[Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
+        await main.edit(components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
         em=discord.Embed(title=f'Congrads! you\'ve been rickrolled by {ctx.author.name}', color=BotColors.invis())
         em.set_image(url='https://imgur.com/NQinKJB')
         await event.respond(type=4, embed=em)
-        await ctx.author.send(f"You've rickrolled {event.author.name} :joy:")
+        try:
+          await ctx.author.send(f"You've rickrolled {event.author.name} :joy:")
+        except:
+          pass
         break
 
     except asyncio.TimeoutError:
