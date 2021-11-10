@@ -164,7 +164,7 @@ async def on_ready():
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
 
-@client.command(brief='misc', description='Gets the bot uptime')
+@client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
   uptime = str(datetime.timedelta(seconds=int(round(time.time()-client.uptime))))
   em = discord.Embed(description=f"⏱️ {uptime}, Last restart <t:{int(client.uptime)}:R>", color=0x2F3136)
@@ -289,7 +289,7 @@ async def _8ball(ctx, *, question):
   await ctx.send(embed=em)
 
 
-@client.command(brief='utilities', usage='(member)', description='Get a user\'s avatar', aliases=["av"])
+@client.command(brief='util', usage='(member)', description='Get a user\'s avatar', aliases=["av"])
 async def avatar(ctx, user: discord.Member=None):
     if user == None:
       if ctx.message.reference:
@@ -321,7 +321,7 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.command(brief='utilities', usage='[text]', description='Make the bot say whatevet you want', aliases=["s"])
+@client.command(brief='util', usage='[text]', description='Make the bot say whatevet you want', aliases=["s"])
 async def say(ctx, *, content):
   try:
     await ctx.message.delete()
@@ -334,7 +334,7 @@ async def say(ctx, *, content):
 
 
 
-@client.command(brief='utilities', usage='[member] (reason)', description='Mutes a member so that they cannot talk or add reactions')
+@client.command(brief='util', usage='[member] (reason)', description='Mutes a member so that they cannot talk or add reactions')
 @commands.has_permissions(manage_channels=True)
 async def mute(ctx, member: discord.Member, *, reason=None):
   if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
@@ -363,7 +363,7 @@ async def mute(ctx, member: discord.Member, *, reason=None):
 
 
 
-@client.command(brief='utilities', usage='[member]', description='Unmutes a member from mute')
+@client.command(brief='util', usage='[member]', description='Unmutes a member from mute')
 @commands.has_permissions(manage_channels=True)
 async def unmute(ctx, member: discord.Member):
   mutedRole = discord.utils.get(ctx.guild.roles, name='Muted')
@@ -681,7 +681,7 @@ async def rps(ctx):
   
 #userinfo
 
-@client.command(brief='utilities', usage='(member)', description='Get all info of a user', aliases=["userinfo", "ui"])
+@client.command(brief='util', usage='(member)', description='Get all info of a user', aliases=["userinfo", "ui"])
 async def whois(ctx, member: discord.Member=None):
   if member == None:
     if ctx.message.reference:
@@ -759,7 +759,7 @@ async def whois(ctx, member: discord.Member=None):
 
 
 
-@client.command(brief='utilities', usage='(channel)', description='Locks a channel for @everyone role')
+@client.command(brief='mod', usage='(channel)', description='Locks a channel for @everyone role')
 @commands.has_permissions(manage_channels = True)
 async def lock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -771,7 +771,7 @@ async def lock(ctx, channel: discord.TextChannel = None):
   
 
 
-@client.command(brief='utilities', usage='(channel)', description='Unlocks a locked channel')
+@client.command(brief='mod', usage='(channel)', description='Unlocks a locked channel')
 @commands.has_permissions(manage_channels = True)
 async def unlock(ctx, channel: discord.TextChannel = None):
   if channel == None:
@@ -789,7 +789,7 @@ async def coin(ctx):
   await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
   
 
-@client.command(brief='utilities', usage='[seconds]', description='Sets slowmode in current channel')
+@client.command(brief='mod', usage='[seconds]', description='Sets slowmode in current channel')
 @commands.has_permissions(manage_channels = True)
 async def slowmode(ctx, seconds: int):
   await ctx.channel.edit(slowmode_delay=seconds)
@@ -799,13 +799,13 @@ async def slowmode(ctx, seconds: int):
 
 
 
-@client.command(brief='utilities', usage='[member] (new nick)', description='Sets new nickname to a member', pass_content=True)
+@client.command(brief='util', usage='[member] (new nick)', description='Sets new nickname to a member', pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def nick(ctx, member: discord.Member, *, arg):
   await member.edit(nick=arg)
   await ctx.send(f'Nickname was changed for {member.mention} to {arg}')
 
-@client.command(brief='utilities', usage='[member]', description='Resets nickname of a member'
+@client.command(brief='util', usage='[member]', description='Resets nickname of a member'
 , pass_content=True)
 @commands.cooldown(1,5,commands.BucketType.user)
 async def resetnick(ctx, member: discord.Member):
@@ -814,7 +814,7 @@ async def resetnick(ctx, member: discord.Member):
 
 
     
-@client.command(brief='utilities', usage='[member]', description='Please don\'t do this!!!')
+@client.command(brief='fun', usage='[member]', description='Please don\'t do this!!!')
 async def hack(ctx, user: discord.Member):
   m = await ctx.send(f"Hacking {user.name} for {ctx.author.name} now!")
   await asyncio.sleep(1)
@@ -852,7 +852,7 @@ async def hack(ctx, user: discord.Member):
   await ctx.send(f"{user.mention} you will be logged out from your account within 3 days enjoy your last days in discord <a:evil_peepo:862347454980947998>")
 
 
-@client.command(brief='misc', usage='[your report]', description='Reports something to bot devs')
+@client.command(brief='meta', usage='[your report]', description='Reports something to bot devs')
 async def report(ctx, *, report=None):
   report_channel = client.get_channel(906874684119859230)
   time_when_report = datetime.datetime.now()
@@ -962,7 +962,7 @@ async def sponge(ctx, user: discord.Member = None):
   await ctx.send(file = discord.File("spongebob2.jpg"))
 
 
-@client.command(brief='utilities', usage='(channel)', description='Deletes a channel and create a clone of it')
+@client.command(brief='util', usage='(channel)', description='Deletes a channel and create a clone of it')
 @commands.has_permissions(manage_channels=True)
 async def nuke(ctx, channel: discord.TextChannel=None):
   if channel==None:

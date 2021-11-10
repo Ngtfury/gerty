@@ -160,6 +160,8 @@ class Rtfm(commands.Cog):
             'chai': 'https://chaidiscordpy.readthedocs.io/en/latest/',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
             'pycord': 'https://pycord.readthedocs.io/en/latest/',
+            'discord-components': 'https://discord-components.readthedocs.io/en/0.5.2.4/',
+            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
         }
 
         if obj is None:

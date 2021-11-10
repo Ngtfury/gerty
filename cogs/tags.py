@@ -41,7 +41,7 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:success:893501515107557466> Tag `{name}` succesfully created', color=0x2F3136)
             await ctx.send(embed=em)
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(brief='tags', description='Retrieves a tag with the given name', usage='[name]', invoke_without_command=True)
     async def tag(self, ctx, *, tag):
         is_tag=await self.get_tag(name=f'{tag}', guild_id=ctx.guild.id)
         if is_tag:
@@ -55,13 +55,13 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{tag}` does not exist in this server', color=0x2F3136)
             return await ctx.send(embed=em)
     
-    @tag.command(aliases=['make'])
+    @tag.command(brief='tags', description='Creates a tag', usage='[name] [content]', aliases=['make'])
     async def create(self, ctx, name:str, *, content:commands.clean_content):
         await self.create_tag(ctx=ctx, name=name, content=content, guild_id=ctx.guild.id, owner_id=ctx.author.id)
 
 
 
-    @tag.command(aliases=['del'])
+    @tag.command(brief='tags', description='Deletes a tag with the given name', usage='[name]', aliases=['del'])
     async def delete(self, ctx, *, name:str):
         tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
         if not tag:
@@ -77,7 +77,7 @@ class Tags(commands.Cog):
 
 
 
-    @tag.command()
+    @tag.command(brief='tags', description='Transfers the tag ownership', usage='[user] [name]')
     async def transfer(self, ctx, member: discord.Member, *, name):
         if member.bot:
             return await ctx.send('You cannot transfer tag to a bot')
@@ -96,8 +96,8 @@ class Tags(commands.Cog):
 
 
 
-    @tag.command()
-    async def edit(self, ctx, name:str, *, content):
+    @tag.command(brief='tags', description='Edits the tag with the given name to given content', usage='[name] [content]')
+    async def edit(self, ctx, name:str, *, content:commands.clean_content):
         is_tag=await self.get_tag(name=name, guild_id=ctx.guild.id)
         if not is_tag:
             em=discord.Embed(description=f'<:error:893501396161290320>  Tag named `{name}` does not exists', color=0x2F3136)
@@ -110,7 +110,7 @@ class Tags(commands.Cog):
             em=discord.Embed(description=f'<:error:893501396161290320> Tag `{name}` is not owned by you', color=0x2F3136)
             await ctx.send(embed=em)
 
-    @tag.command()
+    @tag.command(brief='tags', description='Gets the stats of the tag with given name', usage='[name]')
     async def info(self, ctx, *, tag):
         is_tag=await self.get_tag(name=tag, guild_id=ctx.guild.id)
         if not is_tag:
@@ -125,7 +125,7 @@ class Tags(commands.Cog):
         await ctx.send(embed=embed)
 
 
-    @commands.command()
+    @commands.command(brief='tags', description='Shows your/users tags in current server', usage='(member)')
     async def tags(self, ctx, member: discord.Member=None):
         if member==None:
             member=ctx.author
