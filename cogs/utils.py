@@ -65,6 +65,67 @@ class GertyHelpCommand:
         else:
             return await ctx.send(embed=em)
 
+    async def get_commands_according_brief(self):
+        util=[]
+        misc=[]
+        fun=[]
+        mod=[]
+        tags=[]
+        admin=[]
+        rtfm=[]
+        for command in self.bot.commands:
+            if command.brief:
+                if command.brief=='util':
+                    util.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            util.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='meta':
+                    misc.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            misc.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='fun':
+                    fun.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            fun.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='mod':
+                    mod.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            mod.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='tags':
+                    tags.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            tags.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='admin':
+                    admin.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            admin.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+                elif command.brief=='rtfm':
+                    rtfm.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {command.description}')
+                    try:
+                        for sub in command.commands:
+                            rtfm.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {sub.description}')
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm
+
 
 class Utils(commands.Cog):
     def __init__(self,bot):
@@ -81,7 +142,9 @@ class Utils(commands.Cog):
         MainEmbed.add_field(name='<:news:885177157138145280> News', value='> Don\'t use help command!\n> Under construction :warning:', inline=True)
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105)', inline=False)
         MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
-        await ctx.send(embed=MainEmbed)
+        MainMessage=await ctx.send(embed=MainEmbed)
+
+
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
