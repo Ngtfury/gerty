@@ -1,9 +1,6 @@
 import asyncio
 import datetime
 import discord
-from discord import utils
-from discord import components
-from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
