@@ -179,8 +179,8 @@ class Utils(commands.Cog):
             SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption'),
             SelectOption(label='Rtfm commands', description='Read the F ing docs!!', value='RtfmOption')
         ]
-        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links'), Select(placeholder='Hover through modules!', options=options)]]
-        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links'), Select(placeholder='Hover through modules!', options=options)]]
+        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
+        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
 
 
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=BotColors.invis())
