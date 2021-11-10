@@ -1,6 +1,9 @@
 import asyncio
 import datetime
 import discord
+from discord import utils
+from discord import components
+from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -168,15 +171,102 @@ class Utils(commands.Cog):
         if command:
             return await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
         
+        commands=await GertyHelpCommand(self.bot).get_commands_according_brief()
+
+        options=[
+            SelectOption(label='Utility commands', description='Commands that are useful for everyone and mods', value='UtilOption'),
+            SelectOption(label='Misc commands', description='Some other stuffs', value='MiscOption'),
+            SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption'),
+            SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption'),
+            SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption'),
+            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption'),
+            SelectOption(label='Rtfm commands', description='Read the F ing docs!!', value='RtfmOption')
+        ]
+        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), links='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links'), Select(placeholder='Hover through modules!', options=options)]]
+        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links'), Select(placeholder='Hover through modules!', options=options)]]
+
+
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=BotColors.invis())
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
         MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> <:cate:885482994452795413> Utilities\n> <:cate:885482994452795413> Miscellaneous\n> <:cate:885482994452795413> Fun\n> <:cate:885482994452795413> Moderation\n> <:cate:885482994452795413> Tags\n> <:cate:885482994452795413> Admin\n> <:cate:885482994452795413> Rtfm (docs)')
         MainEmbed.add_field(name='<:news:885177157138145280> News', value='> Don\'t use help command!\n> Under construction :warning:', inline=True)
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105)', inline=False)
         MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
-        MainMessage=await ctx.send(embed=MainEmbed)
 
 
+        MainMessage=await ctx.send(embed=MainEmbed, components=compo)
+
+        _UtilNextLine='\n'.join(commands[0])
+        UtilEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_UtilNextLine}', color=BotColors.invis())
+        UtilEmbed.set_author(name='Gerty HelpDesk - Utility commands', icon_url=self.bot.user.avatar_url)
+        UtilEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Misc='\n'.join(commands[1])
+        MiscEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Misc}', color=BotColors.invis())
+        MiscEmbed.set_author(name='Gerty HelpDesk - Misc commands', icon_url=self.bot.user.avatar_url)
+        MiscEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Fun='\n'.join(commands[2])
+        FunEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Fun}', color=BotColors.invis())
+        FunEmbed.set_author(name='Gerty HelpDesk - Fun commands', icon_url=self.bot.user.avatar_url)
+        FunEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Mod='\n'.join(commands[3])
+        ModEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Mod}', color=BotColors.invis())
+        ModEmbed.set_author(name='Gerty HelpDesk - Moderator commands', icon_url=self.bot.user.avatar_url)
+        ModEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Tags='\n'.join(commands[4])
+        TagEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Tags}', color=BotColors.invis())
+        TagEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
+        TagEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Admin='\n'.join(commands[5])
+        AdminEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Admin}', color=BotColors.invis())
+        AdminEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
+        AdminEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        _Rtfm='\n'.join(commands[6])
+        RtfmEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Rtfm}', color=BotColors.invis())
+        RtfmEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
+        RtfmEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        #loaded embeds
+
+        while True:
+            try:
+                event=await self.bot.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
+                if isinstance(event.component, Select):
+                    if event.values[0]:
+                        value=event.values[0]
+                        if value=='UtilOption':
+                            await event.respond(type=7, embed=UtilEmbed, components=compo2)
+                        elif value=='MiscOption':
+                            await event.respond(type=7, embed=MiscEmbed, components=compo2)
+                        elif value=='FunOption':
+                            await event.respond(type=7, embed=FunEmbed, components=compo2)
+                        elif value=='ModOption':
+                            await event.respond(type=7, embed=ModEmbed, components=compo2)
+                        elif value=='TagOption':
+                            await event.respond(type=7, embed=TagEmbed, components=compo2)
+                        elif value=='AdminOption':
+                            await event.respond(type=7, embed=AdminEmbed, components=compo2)
+                        elif value=='RtfmOption':
+                            await event.respond(type=7, embed=RtfmEmbed, components=compo2)
+                elif isinstance(event.component, Button):
+                    if event.component.id=='GoHome':
+                        await event.respond(type=7, embed=MainEmbed, components=compo)
+                    elif event.component.id=='QuitDel':
+                        await event.respond(type=6)
+                        await MainMessage.delete()
+                        break
+                    elif event.component.id=='Links':
+                        await event.respond(type=6)
+            except asyncio.TimeoutError:
+                await MainMessage.disable_components()
+                break
+
+
+        
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
