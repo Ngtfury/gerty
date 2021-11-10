@@ -83,6 +83,10 @@ class GertyHelpCommand:
                     util.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             util.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -90,6 +94,10 @@ class GertyHelpCommand:
                     misc.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             misc.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -97,6 +105,10 @@ class GertyHelpCommand:
                     fun.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             fun.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -104,6 +116,10 @@ class GertyHelpCommand:
                     mod.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             mod.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -111,6 +127,10 @@ class GertyHelpCommand:
                     tags.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             tags.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -118,6 +138,10 @@ class GertyHelpCommand:
                     admin.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             admin.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
@@ -125,6 +149,10 @@ class GertyHelpCommand:
                     rtfm.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
                         for sub in command.commands:
+                            if sub.description:
+                                _des=command.description
+                            else:
+                                _des='No description provided'
                             rtfm.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
