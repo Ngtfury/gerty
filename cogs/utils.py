@@ -65,20 +65,21 @@ class GertyHelpCommand:
         else:
             return await ctx.send(embed=em)
 
-    async def send_bot_help(self, ctx):
-        MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command', color=BotColors.invis())
-        MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
-
-
 
 class Utils(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
     @commands.command(brief='util', description='Stop it get some help!', usage='(command)')
-    async def help(self, ctx, *, command:str):
-        await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
-
+    async def help(self, ctx, *, command:str=None):
+        if command:
+            return await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
+        
+        MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=BotColors.invis())
+        MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
+        MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> <:cate:885482994452795413> Utilities\n> <:cate:885482994452795413> Miscellaneous\n> <:cate:885482994452795413> Fun\n> <:cate:885482994452795413> Moderation\n> <:cate:885482994452795413> Tags\n> <:cate:885482994452795413> Admin\n> <:cate:885482994452795413> Rtfm (docs)')
+        MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'[Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105)')
+        await ctx.send(embed=MainEmbed)
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
