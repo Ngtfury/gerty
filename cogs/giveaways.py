@@ -35,7 +35,7 @@ class Giveaways(commands.Cog):
 
 
 
-    @commands.command(brief='utilities', description='Starts a giveaway event', usage='[time] [winners] [prize]')
+    @commands.command(brief='mod', description='Starts a giveaway event', usage='[time] [winners] [prize]')
     @commands.has_permissions(manage_channels=True)
     async def gstart(self, ctx, time, winners:int, *, prize):
         if winners <= 0:
@@ -92,7 +92,7 @@ class Giveaways(commands.Cog):
         await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉', embed=lwjgbw)
 
 
-    @commands.command(brief='utilities', description='Rerolls a giveaway that ended', usage='[message ID]')
+    @commands.command(brief='mod', description='Rerolls a giveaway that ended', usage='[message ID]')
     @commands.has_permissions(manage_channels=True)
     async def greroll(self, ctx, message_id:discord.Message):
         if message_id.author != self.bot.user:

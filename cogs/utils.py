@@ -64,14 +64,18 @@ class GertyHelpCommand:
             return em
         else:
             return await ctx.send(embed=em)
-    
+
+    async def send_bot_help(self, ctx):
+        MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command', color=BotColors.invis())
+        MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
+
 
 
 class Utils(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
-    @commands.command(brief='utility', description='Stop it get some help!', usage='(command)')
+    @commands.command(brief='util', description='Stop it get some help!', usage='(command)')
     async def help(self, ctx, *, command:str):
         await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
 

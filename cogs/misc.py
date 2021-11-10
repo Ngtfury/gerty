@@ -85,7 +85,7 @@ class Misc(commands.Cog):
 
 
 
-    @commands.command(brief='misc', description='Gets the latency of the bot', aliases=['ms', 'latency'])
+    @commands.command(brief='meta', description='Gets the latency of the bot', aliases=['ms', 'latency'])
     async def ping(self, ctx):
         t_1 = time.perf_counter()
         await ctx.trigger_typing()

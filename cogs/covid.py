@@ -9,7 +9,7 @@ class covid(commands.Cog):
         self.client = bot
 
 
-    @commands.command(brief='misc', description='Gets covid details of a country', usage='[country]')
+    @commands.command(brief='fun', description='Gets covid details of a country', usage='[country]')
     async def covid(self, ctx, *, countryName = None):
         try:
             if countryName is None:
