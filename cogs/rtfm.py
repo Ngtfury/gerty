@@ -89,8 +89,8 @@ class Rtfm(commands.Cog):
                     stream = SphinxObjectFileReader(await resp.read())
                     cache[key] = self.parse_object_inv(stream, page)
                     await session.close()
-                except:
-                    raise RuntimeError('Cannot build rtfm lookup table, try again later.')
+                except Exception as e:
+                    raise RuntimeError(f'{e}')
 
         self._rtfm_cache = cache
 
