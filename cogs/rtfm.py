@@ -193,7 +193,10 @@ class Rtfm(commands.Cog):
             return await ctx.send('Could not find anything. Sorry.')
 
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
-        await ctx.send(embed=e)
+        if ctx.message.reference:
+            await ctx.message.reference.reply(embed=e)
+        else:
+            await ctx.send(embed=e)
 
     @commands.group(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.
         Events, objects, and functions are all supported through
