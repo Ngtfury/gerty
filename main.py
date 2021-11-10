@@ -1485,7 +1485,7 @@ async def nitro(ctx):
       elif event.component.id=='NitroButton':
         await main.edit(components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
         em=discord.Embed(title=f'Congrads! you\'ve been rickrolled by {ctx.author.name}', color=BotColors.invis())
-        em.set_image(url='https://imgur.com/NQinKJB')
+        em.set_image(url='https://images-ext-1.discordapp.net/external/AoV9l5YhsWBj92gcKGkzyJAAXoYpGiN6BdtfzM-00SU/https/i.imgur.com/NQinKJB.mp4')
         await event.respond(type=4, embed=em)
         try:
           await ctx.author.send(f"You've rickrolled {event.author.name} :joy:")
