@@ -1479,7 +1479,7 @@ async def nitro(ctx):
 
   while True:
     try:
-      event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==ctx.message, timeout=40) #
+      event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==main, timeout=40) #
       if event.author==ctx.author:
         await event.respond(type=4, content="You cannot claim your gift yourself!")
       elif event.component.id=='NitroButton':
