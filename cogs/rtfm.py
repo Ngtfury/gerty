@@ -85,12 +85,12 @@ class Rtfm(commands.Cog):
             sub = cache[key] = {}
             session = aiohttp.ClientSession()
             async with session.get(page + '/objects.inv') as resp:
-                try:
-                    stream = SphinxObjectFileReader(await resp.read())
-                    cache[key] = self.parse_object_inv(stream, page)
-                    await session.close()
-                except Exception as e:
-                    raise RuntimeError(f'{e}')
+                if resp.status != 200:
+                    raise RuntimeError('Cannot build rtfm lookup table, try again later.')
+
+                stream = SphinxObjectFileReader(await resp.read())
+                cache[key] = self.parse_object_inv(stream, page)
+                await session.close()
 
         self._rtfm_cache = cache
 
@@ -99,7 +99,21 @@ class Rtfm(commands.Cog):
         # n.b.: key doesn't have `discord` or `discord.ext.commands` namespaces
         result = {}
 
+        # first line is version info
+        inv_version = stream.readline().rstrip()
 
+        if inv_version != '# Sphinx inventory version 2':
+            raise RuntimeError('Invalid objects.inv file version.')
+
+        # next line is "# Project: <name>"
+        # then after that is "# Version: <version>"
+        projname = stream.readline().rstrip()[11:]
+        version = stream.readline().rstrip()[11:]
+
+        # next line says if it's a zlib header
+        line = stream.readline()
+        if 'zlib' not in line:
+            raise RuntimeError('Invalid objects.inv file, not z-lib compatible.')
 
         # This code mostly comes from the Sphinx repository.
         entry_regex = re.compile(r'(?x)(.+?)\s+(\S*:\S*)\s+(-?\d+)\s+(\S+)\s+(.*)')
@@ -146,8 +160,6 @@ class Rtfm(commands.Cog):
             'chai': 'https://chaidiscordpy.readthedocs.io/en/latest/',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
             'pycord': 'https://pycord.readthedocs.io/en/latest/',
-            'discord-components': 'https://discord-components.readthedocs.io/en/0.5.2.4/',
-            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
         }
 
         if obj is None:
