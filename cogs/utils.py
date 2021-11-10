@@ -79,7 +79,7 @@ class Utils(commands.Cog):
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
         MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> <:cate:885482994452795413> Utilities\n> <:cate:885482994452795413> Miscellaneous\n> <:cate:885482994452795413> Fun\n> <:cate:885482994452795413> Moderation\n> <:cate:885482994452795413> Tags\n> <:cate:885482994452795413> Admin\n> <:cate:885482994452795413> Rtfm (docs)')
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'[Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105)', inline=False)
-        MainEmbed.set_footer(name=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=MainEmbed)
 
     @commands.Cog.listener()
