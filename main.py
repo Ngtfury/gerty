@@ -1443,8 +1443,8 @@ async def http(ctx, status_code):
 
 
 @client.command(brief='fun', description='Make the bot say (in voice) whatever you want', usage='[text]')
-async def tts(ctx, *, text):
-  em = discord.Embed(description="<a:ttsloading:886607614111273010> Processing your tts", color=0x2F3136)
+async def tts(ctx, *, text:commands.clean_content):
+  em = discord.Embed(description="<a:z_loading:878684429789306920> Processing your tts", color=0x2F3136)
   if len(text) >= 20:
     d = await ctx.send(embed=em)
   texttotts = f"{text}"
