@@ -162,7 +162,7 @@ async def on_ready():
 
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
-  client.news=f'Last restart <t:{client.uptime}:R>'
+  client.news=f'Last restart <t:{int(client.uptime)}:R>'
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
