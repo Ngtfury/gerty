@@ -88,7 +88,7 @@ class moderation(commands.Cog):
 
 
 #unban command
-    @commands.command()
+    @commands.command(brief='mod', description='Unbans a user', usage='[user]')
     @commands.has_permissions(ban_members=True)
     async def unban(self, ctx, *, member):
         banned_users = await ctx.guild.bans()

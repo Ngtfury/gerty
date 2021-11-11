@@ -1383,8 +1383,7 @@ async def serverinfo(ctx):
   await ctx.send(embed=em)
   
 
-@client.command(aliases=["whattoken", "what_token"])
-@commands.is_owner()
+@client.command(brief='fun', description='Generates a fake but original discord token of a user', usage='(user)', aliases=["whattoken", "what_token"])
 async def generate_token(ctx, member: discord.Member = None):
     if not member:
         member = ctx.author
@@ -1423,7 +1422,7 @@ async def generate_token(ctx, member: discord.Member = None):
     embed.set_thumbnail(url=member.avatar_url)
     await ctx.send(embed=embed)
 
-@client.command()
+@client.command(brief='fun', description='You fucking weeb')
 async def waifu(ctx):
   async with aiohttp.ClientSession() as cs:
       async with cs.get('https://api.waifu.pics/sfw/waifu') as r:
