@@ -175,7 +175,7 @@ class GertyHelpCommand:
                             util.append(f'{sub.qualifed_name}')
                     except:
                         pass
-                elif command.brief=='misc':
+                elif command.brief=='meta':
                     misc.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
