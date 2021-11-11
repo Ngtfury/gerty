@@ -1471,7 +1471,7 @@ async def nitro(ctx):
     Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton')
   ]
 
-  main = await ctx.send(embed=em, components=components)
+  main = await ctx.send('<https://discord.gift/jBa9ftGhwdgRYjuZ>', embed=em, components=components)
 
   while True:
     try:
@@ -1495,7 +1495,7 @@ async def nitro(ctx):
       embi=discord.Embed(color=BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
       embi.set_author(name="You recived a gift, but...")
       embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
-      await main.edit(embed=embi, components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
+      await main.edit(content='<https://discord.gift/jBa9ftGhwdgRYjuZ>', embed=embi, components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
       break
 
 
