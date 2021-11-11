@@ -39,7 +39,6 @@ def finder(text, collection, *, key=None, lazy=True):
         return [z for _, _, z in sorted(suggestions, key=sort_key)]
 
 
-
 class SphinxObjectFileReader:
     # Inspired by Sphinx's InventoryFileReader
     BUFSIZE = 16 * 1024
@@ -83,14 +82,14 @@ class Rtfm(commands.Cog):
         cache = {}
         for key, page in page_types.items():
             sub = cache[key] = {}
-            session = aiohttp.ClientSession()
-            async with session.get(page + '/objects.inv') as resp:
+            async with self.bot.session.get(page + '/objects.inv') as resp:
                 if resp.status != 200:
-                    raise RuntimeError('Cannot build rtfm lookup table, try again later.')
+                    channel = self.bot.get_channel(880181130408636456)
+                    await channel.send(f'```py\nCould not create RTFM lookup table for {page}\n```')
+                    continue
 
                 stream = SphinxObjectFileReader(await resp.read())
                 cache[key] = self.parse_object_inv(stream, page)
-                await session.close()
 
         self._rtfm_cache = cache
 
@@ -156,12 +155,21 @@ class Rtfm(commands.Cog):
             'python': 'https://docs.python.org/3',
             'python-jp': 'https://docs.python.org/ja/3',
             'master': 'https://discordpy.readthedocs.io/en/master',
-            'edpy': 'https://enhanced-dpy.readthedocs.io/en/latest/',
-            'chai': 'https://chaidiscordpy.readthedocs.io/en/latest/',
+            'edpy': 'https://enhanced-dpy.readthedocs.io/en/latest',
+            'chai': 'https://chaidiscordpy.readthedocs.io/en/latest',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
-            'pycord': 'https://pycord.readthedocs.io/en/latest/',
-            'discord-components': 'https://discord-components.readthedocs.io/en/0.5.2.4/',
-            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
+            'pycord': 'https://pycord.readthedocs.io/en/master'
+        }
+        embed_titles = {
+            'latest': 'Documentation for `discord.py v1.7.3`',
+            'latest-jp': 'Documentation for `discord.py v1.7.3` in Japanese',
+            'python': 'Documentation for `python`',
+            'python-jp': 'Documentation for `python` in Japanese',
+            'master': 'Documentation for `discord.py v2.0.0a`',
+            'edpy': 'Documentation for `enhanced-dpy`',
+            'chai': 'Documentation for `chaidiscord.py`',
+            'bing': 'Documentation for `asyncbing`',
+            'pycord': 'Documentation for `pycord`'
         }
 
         if obj is None:
@@ -188,15 +196,13 @@ class Rtfm(commands.Cog):
 
         matches = finder(obj, cache, key=lambda t: t[0], lazy=False)[:8]
 
-        e = discord.Embed(colour=discord.Colour.blurple())
+        e = discord.Embed(colour=discord.Colour.blurple(), title=embed_titles.get(key, 'Documentation'))
         if len(matches) == 0:
             return await ctx.send('Could not find anything. Sorry.')
 
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
-        if ctx.message.reference:
-            await ctx.message.reference.reply(embed=e)
-        else:
-            await ctx.send(embed=e)
+        await ctx.send(embed=e)
+
 
     @commands.group(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.
         Events, objects, and functions are all supported through
