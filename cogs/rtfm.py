@@ -208,7 +208,7 @@ class Rtfm(commands.Cog):
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
         await ctx.send(embed=e)
 
-    @commands.command(brief='rtfm', description='Gives you a documentation link according your query', aliases=['rtfd', 'rtdm'], invoke_without_command=True)
+    @commands.group(brief='rtfm', description='Gives you a documentation link according your query', aliases=['rtfd', 'rtdm'], invoke_without_command=True)
     async def rtfm(self, ctx):
         return await GertyHelpCommand(self.bot).send_command_help(ctx, command='rtfm')
 
