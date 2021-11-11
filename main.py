@@ -1053,7 +1053,7 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     
 
 @client.command(brief='meta', usage='(member) [content]', description='Sends content from a webhook as the member')
-async def webhook(ctx, member: discord.Member = None, *, content:str):
+async def webhook(ctx, member: typing.Optional[discord.Member] = None, *, content:str):
   if member==None:
     member=ctx.author
 
