@@ -312,33 +312,34 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                 event=await self.bot.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
                 if event.author != ctx.author:
                     await event.respond(type=4, content='Sorry, this menu cannot be controlled by you')
-                if isinstance(event.component, Select):
-                    if event.values[0]:
-                        value=event.values[0]
-                        if value=='UtilOption':
-                            await event.respond(type=7, embed=UtilEmbed, components=compo2)
-                        elif value=='MiscOption':
-                            await event.respond(type=7, embed=MiscEmbed, components=compo2)
-                        elif value=='FunOption':
-                            await event.respond(type=7, embed=FunEmbed, components=compo2)
-                        elif value=='ModOption':
-                            await event.respond(type=7, embed=ModEmbed, components=compo2)
-                        elif value=='TagOption':
-                            await event.respond(type=7, embed=TagEmbed, components=compo2)
-                        elif value=='AdminOption':
-                            await event.respond(type=7, embed=AdminEmbed, components=compo2)
-                        elif value=='RtfmOption':
-                            await event.respond(type=7, embed=RtfmEmbed, components=compo2)
-                elif isinstance(event.component, Button):
-                    if event.component.id=='GoHome':
-                        await event.respond(type=7, embed=MainEmbed, components=compo)
-                    elif event.component.id=='QuitDel':
-                        await event.respond(type=6)
-                        await MainMessage.delete()
-                        await ctx.message.add_reaction('<:success:893501515107557466>')
-                        break
-                    elif event.component.id=='Links':
-                        await event.respond(type=7, embed=CommandListEmbed, components=compo3)
+                else:
+                    if isinstance(event.component, Select):
+                        if event.values[0]:
+                            value=event.values[0]
+                            if value=='UtilOption':
+                                await event.respond(type=7, embed=UtilEmbed, components=compo2)
+                            elif value=='MiscOption':
+                                await event.respond(type=7, embed=MiscEmbed, components=compo2)
+                            elif value=='FunOption':
+                                await event.respond(type=7, embed=FunEmbed, components=compo2)
+                            elif value=='ModOption':
+                                await event.respond(type=7, embed=ModEmbed, components=compo2)
+                            elif value=='TagOption':
+                                await event.respond(type=7, embed=TagEmbed, components=compo2)
+                            elif value=='AdminOption':
+                                await event.respond(type=7, embed=AdminEmbed, components=compo2)
+                            elif value=='RtfmOption':
+                                await event.respond(type=7, embed=RtfmEmbed, components=compo2)
+                    elif isinstance(event.component, Button):
+                        if event.component.id=='GoHome':
+                            await event.respond(type=7, embed=MainEmbed, components=compo)
+                        elif event.component.id=='QuitDel':
+                            await event.respond(type=6)
+                            await MainMessage.delete()
+                            await ctx.message.add_reaction('<:success:893501515107557466>')
+                            break
+                        elif event.component.id=='Links':
+                            await event.respond(type=7, embed=CommandListEmbed, components=compo3)
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
                 break
