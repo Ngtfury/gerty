@@ -12,6 +12,8 @@ from inspect import Parameter
 import typing
 import yarl
 
+from cogs.utils import GertyHelpCommand
+
 
 def setup(client):
     client.add_cog(Rtfm(client))
@@ -206,11 +208,12 @@ class Rtfm(commands.Cog):
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
         await ctx.send(embed=e)
 
+    @commands.command(brief='rtfm', description='Gives you a documentation link according your query', aliases=['rtfd', 'rtdm'])
+    async def rtfm(self,ctx):
+        await GertyHelpCommand(self.bot).send_command_help(ctx,command='rtfm')
 
-    @commands.group(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.
-        Events, objects, and functions are all supported through
-a cruddy fuzzy algorithm.""", usage='[query]', aliases=['rtfd', 'rtdm'], invoke_without_command=True)
-    async def rtfm(self, ctx, *, obj: str = None):
+    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.""", usage='[query]', aliases=['dpy', 'discord.py'], invoke_without_command=True)
+    async def rtfm_dpy(self, ctx, *, obj: str = None):
         await self.do_rtfm(ctx, 'latest', obj)
 
     @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a discord.py entity (Japanese).""", usage='[query]', name='jp')
@@ -218,42 +221,36 @@ a cruddy fuzzy algorithm.""", usage='[query]', aliases=['rtfd', 'rtdm'], invoke_
         
         await self.do_rtfm(ctx, 'latest-jp', obj)
 
-    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a Python entity.""", name='python', aliases=['py'])
+    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a Python entity.""", name='python', aliases=['py'], usage='[query]')
     async def rtfm_python(self, ctx, *, obj: str = None):
         await self.do_rtfm(ctx, 'python', obj)
 
-    @rtfm.command(name='py-jp', aliases=['py-ja'])
+    @rtfm.command(description='Gives you a documentation link for a Python entity (Japanese)', usage='[query]', name='py-jp', aliases=['py-ja'])
     async def rtfm_python_jp(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a Python entity (Japanese)."""
         await self.do_rtfm(ctx, 'python-jp', obj)
 
-    @rtfm.command(name='master', aliases=['2.0'])
+    @rtfm.command(name='pycord', description='Gives you a documentation link for a discord.py entity (master branch)', usage='[query]', name='dpy-master', aliases=['dpy-2.0'])
     async def rtfm_master(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a discord.py entity (master branch)"""
         await self.do_rtfm(ctx, 'master', obj)
 
-    @rtfm.command(name='enhanced-dpy', aliases=['edpy'])
+    @rtfm.command(name='pycord', description='Gives you a documentation link for a enhanced-discord.pu entity', usage='[query]', name='enhanced-dpy', aliases=['edpy'])
     async def rtfm_edpy(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a enhanced-discord.py entity"""
         await self.do_rtfm(ctx, 'edpy', obj)
 
-    @rtfm.command(name='asyncbing', aliases=['bing'])
+    @rtfm.command(name='pycord', description='Gives you a documentation link for a asyncbing entity', usage='[query]', name='asyncbing', aliases=['bing'])
     async def rtfm_asyncbing(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for an asyncbing entity """
         await self.do_rtfm(ctx, 'bing', obj)
 
-    @rtfm.command(name='chaidiscordpy', aliases=['chaidpy', 'cdpy'])
+    @rtfm.command(name='pycord', description='Gives you a documentation link for a chaidiscord.py entity', usage='[query]', name='chaidiscordpy', aliases=['chaidpy', 'cdpy'])
     async def rtfm_chai(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a chaidiscord.py entity"""
         await self.do_rtfm(ctx, 'chai', obj)
 
-    @rtfm.command(name='pycord')
+    @rtfm.command(name='pycord', description='Gives you a documentation link for a pycord entity', usage='[query]')
     async def rtfm_pycord(self, ctx, *, obj: str = None):
-        """Gives you a documentation link for a pycord entity"""
         await self.do_rtfm(ctx, 'pycord', obj)
 
 
-    @rtfm.command(name='aiohttp')
+    @rtfm.command(name='aiohttp', description='Gives you a documentation link for a aiohttp entity')
     async def rtfm_aiohttp(self, ctx, *, obj:str=None):
         await self.do_rtfm(ctx, 'aiohttp', obj)
 
