@@ -158,6 +158,67 @@ class GertyHelpCommand:
                         pass
         return util, misc, fun, mod, tags, admin, rtfm
 
+    async def get_commands_without_description(self):
+        util=[]
+        misc=[]
+        fun=[]
+        mod=[]
+        tags=[]
+        admin=[]
+        rtfm=[]
+        for command in self.bot.commands:
+            if command.brief:
+                if command.brief=='util':
+                    util.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            util.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='misc':
+                    misc.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            misc.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='fun':
+                    fun.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            fun.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='mod':
+                    mod.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            mod.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='tags':
+                    tags.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            tags.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='admin':
+                    admin.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            admin.append(sub.qualifed_name)
+                    except:
+                        pass
+                elif command.brief=='rtfm':
+                    rtfm.append(command.name)
+                    try:
+                        for sub in command.commands:
+                            rtfm.append(sub.qualifed_name)
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm
+
 
 class Utils(commands.Cog):
     def __init__(self,bot):
@@ -175,8 +236,8 @@ class Utils(commands.Cog):
             SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption', emoji='🎪'),
             SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption', emoji=self.bot.get_emoji(885156113656479784)),
             SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption', emoji=self.bot.get_emoji(880100337745264680)),
-            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698)),
-            SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘')
+            SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
+            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
         ]
         compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
         compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
