@@ -162,16 +162,16 @@ class Rtfm(commands.Cog):
             'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
         }
         embed_titles = {
-            'latest': 'Documentation for `discord.py v1.7.3`',
-            'latest-jp': 'Documentation for `discord.py v1.7.3` in Japanese',
-            'python': 'Documentation for `python`',
-            'python-jp': 'Documentation for `python` in Japanese',
-            'master': 'Documentation for `discord.py v2.0.0a`',
-            'edpy': 'Documentation for `enhanced-dpy`',
-            'chai': 'Documentation for `chaidiscord.py`',
-            'bing': 'Documentation for `asyncbing`',
-            'pycord': 'Documentation for `pycord`',
-            'aiohttp': 'Documentation for `aiohttp`'
+            'latest': 'Documentation for discord.py v1.7.3',
+            'latest-jp': 'Documentation for discord.py v1.7.3 in Japanese',
+            'python': 'Documentation for python',
+            'python-jp': 'Documentation for python in Japanese',
+            'master': 'Documentation for discord.py v2.0.0a',
+            'edpy': 'Documentation for enhanced-dpy',
+            'chai': 'Documentation for chaidiscord.py',
+            'bing': 'Documentation for asyncbing',
+            'pycord': 'Documentation for pycord',
+            'aiohttp': 'Documentation for aiohttp'
         }
 
         if obj is None:
