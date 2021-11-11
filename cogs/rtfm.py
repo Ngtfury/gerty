@@ -208,11 +208,11 @@ class Rtfm(commands.Cog):
         e.description = '\n'.join(f'[`{key}`]({url})' for key, url in matches)
         await ctx.send(embed=e)
 
-    @commands.command(brief='rtfm', description='Gives you a documentation link according your query', aliases=['rtfd', 'rtdm'])
-    async def rtfm(self,ctx):
-        await GertyHelpCommand(self.bot).send_command_help(ctx,command='rtfm')
+    @commands.command(brief='rtfm', description='Gives you a documentation link according your query', aliases=['rtfd', 'rtdm'], invoke_without_command=True)
+    async def rtfm(self, ctx):
+        await GertyHelpCommand(self.bot).send_command_help(ctx, command='rtfm')
 
-    @rtfm.command(brief='rtfm', description="""Gives you a documentation link for a discord.py entity.""", usage='[query]', aliases=['dpy', 'discord.py'], invoke_without_command=True)
+    @rtfm.command(brief='rtfm', description="Gives you a documentation link for a discord.py entity.", usage='[query]', aliases=['dpy', 'discord.py'])
     async def rtfm_dpy(self, ctx, *, obj: str = None):
         await self.do_rtfm(ctx, 'latest', obj)
 
