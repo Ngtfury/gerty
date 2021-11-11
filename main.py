@@ -321,7 +321,7 @@ async def emojify(ctx, *, text):
   await ctx.send(''.join(emojis))
 
 #say command
-@client.command(brief='util', usage='[text]', description='Make the bot say whatevet you want', aliases=["s"])
+@client.command(brief='util', usage='[text]', description='Make the bot say whatever you want', aliases=["s"])
 async def say(ctx, *, content):
   try:
     await ctx.message.delete()
