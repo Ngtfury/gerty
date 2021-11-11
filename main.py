@@ -1067,8 +1067,8 @@ async def webhook(ctx, member: discord.Member = None, *, content:str):
 
   data={
     'content': content,
-    'avatar_url': member.avatar_url,
-    'username': member.display_name
+    'avatar_url': str(member.avatar_url),
+    'username': f'{member.display_name}'
   }
   async with aiohttp.ClientSession() as ses:
     async with ses.post(url=hooks[0].url, json=data) as rep:
