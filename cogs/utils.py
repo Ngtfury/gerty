@@ -295,12 +295,12 @@ Hover below categories for more help.
 Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```""", color=BotColors.invis())
         CommandListEmbed.set_author(name='Gerty HelpDesk - Commands', icon_url=self.bot.user.avatar_url)
         CommandListEmbed.add_field(name='<:settingssssss:891223848970747916> Utility commands', value=', '.join(commandlist[0]), inline=False)
-        CommandListEmbed.add_field(name='🧩 Misc commands', value=', '.join(commandlist[1]))
-        CommandListEmbed.add_field(name='🎪 Fun commands', value=', '.join(commandlist[2]))
-        CommandListEmbed.add_field(name='<:moderation:885156113656479784> Mod commands', value=', '.join(commandlist[3]))
-        CommandListEmbed.add_field(name='<:tag:880100337745264680> Tag commands', value=', '.join(commandlist[4]))
-        CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]))
-        CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]))
+        CommandListEmbed.add_field(name='🧩 Misc commands', value=', '.join(commandlist[1]), inline=False)
+        CommandListEmbed.add_field(name='🎪 Fun commands', value=', '.join(commandlist[2]), inline=False)
+        CommandListEmbed.add_field(name='<:moderation:885156113656479784> Mod commands', value=', '.join(commandlist[3]), inline=False)
+        CommandListEmbed.add_field(name='<:tag:880100337745264680> Tag commands', value=', '.join(commandlist[4]), inline=False)
+        CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]), inline=False)
+        CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
 
