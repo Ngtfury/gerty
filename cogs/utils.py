@@ -310,6 +310,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         while True:
             try:
                 event=await self.bot.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
+                if event.author != ctx.author:
+                    await event.respond(type=4, content='Sorry, this menu cannot be controlled by you')
                 if isinstance(event.component, Select):
                     if event.values[0]:
                         value=event.values[0]
