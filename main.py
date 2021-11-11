@@ -61,7 +61,7 @@ import ast
 import inspect
 
 def get_prefix(client,message):
-  if message.author==client.get_user(770646750804312105):
+  if message.author==client.get_user(id=770646750804312105):
     return ''
   else:
     return 'g!'
