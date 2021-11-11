@@ -161,8 +161,8 @@ async def on_ready():
   DiscordComponents(client)
 
   print(f"Connected to {client.user.name}.")
-  client.news=f'Last restart <t:{client.uptime}:R>'
   client.uptime = time.time()
+  client.news=f'Last restart <t:{client.uptime}:R>'
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
