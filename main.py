@@ -1475,7 +1475,7 @@ async def nitro(ctx):
 
   while True:
     try:
-      event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==main, timeout=40) #
+      event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==main, timeout=10) #
       if event.author==ctx.author:
         await event.respond(type=4, content="You cannot claim your gift yourself!")
       elif event.component.id=='NitroButton':
@@ -1488,7 +1488,12 @@ async def nitro(ctx):
         break
 
     except asyncio.TimeoutError:
-      await main.edit(components=[Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
+      await ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
+      embi=discord.Embed(color=BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
+      embi.set_author(name="You recived a gift, but...")
+      embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
+      await main.edit(embed=embi, components=[Button(style=ButtonStyle.blue, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
+      break
 
 
 
