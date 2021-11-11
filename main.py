@@ -781,13 +781,7 @@ async def unlock(ctx, channel: discord.TextChannel = None):
   embed = discord.Embed(description=f"<:success:893501515107557466> {channel.mention} is now unlocked", color=0x2bff00)
   await ctx.send(embed=embed)
 
-@client.command(aliases=["flip"])
-async def coin(ctx):
-  v = await ctx.send("> **<a:flip:867032673403142144> The coin is flipping**")
-  await asyncio.sleep(3)
-  n = random.randint(0, 1)
-  await v.edit("> It is **Heads**" if n == 1 else "> It is **Tails**")
-  
+
 
 @client.command(brief='mod', usage='[seconds]', description='Sets slowmode in current channel')
 @commands.has_permissions(manage_channels = True)
@@ -1294,7 +1288,7 @@ async def rgb(ctx, user:discord.Member=None):
     await ctx.send(file=f, embed=em)
   
   
-@client.command(aliases=["doesnotexist", "thispersondoesnotexist"])
+@client.command(brief='fun', description='This person does not exist?!?!???', aliases=["doesnotexist", "thispersondoesnotexist"])
 async def persondoesnotexist(ctx):
   
   picture = await get_online_person()
@@ -1307,7 +1301,7 @@ async def persondoesnotexist(ctx):
   await ctx.send(file=f, embed=em)
 
 
-@client.command()
+@client.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
 async def spotify(ctx, user:discord.Member=None):
   if user==None:
     user=ctx.author
@@ -1347,7 +1341,7 @@ async def spotify(ctx, user:discord.Member=None):
   f = discord.File("spotify.jpg",filename="spotify.jpg")
   await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**',file=f, components=components, mention_author=False)
   
-@client.command(aliases=["si"])
+@client.command(brief='util', description='Know all about current server', aliases=["si"])
 async def serverinfo(ctx):
   if ctx.guild.description is not None:
     desc = f"> **<:tag:880100337745264680> Server Description**: {ctx.guild.description}"
@@ -1449,7 +1443,7 @@ async def http(ctx, status_code):
 
 
 
-@client.command(brief='fun', description='Make the bot say (in voice) what ever you want', usage='[text]')
+@client.command(brief='fun', description='Make the bot say (in voice) whatever you want', usage='[text]')
 async def tts(ctx, *, text):
   em = discord.Embed(description="<a:ttsloading:886607614111273010> Processing your tts", color=0x2F3136)
   if len(text) >= 20:
