@@ -93,7 +93,7 @@ class Rtfm(commands.Cog):
 
                 stream = SphinxObjectFileReader(await resp.read())
                 cache[key] = self.parse_object_inv(stream, page)
-            session.close()
+            await session.close()
 
         self._rtfm_cache = cache
 
