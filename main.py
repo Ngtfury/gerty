@@ -1064,12 +1064,15 @@ async def webhook(ctx, member: discord.Member = None, *, content:str):
       return await ctx.send(embed=BotEmbed.error('There is no webhooks in this channel or bot does\'t have permission to access'))
   
   hooks=await ctx.channel.webhooks()
-
   data={
     'content': content,
     'avatar_url': str(member.avatar_url),
     'username': f'{member.display_name}'
   }
+  try:
+    await ctx.message.delete()
+  except:
+    pass
   async with aiohttp.ClientSession() as ses:
     async with ses.post(url=hooks[0].url, json=data) as rep:
       return
