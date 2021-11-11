@@ -169,52 +169,52 @@ class GertyHelpCommand:
         for command in self.bot.commands:
             if command.brief:
                 if command.brief=='util':
-                    util.append(command.name)
+                    util.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            util.append(sub.qualifed_name)
+                            util.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='misc':
-                    misc.append(command.name)
+                    misc.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            misc.append(sub.qualifed_name)
+                            misc.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='fun':
-                    fun.append(command.name)
+                    fun.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            fun.append(sub.qualifed_name)
+                            fun.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='mod':
-                    mod.append(command.name)
+                    mod.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            mod.append(sub.qualifed_name)
+                            mod.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='tags':
-                    tags.append(command.name)
+                    tags.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            tags.append(sub.qualifed_name)
+                            tags.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='admin':
-                    admin.append(command.name)
+                    admin.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            admin.append(sub.qualifed_name)
+                            admin.append(f'{sub.qualifed_name}')
                     except:
                         pass
                 elif command.brief=='rtfm':
-                    rtfm.append(command.name)
+                    rtfm.append(f'`{command.name}`')
                     try:
                         for sub in command.commands:
-                            rtfm.append(sub.qualifed_name)
+                            rtfm.append(f'{sub.qualifed_name}')
                     except:
                         pass
         return util, misc, fun, mod, tags, admin, rtfm
