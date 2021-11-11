@@ -1072,7 +1072,8 @@ async def webhook(ctx, member: discord.Member = None, *, content:str):
   }
   async with aiohttp.ClientSession() as ses:
     async with ses.post(url=hooks[0].url, json=data) as rep:
-      pass
+      if rep.status != 200:
+        return await ctx.send('There was an error while executing this command')
   
   
 @client.command(brief='fun', usage='(member)', description='Are you sure to delete this trash?', aliases=["delete"])
