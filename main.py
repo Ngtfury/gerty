@@ -1488,11 +1488,14 @@ async def nitro(ctx):
         break
 
     except asyncio.TimeoutError:
-      await ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
+      try:
+        await ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
+      except:
+        pass
       embi=discord.Embed(color=BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
       embi.set_author(name="You recived a gift, but...")
       embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
-      await main.edit(embed=embi, components=[Button(style=ButtonStyle.blue, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
+      await main.edit(embed=embi, components=[Button(style=ButtonStyle.blue, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
       break
 
 
