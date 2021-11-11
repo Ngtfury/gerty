@@ -1053,26 +1053,26 @@ async def fishing(ctx, channel: discord.VoiceChannel=None):
     
 
 @client.command(brief='meta', usage='(member) [content]', description='Sends content from a webhook as the member')
-async def webhook(ctx, member: discord.Member = None, *, content):
-  try:
-    if member == None:
-      member = ctx.author
-    if await ctx.channel.webhooks():
-      await ctx.message.delete()
-      for w in await ctx.channel.webhooks():
-        if w.name == "Gerty":
-          url = f"{w.url}"
-          data = {
-            "content" : f"{content}",
-            "username" : f"{member.display_name}",
-            "avatar_url": f"{member.avatar_url}"
-          }
-          requests.post(url, json = data)
-  except:
-    em = discord.Embed(description=f'1. Try kicking the bot and [inviting](https://discord.com/api/oauth2/authorize?client_id=855443275658166282&permissions=8&redirect_uri=https%3A%2F%2Fdiscord.gg%2Fms3PvCvQqK&scope=bot%20applications.commands) again\n2. Else create a webhook named _"Gerty"_  in {ctx.channel.name}\n> In order to use emojis from other servers, the @everyone role needs permission to "Use External Emojis" in the **Channel Settings Permissions.**', color=0xf62323)
-    em.set_image(url="https://media.discordapp.net/attachments/873567363679785020/873569504167333978/unknown.png")
-    em.set_author(name="Error while running this command", icon_url="https://cdn.discordapp.com/emojis/867269410644557834.png?v=1")
-    await ctx.send(embed=em)
+async def webhook(ctx, member: discord.Member = None, *, content:str):
+  if member==None:
+    member=ctx.author
+
+  if not await ctx.channel.webhooks():
+    try:
+      await ctx.channel.create_webhook(name='Gerty')
+    except:
+      return await ctx.send(embed=BotEmbed.error('There is no webhooks in this channel or bot does\'t have permission to access'))
+  
+  hooks=await ctx.channel.webhooks()
+
+  data={
+    'content': content,
+    'avatar_url': member.avatar_url,
+    'username': member.display_name
+  }
+  async with aiohttp.ClientSession() as ses:
+    async with ses.post(url=hooks[0].url, json=data) as rep:
+      pass
   
   
 @client.command(brief='fun', usage='(member)', description='Are you sure to delete this trash?', aliases=["delete"])
