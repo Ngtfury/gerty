@@ -158,7 +158,8 @@ class Rtfm(commands.Cog):
             'edpy': 'https://enhanced-dpy.readthedocs.io/en/latest',
             'chai': 'https://chaidiscordpy.readthedocs.io/en/latest',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
-            'pycord': 'https://pycord.readthedocs.io/en/master'
+            'pycord': 'https://pycord.readthedocs.io/en/master',
+            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
         }
         embed_titles = {
             'latest': 'Documentation for `discord.py v1.7.3`',
@@ -169,7 +170,8 @@ class Rtfm(commands.Cog):
             'edpy': 'Documentation for `enhanced-dpy`',
             'chai': 'Documentation for `chaidiscord.py`',
             'bing': 'Documentation for `asyncbing`',
-            'pycord': 'Documentation for `pycord`'
+            'pycord': 'Documentation for `pycord`',
+            'aiohttp': 'Documentation for `aiohttp`'
         }
 
         if obj is None:
@@ -196,7 +198,8 @@ class Rtfm(commands.Cog):
 
         matches = finder(obj, cache, key=lambda t: t[0], lazy=False)[:8]
 
-        e = discord.Embed(colour=discord.Colour.blurple(), title=embed_titles.get(key, 'Documentation'))
+        e = discord.Embed(colour=discord.Colour.blurple())
+        e.set_author(name=embed_titles.get(key, 'Documentation'))
         if len(matches) == 0:
             return await ctx.send('Could not find anything. Sorry.')
 
@@ -249,10 +252,6 @@ a cruddy fuzzy algorithm.""", usage='[query]', aliases=['rtfd', 'rtdm'], invoke_
         """Gives you a documentation link for a pycord entity"""
         await self.do_rtfm(ctx, 'pycord', obj)
 
-    @rtfm.command(name='discord-components', aliases=['dc'])
-    async def rtfm_discord_components(self, ctx, *, obj:str=None):
-        """"Gives you a documentation link for a discord-components entity"""
-        await self.do_rtfm(ctx, 'discord-components', obj)
 
     @rtfm.command(name='aiohttp')
     async def rtfm_aiohttp(self, ctx, *, obj:str=None):
