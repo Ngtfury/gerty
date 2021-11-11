@@ -1440,8 +1440,8 @@ async def waifu(ctx):
           await ctx.send(embed=embed)
 
 
-@client.command()
-async def status(ctx, status_code):
+@client.command(brief='fun', description='Http cat images', usage='(http status code)', aliases=['http_cat'])
+async def http(ctx, status_code):
   embed = discord.Embed(color=0x2F3136)
   embed.set_image(url=f"https://http.cat/{status_code}")
   embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
@@ -1449,7 +1449,7 @@ async def status(ctx, status_code):
 
 
 
-@client.command()
+@client.command(brief='fun', description='Make the bot say (in voice) what ever you want', usage='[text]')
 async def tts(ctx, *, text):
   em = discord.Embed(description="<a:ttsloading:886607614111273010> Processing your tts", color=0x2F3136)
   if len(text) >= 20:
@@ -1614,92 +1614,5 @@ async def select(ctx):
       await mainmessage.edit(components=compo2)
       
 
-
-
-
-@client.command()
-async def ocr(ctx, *, url):
-  async with aiohttp.ClientSession() as sess:
-      async with sess.get('https://api.openrobot.xyz/api/ocr', headers={'Authorization': 'X7gThnuWOuN9qWSd22VUm_NKmm1XQYMVHzxnIeJgP5XUCcayJ9XClwQdJUkGVcez0Sg'}, params={'url': f'{url}'}) as resp:
-        js = await resp.json() 
-
-        em = discord.Embed(description=f"{js['text']}", color=0x2F3136)
-        em.add_field(name="Angles", value=f"{js['angles']}")
-        em.add_field(name="languages", value=f"{js['languuages']}")
-        em.add_field(name="Styles", value=f"{js['styles']}")
-        await ctx.send(embed=em)
-
-
-@client.group(invoke_without_command=True)
-async def todo(ctx):
-  em = discord.Embed(title="To-do is here!", description="Now you can add your to-do in gerty and bot will show you the list of to-do tasks that you should complete", color=0x2F3136)
-  em.add_field(name="Commands", value="<:arrow:885193320068968508> `todo add` - Adds a task to your to-do list, usage: todo add [task]\n<:arrow:885193320068968508> `todo edit` - Edits the todo task, usage: todo edit [todo id] [new todo]\n<:arrow:885193320068968508> `todo remove` - Removes a task from your todo list, usage: todo remove [todo id]\n<:arrow:885193320068968508> `todo list` - Shows the list of tasks to do")
-  await ctx.reply(embed=em, mention_author=False)
-
-@todo.command()
-async def add(ctx, *, todo):
-  created = int(datetime.datetime.now().timestamp())
-  await client.db.execute("INSERT INTO todo_data (todo, author_id, jump_url, created_at) VALUES ($1,$2,$3,$4)", f"{todo}", ctx.author.id, f"{ctx.message.jump_url}", created)
-  await ctx.send(f"Alright I have added the task to your to-do list!\n\n> {todo}")
-
-@todo.command()
-async def list(ctx):
-  todo_list = []
-  todo_data = await client.db.fetch("SELECT * FROM todo_data WHERE author_id = $1", ctx.author.id)
-  if todo_data:
-    for todo in todo_data:
-      todo_list.append(f"<:arrow:885193320068968508> **{todo[4]}**. <t:{todo[3]}:R> | [{todo[0]}]({todo[2]})")
-
-    em = discord.Embed(description='\n'.join(todo_list), color=0x2F3136)
-    em.set_author(name=f"{ctx.author}", icon_url=f"{ctx.author.avatar_url}")
-    mainmessage = await ctx.send(embed=em, components=[Button(style=ButtonStyle.gray, emoji=client.get_emoji(890938576563503114), id="todolistdelete")])
-    while True:
-      todoev = await client.wait_for("button_click")
-      if todoev.author != ctx.author:
-        await todoev.respond(content="Sorry, this buttons cannot be controlled by you", type=4)
-      else:
-        if todoev.component.id == "todolistdelete":
-          try:
-            await mainmessage.delete()
-            await ctx.message.add_reaction("<:success:893501515107557466>")
-          except:
-            pass
-          break
-  else:
-    await ctx.send("You don't have any upcoming tasks.")
-
-
-@todo.command()
-async def edit(ctx, todo_key: int, *, new):
-  try:
-    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE key = $1", todo_key)
-  except:
-    await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
-  else:
-    if g[1] == ctx.author.id:
-      await client.db.execute("UPDATE todo_data SET todo = $1 WHERE key = $2", f"{new}", todo_key)
-      await ctx.send(f"Succesfully edited your to-do list.")
-    else:
-      await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
-
-
-@todo.command(aliases=["done"])
-async def remove(ctx, *, todo_key:int):
-  try:
-    g = await client.db.fetchrow("SELECT * FROM todo_data WHERE key = $1", todo_key)
-  except:
-    await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
-  else:
-    if g[1] == ctx.author.id:
-      await client.db.execute("DELETE FROM todo_data WHERE key = $1", todo_key)
-      await ctx.send(f'Task "{todo_key}" removed from your to-do list.')
-    else:
-      await ctx.send(f'To-do with key "{todo_key}" was not found in your to-do list.')
-
-
-@client.command(aliases=["src"])
-async def source(ctx):
-  em = discord.Embed(description="[**`Here, whole bot source code`**](https://gerty-github.web.app/)", color=0x2F3136)
-  await ctx.reply(embed=em, mention_author=False)
 
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA", reconnect=True)
