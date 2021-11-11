@@ -239,9 +239,9 @@ class Utils(commands.Cog):
             SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
             SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
         ]
-        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
-        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
-
+        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
+        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
+        compo3=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links', disabled=True), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
 
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=BotColors.invis())
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
@@ -287,6 +287,24 @@ class Utils(commands.Cog):
         RtfmEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Rtfm}', color=BotColors.invis())
         RtfmEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
         RtfmEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        commandlist=await GertyHelpCommand(self.bot).get_commands_without_description()
+
+        CommandListEmbed=discord.Embed(description="""`g!help [command]` - View help for specific command
+Hover below categories for more help.
+Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```""", color=BotColors.invis())
+        CommandListEmbed.set_author(name='Gerty HelpDesk - Commands', icon_url=self.bot.user.avatar_url)
+        CommandListEmbed.add_field(name='<:settingssssss:891223848970747916> Utility commands', value=', '.join(commandlist[0]), inline=False)
+        CommandListEmbed.add_field(name='🧩 Misc commands', value=', '.join(commandlist[1]))
+        CommandListEmbed.add_field(name='🎪 Fun commands', value=', '.join(commandlist[2]))
+        CommandListEmbed.add_field(name='<:moderation:885156113656479784> Mod commands', value=', '.join(commandlist[3]))
+        CommandListEmbed.add_field(name='<:tag:880100337745264680> Tag commands', value=', '.join(commandlist[4]))
+        CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]))
+        CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]))
+        CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+
+
         #loaded embeds
 
         while True:
@@ -318,7 +336,7 @@ class Utils(commands.Cog):
                         await ctx.message.add_reaction('<:success:893501515107557466>')
                         break
                     elif event.component.id=='Links':
-                        await event.respond(type=4)
+                        await event.respond(type=7, embed=CommandListEmbed, components=compo3)
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
                 break
