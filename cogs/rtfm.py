@@ -251,7 +251,7 @@ class Rtfm(commands.Cog):
         await self.do_rtfm(ctx, 'pycord', obj)
 
 
-    @rtfm.command(name='aiohttp', description='Gives you a documentation link for a aiohttp entity')
+    @rtfm.command(name='aiohttp', description='Gives you a documentation link for a aiohttp entity', usage='[query]')
     async def rtfm_aiohttp(self, ctx, *, obj:str=None):
         await self.do_rtfm(ctx, 'aiohttp', obj)
 
