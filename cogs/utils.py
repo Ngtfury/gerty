@@ -169,15 +169,14 @@ class Utils(commands.Cog):
             return await GertyHelpCommand(self.bot).send_command_help(ctx=ctx, command=command)
         
         commands=await GertyHelpCommand(self.bot).get_commands_according_brief()
-
         options=[
-            SelectOption(label='Utility commands', description='Commands that are useful for everyone and mods', value='UtilOption'),
-            SelectOption(label='Misc commands', description='Some other stuffs', value='MiscOption'),
-            SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption'),
-            SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption'),
-            SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption'),
-            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption'),
-            SelectOption(label='Rtfm commands', description='Read the F ing docs!!', value='RtfmOption')
+            SelectOption(label='Utility commands', description='Commands that are useful for everyone and mods', value='UtilOption', emoji=self.bot.get_emoji(891223848970747916)),
+            SelectOption(label='Misc commands', description='Some other stuffs', value='MiscOption', emoji='🧩'),
+            SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption', emoji='🎪'),
+            SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption', emoji=self.bot.get_emoji(885156113656479784)),
+            SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption', emoji=self.bot.get_emoji(880100337745264680)),
+            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698)),
+            SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘')
         ]
         compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
         compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel'), Button(label='Links', emoji=self.bot.get_emoji(885161311456071750), id='Links')], Select(placeholder='Hover through modules!', options=options)]
@@ -255,9 +254,10 @@ class Utils(commands.Cog):
                     elif event.component.id=='QuitDel':
                         await event.respond(type=6)
                         await MainMessage.delete()
+                        await ctx.message.add_reaction('<:success:893501515107557466>')
                         break
                     elif event.component.id=='Links':
-                        await event.respond(type=4, content='coming soon!')
+                        await event.respond(type=4)
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
                 break
