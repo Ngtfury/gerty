@@ -69,8 +69,6 @@ client.remove_command("help")
 
 client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
-def get_prefix():
-  return 'g!'
 
 def source(o):
   s = inspect.getsource(o).split("\n")
@@ -1192,13 +1190,13 @@ async def invert(ctx, user: discord.Member=None):
   await ctx.send(file=f, embed=em)
 
  
-@client.group(brief='fun', description='Enhances a users avatar', invoke_without_command=True)
+@client.group(brief='fun', description='Enhances a users avatar', usage='[sub command]', invoke_without_command=True)
 async def enhance(ctx):
     em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
-@enhance.command(brief='fun', usage='[user]', description='Enhances color of the users avatar')
+@enhance.command(brief='fun', usage='(user)', description='Enhances color of the users avatar')
 async def color(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -1216,7 +1214,7 @@ async def color(ctx, user: discord.Member=None):
     em2.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em2)
 
-@enhance.command()
+@enhance.command(description='Enhances contrast of a user\'s avatar', usage='(user)')
 async def contrast(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -1234,7 +1232,7 @@ async def contrast(ctx, user: discord.Member=None):
     em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em)
 
-@enhance.command()
+@enhance.command(description='Enhances brightness of a user\'s avatar', usage='(user)')
 async def brightness(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -1253,7 +1251,7 @@ async def brightness(ctx, user:discord.Member=None):
     await ctx.send(file=f, embed=em)
 
 
-@enhance.command()
+@enhance.command(description='Enhances sharpness of a user\'s avatar', usage='(user)')
 async def sharpness(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -1271,7 +1269,7 @@ async def sharpness(ctx, user:discord.Member=None):
     em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
     await ctx.send(file=f, embed=em)
 
-@enhance.command()
+@enhance.command(description='Enhances rgb of a user\'s avatar', usage='(user)')
 async def rgb(ctx, user:discord.Member=None):
   if user == None:
     if ctx.message.reference:
@@ -1291,7 +1289,7 @@ async def rgb(ctx, user:discord.Member=None):
     await ctx.send(file=f, embed=em)
   
   
-@client.command(brief='fun', description='This person does not exist?!?!???', aliases=["doesnotexist", "thispersondoesnotexist"])
+@client.command(brief='fun', description='This person does not exist??', aliases=["doesnotexist", "thispersondoesnotexist"])
 async def persondoesnotexist(ctx):
   
   picture = await get_online_person()
