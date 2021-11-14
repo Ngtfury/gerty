@@ -1618,10 +1618,6 @@ async def select(ctx):
       ])]
       await mainmessage.edit(components=compo2)
       
-<<<<<<< HEAD
-#ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA
-=======
 
 
->>>>>>> a3f54aad55c81632afe0d066f563c758c11890fb
 client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.PbT8noERy_xLFxNVK16iLvNdU-s", reconnect=True)
