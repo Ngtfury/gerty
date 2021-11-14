@@ -51,7 +51,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from cogs.utils import BotEmbed, GertyHelpCommand, BotColors
+from cogs.utils import BotEmbed, BotEmojis, GertyHelpCommand, BotColors
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -198,9 +198,8 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<:error:893501396161290320> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
-    em = discord.Embed(description=f"<:error:893501396161290320> You are missing a required argument `{error.param.name}`", color=0x2F3136)
     em2=await GertyHelpCommand(client).send_command_help(ctx, command=ctx.command, embed=True)
-    await ctx.reply(embeds=[em,em2], mention_author=False)
+    await ctx.reply(f'{BotEmojis.error} Incorrect usage', embed=em2, mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
     em = discord.Embed(description=f"<:error:893501396161290320> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
