@@ -232,6 +232,9 @@ async def on_command_error(ctx, error):
   elif isinstance(error, DisabledCommand):
     em=discord.Embed(description=f'<:error:893501396161290320> Commands in {ctx.channel.mention} are disabled', color=0x2F3136)
     await ctx.send(embed=em)
+  elif isinstance(error, commands.MaxConcurrencyReached):
+    em=BotEmbed.error(f'Too many people are using this command, It can only be used **{error.number}** time per **{error.per}**')
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
     matches = get_close_matches(ctx.invoked_with, command_names)
@@ -1615,6 +1618,5 @@ async def select(ctx):
       ])]
       await mainmessage.edit(components=compo2)
       
-
-
-client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA", reconnect=True)
+#ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.T_9PQpggBRcXz2gA2Hnkm3OHFOA
+client.run("ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.PbT8noERy_xLFxNVK16iLvNdU-s", reconnect=True)
