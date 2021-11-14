@@ -60,6 +60,13 @@ class GertyHelpCommand:
             em.add_field(name='Subcommands', value=', '.join(_subcommands), inline=False)
         except AttributeError:
             pass
+        checks=_command.checks[0]
+        try:
+            do_or_not=checks()
+            if do_or_not:
+                pass
+        except Exception as check_err:
+            em.add_field(name='You cannot use', value=str(check_err))
         if embed==True:
             return em
         else:
