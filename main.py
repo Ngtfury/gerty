@@ -1,6 +1,8 @@
 import discord
 import random
 from discord.ext import commands
+from discord.ext.commands.cooldowns import BucketType
+from discord.ext.commands.errors import MaxConcurrencyReached
 import praw
 import urllib.parse, urllib.request, re
 import os
@@ -233,7 +235,15 @@ async def on_command_error(ctx, error):
     em=discord.Embed(description=f'<:error:893501396161290320> Commands in {ctx.channel.mention} are disabled', color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MaxConcurrencyReached):
-    em=BotEmbed.error(f'Too many people are using this command, It can only be used **{error.number}** time per **{error.per}**')
+    types={
+      commands.BucketType.user: 'user',
+      commands.BucketType.channel: 'channel',
+      commands.BucketType.guild: 'server',
+      commands.BucketType.member: 'member',
+      commands.BucketType.category: 'category',
+      commands.BucketType.role: 'role'
+    }
+    em=BotEmbed.error(f'Too many people are using this command. It can only be used **{error.number}** time per **{types[error.per]}**')
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
