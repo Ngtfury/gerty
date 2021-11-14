@@ -2,6 +2,8 @@ import datetime
 import discord
 from discord.ext import commands
 
+from cogs.utils import GertyHelpCommand
+
 def setup(client):
     client.add_cog(Tags(client))
 

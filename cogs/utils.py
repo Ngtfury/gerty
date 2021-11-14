@@ -60,8 +60,8 @@ class GertyHelpCommand:
             em.add_field(name='Subcommands', value=', '.join(_subcommands), inline=False)
         except AttributeError:
             pass
-        checks=_command.checks[0]
-        if checks:
+        if _command.checks:
+            checks=_command.checks[0]
             try:
                 do_or_not=checks(ctx)
                 if do_or_not:
