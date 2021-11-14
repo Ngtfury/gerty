@@ -61,12 +61,13 @@ class GertyHelpCommand:
         except AttributeError:
             pass
         checks=_command.checks[0]
-        try:
-            do_or_not=checks(ctx)
-            if do_or_not:
-                pass
-        except Exception as check_err:
-            em.add_field(name='You cannot use', value=str(check_err), inline=False)
+        if checks:
+            try:
+                do_or_not=checks(ctx)
+                if do_or_not:
+                    pass
+            except Exception as check_err:
+                em.add_field(name='You cannot use', value=str(check_err), inline=False)
         if embed==True:
             return em
         else:
