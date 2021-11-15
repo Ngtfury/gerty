@@ -236,7 +236,7 @@ class GertyHelpCommand:
         return util, misc, fun, mod, tags, admin, rtfm
 
 
-class Utils(commands.Cog):
+class UtilsCog(commands.Cog):
     def __init__(self,bot):
         self.bot=bot
 
@@ -401,4 +401,4 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             await web.send(content=f'⚠ <@&907682091595096084>\nSHARD ID **{shard_id}** HAS BEEN DISCONNECTED', username='Gerty status logs', avatar_url=self.bot.user.avatar_url, allowed_mentions=discord.AllowedMentions.all())
 
 def setup(bot):
-    bot.add_cog(Utils(bot))
+    bot.add_cog(UtilsCog(bot))
