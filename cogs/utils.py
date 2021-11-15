@@ -14,7 +14,7 @@ class Utils:
         def __init__(self,bot):
             self.client=bot
 
-        async def run_process(self, command):
+        async def run_shell(self, command):
             try:
                 process = await asyncio.create_subprocess_shell(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result = await process.communicate()
@@ -22,7 +22,7 @@ class Utils:
                 process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result = await self.client.loop.run_in_executor(None, process.communicate)
 
-            return [output.decode() for output in result]
+            return [output.decode() for output in result], command
 
     class BotEmbed:
         def error(description:str):
