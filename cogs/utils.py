@@ -6,8 +6,23 @@ import discord_components
 from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
+import subprocess
 
 class Utils:
+
+    class Exe:
+        def __init__(self,bot):
+            self.client=bot
+
+        async def run_process(self, command):
+            try:
+                process = await asyncio.create_subprocess_shell(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                result = await process.communicate()
+            except NotImplementedError:
+                process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                result = await self.client.loop.run_in_executor(None, process.communicate)
+
+            return [output.decode() for output in result]
 
     class BotEmbed:
         def error(description:str):
