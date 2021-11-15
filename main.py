@@ -51,7 +51,7 @@ from random import choice
 from asyncio import TimeoutError
 from discord.colour import Color
 from PIL import Image, ImageEnhance
-from cogs.utils import BotEmbed, BotEmojis, GertyHelpCommand, BotColors
+from cogs.utils import GertyHelpCommand, Utils
 from googleapiclient.discovery import build
 from discord_together import DiscordTogether
 from PIL import ImageFilter
@@ -192,6 +192,7 @@ async def toggle_commands(ctx, channel:discord.TextChannel=None):
   em=discord.Embed(description=f'<:success:893501515107557466> Disabled commands in {channel.mention}', color=0x2F3136)
   await ctx.send(embed=em)
 
+
 @client.event
 async def on_command_error(ctx, error):
   if isinstance(error, commands.CommandOnCooldown):
@@ -199,7 +200,7 @@ async def on_command_error(ctx, error):
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
     em2=await GertyHelpCommand(client).send_command_help(ctx, command=ctx.command, embed=True)
-    await ctx.reply(f'{BotEmojis.error()} Incorrect usage', embed=em2, mention_author=False)
+    await ctx.reply(f'{Utils.BotEmojis.error()} Incorrect usage', embed=em2, mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
     em = discord.Embed(description=f"<:error:893501396161290320> You are missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
@@ -242,7 +243,7 @@ async def on_command_error(ctx, error):
       commands.BucketType.category: 'category',
       commands.BucketType.role: 'role'
     }
-    em=BotEmbed.error(f'Too many people are using this command. It can only be used **{error.number}** time per **{types[error.per]}**')
+    em=Utils.BotEmbed.error(f'Too many people are using this command. It can only be used **{error.number}** time per **{types[error.per]}**')
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.CommandNotFound):
     command_names = [str(x) for x in ctx.bot.commands]
@@ -254,7 +255,7 @@ async def on_command_error(ctx, error):
         num=num+1
         matches_.append(f'> {num}. {x}')
       _matches='\n'.join(matches_)
-      await ctx.send(embed=BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
+      await ctx.send(embed=Utils.BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
   else:
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
     error_log_channel=client.get_channel(906874671847333899)
@@ -1071,7 +1072,7 @@ async def webhook(ctx, member: typing.Optional[discord.Member] = None, *, conten
     try:
       await ctx.channel.create_webhook(name='Gerty')
     except:
-      return await ctx.send(embed=BotEmbed.error('There is no webhooks in this channel or bot does\'t have permission to access'))
+      return await ctx.send(embed=Utils.BotEmbed.error('There is no webhooks in this channel or bot does\'t have permission to access'))
   
   hooks=await ctx.channel.webhooks()
   data={
@@ -1502,7 +1503,7 @@ async def nitro(ctx):
         await ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
       except:
         pass
-      embi=discord.Embed(color=BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
+      embi=discord.Embed(color=Utils.BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
       embi.set_author(name="You recived a gift, but...")
       embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
       await main.edit(embed=embi, components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])

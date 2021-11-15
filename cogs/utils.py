@@ -7,24 +7,25 @@ from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 
-class BotEmbed:
-    def error(description:str):
-        embed=discord.Embed(description=f'<:error:893501396161290320> {description}', color=0x2F3136)
-        return embed
-    def success(description:str):
-        embed=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
-        return embed
+class Utils:
 
-class BotEmojis:
-    def error():
-        return '<:error:893501396161290320>'
-    def success():
-        return '<:success:893501515107557466>'
+    class BotEmbed:
+        def error(description:str):
+            embed=discord.Embed(description=f'<:error:893501396161290320> {description}', color=0x2F3136)
+            return embed
+        def success(description:str):
+            embed=discord.Embed(description=f'<:success:893501515107557466> {description}', color=0x2F3136)
+            return embed
 
+    class BotEmojis:
+        def error():
+            return '<:error:893501396161290320>'
+        def success():
+            return '<:success:893501515107557466>'
 
-class BotColors:
-    def invis():
-        return 0x2F3136
+    class BotColors:
+        def invis():
+            return 0x2F3136
 
 
 class GertyHelpCommand:
@@ -33,7 +34,7 @@ class GertyHelpCommand:
     async def send_command_help(self, ctx, command:str, embed:bool=False):
         _command=self.bot.get_command(f'{command}')
         if not _command:
-            return await ctx.send(embed=BotEmbed.error(f'There is no command called “{command}“'))
+            return await ctx.send(embed=Utils.BotEmbed.error(f'There is no command called “{command}“'))
         t='`'
         em=discord.Embed(description=f'{t}{t}{t}ml\n[] - Required Argument | () - Optional Argument\n{t}{t}{t}', color=0x2F3136)
         em.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=ctx.author.avatar_url)
