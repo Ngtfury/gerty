@@ -236,7 +236,7 @@ async def on_command_error(ctx, error):
     em=discord.Embed(description=f'<:error:893501396161290320> Commands in {ctx.channel.mention} are disabled', color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.DisabledCommand):
-    embed=Utils.BotEmbed.error(f'{ctx.command.name} is now globally disabled, maybe under development')
+    embed=Utils.BotEmbed.error(f'Command “{ctx.command.qualified_name}“ is now globally disabled, Maybe under development')
     await ctx.reply(embed=embed, mention_author=False)
   elif isinstance(error, commands.MaxConcurrencyReached):
     types={
