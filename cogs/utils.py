@@ -14,7 +14,7 @@ class Utils:
         def __init__(self,bot):
             self.client=bot
 
-        async def run_shell(self, command):
+        async def run(self, command):
             try:
                 process = await asyncio.create_subprocess_shell(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result = await process.communicate()
@@ -24,7 +24,7 @@ class Utils:
 
             notReadable=[output.decode() for output in result]
             Readable='\n'.join(notReadable)
-            return f'$ {command}\n\n{Readable}'
+            return f'$ {command}\n{Readable}'
 
     class BotEmbed:
         def error(description:str):
