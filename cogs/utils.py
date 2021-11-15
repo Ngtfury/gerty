@@ -10,6 +10,13 @@ import subprocess
 
 class Utils:
 
+    def clean_prefix(ctx):
+        if ctx.prefix==f'<@!{ctx.bot.user.id}> ':
+            _prefix=f'@{ctx.bot.user.name} '
+        else:
+            _prefix=ctx.prefix
+        return _prefix
+
     class Exe:
         def __init__(self,bot):
             self.client=bot
