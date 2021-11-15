@@ -22,7 +22,9 @@ class Utils:
                 process = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 result = await self.client.loop.run_in_executor(None, process.communicate)
 
-            return [output.decode() for output in result], command
+            notReadable=[output.decode() for output in result]
+            Readable='\n'.join(notReadable)
+            return f'$ {command}\n\n{Readable}'
 
     class BotEmbed:
         def error(description:str):
