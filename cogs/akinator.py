@@ -69,6 +69,7 @@ class AkinatorCog(commands.Cog):
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
                     await event.respond(type=7, embed=em)
+                    continue
                 elif event.component.id=='AkiNo':
                     q=await aki.answer('no')
                     em=discord.Embed(color=Utils.BotColors.invis())
@@ -77,6 +78,7 @@ class AkinatorCog(commands.Cog):
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
                     await event.respond(type=7, embed=em)
+                    continue
                 elif event.component.id=='AkiProbably':
                     q=await aki.answer('Probably')
                     em=discord.Embed(color=Utils.BotColors.invis())
@@ -85,6 +87,7 @@ class AkinatorCog(commands.Cog):
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
                     await event.respond(type=7, embed=em)
+                    continue
                 elif event.component.id=='AkiProbablyNot':
                     q=await aki.answer('Probably not')
                     em=discord.Embed(color=Utils.BotColors.invis())
@@ -93,6 +96,7 @@ class AkinatorCog(commands.Cog):
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
                     await event.respond(type=7, embed=em)
+                    continue
                 elif event.component.id=='AkiQuit':
                     await event.respond(type=6)
                     break
