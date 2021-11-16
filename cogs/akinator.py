@@ -38,7 +38,7 @@ class AkinatorCog(commands.Cog):
 
         aki=Akinator()
 
-        q=await aki.start_game(child_mode=True)
+        q=await aki.start_game(language=None, child_mode=True)
 
         bar=ProgressBar(
             aki.progression,
