@@ -17,7 +17,7 @@ def setup(bot):
 
 class AkinatorCog(commands.Cog):
     def __init__(self, bot):
-        self.bot=bot
+        self.client=bot
 
 
 
