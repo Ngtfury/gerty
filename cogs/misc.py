@@ -8,6 +8,7 @@ import discord_components
 from discord_components import *
 
 
+
 class Misc(commands.Cog):
     def __init__(self, client):
         self.client=client
@@ -311,6 +312,10 @@ class Misc(commands.Cog):
                             await res.respond(embed=e, components=self.buttons_one, type=7)
                         else:
                             await res.respond(embed=e, components=self.buttons_two, type=7)
+
+
+
+
 
 
 def setup(client):

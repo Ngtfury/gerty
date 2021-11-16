@@ -21,3 +21,5 @@ PyNaCl
 asyncpg
 async-cse
 discord.py
+akinator.py
+python-multibar

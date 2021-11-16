@@ -245,7 +245,8 @@ async def on_command_error(ctx, error):
       commands.BucketType.guild: 'server',
       commands.BucketType.member: 'member',
       commands.BucketType.category: 'category',
-      commands.BucketType.role: 'role'
+      commands.BucketType.role: 'role',
+      commands.BucketType.default: 'global commands'
     }
     em=Utils.BotEmbed.error(f'Too many people are using this command. It can only be used **{error.number}** time per **{types[error.per]}**')
     await ctx.reply(embed=em, mention_author=False)
