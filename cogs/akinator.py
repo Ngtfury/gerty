@@ -61,6 +61,7 @@ class AkinatorCog(commands.Cog):
 
             event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
             if event.component.id=='AkiYes':
+                await event.respond(type=6)
                 q=await aki.answer('yes')
                 em=discord.Embed(color=Utils.BotColors.invis())
                 em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
@@ -70,6 +71,7 @@ class AkinatorCog(commands.Cog):
                 await event.respond(type=7, embed=em)
                 continue
             elif event.component.id=='AkiNo':
+                await event.respond(type=6)
                 q=await aki.answer('no')
                 em=discord.Embed(color=Utils.BotColors.invis())
                 em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
@@ -79,6 +81,7 @@ class AkinatorCog(commands.Cog):
                 await event.respond(type=7, embed=em)
                 continue
             elif event.component.id=='AkiProbably':
+                await event.respond(type=6)
                 q=await aki.answer('Probably')
                 em=discord.Embed(color=Utils.BotColors.invis())
                 em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
@@ -88,6 +91,7 @@ class AkinatorCog(commands.Cog):
                 await event.respond(type=7, embed=em)
                 continue
             elif event.component.id=='AkiProbablyNot':
+                await event.respond(type=6)
                 q=await aki.answer('Probably not')
                 em=discord.Embed(color=Utils.BotColors.invis())
                 em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
