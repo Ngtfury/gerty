@@ -31,7 +31,7 @@ class AkinatorCog(commands.Cog):
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
-            Button(label='I don\'t know', id='AkiIdk'),
+            Button(label='I don\'t know', id='AkiIdk', style=ButtonStyle.blue),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
