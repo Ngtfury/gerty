@@ -25,13 +25,13 @@ class AkinatorCog(commands.Cog):
     @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions')
     @commands.is_owner()
     async def _akinator(self,ctx):
-        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait')
+        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
         MainMessage=await ctx.send(embed=em)
 
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
-            Button(label='I Don\'t know', value='AkiIdk'),
+            Button(label='I Don\'t know', id='AkiIdk'),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
