@@ -59,48 +59,47 @@ class AkinatorCog(commands.Cog):
             progress=bar.write_progress(**DiscordTemplates.DEFAULT)
 
 
-            while True:
-                event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
-                if event.component.id=='AkiYes':
-                    q=await aki.answer('yes')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
-                    continue
-                elif event.component.id=='AkiNo':
-                    q=await aki.answer('no')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
-                    continue
-                elif event.component.id=='AkiProbably':
-                    q=await aki.answer('Probably')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
-                    continue
-                elif event.component.id=='AkiProbablyNot':
-                    q=await aki.answer('Probably not')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
-                    continue
-                elif event.component.id=='AkiQuit':
-                    await event.respond(type=6)
-                    await aki.close()
-                    break
-                    await aki.win()
+            event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.author==ctx.author)
+            if event.component.id=='AkiYes':
+                q=await aki.answer('yes')
+                em=discord.Embed(color=Utils.BotColors.invis())
+                em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                em.add_field(name='Question', value=f'{q}', inline=False)
+                em.add_field(name='Progress', value=f'{progress}', inline=False)
+                await event.respond(type=7, embed=em)
+                continue
+            elif event.component.id=='AkiNo':
+                q=await aki.answer('no')
+                em=discord.Embed(color=Utils.BotColors.invis())
+                em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                em.add_field(name='Question', value=f'{q}', inline=False)
+                em.add_field(name='Progress', value=f'{progress}', inline=False)
+                await event.respond(type=7, embed=em)
+                continue
+            elif event.component.id=='AkiProbably':
+                q=await aki.answer('Probably')
+                em=discord.Embed(color=Utils.BotColors.invis())
+                em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                em.add_field(name='Question', value=f'{q}', inline=False)
+                em.add_field(name='Progress', value=f'{progress}', inline=False)
+                await event.respond(type=7, embed=em)
+                continue
+            elif event.component.id=='AkiProbablyNot':
+                q=await aki.answer('Probably not')
+                em=discord.Embed(color=Utils.BotColors.invis())
+                em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                em.add_field(name='Question', value=f'{q}', inline=False)
+                em.add_field(name='Progress', value=f'{progress}', inline=False)
+                await event.respond(type=7, embed=em)
+                continue
+            elif event.component.id=='AkiQuit':
+                await event.respond(type=6)
+                await aki.close()
+                break
+                await aki.win()
         await aki.win()
         await aki.close()
