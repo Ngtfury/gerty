@@ -36,9 +36,9 @@ class AkinatorCog(commands.Cog):
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
 
-        aki=Akinator(child_mode=True)
+        aki=Akinator()
 
-        q=await aki.start_game()
+        q=await aki.start_game(child_mode=True)
 
         bar=ProgressBar(
             aki.progression,
