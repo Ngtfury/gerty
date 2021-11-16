@@ -46,6 +46,8 @@ class Utils:
             return '<:error:893501396161290320>'
         def success():
             return '<:success:893501515107557466>'
+        def loading():
+            return '<a:z_loading:878684429789306920>'
 
     class BotColors:
         def invis():

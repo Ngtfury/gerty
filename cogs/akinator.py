@@ -25,6 +25,8 @@ class AkinatorCog(commands.Cog):
     @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions')
     @commands.is_owner()
     async def _akinator(self,ctx):
+        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait')
+        MainMessage=await ctx.send(embed=em)
 
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
@@ -49,7 +51,7 @@ class AkinatorCog(commands.Cog):
         em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
         em.add_field(name='Question', value=f'{q}', inline=False)
         em.add_field(name='Progress', value=f'{ohk}', inline=False)
-        MainMessage=await ctx.send(embed=em, components=components)
+        await MainMessage.edit(embed=em, components=components)
 
         while aki.progression <= 80:
             bar=ProgressBar(
