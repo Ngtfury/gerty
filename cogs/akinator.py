@@ -31,7 +31,7 @@ class AkinatorCog(commands.Cog):
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
-            Button(label='I Don\'t know', id='AkiIdk'),
+            Button(label='I don\'t know', id='AkiIdk'),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
@@ -62,7 +62,10 @@ class AkinatorCog(commands.Cog):
             progress=bar.write_progress(**DiscordTemplates.DEFAULT)
 
             try:
-                event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.author==ctx.author and i.message==MainMessage, timeout=40)
+                event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
+                if event.author != ctx.author:
+                    await event.respond(type=4, content='This is not your game')
+                    continue
                 if event.component.id=='AkiYes':
                     await event.respond(type=6)
                     q=await aki.answer('yes')
