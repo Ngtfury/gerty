@@ -42,7 +42,7 @@ class AkinatorCog(commands.Cog):
 
         bar=ProgressBar(
             aki.progression,
-            100
+            80
         )
 
         ohk=bar.write_progress(**DiscordTemplates.DEFAULT)
