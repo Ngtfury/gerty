@@ -99,6 +99,8 @@ class AkinatorCog(commands.Cog):
                     continue
                 elif event.component.id=='AkiQuit':
                     await event.respond(type=6)
+                    await aki.close()
                     break
                     await aki.win()
         await aki.win()
+        await aki.close()
