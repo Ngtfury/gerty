@@ -15,7 +15,7 @@ from discord_components import *
 def setup(client):
     client.add_cog(Akinator(client))
 
-class Akinator(commands.Cog):
+class AkinatorCog(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
