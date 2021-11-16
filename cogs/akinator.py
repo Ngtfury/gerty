@@ -22,8 +22,8 @@ class AkinatorCog(commands.Cog):
 
 
 
-    @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions')
-    @commands.is_owner()
+    @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions', aliases=['aki'])
+    @commands.max_concurrency(1, per=commands.BucketType.user)
     async def _akinator(self,ctx):
         em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
         MainMessage=await ctx.send(embed=em)
