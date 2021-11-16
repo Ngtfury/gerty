@@ -12,8 +12,8 @@ import discord_components
 from discord_components import *
 
 
-def setup(client):
-    client.add_cog(Akinator(client))
+def setup(bot):
+    bot.add_cog(AkinatorCog(bot))
 
 class AkinatorCog(commands.Cog):
     def __init__(self, bot):

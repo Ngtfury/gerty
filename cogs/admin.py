@@ -21,6 +21,8 @@ import re
 import datetime
 from contextlib import redirect_stdout
 
+from cogs.utils import Utils
+
 
 class Admin(commands.Cog):
     def __init__(self, client):
@@ -118,11 +120,12 @@ class Admin(commands.Cog):
                         if event.values[0]:
                             try:
                                 self.load_or_reload(f'cogs.{str(event.values[0])}')
-                                loaded_or_not=f'<:success:893501515107557466> Reloaded {str(event.values[0])} successfully'
-                            except:
-                                loaded_or_not=f'<:error:893501396161290320> Coudn\'t load {str(event.values[0])}'
-                            nicmbed=discord.Embed(description=loaded_or_not, color=0x2F3136)
-                            await event.respond(type=4, embed=nicmbed, ephemeral=False)
+                                embed=Utils.BotEmbed.success(f'Reloaded {str(event.values[0])} successfully')
+                                await event.respond(type=4, embed=embed, ephemeral=False)
+                            except Exception as error:
+                                traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
+                                await event.respond(type=4, ephemeral=False, file=discord.File(io.StringIO(traceback_string), filename='traceback.py'))
+
                     elif isinstance(event.component, Button):
                         if event.component.id=='rall':
                             await event.respond(type=6)
