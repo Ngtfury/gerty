@@ -64,7 +64,7 @@ class AkinatorCog(commands.Cog):
             try:
                 event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
                 if event.author != ctx.author:
-                    await event.respond(type=4, content='This is not your game')
+                    await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
                     continue
                 if event.component.id=='AkiYes':
                     await event.respond(type=6)
