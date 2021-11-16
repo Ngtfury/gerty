@@ -42,12 +42,12 @@ class AkinatorCog(commands.Cog):
             100
         )
 
-        progress=bar.write_progress(**DiscordTemplates.DEFAULT)
+        ohk=bar.write_progress(**DiscordTemplates.DEFAULT)
         em=discord.Embed(color=Utils.BotColors.invis())
         em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
         em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
         em.add_field(name='Question', value=f'{q}', inline=False)
-        em.add_field(name='Progress', value=f'{progress}', inline=False)
+        em.add_field(name='Progress', value=f'{ohk}', inline=False)
         await ctx.send(embed=em, components=components)
 
         while aki.progression <= 80:
@@ -98,6 +98,7 @@ class AkinatorCog(commands.Cog):
                     await event.respond(type=7, embed=em)
                     continue
                 elif event.component.id=='AkiQuit':
+                    await event.respond(type=6)
                     break
                     await aki.win()
         await aki.win()
