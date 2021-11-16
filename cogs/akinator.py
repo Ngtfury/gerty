@@ -105,6 +105,8 @@ class AkinatorCog(commands.Cog):
         _img=aki.first_guess['absolute_picture_path']
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
         em.set_image(url=f'{_img}')
+        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+        em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
         await MainMessage.edit(embed=em)
         await MainMessage.disable_components()
         await aki.close()
