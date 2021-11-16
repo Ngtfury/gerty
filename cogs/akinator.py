@@ -48,7 +48,7 @@ class AkinatorCog(commands.Cog):
         em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
         em.add_field(name='Question', value=f'{q}', inline=False)
         em.add_field(name='Progress', value=f'{ohk}', inline=False)
-        await ctx.send(embed=em, components=components)
+        MainMessage=await ctx.send(embed=em, components=components)
 
         while aki.progression <= 80:
             bar=ProgressBar(
@@ -98,8 +98,13 @@ class AkinatorCog(commands.Cog):
                 continue
             elif event.component.id=='AkiQuit':
                 await event.respond(type=6)
-                await aki.close()
                 break
-                await aki.win()
         await aki.win()
+        _des=aki.first_guess['description']
+        _title=aki.first_guess['name']
+        _img=aki.first_guess['absolute_picture_path']
+        em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
+        em.set_image(url=f'{_img}')
+        await MainMessage.edit(embed=em)
+        await MainMessage.disable_components()
         await aki.close()
