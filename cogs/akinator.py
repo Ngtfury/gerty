@@ -3,7 +3,7 @@ from discord.ext import commands
 from akinator.async_aki import Akinator
 import akinator
 from cogs.utils import Utils
-from multibar import ProgressBar, ProgressTemplates
+from multibar import ProgressBar, ProgressTemplates, DiscordTemplates
 import datetime
 import time
 import asyncio
@@ -35,6 +35,19 @@ class AkinatorCog(commands.Cog):
         aki=Akinator()
 
         q=await aki.start_game()
+
+        bar=ProgressBar(
+            aki.progression,
+            100
+        )
+
+        progress=bar.write_progress(**DiscordTemplates.DEFAULT)
+        emb=discord.Embed(color=Utils.BotColors.invis())
+        emb.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+        emb.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+        emb.add_field(name='Question', value=f'{q}', inline=False)
+        emb.add_field(name='Progress', value=f'{progress}', inline=False)
+        await ctx.send(embed=emb, components=components)
 
         while aki.progression <= 80:
             bar=ProgressBar(
