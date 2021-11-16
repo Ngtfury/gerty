@@ -29,6 +29,7 @@ class AkinatorCog(commands.Cog):
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
+            Button(label='I Don\'t know', value='AkiIdk'),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
@@ -93,6 +94,16 @@ class AkinatorCog(commands.Cog):
             elif event.component.id=='AkiProbablyNot':
                 await event.respond(type=6)
                 q=await aki.answer('Probably not')
+                em=discord.Embed(color=Utils.BotColors.invis())
+                em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                em.add_field(name='Question', value=f'{q}', inline=False)
+                em.add_field(name='Progress', value=f'{progress}', inline=False)
+                await event.respond(type=7, embed=em)
+                continue
+            elif event.component.id=='AkiIdk':
+                await event.respond(type=6)
+                q=await aki.answer('idk')
                 em=discord.Embed(color=Utils.BotColors.invis())
                 em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
                 em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
