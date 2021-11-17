@@ -323,12 +323,12 @@ class Misc(commands.Cog):
         if user==None:
             user==ctx.author
             NoResultEmbedUser='You are'
-        else:
-            NoResultEmbedUser=f'{user.name} is'
 
         spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
 
         if spotify_result is None:
+            if not NoResultEmbedUser:
+                NoResultEmbedUser=f'{user.name} is'
             em=Utils.BotEmbed.error(f'{NoResultEmbedUser} not listening to spotify or the bot can\'t detect it')
             return await ctx.reply(embed=em, mention_author=False)
             
