@@ -176,6 +176,12 @@ class AkinatorCog(commands.Cog):
         _des=aki.first_guess['description']
         _title=aki.first_guess['name']
         _img=aki.first_guess['absolute_picture_path']
+
+        NSFW=['Mia Khalifa']
+
+        if _title in NSFW:
+            _img='https://c.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif'
+
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
         em.set_image(url=f'{_img}')
         em.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
