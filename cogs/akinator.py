@@ -205,7 +205,7 @@ class AkinatorCog(commands.Cog):
                     await DisableMessage.disable_components()
                     break
                 elif YesOrNoEvent.component.id=='AkiWrong':
-                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me !')
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me! Play again?')
                     DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     await DisableMessage.disable_components()
                     break
