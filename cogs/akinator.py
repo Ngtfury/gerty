@@ -205,10 +205,11 @@ class AkinatorCog(commands.Cog):
         _title=aki.first_guess['name']
         _img=aki.first_guess['absolute_picture_path']
 
-        NSFW=['Mia Khalifa']
+
         NSFWDESC=['Porn actress']
 
-        if _title in NSFW or NSFWDESC:
+
+        if _des in NSFWDESC:
             _img='https://i.pinimg.com/564x/ea/06/78/ea0678165c05e77cc6d0c91f81e7bd0c.jpg'
 
         if not _img:
