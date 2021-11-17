@@ -196,16 +196,16 @@ class AkinatorCog(commands.Cog):
         while True:
             try:
                 YesOrNoEvent=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=10)
-                if YesOrNoCompo.author != ctx.author:
+                if YesOrNoEvent.author != ctx.author:
                     await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
                     continue
-                elif YesOrNoCompo.component.id=='AkiCorrect':
-                    await YesOrNoCompo.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time !. It was fun to play with you!')
+                elif YesOrNoEvent.component.id=='AkiCorrect':
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time !. It was fun to play with you!')
                     DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     await DisableMessage.disable_components()
                     break
-                elif YesOrNoCompo.component.id=='AkiWrong':
-                    await YesOrNoCompo.respond(type=4, ephemeral=False, content='Bravo, you have defeated me !')
+                elif YesOrNoEvent.component.id=='AkiWrong':
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me !')
                     DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     await DisableMessage.disable_components()
                     break
