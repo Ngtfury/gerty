@@ -319,7 +319,7 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
-    async def spotify(ctx, member:discord.Member=None):
+    async def spotify(self, ctx, member:discord.Member=None):
         if member==None:
             member=ctx.author
 
