@@ -184,16 +184,16 @@ class AkinatorCog(commands.Cog):
             _img='https://c.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif'
 
         YesOrNoCompo=[[
-            Button(label='Yes', id='AkiCorrect'),
-            Button(label='No', id='AkiWrong')
+            Button(label='Yes', id='AkiCorrect', emoji=self.client.get_emoji(910490899883126804)),
+            Button(label='No', id='AkiWrong', emoji=self.client.get_emoji(910491193174028308))
         ]]
         YesCompo=[[
-            Button(label='Yes', id='AkiCorrect', style=ButtonStyle.green, disabled=True),
-            Button(label='No', id='AkiWrong', disabled=True)
+            Button(label='Yes', id='AkiCorrect', style=ButtonStyle.green, disabled=True, emoji=self.client.get_emoji(910490899883126804)),
+            Button(label='No', id='AkiWrong', disabled=True, emoji=self.client.get_emoji(910491193174028308))
         ]]
         NoCompo=[[
-            Button(label='Yes', id='AkiCorrect', disabled=True),
-            Button(label='No', id='AkiWrong', style=ButtonStyle.red, disabled=True)
+            Button(label='Yes', id='AkiCorrect', disabled=True, emoji=self.client.get_emoji(910490899883126804)),
+            Button(label='No', id='AkiWrong', style=ButtonStyle.red, disabled=True, emoji=self.client.get_emoji(910491193174028308))
         ]]
 
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
