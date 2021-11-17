@@ -1,4 +1,5 @@
 import discord
+from discord.embeds import Embed
 from discord.ext import commands
 from akinator.async_aki import Akinator
 import akinator
@@ -182,9 +183,31 @@ class AkinatorCog(commands.Cog):
         if _title in NSFW:
             _img='https://c.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif'
 
+        YesOrNoCompo=[[
+            Button(style=ButtonStyle.green, label='Yes', id='AkiCorrect'),
+            Button(style=ButtonStyle.red, label='No', id='AkiWrong')
+        ]]
+
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
         em.set_image(url=f'{_img}')
         em.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
         em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-        await MainMessage.edit(embed=em, components=[])
+        await MainMessage.edit(embed=em, components=YesOrNoCompo)
+        while True:
+            try:
+                YesOrNoEvent=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=10)
+                if YesOrNoCompo.author != ctx.author:
+                    await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
+                    continue
+                elif YesOrNoCompo.component.id=='AkiCorrect':
+                    await event.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time !. It was fun to play with you!')
+                    break
+                elif YesOrNoCompo.component.id=='AkiWrong':
+                    await event.respond(type=4, ephemeral=False, content='Bravo, you have defeated me !')
+                    break
+            except:
+                DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                await DisableMessage.disable_components()
+                break
+
         await aki.close()
