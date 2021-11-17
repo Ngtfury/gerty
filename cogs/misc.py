@@ -344,7 +344,7 @@ class Misc(commands.Cog):
             'artists': spotify_result.artists
             }
 
-        r = await aiohttp.ClientSession().session.get('https://api.jeyy.xyz/discord/spotify', params=params)
+        r = await aiohttp.ClientSession().get('https://api.jeyy.xyz/discord/spotify', params=params)
         buf = BytesIO(await r.read())
 
         await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
