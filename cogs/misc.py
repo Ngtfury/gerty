@@ -319,17 +319,18 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
-    async def spotify(ctx, user:discord.Member=None):
-        if user==None:
-            user=ctx.author
-            NoResultEmbedUser='You are'
+    async def spotify(ctx, member:discord.Member=None):
+        if member==None:
+            member=ctx.author
 
-        spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
+        spotify_result=next((activity for activity in member.activities if isinstance(activity, discord.Spotify)),None)
 
         if spotify_result is None:
-            if not NoResultEmbedUser:
-                NoResultEmbedUser=f'{user.name} is'
-            em=Utils.BotEmbed.error(f'{NoResultEmbedUser} not listening to spotify or the bot can\'t detect it')
+            if member==ctx.author:
+                NoResultEmbed='You are'
+            else:
+                NoResultEmbed=f'{member.name} is'
+            em=Utils.BotEmbed.error(f'{NoResultEmbed} not listening to spotify or the bot can\'t detect it')
             return await ctx.reply(embed=em, mention_author=False)
             
         components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
