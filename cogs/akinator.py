@@ -21,12 +21,48 @@ class AkinatorCog(commands.Cog):
 
 
 
-
     @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions', aliases=['aki'])
     @commands.max_concurrency(2, per=commands.BucketType.channel)
+    @commands.is_owner()
     async def _akinator(self,ctx):
+
+        aki=Akinator()
+
+        StartComponents=[[
+            Button(label='Character', id='AkiCharacter'),
+            Button(label='Animal', id='AkiAnimal'),
+            Button(label='Object', id='AkiObject')
+        ]]
+
+
+        StartGame=discord.Embed(description='Please select a option what you are guessing.', color=Utils.BotColors.invis())
+        StartGame.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
+        StartGame.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+        MainMessage=await ctx.send(embed=StartGame, components=StartComponents)
+
+#q=await aki.start_game(language=None, child_mode=True)
+        while True:
+            try:
+                AkiStartEvent=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=20)
+                if AkiStartEvent.author != ctx.author:
+                    await AkiStartEvent.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
+                    continue
+                if AkiStartEvent.component.id=='AkiCharacter':
+                    q=await aki.start_game(language=None, child_mode=True)
+                    break
+                elif AkiStartEvent.component.id=='AkiAnimal':
+                    q=await aki.start_game(language='en_animals', child_mode=True)
+                    break
+                elif AkiStartEvent.component.id=='AkiObject':
+                    q=await aki.start_game(language='en_objects', child_mode=True)
+                    break
+            except:
+                await MainMessage.disable_components()
+                return
+
+
         em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-        MainMessage=await ctx.send(embed=em)
+        await MainMessage.edit(embed=em)
 
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
@@ -36,9 +72,6 @@ class AkinatorCog(commands.Cog):
             Button(label='Probably not', id='AkiProbablyNot')
         ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
 
-        aki=Akinator()
-
-        q=await aki.start_game(language=None, child_mode=True)
 
         bar=ProgressBar(
             aki.progression,
@@ -127,8 +160,7 @@ class AkinatorCog(commands.Cog):
         _img=aki.first_guess['absolute_picture_path']
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
         em.set_image(url=f'{_img}')
-        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+        em.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
         em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-        await MainMessage.edit(embed=em)
-        await MainMessage.disable_components()
+        await MainMessage.edit(embed=em, components=[])
         await aki.close()
