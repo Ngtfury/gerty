@@ -82,6 +82,14 @@ class AkinatorCog(commands.Cog):
                 return
 
 
+        FirstCompoNents=[[
+            Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
+            Button(label='No', id='AkiNo'),
+            Button(label='I don\'t know', id='AkiIdk', style=ButtonStyle.blue),
+            Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
+            Button(label='Probably not', id='AkiProbablyNot')
+        ], [Button(label='Back', disabled=True, id='AkiBack'), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
+
 
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
@@ -89,7 +97,7 @@ class AkinatorCog(commands.Cog):
             Button(label='I don\'t know', id='AkiIdk', style=ButtonStyle.blue),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
-        ], Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]
+        ], [Button(label='Back', id='AkiBack'), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
 
 
         bar=ProgressBar(
@@ -103,7 +111,7 @@ class AkinatorCog(commands.Cog):
         em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
         em.add_field(name='Question', value=f'{q}', inline=False)
         em.add_field(name='Progress', value=f'{ohk}', inline=False)
-        await MainMessage.edit(embed=em, components=components)
+        await MainMessage.edit(embed=em, components=FirstCompoNents)
 
         while aki.progression <= 80:
             bar=ProgressBar(
@@ -126,7 +134,7 @@ class AkinatorCog(commands.Cog):
                     em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
+                    await event.respond(type=7, embed=em, components=components)
                     continue
                 elif event.component.id=='AkiNo':
                     await event.respond(type=6)
@@ -136,7 +144,7 @@ class AkinatorCog(commands.Cog):
                     em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
+                    await event.respond(type=7, embed=em, components=components)
                     continue
                 elif event.component.id=='AkiProbably':
                     await event.respond(type=6)
@@ -146,7 +154,7 @@ class AkinatorCog(commands.Cog):
                     em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
+                    await event.respond(type=7, embed=em, components=components)
                     continue
                 elif event.component.id=='AkiProbablyNot':
                     await event.respond(type=6)
@@ -156,7 +164,7 @@ class AkinatorCog(commands.Cog):
                     em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
+                    await event.respond(type=7, embed=em, components=components)
                     continue
                 elif event.component.id=='AkiIdk':
                     await event.respond(type=6)
@@ -166,8 +174,27 @@ class AkinatorCog(commands.Cog):
                     em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
                     em.add_field(name='Question', value=f'{q}', inline=False)
                     em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em)
+                    await event.respond(type=7, embed=em, components=components)
                     continue
+                elif event.component.id=='AkiBack':
+                    await event.respond(type=6)
+                    try:
+                        q = await aki.back()
+                        em=discord.Embed(color=Utils.BotColors.invis())
+                        em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                        em.add_field(name='Question', value=f'{q}', inline=False)
+                        em.add_field(name='Progress', value=f'{progress}', inline=False)
+                        await event.respond(type=7, embed=em, components=components)
+                        continue
+                    except akinator.CantGoBackAnyFurther:
+                        em=discord.Embed(color=Utils.BotColors.invis())
+                        em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+                        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+                        em.add_field(name='Question', value=f'{q}', inline=False)
+                        em.add_field(name='Progress', value=f'{progress}', inline=False)
+                        await event.respond(type=7, embed=em, components=FirstCompoNents)
+                        continue     
                 elif event.component.id=='AkiQuit':
                     await event.respond(type=6)
                     break
