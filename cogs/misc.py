@@ -1,10 +1,13 @@
-import discord 
+import discord
+from cogs.utils import Utils
 from discord.ext import commands
 import datetime
 import time
 import asyncio
 from math import *
 import discord_components
+import aiohttp
+from io import BytesIO
 from discord_components import *
 
 
@@ -315,8 +318,36 @@ class Misc(commands.Cog):
 
 
 
+    @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
+    async def spotify(ctx, user:discord.Member=None):
+        if user==None:
+            user==ctx.author
+            NoResultEmbedUser='You are'
+        else:
+            user=user
+            NoResultEmbedUser=f'{user.name} is'
+
+        spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
+
+        if spotify_result is None:
+            em=Utils.BotEmbed.error(f'{NoResultEmbedUser} not listening to spotify or the bot can\'t detect it')
+            return await ctx.reply(embed=em, mention_author=False)
+            
+        components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
 
 
+        params = {
+            'title': spotify_result.title,
+            'cover_url': spotify_result.album_cover_url,
+            'duration_seconds': spotify_result.duration.seconds,
+            'start_timestamp': spotify_result.start.timestamp(),
+            'artists': spotify_result.artists
+            }
+
+        r = await aiohttp.ClientSession().session.get('https://api.jeyy.xyz/discord/spotify', params=params)
+        buf = BytesIO(await r.read())
+
+        await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
 
 def setup(client):
     client.add_cog(Misc(client))

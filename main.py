@@ -1320,45 +1320,7 @@ async def persondoesnotexist(ctx):
   await ctx.send(file=f, embed=em)
 
 
-@client.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
-async def spotify(ctx, user:discord.Member=None):
-  if user==None:
-    user=ctx.author
 
-
-  spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
-  if spotify_result is None:
-   em=discord.Embed(description='<:error:893501396161290320> He/She is not listening to spotify or I can\'t detect', color=0x2F3136)
-   return await ctx.reply(embed=em, mention_author=False)
-
-  components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
-
-  track_background_image=Image.open('images/spotify_template.png')
-  album_image=Image.open(requests.get(spotify_result.album_cover_url, stream=True).raw).convert('RGBA')
-  title_font=ImageFont.truetype('theboldfont.ttf', 16)
-  artist_font=ImageFont.truetype('theboldfont.ttf', 14)
-  album_font=ImageFont.truetype('theboldfont.ttf', 14)
-  start_duration_font=ImageFont.truetype('theboldfont.ttf', 12)
-  end_duration_font=ImageFont.truetype('theboldfont.ttf', 12)
-  title_text_position=150, 30
-  artist_text_position=150, 60
-  album_text_position=150, 80
-  start_duration_text_position=150, 122
-  end_duration_text_position=515, 122
-  draw_on_image=ImageDraw.Draw(track_background_image)
-  draw_on_image.text(title_text_position, spotify_result.title, 'white', font=title_font)
-  draw_on_image.text(artist_text_position, f'by {spotify_result.artist}', 'white', font=artist_font)
-  draw_on_image.text(album_text_position, spotify_result.album, 'white', font=album_font)
-  draw_on_image.text(start_duration_text_position, '0:00', 'white', font=start_duration_font)
-  draw_on_image.text(end_duration_text_position,f"{dateutil.parser.parse(str(spotify_result.duration)).strftime('%M:%S')}",'white', font=end_duration_font)
-  album_color = album_image.getpixel((250, 100))
-  background_image_color=Image.new('RGBA', track_background_image.size, album_color)
-  background_image_color.paste(track_background_image, (0, 0), track_background_image)
-  album_image_resize=album_image.resize((140, 160))
-  background_image_color.paste(album_image_resize, (0,0),album_image_resize)
-  background_image_color.convert('RGB').save('spotify.jpg','JPEG')
-  f = discord.File("spotify.jpg",filename="spotify.jpg")
-  await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**',file=f, components=components, mention_author=False)
   
 @client.command(brief='util', description='Know all about current server', aliases=["si"])
 async def serverinfo(ctx):
