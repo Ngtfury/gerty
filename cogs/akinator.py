@@ -33,6 +33,21 @@ class AkinatorCog(commands.Cog):
             Button(label='Animal', id='AkiAnimal'),
             Button(label='Object', id='AkiObject')
         ]]
+        CharecterCompo=[[
+            Button(label='Character', id='AkiCharacter', style=ButtonStyle.green, disabled=True),
+            Button(label='Animal', id='AkiAnimal', disabled=True),
+            Button(label='Object', id='AkiObject', disabled=True)
+        ]]
+        AnimalCompo=[[
+            Button(label='Character', id='AkiCharacter', disabled=True),
+            Button(label='Animal', id='AkiAnimal', disabled=True, style=ButtonStyle.green),
+            Button(label='Object', id='AkiObject', disabled=True)
+        ]]
+        ObjCompo=[[
+            Button(label='Character', id='AkiCharacter', disabled=True),
+            Button(label='Animal', id='AkiAnimal', disabled=True),
+            Button(label='Object', id='AkiObject', disabled=True, style=ButtonStyle.green)
+        ]]
 
 
         StartGame=discord.Embed(description='Please select a option what you are guessing.', color=Utils.BotColors.invis())
@@ -49,17 +64,17 @@ class AkinatorCog(commands.Cog):
                     continue
                 if AkiStartEvent.component.id=='AkiCharacter':
                     em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em)
+                    await AkiStartEvent.respond(type=7, embed=em, components=CharecterCompo)
                     q=await aki.start_game(language=None, child_mode=True)
                     break
                 elif AkiStartEvent.component.id=='AkiAnimal':
                     em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em)
+                    await AkiStartEvent.respond(type=7, embed=em, components=AnimalCompo)
                     q=await aki.start_game(language='en_animals', child_mode=True)
                     break
                 elif AkiStartEvent.component.id=='AkiObject':
                     em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em)
+                    await AkiStartEvent.respond(type=7, embed=em, components=ObjCompo)
                     q=await aki.start_game(language='en_objects', child_mode=True)
                     break
             except:
