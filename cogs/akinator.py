@@ -184,8 +184,16 @@ class AkinatorCog(commands.Cog):
             _img='https://c.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif'
 
         YesOrNoCompo=[[
-            Button(style=ButtonStyle.green, label='Yes', id='AkiCorrect'),
-            Button(style=ButtonStyle.red, label='No', id='AkiWrong')
+            Button(label='Yes', id='AkiCorrect'),
+            Button(label='No', id='AkiWrong')
+        ]]
+        YesCompo=[[
+            Button(label='Yes', id='AkiCorrect', style=ButtonStyle.green),
+            Button(label='No', id='AkiWrong')
+        ]]
+        NoCompo=[[
+            Button(label='Yes', id='AkiCorrect'),
+            Button(label='No', id='AkiWrong', style=ButtonStyle.red)
         ]]
 
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
