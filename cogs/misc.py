@@ -324,7 +324,6 @@ class Misc(commands.Cog):
             user==ctx.author
             NoResultEmbedUser='You are'
         else:
-            user=user
             NoResultEmbedUser=f'{user.name} is'
 
         spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
