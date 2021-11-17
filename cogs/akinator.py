@@ -48,12 +48,18 @@ class AkinatorCog(commands.Cog):
                     await AkiStartEvent.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
                     continue
                 if AkiStartEvent.component.id=='AkiCharacter':
+                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+                    await AkiStartEvent.respond(type=7, embed=em)
                     q=await aki.start_game(language=None, child_mode=True)
                     break
                 elif AkiStartEvent.component.id=='AkiAnimal':
+                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+                    await AkiStartEvent.respond(type=7, embed=em)
                     q=await aki.start_game(language='en_animals', child_mode=True)
                     break
                 elif AkiStartEvent.component.id=='AkiObject':
+                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+                    await AkiStartEvent.respond(type=7, embed=em)
                     q=await aki.start_game(language='en_objects', child_mode=True)
                     break
             except:
@@ -61,8 +67,6 @@ class AkinatorCog(commands.Cog):
                 return
 
 
-        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-        await MainMessage.edit(embed=em)
 
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
