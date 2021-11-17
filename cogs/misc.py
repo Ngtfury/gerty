@@ -321,7 +321,7 @@ class Misc(commands.Cog):
     @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
     async def spotify(ctx, user:discord.Member=None):
         if user==None:
-            user==ctx.author
+            user=ctx.author
             NoResultEmbedUser='You are'
 
         spotify_result=next((activity for activity in user.activities if isinstance(activity, discord.Spotify)),None)
