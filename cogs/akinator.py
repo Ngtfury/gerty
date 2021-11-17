@@ -188,12 +188,12 @@ class AkinatorCog(commands.Cog):
             Button(label='No', id='AkiWrong')
         ]]
         YesCompo=[[
-            Button(label='Yes', id='AkiCorrect', style=ButtonStyle.green),
-            Button(label='No', id='AkiWrong')
+            Button(label='Yes', id='AkiCorrect', style=ButtonStyle.green, disabled=True),
+            Button(label='No', id='AkiWrong', disabled=True)
         ]]
         NoCompo=[[
-            Button(label='Yes', id='AkiCorrect'),
-            Button(label='No', id='AkiWrong', style=ButtonStyle.red)
+            Button(label='Yes', id='AkiCorrect', disabled=True),
+            Button(label='No', id='AkiWrong', style=ButtonStyle.red, disabled=True)
         ]]
 
         em=discord.Embed(title=f'{_title}', description=f'{_des}', color=Utils.BotColors.invis())
@@ -208,14 +208,10 @@ class AkinatorCog(commands.Cog):
                     await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
                     continue
                 elif YesOrNoEvent.component.id=='AkiCorrect':
-                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time ! It was fun to play with you!')
-                    DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
-                    await DisableMessage.disable_components()
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time ! It was fun to play with you!', components=YesCompo)
                     break
                 elif YesOrNoEvent.component.id=='AkiWrong':
-                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me! Play again?')
-                    DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
-                    await DisableMessage.disable_components()
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me! Play again?', components=NoCompo)
                     break
             except:
                 DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
