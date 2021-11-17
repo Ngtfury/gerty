@@ -208,10 +208,12 @@ class AkinatorCog(commands.Cog):
                     await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
                     continue
                 elif YesOrNoEvent.component.id=='AkiCorrect':
-                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time ! It was fun to play with you!', components=YesCompo)
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='🎉 Great, guessed right one more time! It was fun to play with you!')
+                    await MainMessage.edit(components=YesCompo)
                     break
                 elif YesOrNoEvent.component.id=='AkiWrong':
-                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me! Play again?', components=NoCompo)
+                    await YesOrNoEvent.respond(type=4, ephemeral=False, content='Bravo, you have defeated me! Play again?')
+                    await MainMessage.edit(components=NoCompo)
                     break
             except:
                 DisableMessage=await MainMessage.channel.fetch_message(MainMessage.id)
