@@ -327,11 +327,8 @@ class Misc(commands.Cog):
         spotify_result=next((activity for activity in member.activities if isinstance(activity, discord.Spotify)),None)
 
         if spotify_result is None:
-            if member==ctx.author:
-                NoResultEmbed='You are'
-            else:
-                NoResultEmbed=f'{member.name} is'
-            em=Utils.BotEmbed.error(f'{NoResultEmbed} not listening to spotify or the bot can\'t detect it')
+            No=[member.name, 'You are'][member==ctx.author]
+            em=Utils.BotEmbed.error(f'{No} not listening to spotify or the bot can\'t detect it')
             return await ctx.reply(embed=em, mention_author=False)
             
         components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=self.client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
