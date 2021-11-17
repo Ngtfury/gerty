@@ -210,6 +210,9 @@ class AkinatorCog(commands.Cog):
         if _title in NSFW:
             _img='https://c.tenor.com/x8v1oNUOmg4AAAAM/rickroll-roll.gif'
 
+        if not _img:
+            _img='https://i.pinimg.com/564x/ea/06/78/ea0678165c05e77cc6d0c91f81e7bd0c.jpg'
+
         YesOrNoCompo=[[
             Button(label='Yes', id='AkiCorrect', emoji=self.client.get_emoji(910490899883126804)),
             Button(label='No', id='AkiWrong', emoji=self.client.get_emoji(910491193174028308))
