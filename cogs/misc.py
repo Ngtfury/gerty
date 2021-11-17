@@ -327,7 +327,7 @@ class Misc(commands.Cog):
         spotify_result=next((activity for activity in member.activities if isinstance(activity, discord.Spotify)),None)
 
         if spotify_result is None:
-            No=[member.name, 'You are'][member==ctx.author]
+            No=[member.name, 'You are'][member==f'{ctx.author} is']
             em=Utils.BotEmbed.error(f'{No} not listening to spotify or the bot can\'t detect it')
             return await ctx.reply(embed=em, mention_author=False)
             
