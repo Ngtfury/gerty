@@ -320,6 +320,7 @@ class Misc(commands.Cog):
 
     @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
     async def spotify(self, ctx, member:discord.Member=None):
+        await ctx.trigger_typing()
         if member==None:
             member=ctx.author
 
