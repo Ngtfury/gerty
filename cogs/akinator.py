@@ -22,8 +22,7 @@ class AkinatorCog(commands.Cog):
 
 
     @commands.command(name='akinator', brief='fun', description='Attempts to determine what character  you is thinking of by asking a series of questions', aliases=['aki'])
-    @commands.max_concurrency(2, per=commands.BucketType.channel)
-    @commands.is_owner()
+    @commands.max_concurrency(1, per=commands.BucketType.channel)
     async def _akinator(self,ctx):
 
         aki=Akinator()
@@ -50,12 +49,12 @@ class AkinatorCog(commands.Cog):
         ]]
 
 
-        StartGame=discord.Embed(description='Please select a option what you are guessing.', color=Utils.BotColors.invis())
+        StartGame=discord.Embed(description='Please select an option what you are guessing.', color=Utils.BotColors.invis())
         StartGame.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
         StartGame.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
         MainMessage=await ctx.send(embed=StartGame, components=StartComponents)
 
-#q=await aki.start_game(language=None, child_mode=True)
+
         while True:
             try:
                 AkiStartEvent=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=20)
