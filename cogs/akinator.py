@@ -85,7 +85,7 @@ class AkinatorCog(commands.Cog):
         FirstCompoNents=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
-            Button(label='I don\'t know', id='AkiIdk', style=ButtonStyle.blue),
+            Button(label='Don\'t know', id='AkiIdk', style=ButtonStyle.blue),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
         ], [Button(label='Back', disabled=True, id='AkiBack'), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
@@ -94,10 +94,10 @@ class AkinatorCog(commands.Cog):
         components=[[
             Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
             Button(label='No', id='AkiNo'),
-            Button(label='I don\'t know', id='AkiIdk', style=ButtonStyle.blue),
+            Button(label='Don\'t know', id='AkiIdk', style=ButtonStyle.blue),
             Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
             Button(label='Probably not', id='AkiProbablyNot')
-        ], [Button(label='Back', id='AkiBack'), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
+        ], [Button(label='Back', id='AkiBack', style=ButtonStyle.blue), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
 
 
         bar=ProgressBar(
