@@ -319,7 +319,7 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='fun', description='Look into a user\'s spotify activity', usage='(user)')
-    async def spotify(self, ctx, member:discord.Member=None):
+    async def spotify(self, ctx, *, member:discord.Member=None):
         await ctx.trigger_typing()
         if member==None:
             member=ctx.author
@@ -349,7 +349,7 @@ class Misc(commands.Cog):
             async with session.get('https://api.jeyy.xyz/discord/spotify', params=params) as r:
                 buf=BytesIO(await r.read())
 
-        await ctx.reply(f'Listening to **{spotify_result.title}** by **{spotify_result.artist}**', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
+        await ctx.reply(f'Listening to **{spotify_result.title}**', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
 
 def setup(client):
     client.add_cog(Misc(client))
