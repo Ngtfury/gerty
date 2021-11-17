@@ -349,7 +349,7 @@ class Misc(commands.Cog):
             async with session.get('https://api.jeyy.xyz/discord/spotify', params=params) as r:
                 buf=BytesIO(await r.read())
 
-        await ctx.reply(f'Listening to **{spotify_result.title}**', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
+        await ctx.reply(f'Listening to **{spotify_result.title}** | {member.name}', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
 
 def setup(client):
     client.add_cog(Misc(client))
