@@ -53,7 +53,7 @@ class AkinatorCog(commands.Cog):
         StartGame=discord.Embed(description='Please select an option what you are guessing.', color=Utils.BotColors.invis())
         StartGame.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
         StartGame.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-        MainMessage=await ctx.send(embed=StartGame, components=StartComponents)
+        MainMessage=await ctx.reply(embed=StartGame, components=StartComponents, mention_author=False)
 
 
         while True:
