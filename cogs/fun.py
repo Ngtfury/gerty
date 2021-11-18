@@ -45,6 +45,7 @@ class FunCommands(commands.Cog):
                     return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
         elif isinstance(object, str):
             _url=str
+            await ctx.send(_url)
         else:
             return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
 
