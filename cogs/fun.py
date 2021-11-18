@@ -7,7 +7,7 @@ from cogs.utils import Utils
 
 
 
-#brief='fun', usage='[text]', description='Make the bot say whatever you want with emojis!'
+
 def setup(bot):
     bot.add_cog(FunCommands(bot))
 
@@ -18,7 +18,7 @@ class FunCommands(commands.Cog):
 
 
 
-    @commands.command()
+    @commands.command(brief='fun', usage='[user or emoji or url]', description='Change an image to emoji form')
     async def emojify(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
