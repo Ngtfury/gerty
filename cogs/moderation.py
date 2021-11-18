@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 import asyncio
 import json
+from cogs.utils import Utils
 
 class moderation(commands.Cog):
     def __init__(self, client):
@@ -15,11 +16,11 @@ class moderation(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def addrole(self, ctx, role: discord.Role, user: discord.Member):
         if user.top_role >= role and not ctx.author == ctx.guild.owner:
-            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to add role for that member", color=0x2F3136)
+            em = Utils.BotEmbed.error('You are not high enough in the role hierarchy to add role for that member')
             await ctx.send(embed=em)
         else:
             await user.add_roles(role)
-            await ctx.send(f"I have given {role} role to {user}")
+            await ctx.send(embed=Utils.BotEmbed.success(f'I\'ve added {role.mention} to {user.mention}'))
 
 
 
