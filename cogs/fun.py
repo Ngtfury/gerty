@@ -39,7 +39,7 @@ class FunCommands(commands.Cog):
                 if _urllist:
                     _urllisttuple=_urllist[0]
                     EmojiId=_urllisttuple[2]
-                    _emoji=self.bot.get_emoji(EmojiId)
+                    _emoji=self.bot.get_emoji(int(EmojiId))
                     _url=str(_emoji.url)
                 else:
                     return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
