@@ -18,7 +18,7 @@ class FunCommands(commands.Cog):
 
 
 
-    @commands.command(brief='fun', usage='[user or emoji or url]', description='Change an image to emoji form')
+    @commands.command(brief='fun', usage='[user or emoji or url]', description='Changes an emoji image or user avatar or an image to emoji form')
     async def emojify(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
