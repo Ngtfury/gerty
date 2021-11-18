@@ -19,14 +19,14 @@ class FunCommands(commands.Cog):
 
 
     @commands.command()
-    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message, str]=None):
+    async def emojify(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
                 return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
-        if isinstance(object, discord.Emoji):
+        if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.User):
             _url=str(object.avatar_url)
@@ -44,7 +44,11 @@ class FunCommands(commands.Cog):
                 else:
                     return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
         elif isinstance(object, str):
-            _url=str(object)
+            _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', str(object))
+            if not _urllist:
+                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
+            else:
+                _url=str(object)
         else:
             return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
 
