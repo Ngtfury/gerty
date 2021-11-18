@@ -25,7 +25,7 @@ class FunCommands(commands.Cog):
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a only url, emoji or a member to emojify\nYou can also reply to a message and use command bot will automatically find emoji or url if any'))
+                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify. You can also reply to a message and use command bot will automatically find emoji or url if any'))
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.User):
@@ -42,15 +42,15 @@ class FunCommands(commands.Cog):
                     _emoji=self.bot.get_emoji(int(EmojiId))
                     _url=str(_emoji.url)
                 else:
-                    return await ctx.send(embed=Utils.BotEmbed.error('You must provide a only url, emoji or a member to emojify\nYou can also reply to a message and use command bot will automatically find emoji or url if any'))
+                    return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify. You can also reply to a message and use command bot will automatically find emoji or url if any'))
         elif isinstance(object, str):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', str(object))
             if not _urllist:
-                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a only url, emoji or a member to emojify\nYou can also reply to a message and use command bot will automatically find emoji or url if any'))
+                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify. You can also reply to a message and use command bot will automatically find emoji or url if any'))
             else:
                 _url=str(object)
         else:
-            return await ctx.send(embed=Utils.BotEmbed.error('You must provide a only url, emoji or a member to emojify\nYou can also reply to a message and use command bot will automatically find emoji or url if any'))
+            return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify. You can also reply to a message and use command bot will automatically find emoji or url if any'))
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.jeyy.xyz/text/emojify?image_url={_url}') as resp:
