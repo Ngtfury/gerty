@@ -19,13 +19,13 @@ class FunCommands(commands.Cog):
 
 
     @commands.command()
-    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message, str]=None):
+    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message]=None):
         await ctx.trigger_typing()
         if object==None:
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
+                object=ctx.message
         if isinstance(object, discord.Emoji):
             _url=str(object.url)
         elif isinstance(object, discord.User):
