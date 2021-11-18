@@ -28,7 +28,7 @@ class FunCommands(commands.Cog):
                 return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
         if isinstance(object, discord.Emoji):
             _url=str(object.url)
-        elif isinstance(object, discord.Member):
+        elif isinstance(object, discord.User):
             _url=str(object.avatar_url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
