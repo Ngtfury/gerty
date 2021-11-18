@@ -19,13 +19,13 @@ class FunCommands(commands.Cog):
 
 
     @commands.command()
-    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message]=None):
+    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                object=ctx.message
+                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
         if isinstance(object, discord.Emoji):
             _url=str(object.url)
         elif isinstance(object, discord.User):
@@ -43,6 +43,10 @@ class FunCommands(commands.Cog):
                     _url=str(_emoji.url)
                 else:
                     return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
+        elif isinstance(object, str):
+            _url=str
+        else:
+            return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, emoji or a member to emojify'))
 
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.jeyy.xyz/text/emojify?image_url={_url}') as resp:
