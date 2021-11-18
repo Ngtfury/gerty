@@ -19,7 +19,7 @@ class FunCommands(commands.Cog):
 
 
     @commands.command()
-    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message, ]=None):
+    async def emojify(self, ctx, object: typing.Union[discord.User, discord.Emoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
             if ctx.message.reference:
