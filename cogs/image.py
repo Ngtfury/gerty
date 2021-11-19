@@ -69,7 +69,7 @@ class ImageCommands(commands.Cog):
 
 
     
-    @commands.command(breif='image', usage='[user or custom emoji or url]', description='Adds some heart effects to the image')
+    @commands.command(brief='image', usage='[user or custom emoji or url]', description='Adds some heart effects to the image')
     async def hearts(self,ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         time1=time.perf_counter()
