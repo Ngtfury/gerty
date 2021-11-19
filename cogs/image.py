@@ -19,6 +19,11 @@ class ImageCommands(commands.Cog):
         self.bot=bot
 
 
+    async def api_error(self, ctx):
+        em=Utils.BotEmbed.error(f'You must provide a url, custom emoji or a member to `{ctx.command.qualified_name}`. You can also reply to a message and use command bot will automatically find emoji or url if any')
+        return await ctx.send(embed=em)
+
+
 
     @commands.command(brief='image', usage='[user or custom emoji or url]', description='Changes an emoji image or user avatar or an image to emoji form')
     async def emojify(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
@@ -27,7 +32,7 @@ class ImageCommands(commands.Cog):
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, custom emoji or a member to emojify. You can also reply to a message and use command bot will automatically find emoji or url if any'))
+                object=ctx.author
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.User):
@@ -77,7 +82,7 @@ class ImageCommands(commands.Cog):
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, custom emoji or a member to hearts. You can also reply to a message and use command bot will automatically find emoji or url if any'))
+                object=ctx.author
 
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
@@ -108,6 +113,51 @@ class ImageCommands(commands.Cog):
         
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.jeyy.xyz/image/hearts?image_url={_url}&rainbow=True') as r:
+                buf=BytesIO(await r.read())
+        time2=time.perf_counter()
+        timedelta=time2-time1
+        await ctx.reply(f'Process took `{timedelta}` seconds', file=discord.File(buf, 'hearts.gif'), mention_author=False)
+
+
+    @commands.command(brief='image', usage='[user or custom emoji or url]', description='Creates a maths equation meme with an image')
+    async def equation(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
+        await ctx.trigger_typing()
+        time1=time.perf_counter()
+        if object==None:
+            if ctx.message.reference:
+                object=ctx.message.reference.resolved
+            else:
+                object=ctx.author
+
+        if isinstance(object, discord.PartialEmoji):
+            _url=str(object.url)
+        elif isinstance(object, discord.User):
+            _url=str(object.avatar_url)
+        elif isinstance(object, discord.Message):
+            _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
+            if _urllist:
+                _url=''.join(_urllist)
+            else:
+                _urllist=re.findall(r'<(?P<animated>a?):(?P<name>[a-zA-Z0-9_]{2,32}):(?P<id>[0-9]{18,22})>', object.content)
+                if _urllist:
+                    _urllisttuple=_urllist[0]
+                    EmojiId=_urllisttuple[2]
+                    _emoji=self.bot.get_emoji(int(EmojiId))
+                    _url=str(_emoji.url)
+                else:
+                    return await self.api_error(ctx)
+        elif isinstance(object, str):
+            _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', str(object))
+            if not _urllist:
+                return await self.api_error(ctx)
+            else:
+                _url=str(object)
+        else:
+            return await self.api_error(ctx)
+
+        
+        async with aiohttp.ClientSession() as session:
+            async with session.get(f'https://api.jeyy.xyz/image/equations?image_url{_url}') as r:
                 buf=BytesIO(await r.read())
         time2=time.perf_counter()
         timedelta=time2-time1
