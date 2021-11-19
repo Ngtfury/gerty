@@ -986,7 +986,7 @@ async def translate(ctx, lang, *, args=None):
 
 @client.command(brief='fun', usage='[search]', description='Shows details of an anime')
 async def anime(ctx, *, search):
-  embed = discord.Embed(description="> <a:loading:865563025586389003> Fetching anime details..")
+  embed = discord.Embed(description=f"> {Utils.BotEmojis.loading()} Fetching anime details..", color=Utils.BotColors.invis())
   s = await ctx.send(embed=embed)
   search = AnimeSearch(search)
   anime = Anime(f"{search.results[0].mal_id}")
