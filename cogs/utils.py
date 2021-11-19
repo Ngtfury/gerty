@@ -101,7 +101,7 @@ class GertyHelpCommand:
                 if do_or_not:
                     pass
             except Exception as check_err:
-                em.add_field(name='You cannot use', value=str(check_err), inline=False)
+                em.add_field(name='Missing permissions', value=str(check_err), inline=False)
         if embed==True:
             return em
         else:
@@ -115,6 +115,7 @@ class GertyHelpCommand:
         tags=[]
         admin=[]
         rtfm=[]
+        image=[]
         for command in self.bot.commands:
             if command.brief:
                 if command.description:
@@ -198,7 +199,18 @@ class GertyHelpCommand:
                             rtfm.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
-        return util, misc, fun, mod, tags, admin, rtfm
+                elif command.brief=='image':
+                    image.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
+                    try:
+                        for sub in command.commands:
+                            if sub.description:
+                                _des=sub.description
+                            else:
+                                _des='No description provided'
+                            image.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm, image
 
     async def get_commands_without_description(self):
         util=[]
@@ -208,6 +220,7 @@ class GertyHelpCommand:
         tags=[]
         admin=[]
         rtfm=[]
+        image=[]
         for command in self.bot.commands:
             if command.brief:
                 if command.brief=='util':
@@ -259,7 +272,14 @@ class GertyHelpCommand:
                             rtfm.append(f'`{sub.qualified_name}`')
                     except:
                         pass
-        return util, misc, fun, mod, tags, admin, rtfm
+                elif command.brief=='image':
+                    image.append(f'`{command.name}`')
+                    try:
+                        for sub in command.commands:
+                            image.append(f'`{sub.qualified_name}`')
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm, image
 
 
 class UtilsCog(commands.Cog):
@@ -279,6 +299,7 @@ class UtilsCog(commands.Cog):
             SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption', emoji=self.bot.get_emoji(885156113656479784)),
             SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption', emoji=self.bot.get_emoji(880100337745264680)),
             SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
+            SelectOption(label='Image commands', description='Very cool image edit stuffs', value='ImageOption', emoji=self.bot.get_emoji(873933502435962880)),
             SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
         ]
         compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
@@ -322,13 +343,19 @@ class UtilsCog(commands.Cog):
 
         _Admin='\n'.join(commands[5])
         AdminEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Admin}', color=Utils.BotColors.invis())
-        AdminEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
+        AdminEmbed.set_author(name='Gerty HelpDesk - Admin commands', icon_url=self.bot.user.avatar_url)
         AdminEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
         _Rtfm='\n'.join(commands[6])
         RtfmEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Rtfm}', color=Utils.BotColors.invis())
-        RtfmEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
+        RtfmEmbed.set_author(name='Gerty HelpDesk - Rtfm commands', icon_url=self.bot.user.avatar_url)
         RtfmEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+
+        _Image='\n'.join(commands[7])
+        ImageEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Image}', color=Utils.BotColors.invis())
+        ImageEmbed.set_author(name='Gerty HelpDesk - Image commands', icon_url=self.bot.user.avatar_url)
+        ImageEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
         commandlist=await GertyHelpCommand(self.bot).get_commands_without_description()
 
@@ -342,6 +369,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:moderation:885156113656479784> Mod commands', value=', '.join(commandlist[3]), inline=False)
         CommandListEmbed.add_field(name='<:tag:880100337745264680> Tag commands', value=', '.join(commandlist[4]), inline=False)
         CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]), inline=False)
+        CommandListEmbed.add_field(name='<:image:873933502435962880> Image commands', value=', '.join(commandlist[7]))
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
@@ -372,6 +400,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                                 await event.respond(type=7, embed=AdminEmbed, components=compo2)
                             elif value=='RtfmOption':
                                 await event.respond(type=7, embed=RtfmEmbed, components=compo2)
+                            elif value=='ImageOption':
+                                await event.respond(type=7, embed=ImageEmbed, components=compo2)
                     elif isinstance(event.component, Button):
                         if event.component.id=='GoHome':
                             await event.respond(type=7, embed=MainEmbed, components=compo)

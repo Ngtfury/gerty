@@ -1195,13 +1195,13 @@ async def invert(ctx, user: discord.Member=None):
   await ctx.send(file=f, embed=em)
 
  
-@client.group(brief='fun', description='Enhances a users avatar', usage='[sub command]', invoke_without_command=True)
+@client.group(brief='image', description='Enhances a users avatar', usage='[sub command]', invoke_without_command=True)
 async def enhance(ctx):
     em = discord.Embed(title="Image enhancement commands", description="**<a:dot:860177926851002418> g!enhance [option]**\n > <:image:873933502435962880> options:\n`color`, `contrast`, `brightness`, `sharpness`, `rgb`", color=0x2F3136)
     await ctx.send(embed=em)
 
 
-@enhance.command(brief='fun', usage='(user)', description='Enhances color of the users avatar')
+@enhance.command(brief='image', usage='(user)', description='Enhances color of the users avatar')
 async def color(ctx, user: discord.Member=None):
   if user == None:
     if ctx.message.reference:

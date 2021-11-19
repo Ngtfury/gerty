@@ -9,16 +9,16 @@ from cogs.utils import Utils
 
 
 def setup(bot):
-    bot.add_cog(FunCommands(bot))
+    bot.add_cog(ImageCommands(bot))
 
 
-class FunCommands(commands.Cog):
+class ImageCommands(commands.Cog):
     def __init__(self, bot):
         self.bot=bot
 
 
 
-    @commands.command(brief='fun', usage='[user or emoji or url]', description='Changes an emoji image or user avatar or an image to emoji form')
+    @commands.command(brief='image', usage='[user or emoji or url]', description='Changes an emoji image or user avatar or an image to emoji form')
     async def emojify(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         if object==None:
@@ -62,4 +62,7 @@ class FunCommands(commands.Cog):
             return await ctx.send(embed=Utils.BotEmbed.error('You must provide a only url, emoji or a member to emojify\nYou can also reply to a message and use command bot will automatically find emoji or url if any'))
 
         await ctx.reply(f'```{_text}```', mention_author=False)
+
+
+    
 
