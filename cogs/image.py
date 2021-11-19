@@ -157,7 +157,7 @@ class ImageCommands(commands.Cog):
 
         
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.jeyy.xyz/image/equations?image_url{_url}') as r:
+            async with session.get(f'https://api.jeyy.xyz/image/equations?image_url={_url}') as r:
                 buf=BytesIO(await r.read())
         time2=time.perf_counter()
         timedelta=time2-time1
