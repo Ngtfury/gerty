@@ -113,6 +113,8 @@ class ImageCommands(commands.Cog):
         
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.jeyy.xyz/image/hearts?image_url={_url}&rainbow=True') as r:
+                if r.status != 200:
+                    return await ctx.send(embed=Utils.BotEmbed.error(f'Sorry there was an error, {r.reason}'))
                 buf=BytesIO(await r.read())
         time2=time.perf_counter()
         timedelta=time2-time1
@@ -158,6 +160,8 @@ class ImageCommands(commands.Cog):
         
         async with aiohttp.ClientSession() as session:
             async with session.get(f'https://api.jeyy.xyz/image/equations?image_url={_url}') as r:
+                if r.status != 200:
+                    return await ctx.send(embed=Utils.BotEmbed.error(f'Sorry there was an error, {r.reason}'))
                 buf=BytesIO(await r.read())
         time2=time.perf_counter()
         timedelta=time2-time1
