@@ -77,7 +77,7 @@ class ImageCommands(commands.Cog):
             if ctx.message.reference:
                 object=ctx.message.reference.resolved
             else:
-                await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, custom emoji or a member to hearts. You can also reply to a message and use command bot will automatically find emoji or url if any'))
+                return await ctx.send(embed=Utils.BotEmbed.error('You must provide a url, custom emoji or a member to hearts. You can also reply to a message and use command bot will automatically find emoji or url if any'))
 
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
