@@ -161,7 +161,7 @@ class ImageCommands(commands.Cog):
                 buf=BytesIO(await r.read())
         time2=time.perf_counter()
         timedelta=time2-time1
-        await ctx.reply(f'Process took `{timedelta}` seconds', file=discord.File(buf, 'hearts.gif'), mention_author=False)
+        await ctx.reply(f'Process took `{timedelta}` seconds', file=discord.File(buf, 'equations.gif'), mention_author=False)
 
 
         
