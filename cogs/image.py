@@ -164,7 +164,7 @@ class ImageCommands(commands.Cog):
         await ctx.reply(f'Process took `{timedelta}` seconds', file=discord.File(buf, 'equations.gif'), mention_author=False)
 
 
-    @commands.command(brief='fun', description='Gives boil effect to an image', usage='[user or custom emoji or url]')
+    @commands.command(brief='image', description='Gives boil effect to an image', usage='[user or custom emoji or url]')
     async def boil(self, ctx, object: typing.Union[discord.User, discord.PartialEmoji, discord.Message, str]=None):
         await ctx.trigger_typing()
         time1=time.perf_counter()
