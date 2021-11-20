@@ -984,12 +984,21 @@ async def translate(ctx, lang, *, args=None):
   await ctx.send(embed=em)
 
 
+def sync_anime(search):
+  animeresult=AnimeSearch(search)
+  anime=Anime(f"{animeresult.results[0].mal_id}")
+  return anime
+
+async def async_anime(search):
+  thing=functools.partial(sync_anime, f'{search}')
+  some_stuff=await client.loop.run_in_executor(None, thing)
+  return some_stuff
+
 @client.command(brief='fun', usage='[search]', description='Shows details of an anime')
 async def anime(ctx, *, search):
   embed = discord.Embed(description=f"> {Utils.BotEmojis.loading()} Fetching anime details..", color=Utils.BotColors.invis())
   s = await ctx.send(embed=embed)
-  search = AnimeSearch(search)
-  anime = Anime(f"{search.results[0].mal_id}")
+  anime=await async_anime(search)
   em = discord.Embed(title=f"{anime.title}", description=f"{str(anime.synopsis)}\n **Source**: {str(anime.source)}", url=anime.url, color=ctx.author.color)
   em.add_field(name="🗂️ Type", value=str(anime.type))
   em.add_field(name="⏳ Status", value=str(anime.status))
