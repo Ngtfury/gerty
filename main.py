@@ -1001,16 +1001,55 @@ async def anime(ctx, *, search):
   anime=await async_anime(search)
   if anime==None:
     return await s.edit(embed=Utils.BotEmbed.errors(f'Sorry, there are no results for `{search}` in the database'))
+  
+
+  if not anime.type:
+    _type='N/A'
+  else:
+    _type=anime.type
+  if not anime.status:
+    _status='N/A'
+  else:
+    _status=anime.status
+  if not anime.score:
+    _score='N/A'
+  else:
+    _score=anime.score
+  if not anime.rank:
+    _rank='N/A'
+  else:
+    _rank=anime.rank
+  if not anime.duration:
+    _duration='N/A'
+  else:
+    _duration=anime.duration
+  if not anime.rating:
+    _rating='N/A'
+  else:
+    _rating=anime.rating
+  if not anime.episodes:
+    _episodes='N/A'
+  else:
+    _episodes=anime.episodes
+  if not anime.aired:
+    _aired='N/A'
+  else:
+    _aired=anime.aired
+  if not anime.genres:
+    _genres='N/A'
+  else:
+    _genres=', '.join(anime.genres)
+
   em = discord.Embed(title=f"{anime.title}", description=f"{str(anime.synopsis)}\n **Source**: {str(anime.source)}", url=anime.url, color=Utils.BotColors.invis())
-  em.add_field(name="🗂️ Type", value=str(anime.type))
-  em.add_field(name="⏳ Status", value=str(anime.status))
-  em.add_field(name="⭐ Rating/10", value=float(anime.score))
-  em.add_field(name=f"🏆 Rank", value=f"Top {int(anime.rank)}")
-  em.add_field(name="⏱️ Duration", value=str(anime.duration))
-  em.add_field(name="⚠️ Rated to", value=str(anime.rating))
-  em.add_field(name="💽 Episodes", value=int(anime.episodes))
-  em.add_field(name="🗓️ Aired", value=str(anime.aired))
-  em.add_field(name="➡️ Genres", value=f"{', '.join(anime.genres)}")
+  em.add_field(name="🗂️ Type", value=_type)
+  em.add_field(name="⏳ Status", value=_status)
+  em.add_field(name="⭐ Rating/10", value=_score)
+  em.add_field(name=f"🏆 Rank", value=f"Top {_rank}")
+  em.add_field(name="⏱️ Duration", value=_duration)
+  em.add_field(name="⚠️ Rated to", value=_rating)
+  em.add_field(name="💽 Episodes", value=_episodes)
+  em.add_field(name="🗓️ Aired", value=_aired)
+  em.add_field(name="➡️ Genres", value=_genres)
   em.set_thumbnail(url=anime.image_url)
   await s.edit(embed=em)
 
