@@ -163,7 +163,7 @@ async def on_ready():
 
   print(f"Connected to {client.user.name}.")
   client.uptime = time.time()
-  client.news=f'Last restart <t:{int(client.uptime)}:R>'
+  client.news=f'<:updates:911239861225279488> **UPDATE**\n> Fixed blocking `anime` command\n> Fixed some typo errors'
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
@@ -1018,7 +1018,7 @@ async def anime(ctx, *, search):
   if not anime.rank:
     _rank='N/A'
   else:
-    _rank=anime.rank
+    _rank=f'Top {anime.rank}'
   if not anime.duration:
     _duration='N/A'
   else:
@@ -1044,7 +1044,7 @@ async def anime(ctx, *, search):
   em.add_field(name="🗂️ Type", value=_type)
   em.add_field(name="⏳ Status", value=_status)
   em.add_field(name="⭐ Rating/10", value=_score)
-  em.add_field(name=f"🏆 Rank", value=f"Top {_rank}")
+  em.add_field(name=f"🏆 Rank", value=f"{_rank}")
   em.add_field(name="⏱️ Duration", value=_duration)
   em.add_field(name="⚠️ Rated to", value=_rating)
   em.add_field(name="💽 Episodes", value=_episodes)
