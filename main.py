@@ -989,7 +989,7 @@ async def anime(ctx, *, search):
   embed = discord.Embed(description=f"> {Utils.BotEmojis.loading()} Fetching anime details..", color=Utils.BotColors.invis())
   s = await ctx.send(embed=embed)
   search = AnimeSearch(search)
-  anime = Anime(f"{search.results[0].mal_id}", timeout=1)
+  anime = Anime(f"{search.results[0].mal_id}")
   em = discord.Embed(title=f"{anime.title}", description=f"{str(anime.synopsis)}\n **Source**: {str(anime.source)}", url=anime.url, color=ctx.author.color)
   em.add_field(name="🗂️ Type", value=str(anime.type))
   em.add_field(name="⏳ Status", value=str(anime.status))
