@@ -77,5 +77,5 @@ class TicketTool(commands.Cog):
                 TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly')
                 TicketEmbedDone.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
                 TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
-                await interaction.respond(type=7, content=f'Ticket created at channel {TicketChannel.mention}.')
+                await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
                 await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone)
