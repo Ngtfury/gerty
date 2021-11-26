@@ -199,7 +199,7 @@ async def on_ready():
   client.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `ticket`\n> Ticket system for contacting mods'
 
   async with aiohttp.ClientSession() as session:
-    web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
+    web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
     await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
 
 @client.command(brief='meta', description='Gets the bot uptime')
