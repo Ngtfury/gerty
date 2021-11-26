@@ -112,6 +112,8 @@ async def load_extensions():
   await web.send('--------------------------------')
 
 
+
+
 ch1 = ["Rock", "Scissors", "Paper"]
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
@@ -188,6 +190,7 @@ async def disabled_command(ctx):
 
 @client.event
 async def on_ready():
+  await load_extensions()
   DiscordComponents(client)
 
   print(f"Connected to {client.user.name}.")
