@@ -51,13 +51,13 @@ class TicketTool(commands.Cog):
             await ctx.send('There is no ticket system configured in this server to delete. Did you mean create?')
             return
 
-        MessageID=await self.bot.db.fetchrow('SELECT (message_id,channel_id) FROM ticket_tool WHERE guild_id=$1', ctx.guild.id)
+        MessageID=await self.bot.db.fetchrow('SELECT * FROM ticket_tool WHERE guild_id=$1', ctx.guild.id)
 
         await self.bot.db.execute('DELETE FROM ticket_tool WHERE guild_id=$1', ctx.guild.id)
         self.bot.ticket_tool_guild_ids.remove(ctx.guild.id)
 
-        delchannel=self.bot.get_channel(MessageID[0][1])
-        delmsg=await delchannel.fetch_message(MessageID[0][0])
+        delchannel=self.bot.get_channel(MessageID[2])
+        delmsg=await delchannel.fetch_message(MessageID[1])
         await delmsg.delete()
 
         await ctx.send(embed=Utils.BotEmbed.success('Deleted ticket tool system for this server.'))
