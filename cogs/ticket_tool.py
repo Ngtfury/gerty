@@ -114,4 +114,15 @@ class TicketTool(commands.Cog):
                 self.bot.running_tickets[interaction.guild.id].remove(runner_id[0])
                 await interaction.channel.delete()
 
+
+
+    @commands.Cog.listener('on_guild_remove')
+    async def ticket_list_clear_guild_remove(self, guild):
+        if guild.id in self.bot.ticket_tool_guild_ids:
+            await self.bot.db.execute('DELETE FROM running_tickets WHERE guild_id=$1', guild.id)
+            await self.bot.db.execute('DELETE FROM ticket_tool WHERE guild_id=$1', guild.id)
+            del self.bot.running_tickets[guild.id]
+            self.bot.ticket_tool_guild_ids.remove(guild.id)
+
+
     
