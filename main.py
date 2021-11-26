@@ -200,7 +200,7 @@ async def on_ready():
 
   async with aiohttp.ClientSession() as session:
     web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-    await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
+    await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status')
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
