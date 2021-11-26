@@ -127,9 +127,7 @@ async def load_cache():
     client.running_tickets[guild.id]=[]
 
   for rid in running_ids:
-    guildobj=client.running_tickets[rid[0]]
-    if guildobj:
-      guildobj.append(rid[1])
+    client.running_tickets[rid[0]].append(rid[1])
 
 
 
