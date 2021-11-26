@@ -29,20 +29,18 @@ class TicketTool(commands.Cog):
         if ctx.guild.id in self.bot.ticket_tool_guild_ids:
             return await ctx.send(f'This server already has a ticket system configured. To delete or to re setup do `g!ticket delete`.')
 
-        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading... Ticket tool system', color=Utils.BotColors.invis())
-        MainMessage=await channel.send(embed=em)
-
         TicketComponents=[[
             Button(label='Create Ticket', emoji='📩', id=f'ticket-{ctx.guild.id}')
         ]]
 
-        await self.bot.db.execute('INSERT INTO ticket_tool (guild_id,message_id,channel_id) VALUES ($1,$2,$3)', ctx.guild.id, MainMessage.id, channel.id)
         self.bot.ticket_tool_guild_ids.append(ctx.guild.id)
 
-        TicketToolEmbed=discord.Embed(title='Ticket', description='To create a ticket click the 📩 button', color=Utils.BotColors.invis())
+        TicketToolEmbed=discord.Embed(description='**Open a ticket to contact server moderators**\n\nTo create a ticket click the 📩 button', color=Utils.BotColors.invis())
         TicketToolEmbed.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
-        await asyncio.sleep(0.5)
-        await MainMessage.edit(embed=TicketToolEmbed, components=TicketComponents)
+        TicketToolEmbed.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
+        MainMessage=await channel.send(embed=TicketToolEmbed, components=TicketComponents)
+        await self.bot.db.execute('INSERT INTO ticket_tool (guild_id,message_id,channel_id) VALUES ($1,$2,$3)', ctx.guild.id, MainMessage.id, channel.id)
+
 
 
     @ticket.command(name='delete', description='Deletes a ticket system', usage='(channel)')
