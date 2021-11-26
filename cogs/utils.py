@@ -487,15 +487,25 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
 
     @commands.Cog.listener()
-    async def on_ready(self):
+    async def on_shard_connect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'⚠ <@&907682091595096084>\n<:success:893501515107557466> **Gerty is connected**', username='Gerty status logs', avatar_url=self.bot.user.avatar_url, allowed_mentions=discord.AllowedMentions.all())
+            await web.send(content=f'🟢 Ready', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+
     @commands.Cog.listener()
     async def on_shard_disconnect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'⚠ <@&907682091595096084>\nSHARD ID **{shard_id}** HAS BEEN DISCONNECTED', username='Gerty status logs', avatar_url=self.bot.user.avatar_url, allowed_mentions=discord.AllowedMentions.all())
+            await web.send(content=f'🟡 Disconnected', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/ffdd00/400x100')
+
+
+    @commands.Cog.listener()
+    async def on_shard_resumed(self, shard_id):
+        async with aiohttp.ClientSession() as session:
+            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
+            await web.send(content=f'🟢 Resumed', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+
+
 
 def setup(bot):
     bot.add_cog(UtilsCog(bot))
