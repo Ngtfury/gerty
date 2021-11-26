@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import discord
+from discord import emoji
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -15,8 +16,8 @@ class Utils:
             ctx=interaction
 
         ConfirmCompo=[[
-            Button(style=ButtonStyle.green, label='Confirm', id='ConfirmOk'),
-            Button(label='Abort', id='ConfirmAbort')
+            Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910491193174028308)),
+            Button(id='ConfirmAbort', emoji=bot.get_emoji(910490899883126804))
         ]]
 
         em=discord.Embed(description=f'<:pokerquestion:913801385739423744> {description}', color=Utils.BotColors.invis())
