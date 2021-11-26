@@ -40,7 +40,7 @@ class TicketTool(commands.Cog):
         self.bot.ticket_tool_guild_ids.append(ctx.guild.id)
 
         TicketToolEmbed=discord.Embed(title='Ticket', description='To create a ticket click the 📩 button', color=Utils.BotColors.invis())
-        TicketToolEmbed.set_footer(name='Gerty • Ticketting without clutter', icon_url=self.bot.user.avatar_url)
+        TicketToolEmbed.set_footer(text='Gerty • Ticketting without clutter', icon_url=self.bot.user.avatar_url)
         await asyncio.sleep(0.5)
         await MainMessage.edit(embed=TicketToolEmbed, components=TicketComponents)
 

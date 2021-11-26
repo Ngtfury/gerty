@@ -278,7 +278,7 @@ async def on_command_error(ctx, error):
     await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
     error_log_channel=client.get_channel(906874671847333899)
 
-    traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
+    traceback_string = "".join(traceback.format_exception(value=error, tb=error.__traceback__))
 
     try:
       await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
