@@ -55,7 +55,6 @@ class TicketTool(commands.Cog):
 
         await self.bot.db.execute('DELETE FROM ticket_tool WHERE guild_id=$1', ctx.guild.id)
         self.bot.ticket_tool_guild_ids.remove(ctx.guild.id)
-        del self.bot.running_tickets[ctx.guild.id]
 
         try:
             delchannel=self.bot.get_channel(MessageID[2])

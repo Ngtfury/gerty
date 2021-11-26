@@ -185,7 +185,7 @@ async def on_ready():
   await load_cache()
   print('Ticket system message cache loaded')
   client.uptime = time.time()
-  client.news=f'<:updates:911239861225279488> **UPDATE**\n> Fixed blocking `anime` command\n> Fixed some typo errors'
+  client.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `ticket`\n> Ticket system for contacting mods'
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
