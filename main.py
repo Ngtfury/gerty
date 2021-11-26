@@ -109,7 +109,7 @@ async def load_extensions():
     await web.send('--------------------------------', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
 
 loop=asyncio.get_event_loop()
-loop.run_until_complete(load_extensions())
+loop.create_task(load_extensions())
 
 
 
