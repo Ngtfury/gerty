@@ -54,9 +54,12 @@ class TicketTool(commands.Cog):
         await self.bot.db.execute('DELETE FROM ticket_tool WHERE guild_id=$1', ctx.guild.id)
         self.bot.ticket_tool_guild_ids.remove(ctx.guild.id)
 
-        delchannel=self.bot.get_channel(MessageID[2])
-        delmsg=await delchannel.fetch_message(MessageID[1])
-        await delmsg.delete()
+        try:
+            delchannel=self.bot.get_channel(MessageID[2])
+            delmsg=await delchannel.fetch_message(MessageID[1])
+            await delmsg.delete()
+        except:
+            pass
 
         await ctx.send(embed=Utils.BotEmbed.success('Deleted ticket tool system for this server.'))
 
@@ -79,3 +82,6 @@ class TicketTool(commands.Cog):
                 TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
                 await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone)
+
+                await self.bot.db.execute('INSERT INTO running_tickets (guild_id,channel_id,author_id) VALUES ($1,$2,$3)', interaction.guild.id, TicketChannel.id, interaction.author.id)
+    
