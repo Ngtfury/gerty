@@ -30,6 +30,8 @@ class Utils:
                 ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
                 if ConfirmEvent.component.id=='ConfirmOk':
                     await ConfirmEvent.respond(type=6)
+                    if interaction:
+                        await ConfirmEvent.message.delete()
                     try:
                         await MainMessage.delete()
                     except:
