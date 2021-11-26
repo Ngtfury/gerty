@@ -490,20 +490,20 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     async def on_shard_connect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'🟢 Ready', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+            await web.send(content=f'<a:GreenCircle:905843069549695026> Ready', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
 
     @commands.Cog.listener()
     async def on_shard_disconnect(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'🟡 Disconnected', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/ffdd00/400x100')
-
+            await web.send(content=f'<a:Redcircle:905396170925424651> Disconnected', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/ffdd00/400x100')
+#<:yellow_circle:841214778096877579>
 
     @commands.Cog.listener()
     async def on_shard_resumed(self, shard_id):
         async with aiohttp.ClientSession() as session:
             web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'🟢 Resumed', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+            await web.send(content=f'<a:GreenCircle:905843069549695026> Resumed', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
 
 
 
