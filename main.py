@@ -123,11 +123,14 @@ async def load_cache():
     client.ticket_tool_guild_ids.append(id[0])
 
   running_ids=await client.db.fetch('SELECT guild_id,author_id FROM running_tickets')
-  for guild in client.guilds:
-    client.running_tickets[guild.id]=[]
+  for guild in client.ticket_tool_guild_ids:
+    client.running_tickets[guild]=[]
 
   for rid in running_ids:
-    client.running_tickets[rid[0]].append(rid[1])
+    try:
+      client.running_tickets[rid[0]].append(rid[1])
+    except KeyError:
+      pass
 
 
 
