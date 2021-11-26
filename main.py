@@ -92,24 +92,22 @@ async def load_extensions():
 
   async with aiohttp.ClientSession() as session:
     web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
-  #<a:Redcircle:905396170925424651>
-  #<a:GreenCircle:905843069549695026>
-  await web.send('--------------------------------')
-  for filename in os.listdir('./cogs'):
-    if filename.endswith('.py'):
-      try:
-        client.load_extension(f'cogs.{filename[:-3]}')
-        await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `cogs.{filename[:-3]}` succesfully', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
-        print(f'Loaded module {filename[:-3]} succesfully ✅')
-      except:
-        print(f'Module {filename[:-3]} didn\'t load properly ❌')
-        await web.send(avatar_url='https://singlecolorimage.com/get/ffdd00/400x100', content=f'<a:Redcircle:905396170925424651> Module {filename[:-3]} didn\'t load properly ❌')
-      await asyncio.sleep(0.5)
-  client.load_extension('jishaku')
-  await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `jishaku` succesfully', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
-  print(f'Loaded module jishaku succesfully ✅')
-  print('--------------------------------')
-  await web.send('--------------------------------')
+    await web.send('--------------------------------')
+    for filename in os.listdir('./cogs'):
+      if filename.endswith('.py'):
+        try:
+          client.load_extension(f'cogs.{filename[:-3]}')
+          await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `cogs.{filename[:-3]}` succesfully', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+          print(f'Loaded module {filename[:-3]} succesfully ✅')
+        except:
+          print(f'Module {filename[:-3]} didn\'t load properly ❌')
+          await web.send(avatar_url='https://singlecolorimage.com/get/ffdd00/400x100', content=f'<a:Redcircle:905396170925424651> Module {filename[:-3]} didn\'t load properly ❌')
+        await asyncio.sleep(0.5)
+    client.load_extension('jishaku')
+    await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `jishaku` succesfully', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+    print(f'Loaded module jishaku succesfully ✅')
+    print('--------------------------------')
+    await web.send('--------------------------------')
 
 
 
