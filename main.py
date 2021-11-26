@@ -98,7 +98,6 @@ for filename in os.listdir('./cogs'):
 client.load_extension('jishaku')
 print(f'Loaded module jishaku succesfully ✅')
 print('--------------------------------')
-print('Connecting to bot...')
 
 
 ch1 = ["Rock", "Scissors", "Paper"]
@@ -113,6 +112,14 @@ os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
 # also 
 os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
 os.environ["JISHAKU_HIDE"] = "True"
+
+
+client.ticket_tool_guild_ids = []
+async def load_cache():
+  message_ids=await client.db.execute('SELECT guild_id FROM ticket_tool')
+  for id in message_ids:
+    client.ticket_tool_guild_ids.append(id[0])
+
 
 
 async def time_formatter(seconds: float):
@@ -162,6 +169,9 @@ async def on_ready():
   DiscordComponents(client)
 
   print(f"Connected to {client.user.name}.")
+  print('--------------------------------')
+  await load_cache()
+  print('Ticket system message cache loaded')
   client.uptime = time.time()
   client.news=f'<:updates:911239861225279488> **UPDATE**\n> Fixed blocking `anime` command\n> Fixed some typo errors'
 
