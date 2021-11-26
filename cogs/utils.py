@@ -154,7 +154,7 @@ class GertyHelpCommand:
                                 _des='No description provided'
                             fun.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
-                        pass
+                        pass #
                 elif command.brief=='mod':
                     mod.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
                     try:
