@@ -27,7 +27,11 @@ class Utils:
             MainMessage=await ctx.send(embed=em, components=ConfirmCompo)
         while True:
             try:
-                ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
+                if ctx:
+                    _check=lambda i: i.author==ctx.author and i.channel==ctx.channel
+                else:
+                    _check=lambda i: i.message==MainMessage
+                ConfirmEvent=await bot.wait_for('button_click', check=_check, timeout=60)
                 if ConfirmEvent.component.id=='ConfirmOk':
                     await ConfirmEvent.respond(type=6)
                     try:
