@@ -103,6 +103,7 @@ class TicketTool(commands.Cog):
         if interaction.guild.id in self.bot.ticket_tool_guild_ids:
             if interaction.component.id==f'ticketclose-{interaction.author.id}':
                 await interaction.respond(type=6)
+                await self.bot.db.execute('DELETE FROM running_tickets WHERE author_id=$1', interaction.author.id)
                 self.bot.running_tickets[interaction.guild.id].remove(interaction.author.id)
                 await interaction.channel.delete()
 
