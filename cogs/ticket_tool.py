@@ -103,7 +103,7 @@ class TicketTool(commands.Cog):
                 TicketEmbedDone.set_author(name=f'{interaction.author.name}\'s ticket', icon_url='https://tickettool.xyz/images/footer.png')
                 TicketEmbedDone.set_footer(text=f'Invoked by {interaction.author}', icon_url=interaction.author.avatar_url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
-                await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone, components=TicketDoneCompo)
+                await TicketChannel.send(f'{interaction.author.mention} Welcome', embed=TicketEmbedDone, components=TicketDoneCompo)
 
                 await self.bot.db.execute('INSERT INTO running_tickets (guild_id,channel_id,author_id) VALUES ($1,$2,$3)', interaction.guild.id, TicketChannel.id, interaction.author.id)
                 self.bot.running_tickets[interaction.guild.id].append(interaction.author.id)
