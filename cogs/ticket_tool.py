@@ -107,5 +107,11 @@ class TicketTool(commands.Cog):
                 await self.bot.db.execute('DELETE FROM running_tickets WHERE author_id=$1', interaction.author.id)
                 self.bot.running_tickets[interaction.guild.id].remove(interaction.author.id)
                 await interaction.channel.delete()
+            elif interaction.component.id.startswith('ticketclose'):
+                await interaction.respond(type=6)
+                runner_id=await self.bot.db.fetchrow('SELECT author_id FROM running_tickets WHERE channel_id=$1', interaction.channel.id)
+                await self.bot.db.execute('DELETE FROM running_tickets WHERE channel_id=$1', interaction.channel.id)
+                self.bot.running_tickets[interaction.guild.id].remove(runner_id[0])
+                await interaction.channel.delete()
 
     
