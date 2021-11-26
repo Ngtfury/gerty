@@ -15,16 +15,15 @@ class TicketTool(commands.Cog):
 
 
 
-    @commands.group(brief='mod', description='A ticket system', usage='[sub command]')
+    @commands.group(brief='mod', description='A ticket system', usage='[sub command]', invoke_without_command=True)
     async def ticket(self, ctx):
-        return await GertyHelpCommand(self.bot).send_command_help(command='ticket')
+        return await GertyHelpCommand(self.bot).send_command_help(ctx, command='ticket')
 
 
     @ticket.command(name='create', description='Creates ticket system in a channel', usage='(channel)')
     async def ticket_create(self, ctx, channel: discord.TextChannel=None):
         if channel==None:
             channel=ctx.channel
-
 
 
         if ctx.guild.id in self.bot.ticket_tool_guild_ids:
