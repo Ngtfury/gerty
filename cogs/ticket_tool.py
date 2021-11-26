@@ -1,8 +1,5 @@
 from asyncio.locks import Event
 import discord
-from discord import emoji
-from discord import components
-import discord_components
 from discord_components import *
 from cogs.utils import GertyHelpCommand, Utils
 from discord.ext import commands
