@@ -72,9 +72,9 @@ class TicketTool(commands.Cog):
                     interaction.author: discord.PermissionOverwrite(view_channel=True)
                 }
 
-                TicketChannel=await interaction.guild.create_text_channel(name=f'ticket-support', topic=f'Ticket support for {interaction.author.name}', overwrites=overwrites, reason=f'Ticket for {interaction.author.name}')
+                TicketChannel=await interaction.guild.create_text_channel(name=f'ticket-{interaction.author.name}', topic=f'Ticket support for {interaction.author.name}', overwrites=overwrites, reason=f'Ticket for {interaction.author.name}')
 
-                TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly')
+                TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly', color=Utils.BotColors.invis())
                 TicketEmbedDone.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
                 TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
