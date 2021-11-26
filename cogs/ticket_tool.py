@@ -96,7 +96,7 @@ class TicketTool(commands.Cog):
 
 
                 TicketDoneCompo=[[
-                    Button(style=ButtonStyle.green, label='Close ticket', emoji=self.bot.get_emoji(890938576563503114), id=f'ticketclose-{interaction.author.id}')
+                    Button(label='Close', emoji=self.bot.get_emoji(890938576563503114), id=f'ticketclose-{interaction.author.id}')
                 ]]
 
                 TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly', color=Utils.BotColors.invis())
