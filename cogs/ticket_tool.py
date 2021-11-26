@@ -35,6 +35,7 @@ class TicketTool(commands.Cog):
         ]]
 
         self.bot.ticket_tool_guild_ids.append(ctx.guild.id)
+        self.bot.running_tickets[ctx.guild.id]=[]
 
         TicketToolEmbed=discord.Embed(description='**Open a ticket to contact server moderators**\nTo create a ticket click the 📩 button', color=Utils.BotColors.invis())
         TicketToolEmbed.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
