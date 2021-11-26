@@ -1,6 +1,7 @@
 import asyncio
 import datetime
 import discord
+from discord import components
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -9,6 +10,28 @@ import aiohttp
 import subprocess
 
 class Utils:
+
+    async def confirm(bot, ctx, description, interaction=None):
+        if interaction:
+            ctx=interaction
+
+        ConfirmCompo=[[
+            Button(style=ButtonStyle.green, label='Confirm', id='ConfirmOk'),
+            Button(label='Abort', id='ConfirmAbort')
+        ]]
+
+        em=discord.Embed(description=f'<:pokerquestion:913801385739423744> {description}', color=Utils.BotColors.invis())
+        MainMessage=await ctx.send(embed=em, components=ConfirmCompo)
+        while True:
+            ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
+            if ConfirmEvent.component.id=='ConfirmOk':
+                await MainMessage.delete()
+                return True
+            elif ConfirmEvent.component.id=='ConfirmAbort':
+                await MainMessage.delete()
+                return False
+
+
 
     def clean_prefix(ctx):
         if ctx.prefix==f'<@!{ctx.bot.user.id}> ':
