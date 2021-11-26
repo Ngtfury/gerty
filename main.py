@@ -106,8 +106,10 @@ async def load_extensions():
     await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `jishaku` succesfully', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
     print(f'Loaded module jishaku succesfully ✅')
     print('--------------------------------')
-    await web.send('--------------------------------')
+    await web.send('--------------------------------', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
 
+loop=asyncio.get_event_loop()
+loop.run_until_complete(load_extensions())
 
 
 
@@ -187,7 +189,6 @@ async def disabled_command(ctx):
 
 @client.event
 async def on_ready():
-  await load_extensions()
   DiscordComponents(client)
 
   print(f"Connected to {client.user.name}.")
