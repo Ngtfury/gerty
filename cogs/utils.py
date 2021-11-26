@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import discord
 from discord import emoji
+from discord import components
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -12,8 +13,6 @@ import subprocess
 class Utils:
 
     async def confirm(bot, ctx, description, interaction=None):
-        if interaction:
-            ctx=interaction
 
         ConfirmCompo=[[
             Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910490899883126804)),
@@ -21,15 +20,27 @@ class Utils:
         ]]
 
         em=discord.Embed(description=f'<:pokerquestion:913801385739423744> {description}', color=Utils.BotColors.invis())
-        MainMessage=await ctx.send(embed=em, components=ConfirmCompo)
+        if interaction:
+            MainMessage=await interaction.respond(type=4, embed=em, components=ConfirmCompo, ephemeral=False)
+        else:
+            MainMessage=await ctx.send(embed=em, components=ConfirmCompo)
         while True:
-            ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
-            if ConfirmEvent.component.id=='ConfirmOk':
-                await MainMessage.delete()
-                return True
-            elif ConfirmEvent.component.id=='ConfirmAbort':
-                await MainMessage.delete()
-                return False
+            try:
+                ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
+                if ConfirmEvent.component.id=='ConfirmOk':
+                    try:
+                        await MainMessage.delete()
+                    except:
+                        pass
+                    return True
+                elif ConfirmEvent.component.id=='ConfirmAbort':
+                    try:
+                        await MainMessage.delete()
+                    except:
+                        pass
+                    return False
+            except asyncio.TimeoutError:
+                await MainMessage.disable_components()
 
 
 
