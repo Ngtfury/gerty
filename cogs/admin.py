@@ -123,7 +123,7 @@ class Admin(commands.Cog):
                                 embed=Utils.BotEmbed.success(f'Reloaded {str(event.values[0])} successfully')
                                 await event.respond(type=4, embed=embed, ephemeral=False)
                             except Exception as error:
-                                traceback_string = "".join(traceback.format_exception(etype=None, value=error, tb=error.__traceback__))
+                                traceback_string = "".join(traceback.format_exception(exc=None, value=error, tb=error.__traceback__))
                                 await event.respond(type=4, ephemeral=False, file=discord.File(io.StringIO(traceback_string), filename='traceback.py'))
 
                     elif isinstance(event.component, Button):
