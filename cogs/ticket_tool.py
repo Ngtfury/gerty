@@ -69,6 +69,7 @@ class TicketTool(commands.Cog):
                 overwrites={
                     interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False),
                     interaction.guild.me: discord.PermissionOverwrite(view_channel=True),
+                    interaction.guild.me: discord.PermissionOverwrite(embed_links=True),
                     interaction.author: discord.PermissionOverwrite(view_channel=True)
                 }
 
