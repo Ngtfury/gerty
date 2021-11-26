@@ -68,6 +68,8 @@ class TicketTool(commands.Cog):
     async def ticket_button_click(self, interaction):
         if interaction.guild.id in self.bot.ticket_tool_guild_ids:
             if interaction.component.id==f'ticket-{interaction.guild.id}':
+                if interaction.author.id in self.bot.running_tickets[interaction.guild.id]:
+                    return await interaction.respond(type=4, content='You already have a running ticket.')
 
                 overwrites={
                     interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False),
