@@ -234,7 +234,10 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<a:zpanda_heart:907292207604723743> This is an owner-only command and you don't look like `Nιgнт Fυяу ♪🤍#4371`", color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.BotMissingPermissions):
-    em = discord.Embed(description=f"<:error:893501396161290320>The bot is missing following permissions to run this command, `{', '.join(error.missing_perms)}`", color=0x2F3136)
+    _oh=[f'`{x}`' for x in error.missing_perms]
+    oh_=', '.join(_oh)
+    _perms=oh_.replace('_', " ")
+    em = discord.Embed(description=f"<:error:893501396161290320> The bot is missing {_perms} permission(s) to run this command", color=0x2F3136)
     await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, UserBlacklisted):
     em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for reason `{error.reason}`", color=0x2F3136)
