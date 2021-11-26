@@ -61,6 +61,9 @@ class TicketTool(commands.Cog):
         except:
             pass
 
+        await self.bot.db.execute('DELETE FROM running_tickets WHERE guild_id=$1', ctx.guild.id)
+        del self.bot.running_tickets[ctx.guild.id]
+        self.bot.running_tickets[ctx.guild.id]=[]
         await ctx.send(embed=Utils.BotEmbed.success('Deleted ticket tool system for this server.'))
 
 
