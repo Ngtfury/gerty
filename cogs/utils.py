@@ -22,7 +22,7 @@ class Utils:
 
         em=discord.Embed(description=f'<:pokerquestion:913801385739423744> {description}', color=Utils.BotColors.invis())
         if interaction:
-            MainMessage=await interaction.respond(type=4, embed=em, components=ConfirmCompo, ephemeral=False)
+            MainMessage=await interaction.send(embed=em, components=ConfirmCompo, ephemeral=False)
         else:
             MainMessage=await ctx.send(embed=em, components=ConfirmCompo)
         while True:
@@ -30,8 +30,6 @@ class Utils:
                 ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
                 if ConfirmEvent.component.id=='ConfirmOk':
                     await ConfirmEvent.respond(type=6)
-                    if interaction:
-                        await ConfirmEvent.message.delete()
                     try:
                         await MainMessage.delete()
                     except:
