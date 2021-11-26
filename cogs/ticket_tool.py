@@ -17,6 +17,7 @@ class TicketTool(commands.Cog):
 
     @commands.group(brief='mod', description='A ticket system', usage='[sub command]', invoke_without_command=True)
     @commands.has_permissions(manage_channels=True)
+    @commands.bot_has_guild_permissions(manage_channels=True)
     async def ticket(self, ctx):
         if not ctx.guild.id in self.bot.ticket_tool_guild_ids:
             return await GertyHelpCommand(self.bot).send_command_help(ctx, command='ticket')
