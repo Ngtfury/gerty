@@ -10,7 +10,10 @@ import subprocess
 
 class Utils:
 
-    async def confirm(bot, ctx, description, interaction=None):
+    async def confirm(bot, description, interaction=None, ctx=None):
+        if not interaction:
+            if not ctx:
+                raise RuntimeError('ctx or interaction should be specified')
 
         ConfirmCompo=[[
             Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910490899883126804)),
@@ -26,16 +29,24 @@ class Utils:
             try:
                 ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
                 if ConfirmEvent.component.id=='ConfirmOk':
-                    try:
+                    await ConfirmEvent.respond(type=6)
+                    if interaction:
+                        try:
+                            await ConfirmEvent.message.delete()
+                        except:
+                            pass
+                    else:
                         await MainMessage.delete()
-                    except:
-                        pass
                     return True
                 elif ConfirmEvent.component.id=='ConfirmAbort':
-                    try:
+                    await ConfirmEvent.respond(type=6)
+                    if interaction:
+                        try:
+                            await ConfirmEvent.message.delete()
+                        except:
+                            pass
+                    else:
                         await MainMessage.delete()
-                    except:
-                        pass
                     return False
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()

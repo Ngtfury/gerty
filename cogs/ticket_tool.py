@@ -113,6 +113,9 @@ class TicketTool(commands.Cog):
     async def ticket_delete_button_click(self, interaction):
         if interaction.guild.id in self.bot.ticket_tool_guild_ids:
             if interaction.component.id==f'ticketclose-{interaction.author.id}':
+                confirm=await Utils.confirm(self.bot, description='Are you sure you want to close this ticket?', interaction=interaction)
+                if not confirm:
+                    return
                 await interaction.respond(type=6)
                 await self.bot.db.execute('DELETE FROM running_tickets WHERE author_id=$1', interaction.author.id)
                 self.bot.running_tickets[interaction.guild.id].remove(interaction.author.id)
