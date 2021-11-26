@@ -116,7 +116,7 @@ os.environ["JISHAKU_HIDE"] = "True"
 
 client.ticket_tool_guild_ids = []
 async def load_cache():
-  message_ids=await client.db.execute('SELECT guild_id FROM ticket_tool')
+  message_ids=await client.db.fetch('SELECT guild_id FROM ticket_tool')
   for id in message_ids:
     client.ticket_tool_guild_ids.append(id[0])
 
