@@ -30,23 +30,17 @@ class Utils:
                 ConfirmEvent=await bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
                 if ConfirmEvent.component.id=='ConfirmOk':
                     await ConfirmEvent.respond(type=6)
-                    if interaction:
-                        try:
-                            await ConfirmEvent.message.delete()
-                        except:
-                            pass
-                    else:
+                    try:
                         await MainMessage.delete()
+                    except:
+                        pass
                     return True
                 elif ConfirmEvent.component.id=='ConfirmAbort':
                     await ConfirmEvent.respond(type=6)
-                    if interaction:
-                        try:
-                            await ConfirmEvent.message.delete()
-                        except:
-                            pass
-                    else:
+                    try:
                         await MainMessage.delete()
+                    except:
+                        pass
                     return False
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
