@@ -59,3 +59,22 @@ class TicketTool(commands.Cog):
         await delmsg.delete()
 
         await ctx.send(embed=Utils.BotEmbed.success('Deleted ticket tool system for this server.'))
+
+
+    @commands.Cog.listener('on_button_click')
+    async def ticket_button_click(self, interaction):
+        if interaction.guild.id in self.bot.ticket_tool_guild_ids:
+            if interaction.component.id==f'ticket-{interaction.guild.id}':
+
+                overwrites={
+                    interaction.guild.default_role: discord.PermissionOverwrite(view_channel=False),
+                    interaction.guild.me: discord.PermissionOverwrite(view_channel=True),
+                    interaction.author: discord.PermissionOverwrite(view_channel=True)
+                }
+
+                TicketChannel=await interaction.guild.create_text_channel(name=f'ticket-support', topic=f'Ticket support for {interaction.author.name}', overwrites=overwrites, reason=f'Ticket for {interaction.author.name}')
+
+                TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly')
+                TicketEmbedDone.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
+                TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
+                await TicketChannel.send(f'{interaction.author.mention}', embed=None)
