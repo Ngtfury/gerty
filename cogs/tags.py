@@ -146,3 +146,8 @@ class Tags(commands.Cog):
             await ctx.send(embed=em)
         else:
             await ctx.send(f'{member.name} does not have any tags in this server')
+
+
+    @commands.Cog.listener('on_guild_remove')
+    async def tag_cleanup_on_leave(self, guild):
+        await self.bot.db.execute('DELETE FROM tags WHERE guild_id=$1', guild.id)
