@@ -1,4 +1,7 @@
+from asyncio.locks import Event
 import discord
+from discord import emoji
+from discord import components
 import discord_components
 from discord_components import *
 from cogs.utils import GertyHelpCommand, Utils
@@ -82,12 +85,27 @@ class TicketTool(commands.Cog):
 
                 TicketChannel=await interaction.guild.create_text_channel(name=f'ticket-{interaction.author.name}', topic=f'Ticket support for {interaction.author.name}', overwrites=overwrites, reason=f'Ticket for {interaction.author.name}')
 
+
+                TicketDoneCompo=[[
+                    Button(style=ButtonStyle.green, label='Close ticket', emoji=self.bot.get_emoji(890938576563503114), id=f'ticketclose-{interaction.author.id}')
+                ]]
+
                 TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly', color=Utils.BotColors.invis())
                 TicketEmbedDone.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
                 TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
-                await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone)
+                await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone, components=TicketDoneCompo)
 
                 await self.bot.db.execute('INSERT INTO running_tickets (guild_id,channel_id,author_id) VALUES ($1,$2,$3)', interaction.guild.id, TicketChannel.id, interaction.author.id)
                 self.bot.running_tickets[interaction.guild.id].append(interaction.author.id)
+
+
+    @commands.Cog.listener('on_button_click')
+    async def ticket_delete_button_click(self, interaction):
+        if interaction.guild.id in self.bot.ticket_tool_guild_ids:
+            if interaction.component.id==f'ticketclose-{interaction.author.id}':
+                await interaction.respond(type=6)
+                self.bot.running_tickets[interaction.guild.id].remove(interaction.author.id)
+                await interaction.channel.delete()
+
     
