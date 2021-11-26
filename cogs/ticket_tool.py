@@ -96,12 +96,12 @@ class TicketTool(commands.Cog):
 
 
                 TicketDoneCompo=[[
-                    Button(label='Close', emoji=self.bot.get_emoji(890938576563503114), id=f'ticketclose-{interaction.author.id}')
+                    Button(emoji='🔒', id=f'ticketclose-{interaction.author.id}')
                 ]]
 
-                TicketEmbedDone=discord.Embed(title=f'{interaction.author.name}\'s ticket', description='Support will be there for you shortly', color=Utils.BotColors.invis())
-                TicketEmbedDone.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
-                TicketEmbedDone.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
+                TicketEmbedDone=discord.Embed(description='**Support will be there for you shortly**\nTo close this ticket click 🔒 button', color=Utils.BotColors.invis())
+                TicketEmbedDone.set_author(name=f'{interaction.author.name}\'s ticket', icon_url='https://tickettool.xyz/images/footer.png')
+                TicketEmbedDone.set_footer(text=f'Invoked by {interaction.author}', icon_url=interaction.author.avatar_url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
                 await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone, components=TicketDoneCompo)
 
