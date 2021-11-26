@@ -100,6 +100,7 @@ class TicketTool(commands.Cog):
                 self.bot.running_tickets[interaction.guild.id].append(interaction.author.id)
 
 
+#
     @commands.Cog.listener('on_button_click')
     async def ticket_delete_button_click(self, interaction):
         if interaction.guild.id in self.bot.ticket_tool_guild_ids:
