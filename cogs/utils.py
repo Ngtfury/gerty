@@ -16,8 +16,8 @@ class Utils:
             ctx=interaction
 
         ConfirmCompo=[[
-            Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910491193174028308)),
-            Button(id='ConfirmAbort', emoji=bot.get_emoji(910490899883126804))
+            Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910490899883126804)),
+            Button(id='ConfirmAbort', emoji=bot.get_emoji(910491193174028308))
         ]]
 
         em=discord.Embed(description=f'<:pokerquestion:913801385739423744> {description}', color=Utils.BotColors.invis())
