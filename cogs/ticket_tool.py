@@ -123,6 +123,7 @@ class TicketTool(commands.Cog):
             await self.bot.db.execute('DELETE FROM ticket_tool WHERE guild_id=$1', guild.id)
             del self.bot.running_tickets[guild.id]
             self.bot.ticket_tool_guild_ids.remove(guild.id)
+            #
 
 
     
