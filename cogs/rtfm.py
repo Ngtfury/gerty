@@ -163,7 +163,8 @@ class Rtfm(commands.Cog):
             'chai': 'https://chaidiscordpy.readthedocs.io/en/latest',
             'bing': 'https://asyncbing.readthedocs.io/en/latest',
             'pycord': 'https://pycord.readthedocs.io/en/master',
-            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/'
+            'aiohttp': 'https://aiohttp.readthedocs.io/en/latest/',
+            'discord-ipc': 'https://ext-creators.github.io/docs/ipc/latest/'
         }
         embed_titles = {
             'latest': 'Documentation for discord.py v1.7.3',
@@ -175,7 +176,8 @@ class Rtfm(commands.Cog):
             'chai': 'Documentation for chaidiscord.py',
             'bing': 'Documentation for asyncbing',
             'pycord': 'Documentation for pycord',
-            'aiohttp': 'Documentation for aiohttp'
+            'aiohttp': 'Documentation for aiohttp',
+            'discord-ipc': 'Documentation for ipc'
         }
 
         if obj is None:
@@ -254,4 +256,8 @@ class Rtfm(commands.Cog):
     @rtfm.command(name='aiohttp', description='Gives you a documentation link for a aiohttp entity', usage='[query]')
     async def rtfm_aiohttp(self, ctx, *, obj:str=None):
         await self.do_rtfm(ctx, 'aiohttp', obj)
+
+    @rtfm.command(name='ipc', description='Gives you a documentation link for a discord-ipc entity', usage='[query]', aliases=['discord-ipc', 'dpc', 'dpy-ipc'])
+    async def rtfm_ipc(self, ctx, *, obj:str=None):
+        await self.do_rtfm(ctx, 'discord-ipc', obj)
 
