@@ -1,8 +1,6 @@
 import asyncio
 import datetime
 import discord
-from discord import emoji
-from discord import components
 from discord.ext import commands
 import discord_components
 from discord_components import *
