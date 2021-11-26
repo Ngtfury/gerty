@@ -30,7 +30,7 @@ class TicketTool(commands.Cog):
             return await ctx.send(f'This server already has a ticket system configured. To delete or to re setup do `g!ticket delete`.')
 
         TicketComponents=[[
-            Button(label='Create Ticket', emoji='📩', id=f'ticket-{ctx.guild.id}')
+            Button(emoji='📩', id=f'ticket-{ctx.guild.id}')
         ]]
 
         self.bot.ticket_tool_guild_ids.append(ctx.guild.id)
