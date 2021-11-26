@@ -86,4 +86,5 @@ class TicketTool(commands.Cog):
                 await TicketChannel.send(f'{interaction.author.mention}', embed=TicketEmbedDone)
 
                 await self.bot.db.execute('INSERT INTO running_tickets (guild_id,channel_id,author_id) VALUES ($1,$2,$3)', interaction.guild.id, TicketChannel.id, interaction.author.id)
+                self.bot.running_tickets[interaction.guild.id].append(interaction.author.id)
     
