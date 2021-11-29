@@ -152,11 +152,12 @@ class EmbedEditor(commands.Cog):
                     
                     try:
                         await message.edit(embed=EmbedMain)
-                        break
+                        return
                     except Exception as e:
                         if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
                             await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
-                            break
+                            await MainMessage.delete()
+                            return
 
                 elif event.component.id=='FooterCancel':
                     await MainMessage.delete()
