@@ -37,7 +37,7 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Set Description', value='SetDesc')
         ]
 
-        MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=Select(placeholder='Dynamic embed editor', options=SelectOptions))
+        MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=[Select(placeholder='Dynamic embed editor', options=SelectOptions)])
 
         while True:
             try:
