@@ -64,12 +64,13 @@ class EmbedEditor(commands.Cog):
             if not content.startswith('http'):
                 return False
             else:
-                try:
-                    Embed.set_footer(icon_url=content)
-                except Exception as e:
-                    if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
-                        return 'URLERR'
-            return await message.edit(embed=Embed)
+                Embed.set_footer(icon_url=content)
+            try:
+                await message.edit(embed=Embed)
+                return
+            except Exception as e:
+                if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
+                    return 'URLERR'
         if content in ['None', 'none']:
             Embed.set_footer(text='')
         else:
