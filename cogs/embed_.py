@@ -23,7 +23,7 @@ class EmbedEditor(commands.Cog):
                 pass
             return resMessage.content
         except asyncio.TimeoutError:
-            await ctx.send('You did\'nt respond on time. You can try again.')
+            await ctx.send('You didn\'t respond on time. You can try again.')
             return False
 
 
@@ -37,7 +37,7 @@ class EmbedEditor(commands.Cog):
                 return False
             Embed.url=content
             return await message.edit(embed=Embed)
-        if content=='None':
+        if content in ['None', 'none']:
             _content=None
         else:
             _content=content
@@ -49,11 +49,22 @@ class EmbedEditor(commands.Cog):
     async def set_description(self, message: discord.Message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
-        if content=='None':
+        if content in ['None', 'none']:
             _content=None
         else:
             _content=content
         Embed.description=_content
+
+        return await message.edit(embed=Embed)
+
+    async def set_footer(self, message: discord.Message, content:str, icon:bool=False):
+        FetchedMessage=await message.channel.fetch_message(message.id)
+        Embed=FetchedMessage.embeds[0]
+        if content in ['None', 'none']:
+            _content=None
+        else:
+            _content=content
+        Embed.footer.text=_content
 
         return await message.edit(embed=Embed)
 
@@ -105,20 +116,20 @@ class EmbedEditor(commands.Cog):
 
                     elif value=='SetTitleUrl':
                         await interaction.respond(type=4, content=f'What title url you want to be in the embed?\n{note}')
-                        try:
-                            resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
-                        except asyncio.TimeoutError:
-                            await ctx.send('You did\'nt respond on time. You can try again.')
+                        resMessage=await self.wait_for_res(ctx)
+                        if not resMessage:
                             continue
-                        else:
-                            check=await self.set_title(message=MainMessage, content=resMessage.content, url=True)
-                            if not check:
-                                await ctx.send('Scheme must be one of http or https')
-                                continue
-                            try:
-                                await resMessage.delete()
-                            except:
-                                pass                        
+                        check=await self.set_title(message=MainMessage, content=resMessage, url=True)
+                        if not check:
+                            await ctx.send('Scheme must be one of `http` or `https`')
+                            continue
+
+                    elif value=='SetFooter':
+                        await interaction.respond(type=4, content=f'What footer you want to be in the embed?\n{note}')
+                        resMessage=await self.wait_for_res(ctx)
+                        if not resMessage:
+                            continue
+                        await self.set_footer(message=MainMessage, content=resMessage)
 
 
             except asyncio.TimeoutError:
