@@ -1,4 +1,3 @@
-from _typeshed import NoneType
 import discord
 from discord.ext import commands
 import discord_components
