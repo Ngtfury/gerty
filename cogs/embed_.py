@@ -1,9 +1,12 @@
 import discord
+from discord import components
 from discord.ext import commands
+from discord.user import BU
 import discord_components
 from discord_components import *
 import asyncio
 import random
+from cogs.utils import Utils
 
 
 def setup(client):
@@ -57,26 +60,87 @@ class EmbedEditor(commands.Cog):
 
         return await message.edit(embed=Embed)
 
-    async def set_footer(self, message: discord.Message, content:str, icon:bool=False):
-        FetchedMessage=await message.channel.fetch_message(message.id)
-        Embed=FetchedMessage.embeds[0]
-        if icon:
-            if not content.startswith('http'):
-                return False
-            else:
-                Embed.set_footer(icon_url=content)
-            try:
-                await message.edit(embed=Embed)
-                return
-            except Exception as e:
-                if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
-                    return 'URLERR'
-        if content in ['None', 'none']:
-            Embed.set_footer(text='')
-        else:
-            Embed.set_footer(text=content)
+#    async def set_footer(self, message: discord.Message, content:str, icon:bool=False):
+#        FetchedMessage=await message.channel.fetch_message(message.id)
+#        Embed=FetchedMessage.embeds[0]
+#        if icon:
+#            if not content.startswith('http'):
+#                return False
+#            else:
+#                Embed.set_footer(icon_url=content)
+#            try:
+#                await message.edit(embed=Embed)
+#                return
+#            except Exception as e:
+#                if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
+#                    return 'URLERR'
+#        if content in ['None', 'none']:
+#            Embed.set_footer(text='')
+#        else:
+#            Embed.set_footer(text=content)
 
-        return await message.edit(embed=Embed)
+#        return await message.edit(embed=Embed)
+
+
+    async def set_footer(self, ctx, message: discord.Message, interaction):
+
+        compo=[[
+            Button(label='Set footer text', id='SetText'),
+            Button(label='Set footer icon', id='SetIcon'),
+            Button(label='Confirm', style=ButtonStyle.green, id='ConfirmFooter')
+        ]]
+
+        em=discord.Embed(color=Utils.BotColors.invis())
+        em.set_footer(text='<Footer text here>', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        MainMessage=await interaction.send(embed=em, components=compo, ephemeral=False)
+
+        while True:
+            try:
+                event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=10)
+                if event.component.id=='SetText':
+                    await event.respond(type=4, content='What text do you want to be in footer?')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+                    FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                    Embed=FetchedMessage.embeds[0]
+
+                    Embed.set_footer(text=resMessage)
+                    await MainMessage.edit(embed=Embed)
+
+                elif event.component.id=='SetIcon':
+                    await event.respond(type=4, content='What icon do you want to be in footer? (only url allowed)')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+                    FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                    Embed=FetchedMessage.embeds[0]
+
+                    Embed.set_footer(icon_url=resMessage)
+                    await MainMessage.edit(embed=Embed)
+
+                elif event.component.id=='ConfirmFooter':
+                    await event.respond(type=6)
+
+                    FetchedMessageJR=await MainMessage.channel.fetch_message(MainMessage.id)
+                    EmbedJR=FetchedMessageJR.embeds[0]
+
+                    await MainMessage.delete()
+
+                    _footer=EmbedJR.footer.text
+                    _icon=EmbedJR.footer.icon_url
+
+                    FetchedMain=await message.channel.fetch_message(message.id)
+                    EmbedMain=FetchedMain.embeds[0]
+                    EmbedMain.set_footer(text=_footer, icon_url=_icon)
+
+                    return await message.edit(embed=EmbedMain)
+                    
+            except asyncio.TimeoutError:
+                await MainMessage.delete()
+
 
 
 
@@ -146,20 +210,20 @@ class EmbedEditor(commands.Cog):
                         resMessage=await self.wait_for_res(ctx)
                         if not resMessage:
                             continue
-                        await self.set_footer(message=MainMessage, content=resMessage)
+                        await self.set_footer(ctx, message=MainMessage, interaction=interaction)
 
-                    elif value=='SetFooterIcon':
-                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
-                        resMessage=await self.wait_for_res(ctx)
-                        if not resMessage:
-                            continue
-                        check=await self.set_footer(message=MainMessage, icon=True, content=resMessage)
-                        if check==False:
-                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
-                            continue
-                        elif check=='URLERR':
-                            await ctx.send('Not a well formed image URL.')
-                            continue
+#                    elif value=='SetFooterIcon':
+#                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
+#                        resMessage=await self.wait_for_res(ctx)
+#                        if not resMessage:
+#                            continue
+#                        check=await self.set_footer(message=MainMessage, icon=True, content=resMessage)
+#                        if check==False:
+#                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
+#                            continue
+#                        elif check=='URLERR':
+#                            await ctx.send('Not a well formed image URL.')
+#                            continue
 
 
             except asyncio.TimeoutError:
