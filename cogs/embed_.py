@@ -61,7 +61,7 @@ class EmbedEditor(commands.Cog):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         if content in ['None', 'none']:
-            Embed.footer=None
+            Embed.footer.text=''
         else:
             Embed.set_footer(text=content)
 
