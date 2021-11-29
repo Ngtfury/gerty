@@ -1,5 +1,4 @@
 import discord
-from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
