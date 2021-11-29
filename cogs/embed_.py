@@ -64,7 +64,7 @@ class EmbedEditor(commands.Cog):
             _content=None
         else:
             _content=content
-        Embed.footer.text=_content
+        Embed.set_footer(text=_content)
 
         return await message.edit(embed=Embed)
 
