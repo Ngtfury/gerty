@@ -49,8 +49,8 @@ class EmbedEditor(commands.Cog):
         ]   
         oauth=discord.utils.oauth_url(self.bot.user.id)
         MainEmbed=discord.Embed(title='Title', description='Description', url=f'{oauth}')
-        MainEmbed.set_thumbnail(url='https://imgur.com/a/dvlrQaP')
-        MainEmbed.set_image(url='https://imgur.com/a/N2Ndde7')
+        MainEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/914819940798853181/914820437538635806/oie_ZSzciFNKnAq8.png')
+        MainEmbed.set_image(url='https://media.discordapp.net/attachments/914819940798853181/914820437358297109/oie_HjDdrGBbmZwR.png')
         MainEmbed.set_author(name='Author name (can point to url)', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png', url=f'{oauth}')
         MainEmbed.add_field(name='Field name', value='Color sets\n< that', inline=True)
         MainEmbed.add_field(name='Field name', value='Color is an int/hex not string', inline=True)
