@@ -144,7 +144,10 @@ class EmbedEditor(commands.Cog):
                             await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
                     
             except asyncio.TimeoutError:
-                await MainMessage.delete()
+                try:
+                    await MainMessage.delete()
+                except:
+                    pass
 
 
 
