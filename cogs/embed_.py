@@ -128,10 +128,10 @@ class EmbedEditor(commands.Cog):
                         if not resMessage.startswith('http'):
                             await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
                             continue
-                        _icon=resMessage                       
+                        _icon=resMessage
 
 
-                    Embed.set_footer(icon_url=f'{_icon}', text=Embed.footer.text)
+                    Embed.set_footer(icon_url=_icon, text=Embed.footer.text)
                     await MainMessage.edit(embed=Embed)
 
                 elif event.component.id=='ConfirmFooter':
