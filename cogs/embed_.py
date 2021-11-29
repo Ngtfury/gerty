@@ -20,6 +20,8 @@ class EmbedEditor(commands.Cog):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         if url:
+            if not url.startswith('http'):
+                return False
             Embed.url=content
             return await message.edit(embed=Embed)
         if content=='None':
@@ -82,7 +84,10 @@ class EmbedEditor(commands.Cog):
                             await ctx.send('You did\'nt respond on time. You can try again.')
                             continue
                         else:
-                            await self.set_title(message=MainMessage, content=resMessage.content)
+                            check=await self.set_title(message=MainMessage, content=resMessage.content)
+                            if not check:
+                                await ctx.send('Scheme must be one of http or https')
+                                continue
                             try:
                                 await resMessage.delete()
                             except:
