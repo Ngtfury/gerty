@@ -112,6 +112,9 @@ class EmbedEditor(commands.Cog):
                     resMessage=await self.wait_for_res(ctx)
                     if not resMessage:
                         continue
+                    if not resMessage.startswith('http'):
+                        await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
+                        continue
 
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     Embed=FetchedMessage.embeds[0]
@@ -133,8 +136,12 @@ class EmbedEditor(commands.Cog):
                     FetchedMain=await message.channel.fetch_message(message.id)
                     EmbedMain=FetchedMain.embeds[0]
                     EmbedMain.set_footer(text=_footer, icon_url=_icon)
-
-                    return await message.edit(embed=EmbedMain)
+                    
+                    try:
+                        await message.edit(embed=EmbedMain)
+                    except Exception as e:
+                        if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
+                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
                     
             except asyncio.TimeoutError:
                 await MainMessage.delete()
