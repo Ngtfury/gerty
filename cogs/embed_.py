@@ -1,3 +1,4 @@
+from _typeshed import NoneType
 import discord
 from discord.ext import commands
 import discord_components
@@ -61,10 +62,9 @@ class EmbedEditor(commands.Cog):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         if content in ['None', 'none']:
-            _content=None
+            Embed.footer.text=None
         else:
-            _content=content
-        Embed.set_footer(text=_content)
+            Embed.set_footer(text=content)
 
         return await message.edit(embed=Embed)
 
