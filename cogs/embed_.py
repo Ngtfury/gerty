@@ -204,10 +204,6 @@ class EmbedEditor(commands.Cog):
                             continue
 
                     elif value=='SetFooter':
-                        await interaction.respond(type=4, content=f'What footer you want to be in the embed?\n{note}')
-                        resMessage=await self.wait_for_res(ctx)
-                        if not resMessage:
-                            continue
                         await self.set_footer(ctx, message=MainMessage, interaction=interaction)
 
 #                    elif value=='SetFooterIcon':
