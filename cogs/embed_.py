@@ -46,11 +46,12 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Set Description', value='SetDesc'),
             SelectOption(label='Set title URL', value='SetTitleUrl'),
             SelectOption(label='Set footer', value='SetFooter')
-        ]
-
-        MainEmbed=discord.Embed(title='Title', description='Description', url='https://cdn.discordapp.com/attachments/914698141004079135/914810488225955920/embed.png')
-        MainEmbed.set_thumbnail(url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
-        MainEmbed.set_image(url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        ]   
+        oauth=discord.utils.oauth_url(self.bot.user.id)
+        MainEmbed=discord.Embed(title='Title', description='Description', url=f'{oauth}')
+        MainEmbed.set_thumbnail(url='https://imgur.com/a/dvlrQaP')
+        MainEmbed.set_image(url='https://imgur.com/a/N2Ndde7')
+        MainEmbed.set_author(name='Author name (can point to url)', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png', url=f'{oauth}')
         MainEmbed.add_field(name='Field name', value='Color sets\n< that', inline=True)
         MainEmbed.add_field(name='Field name', value='Color is an int/hex not string', inline=True)
         MainEmbed.add_field(name='Field name', value='Field value', inline=True)
