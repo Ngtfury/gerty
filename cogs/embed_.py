@@ -101,10 +101,16 @@ class EmbedEditor(commands.Cog):
                     if not resMessage:
                         continue
 
+
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     Embed=FetchedMessage.embeds[0]
 
-                    Embed.set_footer(text=resMessage, icon_url=Embed.footer.icon_url)
+                    if resMessage in ['None', 'none']:
+                        _text=None
+                    else:
+                        _text=resMessage
+
+                    Embed.set_footer(text=_text, icon_url=Embed.footer.icon_url)
                     await MainMessage.edit(embed=Embed)
 
                 elif event.component.id=='SetIcon':
@@ -112,14 +118,20 @@ class EmbedEditor(commands.Cog):
                     resMessage=await self.wait_for_res(ctx)
                     if not resMessage:
                         continue
-                    if not resMessage.startswith('http'):
-                        await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
-                        continue
 
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     Embed=FetchedMessage.embeds[0]
 
-                    Embed.set_footer(icon_url=f'{resMessage}', text=Embed.footer.text)
+                    if resMessage in ['None', 'none']:
+                        _icon=None
+                    else:
+                        if not resMessage.startswith('http'):
+                            await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
+                            continue
+                        _icon=resMessage                       
+
+
+                    Embed.set_footer(icon_url=f'{_icon}', text=Embed.footer.text)
                     await MainMessage.edit(embed=Embed)
 
                 elif event.component.id=='ConfirmFooter':
@@ -135,6 +147,7 @@ class EmbedEditor(commands.Cog):
 
                     FetchedMain=await message.channel.fetch_message(message.id)
                     EmbedMain=FetchedMain.embeds[0]
+
                     EmbedMain.set_footer(text=_footer, icon_url=_icon)
                     
                     try:
