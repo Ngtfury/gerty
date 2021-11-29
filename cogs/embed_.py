@@ -47,7 +47,7 @@ class EmbedEditor(commands.Cog):
         ]
 
         MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=[Select(placeholder='Dynamic embed editor', options=SelectOptions)])
-        if random.randint(1,2) == 2:
+        if random.randint(1,2) == 1:
             note='**Note**: you can respond `None` if you dont want.'
         else:
             note=''
