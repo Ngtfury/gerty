@@ -85,8 +85,8 @@ class EmbedEditor(commands.Cog):
         compo=[[
             Button(label='Set footer text', id='SetText'),
             Button(label='Set footer icon', id='SetIcon'),
-            Button(label='Confirm', style=ButtonStyle.green, id='ConfirmFooter')
-        ]]
+            Button(label='Confirm', style=ButtonStyle.green, id='ConfirmFooter'),
+        ], Button(style=ButtonStyle.red, label='Quit', id='FooterCancel')]
 
         em=discord.Embed(color=Utils.BotColors.invis())
         em.set_footer(text='<Footer text here>', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
@@ -152,9 +152,15 @@ class EmbedEditor(commands.Cog):
                     
                     try:
                         await message.edit(embed=EmbedMain)
+                        break
                     except Exception as e:
                         if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
                             await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
+                            break
+
+                elif event.component.id=='FooterCancel':
+                    await MainMessage.delete()
+                    break
                     
             except asyncio.TimeoutError:
                 try:
