@@ -3,6 +3,7 @@ from discord.ext import commands
 import discord_components
 from discord_components import *
 import asyncio
+import random
 
 
 def setup(client):
@@ -46,7 +47,10 @@ class EmbedEditor(commands.Cog):
         ]
 
         MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=[Select(placeholder='Dynamic embed editor', options=SelectOptions)])
-        note='**Note**: you can respond `None` if you dont want.'
+        if random.randint(1,2) == 2:
+            note='**Note**: you can respond `None` if you dont want.'
+        else:
+            note=''
         while True:
             try:
 
@@ -55,7 +59,7 @@ class EmbedEditor(commands.Cog):
                     value=interaction.values[0]
                 
                     if value=='SetTitle':
-                        await interaction.respond(type=4, content=f'What title you want to be in the embed?\n\n{note}')
+                        await interaction.respond(type=4, content=f'What title you want to be in the embed?\n{note}')
                         try:
                             resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
                         except asyncio.TimeoutError:
@@ -69,7 +73,7 @@ class EmbedEditor(commands.Cog):
                                 pass
                     
                     elif value=='SetDesc':
-                        await interaction.respond(type=4, content=f'What description you want to be in the embed?\n\n{note}')
+                        await interaction.respond(type=4, content=f'What description you want to be in the embed?\n{note}')
                         try:
                             resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
                         except asyncio.TimeoutError:
