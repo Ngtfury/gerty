@@ -43,7 +43,7 @@ class EmbedEditor(commands.Cog):
             try:
 
                 interaction=await self.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
-                if isinstance(interaction, Select):
+                if isinstance(interaction.component, Select):
                     value=interaction.values[0]
                 
                     if value=='SetTitle':
