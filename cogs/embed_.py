@@ -61,9 +61,11 @@ class EmbedEditor(commands.Cog):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         if icon:
-            if not content.startswith('http'):
-                return False
-            Embed.set_footer(icon_url=content)
+            try:
+                Embed.set_footer(icon_url=content)
+            except Exception as e:
+                if e=='Not a well formed URL':
+                    return False
             return await message.edit(embed=Embed)
         if content in ['None', 'none']:
             Embed.set_footer(text='')
@@ -149,7 +151,7 @@ class EmbedEditor(commands.Cog):
                             continue
                         check=await self.set_footer(message=MainMessage, icon=True, content=resMessage)
                         if check==False:
-                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
+                            await ctx.send('Not a well formed image URL', delete_after=3)
                             continue
 
 
