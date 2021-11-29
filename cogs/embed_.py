@@ -14,9 +14,14 @@ class EmbedEditor(commands.Cog):
         self.bot=bot
 
 
-    async def set_title(self, message: discord.Message, content):
+    async def set_title(self, message: discord.Message, content, url:bool=False):
+
+
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
+        if url:
+            Embed.url=content
+            return await message.edit(embed=Embed)
         if content=='None':
             _content=None
         else:
@@ -36,6 +41,7 @@ class EmbedEditor(commands.Cog):
         Embed.description=_content
 
         return await message.edit(embed=Embed)
+
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
@@ -95,7 +101,19 @@ class EmbedEditor(commands.Cog):
                                 await resMessage.delete()
                             except:
                                 pass
-
+                    elif value=='SetTitleUrl':
+                        await interaction.respond(type=4, content=f'What description you want to be in the embed?\n{note}')
+                        try:
+                            resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
+                        except asyncio.TimeoutError:
+                            await ctx.send('You did\'nt respond on time. You can try again.')
+                            continue
+                        else:
+                            await self.set_title(message=MainMessage, content=resMessage.content, url=True)
+                            try:
+                                await resMessage.delete()
+                            except:
+                                pass                        
 
 
             except asyncio.TimeoutError:
