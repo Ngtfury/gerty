@@ -21,7 +21,7 @@ class EmbedEditor(commands.Cog):
         return await message.edit(embed=Embed)
 
 
-    async def set_description(message: discord.Message, content):
+    async def set_description(message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         Embed.description=content
