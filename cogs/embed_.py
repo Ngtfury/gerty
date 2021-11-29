@@ -67,7 +67,7 @@ class EmbedEditor(commands.Cog):
                 try:
                     Embed.set_footer(icon_url=content)
                 except Exception as e:
-                    if e=='Not a well formed URL':
+                    if e=='Invalid Form Body':
                         return 'URLERR'
             return await message.edit(embed=Embed)
         if content in ['None', 'none']:
