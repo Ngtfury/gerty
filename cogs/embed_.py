@@ -16,7 +16,11 @@ class EmbedEditor(commands.Cog):
     async def set_title(self, message: discord.Message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
-        Embed.title=content
+        if content=='None':
+            _content=None
+        else:
+            _content=content
+        Embed.title=_content
 
         return await message.edit(embed=Embed)
 
@@ -24,7 +28,11 @@ class EmbedEditor(commands.Cog):
     async def set_description(self, message: discord.Message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
-        Embed.description=content
+        if content=='None':
+            _content=None
+        else:
+            _content=content
+        Embed.description=_content
 
         return await message.edit(embed=Embed)
 
@@ -38,7 +46,7 @@ class EmbedEditor(commands.Cog):
         ]
 
         MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=[Select(placeholder='Dynamic embed editor', options=SelectOptions)])
-
+        note='**Note**: you can respond `None` if you dont want.'
         while True:
             try:
 
@@ -47,7 +55,7 @@ class EmbedEditor(commands.Cog):
                     value=interaction.values[0]
                 
                     if value=='SetTitle':
-                        await interaction.respond(type=4, content='What title you want to be in the embed?')
+                        await interaction.respond(type=4, content=f'What title you want to be in the embed?\n\n{note}')
                         try:
                             resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
                         except asyncio.TimeoutError:
@@ -61,7 +69,7 @@ class EmbedEditor(commands.Cog):
                                 pass
                     
                     elif value=='SetDesc':
-                        await interaction.respond(type=4, content='What description you want to be in the embed?')
+                        await interaction.respond(type=4, content=f'What description you want to be in the embed?\n\n{note}')
                         try:
                             resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
                         except asyncio.TimeoutError:
