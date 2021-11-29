@@ -13,7 +13,7 @@ class EmbedEditor(commands.Cog):
         self.bot=bot
 
 
-    async def set_title(message: discord.Message, content):
+    async def set_title(self, message: discord.Message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         Embed.title=content
@@ -21,7 +21,7 @@ class EmbedEditor(commands.Cog):
         return await message.edit(embed=Embed)
 
 
-    async def set_description(message, content):
+    async def set_description(self, message: discord.Message, content):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         Embed.description=content
