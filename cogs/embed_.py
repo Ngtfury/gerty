@@ -19,7 +19,7 @@ class EmbedEditor(commands.Cog):
 
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
-        if url:
+        if url==True:
             if not content.startswith('http'):
                 return False
             Embed.url=content
@@ -84,10 +84,7 @@ class EmbedEditor(commands.Cog):
                             await ctx.send('You did\'nt respond on time. You can try again.')
                             continue
                         else:
-                            check=await self.set_title(message=MainMessage, content=resMessage.content)
-                            if not check:
-                                await ctx.send('Scheme must be one of http or https')
-                                continue
+                            await self.set_title(message=MainMessage, content=resMessage.content)
                             try:
                                 await resMessage.delete()
                             except:
@@ -107,14 +104,17 @@ class EmbedEditor(commands.Cog):
                             except:
                                 pass
                     elif value=='SetTitleUrl':
-                        await interaction.respond(type=4, content=f'What description you want to be in the embed?\n{note}')
+                        await interaction.respond(type=4, content=f'What title url you want to be in the embed?\n{note}')
                         try:
                             resMessage=await self.bot.wait_for('message', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
                         except asyncio.TimeoutError:
                             await ctx.send('You did\'nt respond on time. You can try again.')
                             continue
                         else:
-                            await self.set_title(message=MainMessage, content=resMessage.content, url=True)
+                            check=await self.set_title(message=MainMessage, content=resMessage.content, url=True)
+                            if not check:
+                                await ctx.send('Scheme must be one of http or https')
+                                continue
                             try:
                                 await resMessage.delete()
                             except:
