@@ -42,7 +42,7 @@ class EmbedEditor(commands.Cog):
         while True:
             try:
 
-                interaction=await self.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel and i.message==MainMessage, timeout=60)
+                interaction=await self.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
                 if isinstance(interaction, Select):
                     value=interaction.values[0]
                 
