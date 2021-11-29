@@ -1,4 +1,5 @@
 import discord
+from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -60,6 +61,11 @@ class EmbedEditor(commands.Cog):
     async def set_footer(self, message: discord.Message, content:str, icon:bool=False):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
+        if icon:
+            if not content.startswith('http'):
+                return False
+            Embed.set_footer(icon_url=content)
+            return await message.edit(embed=Embed)
         if content in ['None', 'none']:
             Embed.set_footer(text='')
         else:
@@ -76,7 +82,10 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Set Title', value='SetTitle'),
             SelectOption(label='Set Description', value='SetDesc'),
             SelectOption(label='Set title URL', value='SetTitleUrl'),
-            SelectOption(label='Set footer', value='SetFooter')
+            SelectOption(label='Set author', value='SetAuthor'),
+            SelectOption(label='Set author icon', value='SetAuthorIcon'),
+            SelectOption(label='Set footer', value='SetFooter'),
+            SelectOption(label='Set footer icon', value='SetFooterIcon')
         ]   
         oauth=discord.utils.oauth_url(self.bot.user.id)
         MainEmbed=discord.Embed(title='Title', description='Description', url=f'{oauth}')
@@ -91,8 +100,12 @@ class EmbedEditor(commands.Cog):
 
         MainMessage=await ctx.send(embed=MainEmbed, components=[Select(placeholder='Dynamic embed editor', options=SelOptions)])
 
-        note='**Note**: you can respond `None` if you dont want.'
+    
         while True:
+            if random.randint(1,2)==2:
+                note='**Note**: you can respond `None` if you dont want.'
+            else:
+                note=''
             try:
 
                 interaction=await self.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=60)
@@ -120,7 +133,7 @@ class EmbedEditor(commands.Cog):
                             continue
                         check=await self.set_title(message=MainMessage, content=resMessage, url=True)
                         if check==False:
-                            await ctx.send('Scheme must be one of `http` or `https`')
+                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
                             continue
 
                     elif value=='SetFooter':
@@ -129,6 +142,16 @@ class EmbedEditor(commands.Cog):
                         if not resMessage:
                             continue
                         await self.set_footer(message=MainMessage, content=resMessage)
+
+                    elif value=='SetFooterIcon':
+                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
+                        resMessage=await self.wait_for_res(ctx)
+                        if not resMessage:
+                            continue
+                        check=await self.set_footer(message=MainMessage, icon=True, content=resMessage)
+                        if check==False:
+                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
+                            continue
 
 
             except asyncio.TimeoutError:
