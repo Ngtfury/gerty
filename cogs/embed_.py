@@ -119,7 +119,7 @@ class EmbedEditor(commands.Cog):
                         if not resMessage:
                             continue
                         check=await self.set_title(message=MainMessage, content=resMessage, url=True)
-                        if not check:
+                        if check==False:
                             await ctx.send('Scheme must be one of `http` or `https`')
                             continue
 
