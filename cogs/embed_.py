@@ -105,7 +105,7 @@ class EmbedEditor(commands.Cog):
                     Embed=FetchedMessage.embeds[0]
 
                     Embed.set_footer(text=resMessage)
-                    await MainMessage.edit(embed=Embed)
+                    await MainMessage.edit(embed=Embed, icon_url=Embed.footer.icon_url)
 
                 elif event.component.id=='SetIcon':
                     await event.respond(type=4, content='What icon do you want to be in footer? (only url allowed)')
@@ -119,7 +119,7 @@ class EmbedEditor(commands.Cog):
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     Embed=FetchedMessage.embeds[0]
 
-                    Embed.set_footer(icon_url=resMessage)
+                    Embed.set_footer(icon_url=f'{resMessage}', text=Embed.footer.text)
                     await MainMessage.edit(embed=Embed)
 
                 elif event.component.id=='ConfirmFooter':
