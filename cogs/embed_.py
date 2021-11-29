@@ -123,7 +123,7 @@ class EmbedEditor(commands.Cog):
                     Embed=FetchedMessage.embeds[0]
 
                     if resMessage in ['None', 'none']:
-                        _icon=None
+                        _icon=discord.Embed.Empty
                     else:
                         if not resMessage.startswith('http'):
                             await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
