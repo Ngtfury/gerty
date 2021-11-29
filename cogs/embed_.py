@@ -1,7 +1,5 @@
 import discord
-from discord import components
 from discord.ext import commands
-from discord.user import BU
 import discord_components
 from discord_components import *
 import asyncio
