@@ -20,7 +20,7 @@ class EmbedEditor(commands.Cog):
         FetchedMessage=await message.channel.fetch_message(message.id)
         Embed=FetchedMessage.embeds[0]
         if url:
-            if not url.startswith('http'):
+            if not content.startswith('http'):
                 return False
             Embed.url=content
             return await message.edit(embed=Embed)
