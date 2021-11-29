@@ -1,4 +1,5 @@
 import discord
+from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -41,16 +42,25 @@ class EmbedEditor(commands.Cog):
     @commands.command(brief='fun', description='Dynamic embed editor')
     async def embed(self, ctx):
 
-        SelectOptions=[
+        SelOptions=[
             SelectOption(label='Set Title', value='SetTitle'),
-            SelectOption(label='Set Description', value='SetDesc')
+            SelectOption(label='Set Description', value='SetDesc'),
+            SelectOption(label='Set title URL', value='SetTitleUrl'),
+            SelectOption(label='Set footer', value='SetFooter')
         ]
 
-        MainMessage=await ctx.send(embed=discord.Embed(title='Title', description='Description'), components=[Select(placeholder='Dynamic embed editor', options=SelectOptions)])
-        if random.randint(1,2) == 1:
-            note='**Note**: you can respond `None` if you dont want.'
-        else:
-            note=''
+        MainEmbed=discord.Embed(title='Title', description='Description', url='https://cdn.discordapp.com/attachments/914698141004079135/914810488225955920/embed.png')
+        MainEmbed.set_thumbnail(url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        MainEmbed.set_image(url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        MainEmbed.add_field(name='Field name', value='Color sets\n< that', inline=True)
+        MainEmbed.add_field(name='Field name', value='Color is an int/hex not string', inline=True)
+        MainEmbed.add_field(name='Field name', value='Field value', inline=True)
+        MainEmbed.add_field(name='Non-inline field name', value='The number of inline fields that can shown on the same row is limited to 3', inline=True)
+        MainEmbed.set_footer(icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png', text='Footer text • timestamp')
+
+        MainMessage=await ctx.send(embed=MainEmbed, components=[Select(placeholder='Dynamic embed editor', options=SelOptions)])
+
+        note='**Note**: you can respond `None` if you dont want.'
         while True:
             try:
 
