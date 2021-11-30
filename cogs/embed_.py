@@ -1,5 +1,4 @@
 import discord
-from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -227,6 +226,7 @@ class EmbedEditor(commands.Cog):
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
+    @commands.is_owner()
     async def embed(self, ctx):
 
         SelOptions=[
