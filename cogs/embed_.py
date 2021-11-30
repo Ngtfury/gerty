@@ -408,8 +408,7 @@ class EmbedEditor(commands.Cog):
 
         if embed.footer:
             _embed_footer_text=embed.footer.text
-            if embed.footer.icon:
-                _embed_footer_icon=embed.footer.icon_url
+            if embed.footer.icon_url:
                 SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}', icon_url='{embed.footer.icon_url}')")
             else:
                 SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}')")
