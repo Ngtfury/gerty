@@ -139,7 +139,7 @@ class EmbedEditor(commands.Cog):
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                     Embed=FetchedMessage.embeds[0]
 
-                    Embed.set_footer(icon_url=_icon, text=Embed.footer.text)
+                    Embed.set_author(name=Embed.author.name, icon_url=_icon, url=Embed.author.url)
                     try:
                         await MainMessage.edit(embed=Embed)
                     except Exception as e:
