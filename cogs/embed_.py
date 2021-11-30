@@ -329,69 +329,74 @@ class EmbedEditor(commands.Cog):
         MainMessage=await interaction.send(content='⠀', components=ColorComponents, ephemeral=False)
 
         while True:
-            inter=await ctx.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
+            try:
+                inter=await ctx.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=20)
 
-            FetchedMessage=await message.channel.fetch_message(message.id)
-            Embed=FetchedMessage.embeds[0]
+                FetchedMessage=await message.channel.fetch_message(message.id)
+                Embed=FetchedMessage.embeds[0]
 
-            if isinstance(inter.component, Select):
-                value=inter.values[0]
-                await inter.respond(type=6)
+                if isinstance(inter.component, Select):
+                    value=inter.values[0]
+                    await inter.respond(type=6)
 
-                if value=='ColorBlue':
-                    Embed.color=0x2580f7
-                elif value=='ColorWhite':
-                    Embed.color=0xffffff
-                elif value=='ColorYellow':
-                    Embed.color=0xccff00
-                elif value=='ColorRed':
-                    Embed.color=0xff0000
-                elif value=='ColorBrown':
-                    Embed.color=0x964B00
-                elif value=='ColorGreen':
-                    Embed.color=0x2bed3e
-                elif value=='ColorViolet':
-                    Embed.color=0x881c9c
-                elif value=='ColorOrange':
-                    Embed.color=0xff6200
-                elif value=='ColorBlack':
-                    Embed.color=0x000000
-                elif value=='ColorInvis':
-                    Embed.color=Utils.BotColors.invis()
+                    if value=='ColorBlue':
+                        Embed.color=0x2580f7
+                    elif value=='ColorWhite':
+                        Embed.color=0xffffff
+                    elif value=='ColorYellow':
+                        Embed.color=0xccff00
+                    elif value=='ColorRed':
+                        Embed.color=0xff0000
+                    elif value=='ColorBrown':
+                        Embed.color=0x964B00
+                    elif value=='ColorGreen':
+                        Embed.color=0x2bed3e
+                    elif value=='ColorViolet':
+                        Embed.color=0x881c9c
+                    elif value=='ColorOrange':
+                        Embed.color=0xff6200
+                    elif value=='ColorBlack':
+                        Embed.color=0x000000
+                    elif value=='ColorInvis':
+                        Embed.color=Utils.BotColors.invis()
 
-                await message.edit(embed=Embed)
-            elif isinstance(inter.component, Button):
-                if inter.component.id=='ColorQuit':
-                    try:
-                        await MainMessage.delete()
-                    except:
-                        pass
-                    return
-                elif inter.component.id=='ColorCustom':
-                    await inter.respond(type=4, content='What color you want to be in embed? (Only hex or numbers allowed)')
-                    resMessage=await self.wait_for_res(ctx)
-                    if not resMessage:
-                        continue
-
-                    try:
-                        _hexa=int(resMessage)
-                    except ValueError:
+                    await message.edit(embed=Embed)
+                elif isinstance(inter.component, Button):
+                    if inter.component.id=='ColorQuit':
                         try:
-                            _hexiof=hex(resMessage)
-                        except TypeError:
+                            await MainMessage.delete()
+                        except:
                             pass
+                        return
+                    elif inter.component.id=='ColorCustom':
+                        await inter.respond(type=4, content='What color you want to be in embed? (Only hex or numbers allowed)')
+                        resMessage=await self.wait_for_res(ctx)
+                        if not resMessage:
+                            continue
+
+                        try:
+                            _hexa=int(resMessage)
+                        except ValueError:
+                            try:
+                                _hexiof=hex(resMessage)
+                            except TypeError:
+                                pass
+                            else:
+                                orghex_=_hexiof
                         else:
-                            orghex_=_hexiof
-                    else:
-                        if _hexa:
-                            _hex=hex(_hexa)
-                        elif orghex_:
-                            _hex=orghex_
-                        else:
-                            await ctx.send('Invalid color only hex or numbers allowed')
-                            return
-                        Embed.color=_hex
-                        await message.edit(embed=Embed)
+                            if _hexa:
+                                _hex=hex(_hexa)
+                            elif orghex_:
+                                _hex=orghex_
+                            else:
+                                await ctx.send('Invalid color only hex or numbers allowed')
+                                return
+                            Embed.color=_hex
+                            await message.edit(embed=Embed)
+
+            except asyncio.TimeoutError:
+                await MainMessage.delete()
+                return
                     
 
 
