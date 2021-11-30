@@ -377,17 +377,10 @@ class EmbedEditor(commands.Cog):
                         try:
                             int(resMessage)
                         except ValueError:
-                            try:
-                                hex(resMessage)
-                            except:
-                                await ctx.send('Invalid color, color must be in hex or numbers')
-                                continue
-                            else:
-                                _hex=hex(resMessage)
-                        else:
-                            _hex=hex(int(resMessage))
+                            await ctx.send('Invalid color, color must be hex or integer')
+                            continue
                         
-                        Embed.color=_hex
+                        Embed.color=hex(int(resMessage))
                         await message.edit(embed=Embed)
 
             except asyncio.TimeoutError:
