@@ -186,7 +186,8 @@ class EmbedEditor(commands.Cog):
 
                     EmbedMain.set_author(name=_author_name, icon_url=_author_icon, url=_author_url)
                     
-                    return await message.edit(embed=EmbedMain)
+                    await message.edit(embed=EmbedMain)
+                    return
 
                 elif event.component.id=='AuthorCancel':
                     await event.respond(type=6)
@@ -368,10 +369,12 @@ class EmbedEditor(commands.Cog):
                             continue
 
                     elif value=='SetFooter':
-                        await self.set_footer(ctx, message=MainMessage, interaction=interaction)
+                        Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
+                        await self.set_footer(ctx, message=Fetched, interaction=interaction)
                     
                     elif value=='SetAuthor':
-                        await self.set_author(ctx, MainMessage, interaction=interaction)
+                        Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
+                        await self.set_author(ctx, Fetched, interaction=interaction)
 
 #                    elif value=='SetFooterIcon':
 #                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
