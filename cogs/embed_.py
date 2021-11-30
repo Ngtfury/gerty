@@ -184,7 +184,7 @@ class EmbedEditor(commands.Cog):
                     FetchedMain=await message.channel.fetch_message(message.id)
                     EmbedMain=FetchedMain.embeds[0]
 
-                    EmbedMain.author(name=_author_name, icon_url=_author_icon, url=_author_url)
+                    EmbedMain.set_author(name=_author_name, icon_url=_author_icon, url=_author_url)
                     
                     return await message.edit(embed=EmbedMain)
 
