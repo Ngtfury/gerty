@@ -406,9 +406,9 @@ class EmbedEditor(commands.Cog):
         if embed.description and not embed.title:
             MainEmbedFirst.append(f"embed=discord.Embed(description='{embed.description}')")
 
-        if not embed.footer==discord.Embed.Empty:
+        if embed.footer:
             _embed_footer_text=embed.footer.text
-            if not embed.footer.icon==discord.Embed.Empty:
+            if embed.footer.icon:
                 _embed_footer_icon=embed.footer.icon_url
                 SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}', icon_url='{embed.footer.icon_url}')")
             else:
@@ -416,7 +416,7 @@ class EmbedEditor(commands.Cog):
 
         MainEmbedFirst_=''.join(MainEmbedFirst)
         footer_=''.join(SetFooter)
-        MainMessage=f'```py\n{MainEmbedFirst_}\n{footer_}'
+        MainMessage=f'```py\n{MainEmbedFirst_}\n{footer_}```'
         return MainMessage
 
 
