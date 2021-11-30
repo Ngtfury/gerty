@@ -318,7 +318,7 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Green', value='ColorGreen', emoji='🟩'),
             SelectOption(label='Violet', value='ColorViolet', emoji='🟪'),
             SelectOption(label='Orange', value='ColorOrange', emoji='🟧'),
-            SelectOption(labal='Black', value='ColorBlack', emoji='⬛'),
+            SelectOption(label='Black', value='ColorBlack', emoji='⬛'),
             SelectOption(label='Invisible', value='ColorInvis')
         ]
 
