@@ -386,7 +386,39 @@ class EmbedEditor(commands.Cog):
             except asyncio.TimeoutError:
                 await MainMessage.delete()
                 return
-                    
+
+
+
+    async def get_code(message: discord.Message):
+        SetAuthor=[]
+        MainEmbedFirst=[]
+        AddField=[]
+        SetImage=[]
+        SetThumbnail=[]
+        SetFooter=[]
+
+        embed=message.embeds[0]
+
+        if embed.title and embed.description:
+            MainEmbedFirst.append(f"embed=discord.Embed(title='{embed.title}', description='{embed.description}')")
+        if embed.title and not embed.description:
+            MainEmbedFirst.append(f"embed=discord.Embed(title='{embed.title}')")
+        if embed.description and not embed.title:
+            MainEmbedFirst.append(f"embed=discord.Embed(description='{embed.description}')")
+
+        if not embed.footer==discord.Embed.Empty:
+            _embed_footer_text=embed.footer.text
+            if not embed.footer.icon==discord.Embed.Empty:
+                _embed_footer_icon=embed.footer.icon_url
+                SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}', icon_url='{embed.footer.icon_url}')")
+            else:
+                SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}')")
+
+        MainEmbedFirst_=''.join(MainEmbedFirst)
+        footer_=''.join(SetFooter)
+        MainMessage=f'```py\n{MainEmbedFirst_}\n{footer_}'
+        return MainMessage
+
 
 
 
