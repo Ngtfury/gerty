@@ -111,6 +111,9 @@ class EmbedEditor(commands.Cog):
                     resMessage=await self.wait_for_res(ctx)
                     if not resMessage:
                         continue
+                    if resMessage < 256:
+                        await ctx.send('Author name must be 256 or fewer in length.', delete_after=3)
+                        continue
 
 
                     FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
