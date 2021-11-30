@@ -1,4 +1,6 @@
 import discord
+from discord import emoji
+from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -306,6 +308,29 @@ class EmbedEditor(commands.Cog):
                     return
 
 
+    async def set_color(self, ctx, message: discord.Message, interaction):
+        
+        ColorOptions=[
+            SelectOption(label='Blue', value='ColorBlue', emoji='🟦'),
+            SelectOption(label='White', value='ColorWhite', emoji='⬜'),
+            SelectOption(label='Yellow', value='ColorYellow', emoji='🟨'),
+            SelectOption(label='Red', value='ColorRed', emoji='🟥'),
+            SelectOption(label='Brown', value='ColorBrown', emoji='🟫'),
+            SelectOption(label='Green', value='ColorGreen', emoji='🟩'),
+            SelectOption(label='Violet', value='ColorViolet', emoji='🟪'),
+            SelectOption(label='Orange', value='ColorOrange', emoji='🟧'),
+            SelectOption(lebal='Black', value='ColorBlack', emoji='⬛'),
+            SelectOption(label='Invisible', value='ColorInvis')
+        ]
+
+        ColorComponents=[[
+            Select(placeholder='Select colors you want', options=ColorOptions),
+        ], Button(style=ButtonStyle.green, label='Custom color', id='ColorCustom'), Button(style=ButtonStyle.red, label='Quit', id='ColorQuit')]
+
+        await interaction.send(content='⠀', components=ColorComponents, ephemeral=False)
+
+        while True:
+            inter=await ctx.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
@@ -317,6 +342,7 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Edit Description', value='SetDesc'),
             SelectOption(label='Edit title URL', value='SetTitleUrl'),
             SelectOption(label='Edit author', value='SetAuthor'),
+            SelectOption(label='Edit Color', value='SetColor'),
             SelectOption(label='Edit footer', value='SetFooter'),
         ]
         oauth=discord.utils.oauth_url(self.bot.user.id)
