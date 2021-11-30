@@ -440,7 +440,7 @@ class EmbedEditor(commands.Cog):
         _fields='\n'.join(AddField)
         _thumbnail=''.join(SetThumbnail)
         _image=''.join(SetImage)
-        MainMessage=f'```pyimport discord\n\n{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}\nawait ctx.channel.send(embed=embed)```'
+        MainMessage=f'```py\nimport discord\n\n{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}\nawait ctx.channel.send(embed=embed)```'
         return MainMessage
 
 
