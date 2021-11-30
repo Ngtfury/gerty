@@ -390,8 +390,8 @@ class EmbedEditor(commands.Cog):
 
 
     async def get_code(self, message: discord.Message):
-        SetAuthor=[]
         MainEmbedFirst=[]
+        SetAuthor=[]
         AddField=[]
         SetImage=[]
         SetThumbnail=[]
@@ -406,6 +406,28 @@ class EmbedEditor(commands.Cog):
         if embed.description and not embed.title:
             MainEmbedFirst.append(f"embed=discord.Embed(description='{embed.description}')")
 
+        if embed.author:
+            if embed.author.icon_url:
+                if embed.author.url:
+                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', icon_url='{embed.author.icon_url}', url='{embed.author.url}')")
+                else:
+                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', icon_url='{embed.author.icon_url}')")
+            else:
+                if embed.author.url:
+                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', url='{embed.author.url}')")
+                else:
+                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}')")
+
+        if embed.fields:
+            for field in embed.fields:
+                AddField.append(f"embed.add_field(name='{field.name}', value='{field.value}', inline={field.inline})")
+
+        if embed.image:
+            SetImage.append(f"embed.set_image(url='{embed.image.url}')")
+        
+        if embed.thumbnail:
+            SetThumbnail.append(f"embed.set_thumbnail(url='{embed.thumbnail.url}')")
+
         if embed.footer:
             _embed_footer_text=embed.footer.text
             if embed.footer.icon_url:
@@ -413,9 +435,12 @@ class EmbedEditor(commands.Cog):
             else:
                 SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}')")
 
-        MainEmbedFirst_=''.join(MainEmbedFirst)
-        footer_=''.join(SetFooter)
-        MainMessage=f'```py\n{MainEmbedFirst_}\n{footer_}```'
+        _embed=''.join(MainEmbedFirst)
+        _author=''.join(SetAuthor)
+        _fields='\n'.join(AddField)
+        _thumbnail=''.join(SetThumbnail)
+        _image=''.join(SetImage)
+        MainMessage=f'```pyimport discord\n\n{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}\nawait ctx.channel.send(embed=embed)```'
         return MainMessage
 
 
