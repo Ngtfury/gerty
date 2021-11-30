@@ -1,4 +1,5 @@
 import discord
+from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -24,7 +25,7 @@ class EmbedEditor(commands.Cog):
                 pass
             return resMessage.content
         except asyncio.TimeoutError:
-            await ctx.send('You didn\'t respond on time. You can try again.')
+            await ctx.send('You didn\'t respond on time. You can try again.', delete_after=3)
             return False
 
 
@@ -80,16 +81,70 @@ class EmbedEditor(commands.Cog):
 #        return await message.edit(embed=Embed)
 
 
+    async def set_author(self, ctx, message:discord.Message, interaction):
+
+        compo=[[
+            Button(label='Edit author name', id='SetAuthorName'),
+            Button(label='Edit author icon', id='SetAuthorIcon'),
+            Button(label='Edit author URL', id='SetAuthorURL'),
+            Button(style=ButtonStyle.green, label='Confirm', id='ConfirmAuthor')
+        ], Button(style=ButtonStyle.red, label='Quit', id='AuthorCancel')]
+
+        firstEmbed=discord.Embed(color=Utils.BotColors.invis())
+
+        Author_=message.embeds[0].author
+        if not Author_:
+            firstEmbed.set_author(name='<Author name here>', url=discord.utils.oauth_url(self.bot.user.id), icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        else:
+            if Author_.icon_url:
+                icon_=Author_.icon_url
+            else:
+                icon_=discord.Embed.Empty
+
+            firstEmbed.set_author(name=Author_.name, icon_url=icon_)
+        MainMessage=await interaction.send(embed=firstEmbed, components=compo, ephemeral=False)
+
+        while True:
+            try:
+                event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=10)
+                if event.component.id=='SetAuthorName':
+                    await event.respond(type=4, content='What name do you want to be for author?')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+
+                    FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                    Embed=FetchedMessage.embeds[0]
+
+                    Embed.set_author(name=resMessage, icon_url=Embed.author.icon_url, url=Embed.author.url)
+                    await MainMessage.edit(embed=Embed)
+            except asyncio.TimeoutError:
+                try:
+                    await MainMessage.delete()
+                    return
+                except:
+                    return
+
     async def set_footer(self, ctx, message: discord.Message, interaction):
 
         compo=[[
-            Button(label='Set footer text', id='SetText'),
-            Button(label='Set footer icon', id='SetIcon'),
+            Button(label='Edit footer text', id='SetText'),
+            Button(label='Edit footer icon', id='SetIcon'),
             Button(label='Confirm', style=ButtonStyle.green, id='ConfirmFooter'),
         ], Button(style=ButtonStyle.red, label='Quit', id='FooterCancel')]
 
         em=discord.Embed(color=Utils.BotColors.invis())
-        em.set_footer(text='<Footer text here>', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+
+        Footer_=message.embeds[0].footer
+        if not Footer_:
+            em.set_footer(text='<Footer text here>', icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png')
+        else:
+            if Footer_.icon_url:
+                icon_=Footer_.icon_url
+            else:
+                icon_=discord.Embed.Empty
+            em.set_footer(text=Footer_.text, icon_url=icon_)
         MainMessage=await interaction.send(embed=em, components=compo, ephemeral=False)
 
         while True:
@@ -132,7 +187,12 @@ class EmbedEditor(commands.Cog):
 
 
                     Embed.set_footer(icon_url=_icon, text=Embed.footer.text)
-                    await MainMessage.edit(embed=Embed)
+                    try:
+                        await MainMessage.edit(embed=Embed)
+                    except Exception as e:
+                        if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
+                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
+                            continue
 
                 elif event.component.id=='ConfirmFooter':
                     await event.respond(type=6)
@@ -150,24 +210,18 @@ class EmbedEditor(commands.Cog):
 
                     EmbedMain.set_footer(text=_footer, icon_url=_icon)
                     
-                    try:
-                        await message.edit(embed=EmbedMain)
-                        return
-                    except Exception as e:
-                        if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
-                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
-                            await MainMessage.delete()
-                            return
+                    return await message.edit(embed=EmbedMain)
 
                 elif event.component.id=='FooterCancel':
                     await MainMessage.delete()
-                    break
+                    return
                     
             except asyncio.TimeoutError:
                 try:
                     await MainMessage.delete()
+                    return
                 except:
-                    pass
+                    return
 
 
 
@@ -176,14 +230,12 @@ class EmbedEditor(commands.Cog):
     async def embed(self, ctx):
 
         SelOptions=[
-            SelectOption(label='Set Title', value='SetTitle'),
-            SelectOption(label='Set Description', value='SetDesc'),
-            SelectOption(label='Set title URL', value='SetTitleUrl'),
-            SelectOption(label='Set author', value='SetAuthor'),
-            SelectOption(label='Set author icon', value='SetAuthorIcon'),
-            SelectOption(label='Set footer', value='SetFooter'),
-            SelectOption(label='Set footer icon', value='SetFooterIcon')
-        ]   
+            SelectOption(label='Edit Title', value='SetTitle'),
+            SelectOption(label='Edit Description', value='SetDesc'),
+            SelectOption(label='Edit title URL', value='SetTitleUrl'),
+            SelectOption(label='Edit author', value='SetAuthor'),
+            SelectOption(label='Edit footer', value='SetFooter'),
+        ]
         oauth=discord.utils.oauth_url(self.bot.user.id)
         MainEmbed=discord.Embed(title='Title', description='Description', url=f'{oauth}')
         MainEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/914819940798853181/914820437538635806/oie_ZSzciFNKnAq8.png')
@@ -235,6 +287,9 @@ class EmbedEditor(commands.Cog):
 
                     elif value=='SetFooter':
                         await self.set_footer(ctx, message=MainMessage, interaction=interaction)
+                    
+                    elif value=='SetAuthor':
+                        await self.set_author(ctx, MainMessage, interaction=interaction)
 
 #                    elif value=='SetFooterIcon':
 #                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
