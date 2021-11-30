@@ -144,11 +144,58 @@ class EmbedEditor(commands.Cog):
                         await MainMessage.edit(embed=Embed)
                     except Exception as e:
                         if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
-                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
+                            await ctx.send('Not a well formed image URL provided in footer icon.', delete_after=3)
                             continue
                         else:
-                            await event.respond(type=4, content=f'{str(e)}')
+                            await ctx.send(str(e), delete_after=3)
                             continue
+
+                elif event.component.id=='SetAuthorURL':
+                    await event.respond(type=4, content='What URL do you want to be for author? (Only URL allowed)')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+                    if resMessage in ['None', 'none']:
+                        _URL=discord.Embed.Empty
+                    else:
+                        if not resMessage.startswith('http'):
+                            await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
+                            continue
+                        _URL=resMessage
+                    FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                    Embed=FetchedMessage.embeds[0]
+
+                    Embed.set_author(name=Embed.author.name, icon_url=Embed.author.icon_url, url=_URL)
+                    await MainMessage.edit(embed=Embed)
+
+                elif event.component.id=='ConfirmAuthor':
+                    await event.respond(type=6)
+
+                    FetchedMessageJR=await MainMessage.channel.fetch_message(MainMessage.id)
+                    EmbedJR=FetchedMessageJR.embeds[0]
+
+                    await MainMessage.delete()
+
+                    _author_name=EmbedJR.author.name
+                    _author_icon=EmbedJR.author.icon_url
+                    _author_url=EmbedJR.author.url
+
+                    FetchedMain=await message.channel.fetch_message(message.id)
+                    EmbedMain=FetchedMain.embeds[0]
+
+                    EmbedMain.author(name=_author_name, icon_url=_author_icon, url=_author_url)
+                    
+                    return await message.edit(embed=EmbedMain)
+
+                elif event.component.id=='AuthorCancel':
+                    await event.respond(type=6)
+                    try:
+                        await MainMessage.delete()
+                    except:
+                        pass
+                    return
+
 
             except asyncio.TimeoutError:
                 try:
@@ -222,7 +269,7 @@ class EmbedEditor(commands.Cog):
                         await MainMessage.edit(embed=Embed)
                     except Exception as e:
                         if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
-                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
+                            await ctx.send('Not a well formed image URL provided in footer icon.', delete_after=3)
                             continue
 
                 elif event.component.id=='ConfirmFooter':
@@ -244,7 +291,10 @@ class EmbedEditor(commands.Cog):
                     return await message.edit(embed=EmbedMain)
 
                 elif event.component.id=='FooterCancel':
-                    await MainMessage.delete()
+                    try:
+                        await MainMessage.delete()
+                    except:
+                        pass
                     return
                     
             except asyncio.TimeoutError:
