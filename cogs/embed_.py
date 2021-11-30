@@ -381,7 +381,7 @@ class EmbedEditor(commands.Cog):
                                 hex(resMessage)
                             except:
                                 await ctx.send('Invalid color, color must be in hex or numbers')
-                                return
+                                continue
                             else:
                                 _hex=hex(resMessage)
                         else:
