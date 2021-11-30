@@ -380,7 +380,7 @@ class EmbedEditor(commands.Cog):
                             await ctx.send('Invalid color, color must be hex or integer')
                             continue
                         
-                        Embed.color=hex(int(resMessage))
+                        Embed.color=int(resMessage)
                         await message.edit(embed=Embed)
 
             except asyncio.TimeoutError:
@@ -391,7 +391,6 @@ class EmbedEditor(commands.Cog):
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
-    @commands.is_owner()
     async def embed(self, ctx):
 
         SelOptions=[
