@@ -389,7 +389,7 @@ class EmbedEditor(commands.Cog):
 
 
 
-    async def get_code(message: discord.Message):
+    async def get_code(self, message: discord.Message):
         SetAuthor=[]
         MainEmbedFirst=[]
         AddField=[]
