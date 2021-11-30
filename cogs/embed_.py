@@ -105,7 +105,7 @@ class EmbedEditor(commands.Cog):
 
         while True:
             try:
-                event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=10)
+                event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel, timeout=20)
                 if event.component.id=='SetAuthorName':
                     await event.respond(type=4, content='What name do you want to be for author?')
                     resMessage=await self.wait_for_res(ctx)
@@ -121,6 +121,32 @@ class EmbedEditor(commands.Cog):
 
                     Embed.set_author(name=resMessage, icon_url=Embed.author.icon_url, url=Embed.author.url)
                     await MainMessage.edit(embed=Embed)
+
+                elif event.component.id=='SetAuthorIcon':
+                    await event.respond(type=4, content='What icon do you want to be for author? (Only URL allowed)')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+                    if resMessage in ['None', 'none']:
+                        _icon=discord.Embed.Empty
+                    else:
+                        if not resMessage.startswith('http'):
+                            await ctx.send(f'Scheme "{resMessage}" is not supported. Scheme must be one of `http`, `https`.', delete_after=3)
+                            continue
+                        _icon=resMessage
+
+                    FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                    Embed=FetchedMessage.embeds[0]
+
+                    Embed.set_footer(icon_url=_icon, text=Embed.footer.text)
+                    try:
+                        await MainMessage.edit(embed=Embed)
+                    except Exception as e:
+                        if str(e) in ['Invalid Form Body', 'Not a well formed URL.']:
+                            await event.respond(type=4, content='Not a well formed image URL provided in footer icon.')
+                            continue
+
             except asyncio.TimeoutError:
                 try:
                     await MainMessage.delete()
