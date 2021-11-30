@@ -1,4 +1,5 @@
 import discord
+from discord import embeds
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -325,10 +326,74 @@ class EmbedEditor(commands.Cog):
             Select(placeholder='Select colors you want', options=ColorOptions),
         ], Button(style=ButtonStyle.green, label='Custom color', id='ColorCustom'), Button(style=ButtonStyle.red, label='Quit', id='ColorQuit')]
 
-        await interaction.send(content='⠀', components=ColorComponents, ephemeral=False)
+        MainMessage=await interaction.send(content='⠀', components=ColorComponents, ephemeral=False)
 
         while True:
             inter=await ctx.bot.wait_for('interaction', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
+
+            FetchedMessage=await message.channel.fetch_message(message.id)
+            Embed=FetchedMessage.embeds[0]
+
+            if isinstance(inter.component, Select):
+                value=inter.values[0]
+                await inter.respond(type=6)
+
+                if value=='ColorBlue':
+                    Embed.color=0x2580f7
+                elif value=='ColorWhite':
+                    Embed.color=0xffffff
+                elif value=='ColorYellow':
+                    Embed.color=0xccff00
+                elif value=='ColorRed':
+                    Embed.color=0xff0000
+                elif value=='ColorBrown':
+                    Embed.color=0x964B00
+                elif value=='ColorGreen':
+                    Embed.color=0x2bed3e
+                elif value=='ColorViolet':
+                    Embed.color=0x881c9c
+                elif value=='ColorOrange':
+                    Embed.color=0xff6200
+                elif value=='ColorBlack':
+                    Embed.color=0x000000
+                elif value=='ColorInvis':
+                    Embed.color=Utils.BotColors.invis()
+
+                await message.edit(embed=Embed)
+            elif isinstance(inter.component, Button):
+                if inter.component.id=='ColorQuit':
+                    try:
+                        await MainMessage.delete()
+                    except:
+                        pass
+                    return
+                elif inter.component.id=='ColorCustom':
+                    await inter.respond(type=4, content='What color you want to be in embed? (Only hex or numbers allowed)')
+                    resMessage=await self.wait_for_res(ctx)
+                    if not resMessage:
+                        continue
+
+                    try:
+                        _hexa=int(resMessage)
+                    except ValueError:
+                        try:
+                            _hexiof=hex(resMessage)
+                        except TypeError:
+                            pass
+                        else:
+                            orghex_=_hexiof
+                    else:
+                        if _hexa:
+                            _hex=hex(_hexa)
+                        elif orghex_:
+                            _hex=orghex_
+                        else:
+                            await ctx.send('Invalid color only hex or numbers allowed')
+                            return
+                        Embed.color=_hex
+                        await message.edit(embed=Embed)
+                    
+
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
@@ -399,6 +464,10 @@ class EmbedEditor(commands.Cog):
                     elif value=='SetAuthor':
                         Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
                         await self.set_author(ctx, Fetched, interaction=interaction)
+                    
+                    elif value=='SetColor':
+                        Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
+                        await self.set_color(ctx, message=Fetched, interaction=interaction)
 
 #                    elif value=='SetFooterIcon':
 #                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
