@@ -463,7 +463,8 @@ class EmbedEditor(commands.Cog):
         _fields='\n'.join(AddField)
         _thumbnail=''.join(SetThumbnail)
         _image=''.join(SetImage)
-        MainMessage=f'{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}'
+        _footer=''.join(SetFooter)
+        MainMessage=f'{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}\n{_footer}'
         return MainMessage
 
 
@@ -566,7 +567,7 @@ class EmbedEditor(commands.Cog):
                         continue
 
                     elif interaction.component.id=='SendToChannel':
-                        ChannelMsg=await interaction.send(type=4, content='Which channel do you want to send this embed?', ephemeral=False)
+                        ChannelMsg=await interaction.send(content='Which channel do you want to send this embed?', ephemeral=False)
                         resMessage=await self.wait_for_res(ctx)
                         if not resMessage:
                             continue
