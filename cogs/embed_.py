@@ -1,8 +1,4 @@
 import discord
-from discord import embeds
-from discord import components
-from discord import emoji
-from discord.ext import commands
 import discord_components
 from discord_components import *
 import asyncio
