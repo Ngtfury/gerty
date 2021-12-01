@@ -618,6 +618,7 @@ class EmbedEditor(commands.Cog):
 
                     elif value=='AddFields':
                         Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
+                        await self.add_fields(ctx=ctx, message=Fetched, interaction=interaction)
 
                 elif isinstance(interaction.component, Button):
                     if interaction.component.id=='GetEmbedCode':
