@@ -1,4 +1,6 @@
 import discord
+from discord import components
+from discord.components import SelectOption
 import discord_components
 from discord.ext import commands
 from discord_components import *
@@ -468,6 +470,67 @@ class EmbedEditor(commands.Cog):
         return MainMessage
 
 
+    async def add_fields(self, ctx, message:discord.Message, interaction):
+
+        compo=[[
+            Button(label='Set name', id='SetFieldName'),
+            Button(label='Set value', id='SetValue'),
+            Button(label='Inline', id='SetInline')
+        ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', value='QuitFields')]
+
+        Em=discord.Embed()
+        Em.add_field(name='Field name', value='Field value', color=Utils.BotColors.invis())
+
+        MainMessage=await ctx.send(embed=Em, components=compo)
+
+        while True:
+            event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
+            if event.component.id=='SetFieldName':
+                await event.respond(type=4, content='What field name do you want?')
+                resMessage=await self.wait_for_res(ctx)
+                if not resMessage:
+                    continue
+
+                FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                Embed=FetchedMessage.embeds[0]
+
+                Embed.add_field(name=resMessage, value=Embed.fields[0].value)
+
+                await MainMessage.edit(embed=Embed)
+
+            elif event.component.id=='SetValue':
+                await event.respond(type=4, content='What field value do you want?')
+                resMessage=await self.wait_for_res(ctx)
+                if not resMessage:
+                    continue
+
+                FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                Embed=FetchedMessage.embeds[0]
+
+                Embed.add_field(name=Embed.fields[0].name, value=resMessage)
+
+                await MainMessage.edit(embed=Embed)
+
+            elif event.component.id=='SetInline':
+                FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
+                Embed=FetchedMessage.embeds[0]
+
+                if Embed.fields[0].inline==True:
+                    Embed.fields[0].inline=False
+                    color=ButtonStyle.gray
+                else:
+                    Embed.fields[0].inline=True
+                    color=ButtonStyle.green
+
+                compo2=[[
+                    Button(label='Set name', id='SetFieldName'),
+                    Button(label='Set value', id='SetValue'),
+                    Button(label='Inline', id='SetInline', style=color)
+                ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', value='QuitFields')]
+
+
+                await event.respond(type=7, embed=Embed, components=compo2)
+
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
@@ -479,6 +542,7 @@ class EmbedEditor(commands.Cog):
             SelectOption(label='Edit title URL', value='SetTitleUrl'),
             SelectOption(label='Edit author', value='SetAuthor'),
             SelectOption(label='Edit Color', value='SetColor'),
+            SelectOption(label='Add fields', value='AddFields'),
             SelectOption(label='Edit footer', value='SetFooter'),
         ]
         oauth=discord.utils.oauth_url(self.bot.user.id)
@@ -553,6 +617,9 @@ class EmbedEditor(commands.Cog):
                     elif value=='SetColor':
                         Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
                         await self.set_color(ctx, message=Fetched, interaction=interaction)
+
+                    elif value=='AddFields':
+                        Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
 
                 elif isinstance(interaction.component, Button):
                     if interaction.component.id=='GetEmbedCode':
