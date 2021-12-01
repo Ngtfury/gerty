@@ -478,6 +478,7 @@ class EmbedEditor(commands.Cog):
 
         Em=discord.Embed(color=Utils.BotColors.invis())
         Em.add_field(name='Field name', value='Field value')
+        Em.add_field(name='Dummy Field', value='Dummy field value')
 
         MainMessage=await interaction.send(embed=Em, components=compo, ephemeral=False)
 
