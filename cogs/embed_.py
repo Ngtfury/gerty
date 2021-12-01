@@ -1,5 +1,7 @@
 import discord
 from discord import embeds
+from discord import components
+from discord import emoji
 from discord.ext import commands
 import discord_components
 from discord_components import *
@@ -390,6 +392,9 @@ class EmbedEditor(commands.Cog):
 
 
     async def get_code(self, message: discord.Message):
+
+        FetchedMessage=await message.channel.fetch_message(message.id)
+
         MainEmbedFirst=[]
         SetAuthor=[]
         AddField=[]
@@ -397,30 +402,51 @@ class EmbedEditor(commands.Cog):
         SetThumbnail=[]
         SetFooter=[]
 
-        embed=message.embeds[0]
+        embed=FetchedMessage.embeds[0]
+
+        def r(a):
+            return a.replace('\n', r'\n')
 
         if embed.title and embed.description:
-            MainEmbedFirst.append(f"embed=discord.Embed(title='{embed.title}', description='{embed.description}')")
+            _title=r(embed.title)
+            _description=r(embed.description)
+            if embed.color:
+                MainEmbedFirst.append(f"embed=discord.Embed(title='{_title}', description='{_description}', color='{embed.color}')")
+            else:
+                MainEmbedFirst.append(f"embed=discord.Embed(title='{_title}', description='{_description}')")
+
         if embed.title and not embed.description:
-            MainEmbedFirst.append(f"embed=discord.Embed(title='{embed.title}')")
+            title_=r(embed.title)
+            if embed.color:
+                MainEmbedFirst.append(f"embed=discord.Embed(title='{title_}', color='{embed.color}')")
+            else:
+                MainEmbedFirst.append(f"embed=discord.Embed(title='{title_}')")
+
         if embed.description and not embed.title:
-            MainEmbedFirst.append(f"embed=discord.Embed(description='{embed.description}')")
+            _des=r(embed.description)
+            if embed.color:
+                MainEmbedFirst.append(f"embed=discord.Embed(description='{_des}', color='{embed.color}')")
+            else:
+                MainEmbedFirst.append(f"embed=discord.Embed(description='{_des}')")
 
         if embed.author:
+            _au_name=r(embed.author.name)
             if embed.author.icon_url:
                 if embed.author.url:
-                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', icon_url='{embed.author.icon_url}', url='{embed.author.url}')")
+                    SetAuthor.append(f"embed.set_author(name='{_au_name}', icon_url='{embed.author.icon_url}', url='{embed.author.url}')")
                 else:
-                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', icon_url='{embed.author.icon_url}')")
+                    SetAuthor.append(f"embed.set_author(name='{_au_name}', icon_url='{embed.author.icon_url}')")
             else:
                 if embed.author.url:
-                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}', url='{embed.author.url}')")
+                    SetAuthor.append(f"embed.set_author(name='{_au_name}', url='{embed.author.url}')")
                 else:
-                    SetAuthor.append(f"embed.set_author(name='{embed.author.name}')")
+                    SetAuthor.append(f"embed.set_author(name='{_au_name}')")
 
         if embed.fields:
             for field in embed.fields:
-                AddField.append(f"embed.add_field(name='{field.name}', value='{field.value}', inline={field.inline})")
+                _field_name=r(field.name)
+                _field_value=r(field.value)
+                AddField.append(f"embed.add_field(name='{_field_name}', value='{_field_value}', inline={field.inline})")
 
         if embed.image:
             SetImage.append(f"embed.set_image(url='{embed.image.url}')")
@@ -429,7 +455,7 @@ class EmbedEditor(commands.Cog):
             SetThumbnail.append(f"embed.set_thumbnail(url='{embed.thumbnail.url}')")
 
         if embed.footer:
-            _embed_footer_text=embed.footer.text
+            _embed_footer_text=r(embed.footer.text)
             if embed.footer.icon_url:
                 SetFooter.append(f"embed.set_footer(text='{_embed_footer_text}', icon_url='{embed.footer.icon_url}')")
             else:
@@ -440,7 +466,7 @@ class EmbedEditor(commands.Cog):
         _fields='\n'.join(AddField)
         _thumbnail=''.join(SetThumbnail)
         _image=''.join(SetImage)
-        MainMessage=f'```py\nimport discord\n\n{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}\nawait ctx.channel.send(embed=embed)```'
+        MainMessage=f'{_embed}\n{_author}\n{_fields}\n{_thumbnail}\n{_image}'
         return MainMessage
 
 
@@ -468,7 +494,20 @@ class EmbedEditor(commands.Cog):
         MainEmbed.add_field(name='Non-inline field name', value='The number of inline fields that can shown on the same row is limited to 3', inline=True)
         MainEmbed.set_footer(icon_url='https://cdn.logojoy.com/wp-content/uploads/20210422095037/discord-mascot.png', text='Footer text • timestamp')
 
-        MainMessage=await ctx.send(embed=MainEmbed, components=[Select(placeholder='Dynamic embed editor', options=SelOptions)])
+        if ctx.author.guild_permissions.manage_channels:
+            _disabled=False
+        else:
+            _disabled=True
+
+        MainMessage=await ctx.send(
+            embed=MainEmbed,
+            components=[[
+                Select(placeholder='Dynamic embed editor', options=SelOptions),
+                Button(style=ButtonStyle.green, label='Get embed code', id='GetEmbedCode', emoji=self.bot.get_emoji(915647737695961118)),
+                Button(style=ButtonStyle.gray, label='Send to channel', id='SendToChannel', disabled=_disabled, emoji=self.bot.get_emoji(915648968304787566)),
+                Button(style=ButtonStyle.red, label='Quit', id='QuitWholeEmbed', emoji=self.bot.get_emoji(890938576563503114))
+            ]]
+        )
 
     
         while True:
@@ -518,19 +557,14 @@ class EmbedEditor(commands.Cog):
                         Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
                         await self.set_color(ctx, message=Fetched, interaction=interaction)
 
-#                    elif value=='SetFooterIcon':
-#                        await interaction.respond(type=4, content=f'What footer icon you want to be in the embed?\n{note}')
-#                        resMessage=await self.wait_for_res(ctx)
-#                        if not resMessage:
-#                            continue
-#                        check=await self.set_footer(message=MainMessage, icon=True, content=resMessage)
-#                        if check==False:
-#                            await ctx.send('Scheme must be one of `http` or `https`', delete_after=3)
-#                            continue
-#                        elif check=='URLERR':
-#                            await ctx.send('Not a well formed image URL.')
-#                            continue
-
+                elif isinstance(interaction.component, Button):
+                    if interaction.component.id=='GetEmbedCode':
+                        _code=await self.get_code(MainMessage)
+                        CodeMessage=await interaction.send(ephemeral=False, content=f'```py\nimport discord\n{_code}\nawait ctx.send(embed=embed)```', components=[Button(emoji=self.bot.get_emoji(890938576563503114), id='DeleteCode')])
+                        CodeInter=await self.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel and i.message==CodeMessage)
+                        if CodeInter.component.id=='DeleteCode':
+                            await CodeMessage.delete()
+                        continue
 
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
