@@ -474,12 +474,12 @@ class EmbedEditor(commands.Cog):
             Button(label='Set name', id='SetFieldName'),
             Button(label='Set value', id='SetValue'),
             Button(label='Inline', id='SetInline')
-        ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
+        ], [Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]]
 
         Em=discord.Embed(color=Utils.BotColors.invis())
         Em.add_field(name='Field name', value='Field value')
 
-        MainMessage=await ctx.send(embed=Em, components=compo)
+        MainMessage=await interaction.send(embed=Em, components=compo, ephemeral=False)
 
         while True:
             event=await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel)
@@ -491,8 +491,10 @@ class EmbedEditor(commands.Cog):
 
                 FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                 Embed=FetchedMessage.embeds[0]
+                _field=Embed.fields[0]
 
-                Embed.add_field(name=resMessage, value=Embed.fields[0].value)
+                Embed.remove_field(0)
+                Embed.add_field(name=resMessage, value=_field.value)
 
                 await MainMessage.edit(embed=Embed)
 
@@ -504,8 +506,10 @@ class EmbedEditor(commands.Cog):
 
                 FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                 Embed=FetchedMessage.embeds[0]
+                _field=Embed.fields[0]
 
-                Embed.add_field(name=Embed.fields[0].name, value=resMessage)
+                Embed.remove_field(0)
+                Embed.add_field(name=_field.name, value=resMessage)
 
                 await MainMessage.edit(embed=Embed)
 
@@ -513,11 +517,14 @@ class EmbedEditor(commands.Cog):
                 FetchedMessage=await MainMessage.channel.fetch_message(MainMessage.id)
                 Embed=FetchedMessage.embeds[0]
 
-                if Embed.fields[0].inline==True:
-                    Embed.fields[0].inline=False
+                _field=Embed.fields[0]
+                Embed.remove_field(0)
+
+                if _field.inline==True:
+                    _inline=False
                     color=ButtonStyle.gray
                 else:
-                    Embed.fields[0].inline=True
+                    _inline=True
                     color=ButtonStyle.green
 
                 compo2=[[
@@ -526,6 +533,7 @@ class EmbedEditor(commands.Cog):
                     Button(label='Inline', id='SetInline', style=color)
                 ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
 
+                Embed.add_field(name=_field.name, value=_field.value, inline=_inline)
 
                 await event.respond(type=7, embed=Embed, components=compo2)
 
