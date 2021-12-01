@@ -499,11 +499,10 @@ class EmbedEditor(commands.Cog):
         MainMessage=await ctx.send(
             embed=MainEmbed,
             components=[[
-                Select(placeholder='Dynamic embed editor', options=SelOptions),
                 Button(style=ButtonStyle.green, label='Get embed code', id='GetEmbedCode', emoji=self.bot.get_emoji(915647737695961118)),
                 Button(style=ButtonStyle.gray, label='Send to channel', id='SendToChannel', disabled=_disabled, emoji=self.bot.get_emoji(915648968304787566)),
                 Button(style=ButtonStyle.red, label='Quit', id='QuitWholeEmbed', emoji=self.bot.get_emoji(890938576563503114))
-            ]]
+            ], Select(placeholder='Dynamic embed editor', options=SelOptions),]
         )
 
     
