@@ -499,7 +499,7 @@ class EmbedEditor(commands.Cog):
         MainMessage=await ctx.send(
             embed=MainEmbed,
             components=[[
-                Button(style=ButtonStyle.green, label='Get embed code', id='GetEmbedCode', emoji=self.bot.get_emoji(915647737695961118)),
+                Button(style=ButtonStyle.green, label='Get code', id='GetEmbedCode', emoji=self.bot.get_emoji(915647737695961118)),
                 Button(style=ButtonStyle.gray, label='Send to channel', id='SendToChannel', disabled=_disabled, emoji=self.bot.get_emoji(915648968304787566)),
                 Button(style=ButtonStyle.red, label='Quit', id='QuitWholeEmbed', emoji=self.bot.get_emoji(890938576563503114))
             ], Select(placeholder='Dynamic embed editor', options=SelOptions),]
@@ -556,12 +556,39 @@ class EmbedEditor(commands.Cog):
                 elif isinstance(interaction.component, Button):
                     if interaction.component.id=='GetEmbedCode':
                         _code=await self.get_code(MainMessage)
-                        CodeMessage=await interaction.send(ephemeral=False, content=f'```py\nimport discord\n{_code}\nawait ctx.send(embed=embed)```', components=[Button(emoji=self.bot.get_emoji(890938576563503114), id='DeleteCode')])
+                        CodeMessage=await interaction.send(ephemeral=False, content=f'```py\nimport discord\n\n{_code}\n\nawait ctx.send(embed=embed)```', components=[Button(emoji=self.bot.get_emoji(890938576563503114), id='DeleteCode')])
                         CodeInter=await self.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel and i.message==CodeMessage)
                         if CodeInter.component.id=='DeleteCode':
-                            await CodeMessage.delete()
+                            try:
+                                await CodeMessage.delete()
+                            except:
+                                pass
                         continue
 
+                    elif interaction.component.id=='SendToChannel':
+                        ChannelMsg=await interaction.send(type=4, content='Which channel do you want to send this embed?', ephemeral=False)
+                        resMessage=await self.wait_for_res(ctx)
+                        if not resMessage:
+                            continue
+
+                        try:
+                            _channel=await commands.TextChannelConverter().convert(ctx=ctx, argument=resMessage)
+                        except commands.ChannelNotFound:
+                            await ChannelMsg.edit(f'{Utils.BotEmojis.error()} Channel {resMessage} not found. Please try again.', delete_after=2)
+                            continue
+
+                        Fetched=await MainMessage.channel.fetch_message(MainMessage.id)
+                        await _channel.send(embed=Fetched.embeds[0])
+                        await ChannelMsg.edit(content=f'{Utils.BotEmojis.success()} Succesfully send embed to {_channel.mention}')
+
+                    elif interaction.component.id=='QuitWholeEmbed':
+                        await interaction.respond(type=6)
+                        try:
+                            await MainMessage.delete()
+                        except:
+                            pass
+                        break
+                        return
             except asyncio.TimeoutError:
                 await MainMessage.disable_components()
                 break
