@@ -474,7 +474,7 @@ class EmbedEditor(commands.Cog):
             Button(label='Set name', id='SetFieldName'),
             Button(label='Set value', id='SetValue'),
             Button(label='Inline', id='SetInline')
-        ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', value='QuitFields')]
+        ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
 
         Em=discord.Embed()
         Em.add_field(name='Field name', value='Field value', color=Utils.BotColors.invis())
@@ -524,7 +524,7 @@ class EmbedEditor(commands.Cog):
                     Button(label='Set name', id='SetFieldName'),
                     Button(label='Set value', id='SetValue'),
                     Button(label='Inline', id='SetInline', style=color)
-                ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', value='QuitFields')]
+                ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
 
 
                 await event.respond(type=7, embed=Embed, components=compo2)
