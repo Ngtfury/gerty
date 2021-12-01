@@ -476,8 +476,8 @@ class EmbedEditor(commands.Cog):
             Button(label='Inline', id='SetInline')
         ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
 
-        Em=discord.Embed()
-        Em.add_field(name='Field name', value='Field value', color=Utils.BotColors.invis())
+        Em=discord.Embed(color=Utils.BotColors.invis())
+        Em.add_field(name='Field name', value='Field value')
 
         MainMessage=await ctx.send(embed=Em, components=compo)
 
