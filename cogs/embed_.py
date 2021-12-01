@@ -531,7 +531,7 @@ class EmbedEditor(commands.Cog):
                     Button(label='Set name', id='SetFieldName'),
                     Button(label='Set value', id='SetValue'),
                     Button(label='Inline', id='SetInline', style=color)
-                ], Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]
+                ], [Button(label='Add Field', style=ButtonStyle.green, id='AddFieldConfirm'),Button(style=ButtonStyle.red, label='Quit', id='QuitFields')]]
 
                 Embed.add_field(name=_field.name, value=_field.value, inline=_inline)
 
