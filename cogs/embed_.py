@@ -538,6 +538,24 @@ class EmbedEditor(commands.Cog):
 
                 await event.respond(type=7, embed=Embed, components=compo2)
 
+            elif event.component.id=='AddFieldConfirm':
+                FetchedMessageJR=await MainMessage.channel.fetch_message(MainMessage.id)
+                EmbedJR=FetchedMessageJR.embeds[0]
+
+                OrgFetchedMessage=await message.channel.fetch_message(message.id)
+                OrgEmbed=OrgFetchedMessage.embeds[0]
+
+                _jrfield=EmbedJR.fields[0]
+                OrgEmbed.add_field(name=_jrfield.name, value=_jrfield.value, inline=_jrfield.inline)
+
+                await MainMessage.delete()
+                await message.edit(embed=OrgEmbed)
+                return
+
+            elif event.component.id=='QuitFields':
+                await MainMessage.delete()
+                return
+
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
