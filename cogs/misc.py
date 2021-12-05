@@ -391,7 +391,7 @@ class Misc(commands.Cog):
             if index.lower() == 'all':
                 embed=discord.Embed(color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
 
-                count=1
+                count=0
                 for x in _object:
                     count=count+1
 
