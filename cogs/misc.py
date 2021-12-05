@@ -375,10 +375,12 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
-    async def snipe(self, ctx, index: typing.Union[int, str]=1):
+    async def snipe(self, ctx, channel:typing.Optional[discord.TextChannel]=None, index: typing.Union[int, str]=1):
         
+        channel=channel or ctx.channel
+
         try:
-            _object=self.bot.sniped_messages[ctx.channel.id]
+            _object=self.bot.sniped_messages[channel.id]
         except KeyError:
             await ctx.send('There are no messages to snipe now.')
             return
@@ -401,7 +403,7 @@ class Misc(commands.Cog):
                     
                     embed.add_field(name=f'{count}. `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
-                    embed.set_author(name=f'Sniped messages in #{ctx.channel.name}', icon_url=ctx.guild.icon_url)
+                    embed.set_author(name=f'Sniped messages in #{channel.name}', icon_url=ctx.guild.icon_url)
 
                     
                 await ctx.send(embed=embed)
