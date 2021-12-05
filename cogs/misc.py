@@ -362,9 +362,9 @@ class Misc(commands.Cog):
             self.bot.sniped_messages[message.channel.id] = []
 
         author=message.author
-        embed=message.embeds[0]
-        attachments=message.attachments[0].url
-        content=message.content
+        embed=message.embeds[0] if message.embeds else None
+        attachments=message.attachments[0].url if message.attachments else None
+        content=message.content if message.content else None
         timestamp=int(datetime.datetime.now().timestamp())
 
         if len(self.bot.sniped_messages[message.channel.id]) > 10:
