@@ -375,7 +375,11 @@ class Misc(commands.Cog):
 
     @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
     async def snipe(self, ctx, index:int=1):
-        _object=self.bot.sniped_messages[ctx.channel.id]
+        try:
+            _object=self.bot.sniped_messages[ctx.channel.id]
+        except ValueError:
+            await ctx.send('There are no messages to snipe now')
+            return
 
         if not _object:
             await ctx.send('There are no messages to snipe now')
