@@ -377,7 +377,7 @@ class Misc(commands.Cog):
     async def snipe(self, ctx, index:int=1):
         try:
             _object=self.bot.sniped_messages[ctx.channel.id]
-        except ValueError:
+        except KeyError:
             await ctx.send('There are no messages to snipe now')
             return
 
