@@ -376,9 +376,6 @@ class Misc(commands.Cog):
 
     @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
     async def snipe(self, ctx, index: typing.Union[int, str]=1):
-        if index <= 0:
-            await ctx.send('Index must be greater than or equal to 1.')
-            return
         
         try:
             _object=self.bot.sniped_messages[ctx.channel.id]
@@ -412,6 +409,10 @@ class Misc(commands.Cog):
                     
 
         if isinstance(index, int):
+            if index <= 0:
+                await ctx.send('Index must be greater than or equal to 1.')
+                return
+
             try:
                 _message=_object[-index]
             except IndexError:
