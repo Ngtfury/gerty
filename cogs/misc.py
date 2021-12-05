@@ -5,6 +5,7 @@ import datetime
 import time
 import asyncio
 from math import *
+import typing
 import discord_components
 import aiohttp
 from io import BytesIO
@@ -364,7 +365,7 @@ class Misc(commands.Cog):
         author=message.author
         embed=message.embeds[0] if message.embeds else None
         attachments=message.attachments[0].url if message.attachments else None
-        content=message.content if message.content else None
+        content=message.content if message.content else '*Message does not contain any content*'
         timestamp=int(datetime.datetime.now().timestamp())
 
         if len(self.bot.sniped_messages[message.channel.id]) > 10:
@@ -374,7 +375,7 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
-    async def snipe(self, ctx, index:int=1):
+    async def snipe(self, ctx, index: typing.Union[int, str]=1):
         try:
             _object=self.bot.sniped_messages[ctx.channel.id]
         except KeyError:
@@ -385,7 +386,33 @@ class Misc(commands.Cog):
             await ctx.send('There are no messages to snipe now')
             return
 
-        _message=_object[index-1]
+        if isinstance(index, str):
+            if index.lower() == 'all':
+                embed=discord.Embed(color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
+
+                count=1
+                for x in _object:
+                    count=count+1
+
+                    content=x['content']
+                    author=x['author']
+                    timestamp=x['timestamp']
+                    
+                    embed.add_field(name=f'{count}. {author.name} - [<t:{timestamp}:R>]', value=content, inline=False)
+                    embed.set_footer(name=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
+                    embed.set_author(name=f'Sniped messages in #{ctx.chanel.name}', icon_url=ctx.guild.icon_url)
+
+                    
+                await ctx.send(embed=embed)
+                return
+                    
+
+        if isinstance(index, int):
+            try:
+                _message=_object[-index-1]
+            except ValueError:
+                await ctx.send(f'Now, there are only {len(_object)}/10 sniped messages not {index}')
+                return
 
         _content=_message['content']
         _author=_message['author']
