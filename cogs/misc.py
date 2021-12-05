@@ -358,7 +358,7 @@ class Misc(commands.Cog):
     async def snipe_messages(self, message):
         try:
             self.bot.sniped_messages[message.channel.id]
-        except ValueError:
+        except KeyError:
             self.bot.sniped_messages[message.channel.id] = []
 
         author=message.author
