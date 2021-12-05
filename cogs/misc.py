@@ -375,7 +375,7 @@ class Misc(commands.Cog):
         self.bot.sniped_messages[message.channel.id].append({'content': content, 'author': author, 'embed': embed, 'attachments': attachments, 'timestamp': timestamp})
 
 
-    @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
+    @commands.command(brief='meta', usage='(channel) (index)', description='Snipe latest 10 deleted messages of a channel')
     async def snipe(self, ctx, channel:typing.Optional[discord.TextChannel]=None, index: typing.Union[int, str]=1):
         
         channel=channel or ctx.channel
