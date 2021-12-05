@@ -15,6 +15,7 @@ from discord_components import *
 class Misc(commands.Cog):
     def __init__(self, client):
         self.client=client
+        self.bot=client
         self.buttons_one = [
             [
                 Button(style=ButtonStyle.grey, label='1', id='1'),
@@ -350,6 +351,59 @@ class Misc(commands.Cog):
                 buf=BytesIO(await r.read())
 
         await ctx.reply(f'Listening to **{spotify_result.title}** | {member.name}', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
+
+
+
+    @commands.Cog.listener('on_message_delete')
+    async def snipe_messages(self, message):
+        try:
+            self.bot.sniped_messages[message.channel.id]
+        except ValueError:
+            self.bot.sniped_messages[message.channel.id] = []
+
+        author=message.author
+        embed=message.embeds[0]
+        attachments=message.attachments[0].url
+        content=message.content
+        timestamp=int(datetime.datetime.now().timestamp())
+
+        if len(self.bot.sniped_messages[message.channel.id]) > 10:
+            self.bot.sniped_messages[message.channel.id] = []
+
+        self.bot.sniped_messages[message.channel.id].append({'content': content, 'author': author, 'embed': embed, 'attachments': attachments, 'timestamp': timestamp})
+
+
+    @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
+    async def snipe(self, ctx, index:int=1):
+        _object=self.bot.sniped_messages[ctx.channel.id]
+
+        if not _object:
+            await ctx.send('There are no messages to snipe now')
+            return
+
+        _message=_object[index-1]
+
+        _content=_message['content']
+        _author=_message['author']
+        _embed=_message['embed']
+        _attachments=_message['attachments']
+        _timestamp=_message['timestamp']
+
+        MainMessageEmbeds = []
+
+        em=discord.Embed(color=Utils.BotColors.invis())
+        em.set_author(name=f'{_author}', icon_url=f'{_author.avatar_url}')
+        em.add_field(name=f'[<t:{_timestamp}:R>]', value=_content)
+        if _attachments:
+            em.set_image(url=_attachments)
+
+        MainMessageEmbeds.append(em)
+
+        if _embed:
+            MainMessageEmbeds.append(_embed)
+
+        await ctx.send(embeds=MainMessageEmbeds)
+
 
 def setup(client):
     client.add_cog(Misc(client))

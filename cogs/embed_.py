@@ -555,6 +555,19 @@ class EmbedEditor(commands.Cog):
                 await MainMessage.delete()
                 return
 
+#    async def delete_object(self, ctx, message:discord.Message, interaction):
+
+#       Seloptions=[
+#            SelectOption(label='Delete title', value='DelTitle'),
+#            SelectOption(label='Delete description', value='DelDesc'),
+#            SelectOption(label=''),
+#            SelectOption(label='Delete fields', value='DelFields'),
+#        ]
+
+#        components=[[
+#            Select(placeholder='Select anything you want to delete from embed', options=Seloptions)
+#        ]]
+
 
 
     @commands.command(brief='fun', description='Dynamic embed editor')
