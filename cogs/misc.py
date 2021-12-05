@@ -376,14 +376,18 @@ class Misc(commands.Cog):
 
     @commands.command(brief='meta', usage='(index)', description='Snipe latest 10 deleted messages of a channel')
     async def snipe(self, ctx, index: typing.Union[int, str]=1):
+        if index <= 0:
+            await ctx.send('Index must be greater than or equal to 1.')
+            return
+        
         try:
             _object=self.bot.sniped_messages[ctx.channel.id]
         except KeyError:
-            await ctx.send('There are no messages to snipe now')
+            await ctx.send('There are no messages to snipe now.')
             return
 
         if not _object:
-            await ctx.send('There are no messages to snipe now')
+            await ctx.send('There are no messages to snipe now.')
             return
 
         if isinstance(index, str):
@@ -400,7 +404,7 @@ class Misc(commands.Cog):
                     
                     embed.add_field(name=f'{count}. {author.name} - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(name=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
-                    embed.set_author(name=f'Sniped messages in #{ctx.chanel.name}', icon_url=ctx.guild.icon_url)
+                    embed.set_author(text=f'Sniped messages in #{ctx.chanel.name}', icon_url=ctx.guild.icon_url)
 
                     
                 await ctx.send(embed=embed)
@@ -409,8 +413,8 @@ class Misc(commands.Cog):
 
         if isinstance(index, int):
             try:
-                _message=_object[-index-1]
-            except ValueError:
+                _message=_object[-index]
+            except IndexError:
                 await ctx.send(f'Now, there are only {len(_object)}/10 sniped messages not {index}')
                 return
 
