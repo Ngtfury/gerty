@@ -401,7 +401,7 @@ class Misc(commands.Cog):
                     
                     embed.add_field(name=f'{count}. {author.name} - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
-                    embed.set_author(name=f'Sniped messages in #{ctx.chanel.name}', icon_url=ctx.guild.icon_url)
+                    embed.set_author(name=f'Sniped messages in #{ctx.channel.name}', icon_url=ctx.guild.icon_url)
 
                     
                 await ctx.send(embed=embed)
