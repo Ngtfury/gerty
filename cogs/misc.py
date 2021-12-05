@@ -368,7 +368,7 @@ class Misc(commands.Cog):
         content=message.content if message.content else '*Message does not contain any content*'
         timestamp=int(datetime.datetime.now().timestamp())
 
-        if len(self.bot.sniped_messages[message.channel.id]) > 10:
+        if len(self.bot.sniped_messages[message.channel.id]) >= 10:
             self.bot.sniped_messages[message.channel.id] = []
 
         self.bot.sniped_messages[message.channel.id].append({'content': content, 'author': author, 'embed': embed, 'attachments': attachments, 'timestamp': timestamp})
@@ -399,7 +399,7 @@ class Misc(commands.Cog):
                     author=x['author']
                     timestamp=x['timestamp']
                     
-                    embed.add_field(name=f'{count}. {author.name} - [<t:{timestamp}:R>]', value=content, inline=False)
+                    embed.add_field(name=f'{count}. `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
                     embed.set_author(name=f'Sniped messages in #{ctx.channel.name}', icon_url=ctx.guild.icon_url)
 
@@ -416,7 +416,7 @@ class Misc(commands.Cog):
             try:
                 _message=_object[-index]
             except IndexError:
-                await ctx.send(f'Now, there are only {len(_object)}/10 sniped messages not {index}')
+                await ctx.send(f'Now, there are only {len(_object)}/10 sniped messages in this channel not {index}.')
                 return
 
         _content=_message['content']
