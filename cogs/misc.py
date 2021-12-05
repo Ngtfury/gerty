@@ -430,7 +430,7 @@ class Misc(commands.Cog):
         em=discord.Embed(color=Utils.BotColors.invis())
         em.set_author(name=f'{_author}', icon_url=f'{_author.avatar_url}')
         em.add_field(name=f'[<t:{_timestamp}:R>]', value=_content)
-        em.set_footer(name=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
         if _attachments:
             em.set_image(url=_attachments)
         
