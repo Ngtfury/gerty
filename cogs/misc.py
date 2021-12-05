@@ -1,3 +1,4 @@
+import re
 import discord
 from cogs.utils import Utils
 from discord.ext import commands
@@ -408,7 +409,9 @@ class Misc(commands.Cog):
                     
                 await ctx.send(embed=embed)
                 return
-                    
+            else:
+                await ctx.send('Index must be integers or "all".')
+
 
         if isinstance(index, int):
             if index <= 0:
