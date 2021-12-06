@@ -14,6 +14,22 @@ import random
 
 class Utils:
 
+
+    class Member:
+        def __init__(self, bot, id):
+            self.bot=bot
+            self.member_id=id
+
+        @property
+        async def banner(self):
+            _user_obj = await self.bot.http.get_user(self.member_id)
+            _banner_obj = _user_obj['banner']
+
+            _banner_hash_ = 'gif' if _banner_obj.startswith('a_') else 'png'
+
+            return f'https://cdn.discordapp.com/banners/{self.member_id}/{_banner_obj}.{_banner_hash_}?size=1024'
+
+
     async def create_emoji(bot, user: discord.User):
 
         guild_ids=[917315359126745088, 917310572180168735, 917316291059134474]
