@@ -61,13 +61,13 @@ class GithubApi(commands.Cog):
         MainEmbed.set_thumbnail(url='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
         if _user_bio:
             MainEmbed.description = _user_bio
-        MainEmbed.add_field(name='Followers', value=_user_followers, inline=False)
-        MainEmbed.add_field(name='Following', value=_user_following, inline=False)
-        MainEmbed.add_field(name='Public repositories', value=_user_public_repos, inline=False)
+        MainEmbed.add_field(name='<:plus:917468380846497904> Followers', value=_user_followers, inline=False)
+        MainEmbed.add_field(name='<:minus:917468380947177573> Following', value=_user_following, inline=False)
+        MainEmbed.add_field(name='<:codefork:917466548577374298> Public repositories', value=_user_public_repos, inline=False)
         if _user_location:
-            MainEmbed.add_field(name='Location', value=_user_location, inline=False)
-        MainEmbed.add_field(name='Created at', value=f'<t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
-        MainEmbed.add_field(name='Last updated at', value=f'<t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
+            MainEmbed.add_field(name='<:location:917466382067699732> Location', value=_user_location, inline=False)
+        MainEmbed.add_field(name='<:account:917467039176720524> Created at', value=f'<t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
+        MainEmbed.add_field(name='<:cog:917467039201886258> Last updated at', value=f'<t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
         
         repo_json_object = await self.get_repos(username)
 
@@ -77,7 +77,7 @@ class GithubApi(commands.Cog):
             if count >= 25:
                 break
             _repo_name = repo['full_name']
-            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}'))
+            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}', emoji=self.bot.get_emoji(917465967808901121)))
             count +=1
 
         components=[[
