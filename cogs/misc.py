@@ -1,5 +1,6 @@
 import re
 import discord
+from discord import emoji
 from cogs.utils import Utils
 from discord.ext import commands
 import datetime
@@ -392,22 +393,29 @@ class Misc(commands.Cog):
 
         if isinstance(index, str):
             if index.lower() == 'all':
+                await ctx.trigger_typing()
                 embed=discord.Embed(color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
 
+
                 count=0
+                emojis=[]
                 for x in _object:
                     count=count+1
 
                     content=x['content']
                     author=x['author']
                     timestamp=x['timestamp']
+
+                    _emoji=await Utils.create_emoji(bot=self.bot, user=author)
                     
-                    embed.add_field(name=f'{count}. `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
+                    embed.add_field(name=f'{count}. {_emoji} `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
                     embed.set_author(name=f'Sniped messages in #{channel.name}', icon_url=ctx.guild.icon_url)
 
                     
                 await ctx.send(embed=embed)
+                for x in emojis:
+                    await x.delete()
                 return
             else:
                 await ctx.send('Index must be integers or "all".')
