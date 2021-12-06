@@ -493,13 +493,13 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        if ctx.author.id in self.bot.owner_ids:
+        if ctx.author.id in self.bot.owner_id:
             return
         if not ctx.guild:
             return
         em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
         em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
-        em.set_footer(text='Used command at')
+        em.set_footer(text=f'Guild ID: {ctx.guild.id}')
         em.set_thumbnail(url=ctx.guild.icon_url)
         async with aiohttp.ClientSession() as session:
             webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
