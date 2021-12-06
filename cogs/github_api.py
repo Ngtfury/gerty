@@ -2,6 +2,7 @@ import json
 import re
 import discord
 import datetime
+from discord.components import SelectOption
 from discord.ext import commands
 import aiohttp
 from datetime import datetime
@@ -70,7 +71,8 @@ class GithubApi(commands.Cog):
         MainEmbed.add_field(name='<:cog:917467039201886258> Last updated at', value=f'> <t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
         
         if _user_public_repos <= 0:
-            return await ctx.send(embed=MainEmbed)
+            await ctx.send(embed=MainEmbed, components=[Select(placeholder=f'There are no repositories for {_user_name}', disabled=True, options=[])])
+            return
 
 
         repo_json_object = await self.get_repos(username)
@@ -80,8 +82,13 @@ class GithubApi(commands.Cog):
         for repo in repo_json_object:
             if count >= 25:
                 break
-            _repo_name = repo['full_name']
-            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}', emoji=self.bot.get_emoji(917465967808901121)))
+            _repo_name_basic = repo['full_name']
+            if repo['forked']:
+                _repo_name = f'{_repo_name_basic} (forked)'
+            else:
+                _repo_name = _repo_name_basic
+            _repo_desc = repo['description']
+            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
             count +=1
 
         components=[[
