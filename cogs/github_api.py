@@ -69,6 +69,10 @@ class GithubApi(commands.Cog):
         MainEmbed.add_field(name='<:account:917467039176720524> Created at', value=f'> <t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
         MainEmbed.add_field(name='<:cog:917467039201886258> Last updated at', value=f'> <t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
         
+        if _user_public_repos <= 0:
+            return await ctx.send(embed=MainEmbed)
+
+
         repo_json_object = await self.get_repos(username)
 
         options = []
