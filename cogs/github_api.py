@@ -86,7 +86,7 @@ class GithubApi(commands.Cog):
                 _repo_name = f'{_repo_name_basic} (forked)'
             else:
                 _repo_name = _repo_name_basic
-            _repo_desc = repo['description']
+            _repo_desc = repo['description'][:100]
             options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
             count +=1
 
