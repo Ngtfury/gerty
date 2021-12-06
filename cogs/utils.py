@@ -493,7 +493,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        if ctx.author.id in self.bot.owner_id:
+        if ctx.author.id == self.bot.owner_id:
             return
         if not ctx.guild:
             return
