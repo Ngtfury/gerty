@@ -72,7 +72,7 @@ class GithubApi(commands.Cog):
         options = []
         count = 0
         for repo in repo_json_object:
-            if count <= 25:
+            if count >= 25:
                 break
             _repo_name = repo['full_name']
             options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}'))
