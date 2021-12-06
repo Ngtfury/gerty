@@ -10,7 +10,6 @@ from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
-import asyncio
 import random
 
 class Utils:
@@ -22,9 +21,8 @@ class Utils:
             self.member_id=id
 
         @property
-        def banner(self):
-            _user_obj = self.bot.loop.create_task(self.bot.http.get_user(self.member_id))
-
+        async def banner(self):
+            _user_obj = await self.bot.http.get_user(self.member_id)
             _banner_obj = _user_obj['banner']
 
             if not _banner_obj:
