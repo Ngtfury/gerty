@@ -1,9 +1,13 @@
 import json
+import re
 import discord
 import datetime
+from discord.components import SelectOption
 from discord.ext import commands
 import aiohttp
 from datetime import datetime
+import discord_components
+from discord_components import *
 from cogs.utils import Utils, GertyHelpCommand
 
 
@@ -35,7 +39,12 @@ class GithubApi(commands.Cog):
     async def github(self, ctx, username: str):
         user_object_json = await self.get_user(username)
 
-        _user_name = user_object_json['login']
+        try:
+            _user_name = user_object_json['login']
+        except KeyError:
+            await ctx.send(embed=Utils.BotEmbed.error(f'Sorry, there is no one with name "{username}" on github'))
+            return
+
         _user_avatar_url = user_object_json['avatar_url']
         _user_htmlurl = user_object_json['html_url']
         _user_bio = user_object_json['bio']
@@ -58,6 +67,19 @@ class GithubApi(commands.Cog):
             MainEmbed.add_field(name='Location', value=_user_location, inline=False)
         MainEmbed.add_field(name='Created at', value=f'<t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
         MainEmbed.add_field(name='Last updated at', value=f'<t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
-        await ctx.send(embed=MainEmbed)
+        
+        repo_json_object = await self.get_repos(username)
+
+        options = []
+        for repo in repo_json_object:
+            _repo_name = repo['full_name']
+
+            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}'))
+
+        components=[[
+            Select(placeholder=f'Select repositories of {_user_name}', options=options)
+        ]]
+
+        await ctx.send(embed=MainEmbed, components=components)
 
 
