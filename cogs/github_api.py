@@ -30,15 +30,9 @@ class GithubApi(commands.Cog):
                 return await response.json()
 
     
-    @commands.group(invoke_without_command=True)
+    @commands.command()
     @commands.is_owner()
-    async def github(self, ctx):
-        await GertyHelpCommand(self.bot).send_command_help(ctx, command='github')
-        return
-
-    
-    @github.command()
-    async def repo_search(self, ctx, username: str):
+    async def github(self, ctx, username: str):
         user_object_json = await self.get_user(username)
 
         _user_name = user_object_json['login']
@@ -54,15 +48,16 @@ class GithubApi(commands.Cog):
 
         MainEmbed=discord.Embed(color=Utils.BotColors.invis())
         MainEmbed.set_author(name=_user_name, icon_url=_user_avatar_url, url=_user_htmlurl)
+        MainEmbed.set_thumbnail(url='https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png')
         if _user_bio:
             MainEmbed.description = _user_bio
-        MainEmbed.add_field(name='Followers', value=_user_followers)
-        MainEmbed.add_field(name='Following', value=_user_following)
-        MainEmbed.add_field(name='Public repositories', value=_user_public_repos)
+        MainEmbed.add_field(name='Followers', value=_user_followers, inline=False)
+        MainEmbed.add_field(name='Following', value=_user_following, inline=False)
+        MainEmbed.add_field(name='Public repositories', value=_user_public_repos, inline=False)
         if _user_location:
-            MainEmbed.add_field(name='Location', value=_user_location)
-        MainEmbed.add_field(name='Account created at', value=f'<t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)')
-        MainEmbed.add_field(name='Account last updated at', value=f'<t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)')
+            MainEmbed.add_field(name='Location', value=_user_location, inline=False)
+        MainEmbed.add_field(name='Created at', value=f'<t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
+        MainEmbed.add_field(name='Last updated at', value=f'<t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
         await ctx.send(embed=MainEmbed)
 
 
