@@ -3,12 +3,36 @@ import datetime
 import discord
 from discord.ext import commands
 import discord_components
+import numpy as np
+from PIL import Image, ImageDraw
+import io
 from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
 
 class Utils:
+
+    async def create_emoji(bot, user: discord.User):
+        guild=bot.get_guild(902948871267815454)
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(str(user.avatar_url)) as rep:
+                buf=await rep.read()
+                
+        img=Image.open(io.BytesIO(buf))
+        height,width = img.size
+        lum_img = Image.new('L', [height,width] , 0)
+        draw = ImageDraw.Draw(lum_img)
+        draw.pieslice([(0,0), (height,width)], 0, 360, fill = 255, outline = "white")
+        img_arr =np.array(img)
+        lum_img_arr =np.array(lum_img)
+        final_img_arr = np.dstack((img_arr,lum_img_arr))
+        Image.fromarray(final_img_arr).save('asset.png', quality=20)
+        with open('asset.png', 'rb') as f:
+            d=f.read()
+        final=await guild.create_custom_emoji(name='custom', image=d)
+        return final
+
 
     async def confirm(bot, description, interaction=None, ctx=None):
         if not interaction:
