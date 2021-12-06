@@ -23,8 +23,7 @@ class Utils:
 
         @property
         def banner(self):
-            loop=asyncio.get_event_loop()
-            _user_obj = loop.run_until_complete(self.bot.http.get_user(self.member_id))
+            _user_obj = self.bot.loop.create_task(self.bot.http.get_user(self.member_id))
 
             _banner_obj = _user_obj['banner']
 
