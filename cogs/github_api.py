@@ -23,13 +23,15 @@ class GithubApi(commands.Cog):
 
     async def get_repos(self, username:str):
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.github.com/users/{username}/repos') as response:
+            headers = {'Authorization': f'token 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'}
+            async with session.get(f'https://api.github.com/users/{username}/repos', headers=headers) as response:
                 return await response.json()
 
 
     async def get_user(self, username: str):
         async with aiohttp.ClientSession() as session:
-            async with session.get(f'https://api.github.com/users/{username}') as response:
+            headers = {'Authorization': f'token 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'}
+            async with session.get(f'https://api.github.com/users/{username}', headers=headers) as response:
                 return await response.json()
 
     
