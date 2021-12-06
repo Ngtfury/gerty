@@ -10,6 +10,7 @@ from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
+import asyncio
 import random
 
 class Utils:
@@ -21,9 +22,14 @@ class Utils:
             self.member_id=id
 
         @property
-        async def banner(self):
-            _user_obj = await self.bot.http.get_user(self.member_id)
+        def banner(self):
+            loop=asyncio.get_event_loop()
+            _user_obj = loop.run_until_complete(self.bot.http.get_user(self.member_id))
+
             _banner_obj = _user_obj['banner']
+
+            if not _banner_obj:
+                return None
 
             _banner_hash_ = 'gif' if _banner_obj.startswith('a_') else 'png'
 
