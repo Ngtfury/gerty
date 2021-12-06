@@ -28,7 +28,7 @@ class Utils:
         lum_img_arr =np.array(lum_img)
         final_img_arr = np.dstack((img_arr,lum_img_arr))
         Image.fromarray(final_img_arr).save('asset.png', quality=20, optimize=True)
-        with Image.open('asset.png', 'rb') as _image:
+        with Image.open('asset.png') as _image:
             img_=_image.resize((160,300), Image.ANTIALIAS)
             d=img_.read()
         final=await guild.create_custom_emoji(name='custom', image=d)
