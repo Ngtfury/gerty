@@ -407,6 +407,7 @@ class Misc(commands.Cog):
                     timestamp=x['timestamp']
 
                     _emoji=await Utils.create_emoji(bot=self.bot, user=author)
+                    emojis.append(_emoji)
                     
                     embed.add_field(name=f'{count}. {_emoji} `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
                     embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')

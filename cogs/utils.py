@@ -14,7 +14,7 @@ import subprocess
 class Utils:
 
     async def create_emoji(bot, user: discord.User):
-        guild=bot.get_guild(902948871267815454)
+        guild=bot.get_guild(917310572180168735)
         async with aiohttp.ClientSession() as sess:
             async with sess.get(str(user.avatar_url)) as rep:
                 buf=await rep.read()
