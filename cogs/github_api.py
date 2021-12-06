@@ -70,13 +70,16 @@ class GithubApi(commands.Cog):
         repo_json_object = await self.get_repos(username)
 
         options = []
+        count = 0
         for repo in repo_json_object:
+            if count <= 25:
+                break
             _repo_name = repo['full_name']
-
             options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}'))
+            count +=1
 
         components=[[
-            Select(placeholder=f'Select repositories of {_user_name}', options=options)
+            Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
         ]]
 
         await ctx.send(embed=MainEmbed, components=components)
