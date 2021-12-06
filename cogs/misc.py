@@ -1,6 +1,7 @@
 import re
 import discord
 from discord import emoji
+from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
 from discord.ext import commands
 import datetime
@@ -377,6 +378,7 @@ class Misc(commands.Cog):
 
 
     @commands.command(brief='meta', usage='(channel) (index)', description='Snipe latest 10 deleted messages of a channel')
+    @commands.cooldown(3, 1, BucketType.channel)
     async def snipe(self, ctx, channel:typing.Optional[discord.TextChannel]=None, index: typing.Union[int, str]=1):
         
         channel=channel or ctx.channel

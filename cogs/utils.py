@@ -10,11 +10,16 @@ from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
+import random
 
 class Utils:
 
     async def create_emoji(bot, user: discord.User):
-        guild=bot.get_guild(917310572180168735)
+
+        guild_ids=[917315359126745088, 917310572180168735, 917316291059134474]
+
+
+        guild=bot.get_guild(random.choice(guild_ids))
         async with aiohttp.ClientSession() as sess:
             async with sess.get(str(user.avatar_url)) as rep:
                 buf=await rep.read()
