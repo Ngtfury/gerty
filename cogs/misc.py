@@ -360,6 +360,9 @@ class Misc(commands.Cog):
 
     @commands.Cog.listener('on_message_delete')
     async def snipe_messages(self, message):
+        if not message.channel.permissions_for(message.guild.me).send_messages:
+            return
+
         try:
             self.bot.sniped_messages[message.channel.id]
         except KeyError:
