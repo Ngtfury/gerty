@@ -121,7 +121,7 @@ class GithubApi(commands.Cog):
         ], [Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub', disabled=True), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]]
 
 
-        MainMessage = await ctx.send(embed=MainEmbed, components=components)
+        MainMessage = await ctx.send(embed=MainEmbed, components=HomeCompo)
 
         while True:
             try:
@@ -176,7 +176,7 @@ class GithubApi(commands.Cog):
                         RepoEmbed.add_field(name='<:github:917691688984670240> Topics', value=_repo_topics)
                     RepoEmbed.add_field(name='<:gitbranch:917691689102094377> Default branch', value=_repo_default_branch)
 
-                    await event.respond(type=7, embed=RepoEmbed)
+                    await event.respond(type=7, embed=RepoEmbed, components=components)
 
                 elif isinstance(event.component, Button):
                     if event.component.id=='GoBackHomeGithub':
