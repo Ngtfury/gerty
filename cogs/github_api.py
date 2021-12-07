@@ -115,7 +115,7 @@ class GithubApi(commands.Cog):
 
         components=[[
             Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ]]
+        ], Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]
 
         MainMessage = await ctx.send(embed=MainEmbed, components=components)
 
@@ -124,8 +124,8 @@ class GithubApi(commands.Cog):
                 event = await self.bot.wait_for('interaction', check=lambda i: i.author == ctx.author and i.channel == ctx.channel and i.message == MainMessage, timeout=30)
                 
                 if isinstance(event.component, Select):
+                    await event.respond(type=6)
                     value = event.values[0]
-                    await ctx.send(f'{value}')
 
                     repo_search_object = await GithubRepo(str(value)).search_repo()
                     _repo_html_url = repo_search_object['html_url']
@@ -174,9 +174,18 @@ class GithubApi(commands.Cog):
 
                     await event.respond(type=7, embed=RepoEmbed)
 
+                elif isinstance(event.component, Button):
+                    if event.component.id=='GoBackHomeGithub':
+                        components = event.message.components
+                        event.component.disabled = True
+                        await event.respond(type=7, embed=MainEmbed, components=components)
+                    elif event.component.id == 'QuitGithub':
+                        await MainMessage.delete()
+                        await ctx.message.add_reaction(Utils.BotEmojis.success())
+                        break
 
             except asyncio.TimeoutError:
-                await MainEmbed.disable_components()
+                await MainMessage.disable_components()
                 break
 
 
