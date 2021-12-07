@@ -125,6 +125,7 @@ class GithubApi(commands.Cog):
                 
                 if isinstance(event.component, Select):
                     value = event.values[0]
+                    await ctx.send(f'{value}')
 
                     repo_search_object = await GithubRepo(str(value)).search_repo()
                     _repo_forks = repo_json_object['forks_count']
