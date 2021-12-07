@@ -110,7 +110,7 @@ class GithubApi(commands.Cog):
             else:
                 _repo_name = _repo_name_basic
             _repo_desc = repo['description'][:100] if repo['description'] else None
-            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
+            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name_basic}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
             count +=1
 
         components=[[
