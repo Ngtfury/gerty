@@ -112,13 +112,13 @@ class GithubApi(commands.Cog):
             options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name_basic}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
             count +=1
 
-        components=[[
+        components=[[Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')], [
             Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ], [Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]]
+        ]]
 
-        HomeCompo=[[
+        HomeCompo=[[Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub', disabled=True), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')], [
             Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ], [Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub', disabled=True), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]]
+        ]]
 
 
         MainMessage = await ctx.send(embed=MainEmbed, components=HomeCompo)
