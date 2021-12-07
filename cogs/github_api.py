@@ -128,25 +128,25 @@ class GithubApi(commands.Cog):
                     await ctx.send(f'{value}')
 
                     repo_search_object = await GithubRepo(str(value)).search_repo()
-                    _repo_forks = repo_json_object['forks_count']
-                    _repo_html_url = repo_json_object['html_url']
-                    _repo_description = repo_json_object['description']
-                    _repo_isForked = repo_json_object['fork']
-                    _repo_fullname = repo_json_object['full_name']
+                    _repo_forks = repo_search_object['forks_count']
+                    _repo_html_url = repo_search_object['html_url']
+                    _repo_description = repo_search_object['description']
+                    _repo_isForked = repo_search_object['fork']
+                    _repo_fullname = repo_search_object['full_name']
                     _repo_name = _repo_fullname if not _repo_isForked else f'{_repo_fullname} (forked)'
                     _repo_created_at = int(datetime.fromisoformat(repo_search_object['created_at'][:-1]).timestamp())
                     _repo_updated_at = int(datetime.fromisoformat(repo_search_object['updated_at'][:-1]).timestamp())
                     _repo_pushed_at = int(datetime.fromisoformat(repo_search_object['pushed_at'][:-1]).timestamp())
-                    _repo_clone_url = repo_json_object['clone_url']
-                    _repo_homepage = repo_json_object['homepage']
-                    _repo_stars = repo_json_object['stargazers_count']
-                    _repo_language = repo_json_object['language']
-                    _repo_archived = 'Yes' if repo_json_object['archived'] else 'No'
-                    _repo_disabled = 'Yes' if repo_json_object['disabled'] else 'No'
-                    _repo_open_issues_count = repo_json_object['open_issues_count']
-                    _repo_license = repo_json_object['license']['name'] if repo_json_object['license'] else None
-                    _repo_topics = ', '.join(repo_json_object['topics']) if repo_json_object['topics'] else None
-                    _repo_default_branch = repo_json_object['default_branch']
+                    _repo_clone_url = repo_search_object['clone_url']
+                    _repo_homepage = repo_search_object['homepage']
+                    _repo_stars = repo_search_object['stargazers_count']
+                    _repo_language = repo_search_object['language']
+                    _repo_archived = 'Yes' if repo_search_object['archived'] else 'No'
+                    _repo_disabled = 'Yes' if repo_search_object['disabled'] else 'No'
+                    _repo_open_issues_count = repo_search_object['open_issues_count']
+                    _repo_license = repo_search_object['license']['name'] if repo_search_object['license'] else None
+                    _repo_topics = ', '.join(repo_search_object['topics']) if repo_search_object['topics'] else None
+                    _repo_default_branch = repo_search_object['default_branch']
 
                     RepoEmbed = discord.Embed(title=f'<:repo:917465967808901121> {_repo_name}', url=f'{_repo_html_url}',color=Utils.BotColors.invis())
                     RepoEmbed.set_author(name=_user_name, icon_url=_user_avatar_url, url=_user_htmlurl)
