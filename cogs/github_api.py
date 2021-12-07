@@ -58,8 +58,7 @@ class GithubApi(commands.Cog):
 
 
     
-    @commands.command()
-    @commands.is_owner()
+    @commands.command(brief='util', description='Get evety info of a user who is on github', usage='[username]')
     async def github(self, ctx, username: str):
         user_object_json = await self.get_user(username)
 
@@ -115,7 +114,12 @@ class GithubApi(commands.Cog):
 
         components=[[
             Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ], Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]
+        ], [Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]]
+
+        HomeCompo=[[
+            Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
+        ], [Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub', disabled=True), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')]]
+
 
         MainMessage = await ctx.send(embed=MainEmbed, components=components)
 
@@ -176,9 +180,7 @@ class GithubApi(commands.Cog):
 
                 elif isinstance(event.component, Button):
                     if event.component.id=='GoBackHomeGithub':
-                        components = event.message.components
-                        event.component.disabled = True
-                        await event.respond(type=7, embed=MainEmbed, components=components)
+                        await event.respond(type=7, embed=MainEmbed, components=HomeCompo)
                     elif event.component.id == 'QuitGithub':
                         await MainMessage.delete()
                         await ctx.message.add_reaction(Utils.BotEmojis.success())
