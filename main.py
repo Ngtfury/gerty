@@ -208,7 +208,7 @@ async def on_ready():
   await load_cache()
   print('Ticket system message cache loaded')
   client.uptime = time.time()
-  client.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `ticket`\n> Ticket system for contacting mods'
+  client.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `github`\n> Search everything on github'
 
   async with aiohttp.ClientSession() as session:
     web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
