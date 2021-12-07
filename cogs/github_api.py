@@ -125,13 +125,12 @@ class GithubApi(commands.Cog):
                 
                 if isinstance(event.component, Select):
                     value = event.values[0]
-                    await ctx.send(f'{value}')
 
                     repo_search_object = await GithubRepo(str(value)).search_repo()
-                    _repo_forks = repo_search_object['forks_count']
                     _repo_html_url = repo_search_object['html_url']
                     _repo_description = repo_search_object['description']
                     _repo_isForked = repo_search_object['fork']
+                    _repo_forks = repo_search_object['forks_count'] if repo_search_object['forks_count'] else None
                     _repo_fullname = repo_search_object['full_name']
                     _repo_name = _repo_fullname if not _repo_isForked else f'{_repo_fullname} (forked)'
                     _repo_created_at = int(datetime.fromisoformat(repo_search_object['created_at'][:-1]).timestamp())
@@ -158,7 +157,8 @@ class GithubApi(commands.Cog):
                     RepoEmbed.add_field(name='<:copy:917691689051758652> Clone URL', value=_repo_clone_url)
                     RepoEmbed.add_field(name='<:home:917691688984670239> Homepage', value=_repo_homepage)
                     RepoEmbed.add_field(name='<:star:917691689278251048> Stars', value=_repo_stars)
-                    RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks)
+                    if _repo_forks:
+                        RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks)
                     if _repo_language:
                         RepoEmbed.add_field(name='<:code:917691688963698718> Language', value=_repo_language)
                     RepoEmbed.add_field(name='<:archive:917691688980467762> Archived', value=_repo_archived)
