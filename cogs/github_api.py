@@ -152,24 +152,25 @@ class GithubApi(commands.Cog):
                     RepoEmbed.set_author(name=_user_name, icon_url=_user_avatar_url, url=_user_htmlurl)
                     if _repo_description:
                         RepoEmbed.description = f'<:description:917691689152438312> {_repo_description}'
-                    RepoEmbed.add_field(name='<:plus:917468380846497904> Created at', value=f'<t:{_repo_created_at}:D> (<t:{_repo_created_at}:R>)')
-                    RepoEmbed.add_field(name=f'<:cog:917467039201886258> Updated at', value=f'<t:{_repo_updated_at}:D> (<t:{_repo_updated_at}:R>)')
-                    RepoEmbed.add_field(name='<:repo2:917691689060139048> Pushed at', value=f'<t:{_repo_pushed_at}:D> (<t:{_repo_pushed_at}:R>)')
-                    RepoEmbed.add_field(name='<:copy:917691689051758652> Clone URL', value=_repo_clone_url)
-                    RepoEmbed.add_field(name='<:home:917691688984670239> Homepage', value=_repo_homepage)
-                    RepoEmbed.add_field(name='<:star:917691689278251048> Stars', value=_repo_stars)
+                    RepoEmbed.add_field(name='<:plus:917468380846497904> Created at', value=f'<t:{_repo_created_at}:D> (<t:{_repo_created_at}:R>)', inline=False)
+                    RepoEmbed.add_field(name=f'<:cog:917467039201886258> Updated at', value=f'<t:{_repo_updated_at}:D> (<t:{_repo_updated_at}:R>)', inline=False)
+                    RepoEmbed.add_field(name='<:repo2:917691689060139048> Pushed at', value=f'<t:{_repo_pushed_at}:D> (<t:{_repo_pushed_at}:R>)', inline=False)
+                    RepoEmbed.add_field(name='<:copy:917691689051758652> Clone URL', value=_repo_clone_url, inline=False)
+                    if _repo_homepage:
+                        RepoEmbed.add_field(name='<:home:917691688984670239> Homepage', value=_repo_homepage, inline=False)
+                    RepoEmbed.add_field(name='<:star:917691689278251048> Stars', value=_repo_stars, inline=False)
                     if _repo_forks:
-                        RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks)
+                        RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks, inline=False)
                     if _repo_language:
-                        RepoEmbed.add_field(name='<:code:917691688963698718> Language', value=_repo_language)
-                    RepoEmbed.add_field(name='<:archive:917691688980467762> Archived', value=_repo_archived)
-                    RepoEmbed.add_field(name='<:cross:917691689060139028> Disabled', value=_repo_disabled)
-                    RepoEmbed.add_field(name='<:issue:917691689236324362> Issues', value=_repo_open_issues_count)
+                        RepoEmbed.add_field(name='<:code:917691688963698718> Language', value=_repo_language, inline=False)
+                    RepoEmbed.add_field(name='<:archive:917691688980467762> Archived', value=_repo_archived, inline=False)
+                    RepoEmbed.add_field(name='<:cross:917691689060139028> Disabled', value=_repo_disabled, inline=False)
+                    RepoEmbed.add_field(name='<:issue:917691689236324362> Issues', value=_repo_open_issues_count, inline=False)
                     if _repo_license:
-                        RepoEmbed.add_field(name='<:creative:917691688997257266> License', value=_repo_license)
+                        RepoEmbed.add_field(name='<:creative:917691688997257266> License', value=_repo_license, inline=False)
                     if _repo_topics:
-                        RepoEmbed.add_field(name='<:github:917691688984670240> Topics', value=_repo_topics)
-                    RepoEmbed.add_field(name='<:gitbranch:917691689102094377> Default branch', value=_repo_default_branch)
+                        RepoEmbed.add_field(name='<:github:917691688984670240> Topics', value=_repo_topics, inline=False)
+                    RepoEmbed.add_field(name='<:gitbranch:917691689102094377> Default branch', value=_repo_default_branch, inline=False)
 
                     await event.respond(type=7, embed=RepoEmbed)
 
