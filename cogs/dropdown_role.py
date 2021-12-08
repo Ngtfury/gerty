@@ -340,8 +340,8 @@ class DropDownRole(commands.Cog):
 
             _content = '\n'.join(roles)
             await interaction.respond(
-                type=7,
-                content=f'**Dynamic self-role menu**\n{_content}'
+                type=4,
+                content=f'**Dynamic self-role menu**\n\n{_content}'
             )
                     
 
