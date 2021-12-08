@@ -178,7 +178,7 @@ class DropDownRole(commands.Cog):
             title='Dynamic self role menu'
         )
         TitleDescEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
-        TitleDescEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.avatar_url)
+        TitleDescEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         TitleDescEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
 
         await MainMessage.edit(embed=TitleDescEmbed)
@@ -197,7 +197,7 @@ class DropDownRole(commands.Cog):
             title='Dynamic self role menu'
         )
         RoleEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
-        RoleEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.avatar_url)
+        RoleEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         RoleEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
 
         await MainMessage.edit(embed=RoleEmbed)
