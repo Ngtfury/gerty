@@ -140,7 +140,7 @@ class DropDownRole(commands.Cog):
 
 
 
-    @commands.group(invoke_without_command=True)
+    @commands.group(name='selfrole', invoke_without_command=True)
     @commands.is_owner()
     @commands.bot_has_permissions(manage_channels=True, manage_messages=True, manage_roles=True)
     @commands.has_permissions(manage_channels=True, manage_messages=True, manage_roles=True)
@@ -148,7 +148,7 @@ class DropDownRole(commands.Cog):
         pass
 
 
-    @self_role.command()
+    @self_role.command(name='create')
     async def self_role_create(self, ctx):
         channel_ = []
         title_ = []
@@ -157,7 +157,7 @@ class DropDownRole(commands.Cog):
 
 
         ChannelEmbed = discord.Embed(description=f'<:rightarrow1:918127433184579594> In which **channel** you\'re planning to send the menu.\n<:rightarrow1:918127433184579594> You can send ID, mention or name of the channel\n> **Example** {ctx.channel.mention}', title='Dynamic self role menu', color=Utils.BotColors.invis())
-        ChannelEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.avatar_url)
+        ChannelEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         ChannelEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
         ChannelEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
 
