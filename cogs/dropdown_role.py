@@ -2,7 +2,6 @@ import asyncio
 import json
 import re
 import discord
-from discord.components import SelectOption
 from discord.ext import commands
 import discord_components
 from cogs.utils import Utils
