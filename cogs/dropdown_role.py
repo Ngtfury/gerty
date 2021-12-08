@@ -252,6 +252,7 @@ class DropDownRole(commands.Cog):
         _role_desc_emoji = await self.wait_for_role_message(ctx, MainMessage)
         if not _role_desc_emoji:
             return
+            
 
 
         for role in _role_desc_emoji:
@@ -299,7 +300,7 @@ class DropDownRole(commands.Cog):
         )
 
         components = [
-            Select(placeholder='Dynamic self-role menu', options=options)
+            Select(placeholder='Dynamic self-role menu', options=options, min_values=1, max_values=len(options))
         ]
 
         FinalEmbed = discord.Embed(
@@ -320,6 +321,11 @@ class DropDownRole(commands.Cog):
             )
         )
 
+
+    @commands.Cog.listener('on_select_option')
+    async def self_role_apply(self, interaction):
+        if interaction.message.id in self.bot.self_roles:
+            pass
 
 
 
