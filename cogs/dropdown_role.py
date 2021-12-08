@@ -131,6 +131,10 @@ class DropDownRole(commands.Cog):
                 await resMessageBasic.add_reaction('<a:error:918118195376816128>')
                 continue
 
+            if role_be > ctx.guild.me.top_role:
+                await resMessageBasic.add_reaction('<a:error:918118195376816128>')
+                continue
+
             role__.append({'role': role_be, 'emoji': emoji_, 'desc': description_})
             count += 1
             await resMessageBasic.delete()
@@ -143,16 +147,44 @@ class DropDownRole(commands.Cog):
 
 
 
-    @commands.group(name='selfrole', invoke_without_command=True)
+    @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'])
     @commands.is_owner()
-    @commands.bot_has_permissions(manage_channels=True, manage_messages=True, manage_roles=True)
-    @commands.has_permissions(manage_channels=True, manage_messages=True, manage_roles=True)
+    @commands.bot_has_guild_permissions(manage_messages=True, manage_roles=True)
+    @commands.has_permissions(manage_roles=True)
     async def self_role(self, ctx):
-        pass
+        panels = await self.bot.db.fetch('SELECT * FROM self_role WHERE guild_id = $1', ctx.guild.id)
+        if not panels:
+            await ctx.send(
+                embed = Utils.BotEmbed.error(f'This server don\'t have any self-role panels setup.')
+            )
+            return
+
+        _list = []
+
+        count = 0
+        for panel in panels:
+            count = count+1
+            channel = self.bot.get_channel(panel[1])
+            message = await channel.fetch_message(panel[0])
+            _list.append(f'[**Panel {count}**]({message.jump_url}) - {channel.mention}')
+
+        em = discord.Embed(title='Dynamic self-role menu', description='\n'.join(_list), color=Utils.BotColors.invis())
+        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        await ctx.send(embed=em)
 
 
-    @self_role.command(name='create')
+
+
+
+    @self_role.command(name='create', aliases=['make'])
     async def self_role_create(self, ctx):
+        already_3 = await self.bot.db.fetch('SELECT * FROM self_role WHERE guild_id = $1', ctx.guild.id)
+        if len(already_3) >= 3:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('You already have 3 self role panels in your server.')
+            )
+            return
+
         channel_ = []
         title_ = []
         description_ = []
@@ -216,9 +248,13 @@ class DropDownRole(commands.Cog):
             role_[role_name] = []
             role_[role_name].append({'id': role_id, 'emoji': role_emoji, 'desc': role_desc})
 
-        em=discord.Embed(description='<a:timer:905859476257656872> Loading Dynamic self-role menu <a:timer:905859476257656872>')
+        em=discord.Embed(description='<a:timer:905859476257656872> **Loading Dynamic self-role menu** <a:timer:905859476257656872>', color=Utils.BotColors.invis())
         _final_channel = channel_[0]
         FinalMessage = await _final_channel.send(embed=em)
+        self.bot.self_roles.append(FinalMessage.id)
+        await self.bot.db.execute('INSERT INTO self_role (message_id,channel_id,guild_id) VALUES ($1,$2,$3)', FinalMessage.id, FinalMessage.channel.id, ctx.guild.id)
+        await asyncio.sleep(0.5)
+        await MainMessage.delete()
 
         options = []
         for final_role in role_.items():
@@ -259,6 +295,14 @@ class DropDownRole(commands.Cog):
         await FinalMessage.edit(
             embed=FinalEmbed,
             components=components
+        )
+
+
+
+        await ctx.send(
+            embed = Utils.BotEmbed.success(
+                f'Successfully sent the [menu]({FinalMessage.jump_url}) in {FinalMessage.channel.mention}'
+            )
         )
 
 
