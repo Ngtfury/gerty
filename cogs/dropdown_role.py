@@ -38,7 +38,7 @@ class DropDownRole(commands.Cog):
             try:
                 channel_to_send = await commands.TextChannelConverter().convert(ctx=ctx, argument=resMessage)
             except commands.ChannelNotFound:
-                await resMessage.add_reaction('<a:error:918118195376816128>')
+                await resMessageBasic.add_reaction('<a:error:918118195376816128>')
                 continue
 
             await resMessageBasic.delete()
@@ -68,7 +68,7 @@ class DropDownRole(commands.Cog):
             try:
                 _desc = splited_[1]
             except IndexError:
-                await resMessage.add_reaction('<a:error:918118195376816128>')
+                await resMessageBasic.add_reaction('<a:error:918118195376816128>')
                 continue
 
             await resMessageBasic.delete()
@@ -112,7 +112,7 @@ class DropDownRole(commands.Cog):
 
             splited_ = resMessage.split('|')
             if not len(splited_) == 3:
-                await resMessage.add_reaction('<a:error:918118195376816128>')
+                await resMessageBasic.add_reaction('<a:error:918118195376816128>')
                 continue
 
             _emoji = splited_[0].replace(' ', '')
@@ -128,7 +128,7 @@ class DropDownRole(commands.Cog):
             try:
                 role_be = await commands.RoleConverter().convert(ctx=ctx, argument=_role)
             except commands.RoleNotFound:
-                await resMessage.add_reaction('<a:error:918118195376816128>')
+                await resMessageBasic.add_reaction('<a:error:918118195376816128>')
                 continue
 
             role__.append({'role': role_be, 'emoji': emoji_, 'desc': description_})
