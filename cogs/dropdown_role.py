@@ -224,16 +224,16 @@ class DropDownRole(commands.Cog):
         for final_role in role_.items():
             _role_name_final = final_role[0]
             _role_dict = final_role[1]
-            if isinstance(_role_dict['emoji'], str):
-                _emoji_final = _role_dict['emoji']
-            elif isinstance(_role_dict['emoji'], int):
-                _emoji_final = self.bot.get_emoji(_role_dict['emoji'])
+            if isinstance(_role_dict[0]['emoji'], str):
+                _emoji_final = _role_dict[0]['emoji']
+            elif isinstance(_role_dict[0]['emoji'], int):
+                _emoji_final = self.bot.get_emoji(_role_dict[0]['emoji'])
 
             options.append(
                 SelectOption(
                     label=_role_name_final,
-                    value=str(_role_dict['id']),
-                    description=str(_role_dict['desc']),
+                    value=str(_role_dict[0]['id']),
+                    description=str(_role_dict[0]['desc']),
                     emoji=_emoji_final
                 )
             )
