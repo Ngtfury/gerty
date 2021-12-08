@@ -20,7 +20,8 @@ class DropDownRole(commands.Cog):
     async def wait_for_channel_message(self, ctx, MainMessage):
         while True:
             try:
-                resMessage = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessageBasic = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessage = resMessageBasic.content
             except asyncio.TimeoutError:
                 await ctx.send(
                     embed = Utils.BotEmbed.error('You didn\'t respond on time. You can try again!')
@@ -47,7 +48,8 @@ class DropDownRole(commands.Cog):
     async def wait_for_titledesc_message(self, ctx, MainMessage):
         while True:
             try:
-                resMessage = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessageBasic = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessage = resMessageBasic.content
             except asyncio.TimeoutError:
                 await ctx.send(
                     embed = Utils.BotEmbed.error('You didn\'t respond on time. You can try again!')
@@ -88,7 +90,8 @@ class DropDownRole(commands.Cog):
             if count >= 25:
                 break
             try:
-                resMessage = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessageBasic = await self.bot.wait_for('message', check = lambda i: i.author == ctx.author and i.channel == ctx.channel, timeout = 60)
+                resMessage = resMessageBasic.content
             except asyncio.TimeoutError:
                 await ctx.send(
                     embed = Utils.BotEmbed.error('You didn\'t respond on time. You can try again!')
