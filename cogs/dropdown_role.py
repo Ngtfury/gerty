@@ -174,7 +174,22 @@ class DropDownRole(commands.Cog):
 
 
 
+    @self_role.command(name='delete', aliases=['del', 'remove'])
+    async def self_role_delete(self, ctx, message: discord.Message):
+        if not message.id in self.bot.self_roles:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('That message is not a self-role panel.')
+            )
+            return
 
+        await self.bot.db.execute('DELETE FROM self_role WHERE message_id = $1', message.id)
+        self.bot.self_roles.remove(message.id)
+        fetchedMessage = await message.channel.fetch_message(message.id)
+        await fetchedMessage.delete()
+        await ctx.send(
+            embed = Utils.BotEmbed.success('Successfully deleted that self-role panel.')
+        )
+        return
 
     @self_role.command(name='create', aliases=['make'])
     async def self_role_create(self, ctx):
