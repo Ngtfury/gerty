@@ -320,12 +320,29 @@ class DropDownRole(commands.Cog):
                 f'Successfully sent the [menu]({FinalMessage.jump_url}) in {FinalMessage.channel.mention}'
             )
         )
-
-
+#
+#
     @commands.Cog.listener('on_select_option')
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
-            pass
+            values = interaction.values
 
+            roles = []
+            for value in values:
+                role_id = int(value)
+                role_obj = interaction.guild.get_role(role_id)
+                if role_obj in interaction.author.roles:
+                    await interaction.author.remove_roles(role_obj)
+                    roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
+                else:
+                    await interaction.author.add_roles(role_obj)
+                    roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
+
+            _content = '\n'.join(roles)
+            await interaction.respond(
+                type=7,
+                content=f'**Dynamic self-role menu**\n{_content}'
+            )
+                    
 
 
