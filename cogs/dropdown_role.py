@@ -75,7 +75,7 @@ class DropDownRole(commands.Cog):
             return [title_, _desc]
 
 
-    def isDiscordEmoji(emoji):
+    def isDiscordEmoji(self, emoji):
         if re.match(r'<(?P<animated>a?):(?P<name>[a-zA-Z0-9_]{2,32}):(?P<id>[0-9]{18,22})>', emoji):
             return True
         else:
