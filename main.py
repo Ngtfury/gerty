@@ -138,6 +138,7 @@ os.environ["JISHAKU_HIDE"] = "True"
 client.ticket_tool_guild_ids = []
 client.running_tickets = {}
 client.sniped_messages = {}
+client.self_roles = []
 
 async def load_cache():
   message_ids=await client.db.fetch('SELECT guild_id FROM ticket_tool')
@@ -153,6 +154,11 @@ async def load_cache():
       client.running_tickets[rid[0]].append(rid[1])
     except KeyError:
       pass
+
+
+  self_role_message = await client.db.fetch('SELECT * FROM self_role')
+  for message_id in self_role_message:
+    client.self_roles.append(message_id[0])
 
 
 
