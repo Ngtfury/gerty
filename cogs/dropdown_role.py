@@ -41,7 +41,7 @@ class DropDownRole(commands.Cog):
                 await resMessage.add_reaction('<a:error:918118195376816128>')
                 continue
 
-            await resMessage.delete()
+            await resMessageBasic.delete()
             return channel_to_send
 
 
@@ -71,7 +71,7 @@ class DropDownRole(commands.Cog):
                 await resMessage.add_reaction('<a:error:918118195376816128>')
                 continue
 
-            await resMessage.delete()
+            await resMessageBasic.delete()
             return [title_, _desc]
 
 
@@ -106,7 +106,7 @@ class DropDownRole(commands.Cog):
                 return False
 
             if resMessage.lower() == 'done':
-                await resMessage.delete()
+                await resMessageBasic.delete()
                 return role__
 
 
@@ -133,7 +133,7 @@ class DropDownRole(commands.Cog):
 
             role__.append({'role': role_be, 'emoji': emoji_, 'desc': description_})
             count += 1
-            await resMessage.delete()
+            await resMessageBasic.delete()
 
 
         return role__
