@@ -214,7 +214,7 @@ class DropDownRole(commands.Cog):
             role_desc = role['desc']
 
             role_[role_name] = []
-            role[role_name].append({'id': role_id, 'emoji': role_emoji, 'desc': role_desc})
+            role_[role_name].append({'id': role_id, 'emoji': role_emoji, 'desc': role_desc})
 
         em=discord.Embed(description='<a:timer:905859476257656872> Loading Dynamic self-role menu <a:timer:905859476257656872>')
         _final_channel = channel_[0]
