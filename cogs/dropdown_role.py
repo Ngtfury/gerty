@@ -105,7 +105,7 @@ class DropDownRole(commands.Cog):
                 )
                 return False
 
-            if resMessage.lower() == 'done':
+            if resMessage.lower() == '-done':
                 await resMessageBasic.delete()
                 return role__
 
