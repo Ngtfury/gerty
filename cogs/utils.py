@@ -570,7 +570,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                     if '#' in l:
                         cm += 1
                     ls += 1
-        return cm, cr, fn, cl, ls, fc
+        return fc, ls, cl, fn, cr, cm
 
     async def async_get_class_def_etc(self):
         thing=functools.partial(self.sync_get_class_def_etc)
@@ -582,6 +582,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     async def _bot_info(self, ctx):
         await ctx.trigger_typing()
 
+        files = await self.async_get_class_def_etc()
 
         total, used, free = shutil.disk_usage("/")
 
@@ -621,6 +622,17 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Disk: `{used // (2 ** 30)}GB`/`{total // (2 ** 30)}GB`
             Discord.py: `{pkg_resources.get_distribution('discord.py').version}`
             Python: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
+        )
+
+        em.add_field(
+            name = '__**Files**__',
+            value = f"""Files: `{files[0]}`
+            Lines: `{files[1]}`
+            Classes: `{files[2]}`
+            Functions: `{files[3]}`
+            Coroutines: `{files[4]}`
+            Comments: `{files[5]}`
+            """
         )
 
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
