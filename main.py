@@ -261,7 +261,7 @@ async def on_command_error(ctx, error):
       #description = 
       description=f'```ml\n[] - Required Argument | () - Optional Argument```'
     )
-    em.add_field(name='Missing', value=f'`{str(error.param)}` is a required argument that is missing')
+    em.add_field(name='Missing', value=f'`{str(error.param.name)}` is a required argument that is missing', inline=False)
     _usage = f' {ctx.command.usage}' if ctx.command.usage else ''
     em.add_field(name='Usage', value=f'```{ctx.command.name}{_usage}```')
     await ctx.reply(embed=em, mention_author=False)
