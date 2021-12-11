@@ -28,22 +28,7 @@ import time
 
 class Utils:
 
-    def format_commit(self, commit):
-        short, _, _ = commit.message.partition('\n')
-        short_sha2 = commit.hex[0:6]
-        commit_tz = datetime.timezone(datetime.timedelta(minutes=commit.commit_time_offset))
-        commit_time = datetime.datetime.fromtimestamp(commit.commit_time).astimezone(commit_tz)
 
-        # [`hash`](url) message (offset)
-        offset = f'<t:{int(commit_time.astimezone(datetime.timezone.utc).timestamp())}:R>'
-        return f'[`{short_sha2}`](https://github.com/Ngtfury/Gerty/commit/{commit.hex}) {short} ({offset})'
-
-
-
-    def get_last_commits(self, count=5):
-            repo = pygit2.Repository('.git')
-            commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
-            return '\n'.join(self.format_commit(c) for c in commits)
 
     class Member:
         def __init__(self, bot, id):
@@ -600,6 +585,24 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         some_stuff=await self.bot.loop.run_in_executor(None, thing)
         return some_stuff
 
+
+    def format_commit(self, commit):
+        short, _, _ = commit.message.partition('\n')
+        short_sha2 = commit.hex[0:6]
+        commit_tz = datetime.timezone(datetime.timedelta(minutes=commit.commit_time_offset))
+        commit_time = datetime.datetime.fromtimestamp(commit.commit_time).astimezone(commit_tz)
+
+        # [`hash`](url) message (offset)
+        offset = f'<t:{int(commit_time.astimezone(datetime.timezone.utc).timestamp())}:R>'
+        return f'[`{short_sha2}`](https://github.com/Ngtfury/Gerty/commit/{commit.hex}) {short} ({offset})'
+
+
+
+    def get_last_commits(self, count=5):
+            repo = pygit2.Repository('.git')
+            commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
+            return '\n'.join(self.format_commit(c) for c in commits)
+
     @commands.command(name='botinfo')
     @commands.is_owner()
     async def _bot_info(self, ctx):
@@ -660,7 +663,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
         em.add_field(
             name = '**__Latest changes__**',
-            value = Utils.get_last_commits(),
+            value = self.get_last_commits(),
             inline = False
         )
 
