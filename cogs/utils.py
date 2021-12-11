@@ -603,8 +603,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
             return '\n'.join(self.format_commit(c) for c in commits)
 
-    @commands.command(name='botinfo')
-    @commands.is_owner()
+    @commands.command(name='botinfo', brief='util', aliases=['bot-info', 'invite', 'about', 'botabout', 'info'])
     async def _bot_info(self, ctx):
         await ctx.trigger_typing()
 
@@ -678,7 +677,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             _location = '<:YOU_ARE_HERE:919205918120497194>' if ctx.guild.shard_id == shard_id else ''
 
             em.add_field(
-                name=f'**__Shard #{shard_id}__**{_location}',
+                name=f'**__Shard #{shard_id}__{_location}**',
                 value=f"""Latency: `{round(shard_obj.latency*1000)}`ms
                 Guilds: `{guild_count}`
                 Users: `{member_count}`"""
