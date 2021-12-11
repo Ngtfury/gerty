@@ -144,13 +144,7 @@ class DropDownRole(commands.Cog):
 
 
 
-
-
-
-    @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'], usage='[sub command]', brief='selfrole')
-    @commands.bot_has_guild_permissions(manage_messages=True, manage_roles=True)
-    @commands.has_permissions(manage_roles=True)
-    async def self_role(self, ctx):
+    async def send_panel_list(self, ctx):
         panels = await self.bot.db.fetch('SELECT * FROM self_role WHERE guild_id = $1', ctx.guild.id)
         if not panels:
             await ctx.send(
@@ -170,6 +164,15 @@ class DropDownRole(commands.Cog):
         em = discord.Embed(title='Dynamic self-role menu', description='\n'.join(_list), color=Utils.BotColors.invis())
         em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
         await ctx.send(embed=em)
+        return
+
+
+
+    @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'], usage='[sub command]', brief='selfrole')
+    @commands.bot_has_guild_permissions(manage_messages=True, manage_roles=True)
+    @commands.has_permissions(manage_roles=True)
+    async def self_role(self, ctx):
+        await self.send_panel_list(ctx)
 
 
 
@@ -321,8 +324,12 @@ class DropDownRole(commands.Cog):
                 f'Successfully sent the [menu]({FinalMessage.jump_url}) in {FinalMessage.channel.mention}'
             )
         )
-#
-#
+
+
+    @self_role.command(name='list', aliases=['panels', 'lists'])
+    async def _list(self, ctx):
+        await self.send_panel_list(ctx)
+
     @commands.Cog.listener('on_select_option')
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
