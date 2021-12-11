@@ -12,9 +12,12 @@ from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
+import sys
 import random
 import pathlib
 import shutil
+import os
+import pkg_resources
 
 class Utils:
 
@@ -596,12 +599,12 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             
             [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})"""
         )
-        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        em.set_author(name=str(self.bot.user), icon_url=self.bot.user.avatar_url)
 
         total_channels = sum(len(x.channels) for x in self.bot.guilds)
 
         em.add_field(
-            name='__General Info__',
+            name='__**General Info**__',
             value = f"""Total servers: `{len(self.bot.guilds)}`
             Total users: `{len(self.bot.users)}`
             Total channels: `{total_channels}`
@@ -609,6 +612,18 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Command usage: `{self.bot.command_usage}`
             Messages seen: `{self.bot.messages_seen}`"""
         )
+
+        em.add_field(
+            name = '__**System**__',
+            value = f"""PID: `{os.getpid()}`
+            CPU: ``{round(psutil.cpu_percent())}%`/`100%``
+            RAM: `{int(self.get_ram_usage() / 1024 / 1024)}MB`/`{int(self.get_ram_total() / 1024 / 1024)}MB`
+            Disk: `{used // (2 ** 30)}GB`/`{total // (2 ** 30)}GB`
+            Discord.py version: `{pkg_resources.get_distribution('discord.py').version}`
+            Python version: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
+        )
+
+        em.set_footer(name=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
         await ctx.send(embed=em)
 
