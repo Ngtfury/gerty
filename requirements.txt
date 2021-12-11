@@ -9,6 +9,7 @@ aiofiles
 DiscordUtils
 prsaw
 psutil
+pygit2
 dnspython
 Pillow
 numpy
