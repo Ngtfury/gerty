@@ -4,6 +4,7 @@ import discord
 from discord.ext import commands
 import discord_components
 import numpy as np
+import functools
 from PIL import Image, ImageDraw
 import psutil
 import io
@@ -540,16 +541,14 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                 break
 
 
-    def get_ram_usage():
+    def get_ram_usage(self):
         return int(psutil.virtual_memory().total - psutil.virtual_memory().available)
 
-    def get_ram_total():
+    def get_ram_total(self):
         return int(psutil.virtual_memory().total)
 
 
-    @commands.command()
-    @commands.is_owner()
-    async def _bot_info(self, ctx):
+    def sync_get_class_def_etc(self):
         p = pathlib.Path('./')
         cm = cr = fn = cl = ls = fc = 0
         for f in p.rglob('*.py'):
@@ -568,6 +567,18 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                     if '#' in l:
                         cm += 1
                     ls += 1
+        return cm, cr, fn, cl, ls, fc
+
+    async def async_get_class_def_etc(self):
+        thing=functools.partial(self.sync_get_class_def_etc)
+        some_stuff=await client.loop.run_in_executor(None, thing)
+        return some_stuff
+
+    @commands.command(name='botinfo')
+    @commands.is_owner()
+    async def _bot_info(self, ctx):
+        await ctx.trigger_typing()
+
 
         total, used, free = shutil.disk_usage("/")
 
@@ -576,19 +587,21 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         _created_at = f'<t:{int(self.bot.user.created_at.timestamp())}:D> (<t:{int(self.bot.user.created_at.timestamp())}:R>)'
 
         em = discord.Embed(
+            title='About me!',
             color=Utils.BotColors.invis(),
-            description=f"""Hello, I'm a discord bot made by [{_fury}](https://discord.com/users/{_fury.id})
+            description=f"""Hello, I'm a discord bot made by [`{_fury}`](https://discord.com/users/{_fury.id})
             I've lots of fun and moderation commands
             I've been on discord since {_created_at}
-            I've been online for {_uptime}
+            I've been online since {_uptime}
             
             [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})"""
         )
+        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
 
         total_channels = sum(len(x.channels) for x in self.bot.guilds)
 
         em.add_field(
-            name='General Info',
+            name='__General Info__',
             value = f"""Total servers: `{len(self.bot.guilds)}`
             Total users: `{len(self.bot.users)}`
             Total channels: `{total_channels}`
