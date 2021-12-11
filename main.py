@@ -258,8 +258,10 @@ async def on_command_error(ctx, error):
     em = discord.Embed(
       color=Utils.BotColors.invis(),
       title = 'Incorrect usage',
-      description = f'`{str(error.param)}` is a required argument that is missing'
+      #description = 
+      description=f'```ml\n[] - Required Argument | () - Optional Argument```'
     )
+    em.add_field(name='Missing', value=f'`{str(error.param)}` is a required argument that is missing')
     _usage = f' {ctx.command.usage}' if ctx.command.usage else ''
     em.add_field(name='Usage', value=f'```{ctx.command.name}{_usage}```')
     await ctx.reply(embed=em, mention_author=False)
