@@ -612,7 +612,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Total commands: `{len(self.bot.commands)}`
             Command usage: `{self.bot.command_usage}`
             Messages seen: `{self.bot.messages_seen}`"""
-        )
+        , inline=False)
 
         em.add_field(
             name = '__**System**__',
@@ -622,7 +622,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Disk: `{used // (2 ** 30)}GB`/`{total // (2 ** 30)}GB`
             Discord.py: `{pkg_resources.get_distribution('discord.py').version}`
             Python: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
-        )
+        , inline=False)
 
         em.add_field(
             name = '__**Files**__',
@@ -633,7 +633,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Coroutines: `{files[4]}`
             Comments: `{files[5]}`
             """
-        )
+        , inline=False)
 
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
