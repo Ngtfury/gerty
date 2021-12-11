@@ -669,6 +669,21 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
+        for shard in self.bot.shards.items():
+            shard_id = shard[0]
+            shard_obj = shard[1]
+            guilds_ = [x for x in self.bot.guilds if x.shard_id==shard_id]
+            guild_count = len(guilds_)
+            member_count = sum(len(g.members) for g in guilds_)
+            _location = '<:YOU_ARE_HERE:919205918120497194>' if ctx.guild.shard_id == shard_id else ''
+
+            em.add_field(
+                name=f'**__Shard #{shard_id}__**{_location}',
+                value=f"""Latency: `{round(shard.latency*1000)}`ms
+                Guilds: `{guild_count}`
+                Users: `{member_count}`"""
+            )
+
         await ctx.send(embed=em)
 
     @commands.Cog.listener('on_message')
