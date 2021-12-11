@@ -302,9 +302,11 @@ class DropDownRole(commands.Cog):
             Select(placeholder='Dynamic self-role menu', options=options, min_values=1, max_values=len(options))
         ]
 
+
+        _final_desc = ''.join(description_)
         FinalEmbed = discord.Embed(
             title=''.join(title_),
-            description=''.join(description_),
+            description=f'{_final_desc}\n\n[*Invite me to your server!*]({discord.utils.oauth_url(self.bot.user.id)})',
             color=Utils.BotColors.invis()
         )
         await FinalMessage.edit(
