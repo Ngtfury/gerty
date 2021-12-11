@@ -574,7 +574,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     async def async_get_class_def_etc(self):
         thing=functools.partial(self.sync_get_class_def_etc)
-        some_stuff=await client.loop.run_in_executor(None, thing)
+        some_stuff=await self.bot.loop.run_in_executor(None, thing)
         return some_stuff
 
     @commands.command(name='botinfo')
