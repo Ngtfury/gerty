@@ -255,8 +255,14 @@ async def on_command_error(ctx, error):
     em = discord.Embed(description="<:error:893501396161290320> Please wait **{:.2f}** seconds before using this command again".format(error.retry_after), color=0x2F3136)
     await ctx.send(embed=em)
   elif isinstance(error, commands.MissingRequiredArgument):
-    em2=await GertyHelpCommand(client).send_command_help(ctx, command=ctx.command, embed=True)
-    await ctx.reply(f'{Utils.BotEmojis.error()} Incorrect usage', embed=em2, mention_author=False)
+    em = discord.Embed(
+      color=Utils.BotColors.invis(),
+      title = 'Incorrect usage',
+      description = f'`{str(error.param)}` is a required argument that is missing'
+    )
+    _usage = f' {ctx.command.usage}' if ctx.command.usage else ''
+    em.add_field(name='Usage', value=f'```{ctx.command.name}{_usage}```')
+    await ctx.reply(embed=em, mention_author=False)
   elif isinstance(error, commands.MissingPermissions):
     _oh=[f'`{x}`' for x in error.missing_perms]
     oh_=', '.join(_oh)

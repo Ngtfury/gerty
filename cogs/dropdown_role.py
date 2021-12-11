@@ -142,12 +142,12 @@ class DropDownRole(commands.Cog):
 
         return role__
 
-            
 
 
 
 
-    @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'])
+
+    @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'], usage='[sub command]')
     @commands.is_owner()
     @commands.bot_has_guild_permissions(manage_messages=True, manage_roles=True)
     @commands.has_permissions(manage_roles=True)
@@ -174,7 +174,7 @@ class DropDownRole(commands.Cog):
 
 
 
-    @self_role.command(name='delete', aliases=['del', 'remove'])
+    @self_role.command(name='delete', aliases=['del', 'remove'], usage='[message]')
     async def self_role_delete(self, ctx, message: discord.Message):
         if not message.id in self.bot.self_roles:
             await ctx.send(
