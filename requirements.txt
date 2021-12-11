@@ -8,6 +8,7 @@ mod
 aiofiles
 DiscordUtils
 prsaw
+psutil
 dnspython
 Pillow
 numpy

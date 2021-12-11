@@ -5,12 +5,15 @@ from discord.ext import commands
 import discord_components
 import numpy as np
 from PIL import Image, ImageDraw
+import psutil
 import io
 from discord_components import *
 from discord import Webhook, AsyncWebhookAdapter
 import aiohttp
 import subprocess
 import random
+import pathlib
+import shutil
 
 class Utils:
 
@@ -487,7 +490,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:tag:880100337745264680> Tag commands', value=', '.join(commandlist[4]), inline=False)
         CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]), inline=False)
         CommandListEmbed.add_field(name='<:image:873933502435962880> Image commands', value=', '.join(commandlist[7]), inline=False)
-        CommandListEmbed.add_field(name='<:menu:919180776896073768>', value=', '.join(commandlist[8]), inline=False)
+        CommandListEmbed.add_field(name='<:menu:919180776896073768> Self-role commands', value=', '.join(commandlist[8]), inline=False)
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
@@ -537,10 +540,72 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                 break
 
 
-        
+    def get_ram_usage():
+        return int(psutil.virtual_memory().total - psutil.virtual_memory().available)
+
+    def get_ram_total():
+        return int(psutil.virtual_memory().total)
+
+
+    @commands.command()
+    @commands.is_owner()
+    async def bot_info(self, ctx):
+        p = pathlib.Path('./')
+        cm = cr = fn = cl = ls = fc = 0
+        for f in p.rglob('*.py'):
+            if str(f).startswith("venv"):
+                continue
+            fc += 1
+            with f.open() as of:
+                for l in of.readlines():
+                    l = l.strip()
+                    if l.startswith('class'):
+                        cl += 1
+                    if l.startswith('def'):
+                        fn += 1
+                    if l.startswith('async def'):
+                        cr += 1
+                    if '#' in l:
+                        cm += 1
+                    ls += 1
+
+        total, used, free = shutil.disk_usage("/")
+
+        _uptime = f'<t:{int(self.bot.uptime)}:T> (<t:{int(self.bot.uptime)}:R>)'
+        _fury = self.bot.get_user(770646750804312105)
+        _created_at = f'<t:{int(self.bot.user.created_at.timestamp())}:D> (<t:{int(self.bot.user.created_at.timestamp())}:R>)'
+
+        em = discord.Embed(
+            color=Utils.BotColors.invis(),
+            description=f"""Hello, I'm a discord bot made by [{_fury}](https://discord.com/users/{_fury.id})
+            I've lots of fun and moderation commands
+            I've been on discord since {_created_at}
+            I've been online for {_uptime}
+            
+            [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})"""
+        )
+
+        total_channels = sum(len(x.channels) for x in self.bot.guilds)
+
+        em.add_field(
+            name='General Info',
+            value = f"""Total servers: `{len(self.bot.guilds)}`
+            Total users: `{len(self.bot.users)}`
+            Total channels: `{total_channels}`
+            Total commands: `{len(self.bot.commands)}`
+            Command usage: `{self.bot.command_usage}`
+            Messages seen: `{self.bot.messages_seen}`"""
+        )
+
+        await ctx.send(embed=em)
+
+    @commands.Cog.listener('on_message')
+    async def update_messages_seen(self, message):
+        self.bot.messages_seen += 1
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
+        self.bot.command_usage += 1
         if ctx.author.id == 770646750804312105:
             return
         if not ctx.guild:

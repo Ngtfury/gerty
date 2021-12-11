@@ -140,6 +140,8 @@ client.ticket_tool_guild_ids = []
 client.running_tickets = {}
 client.sniped_messages = {}
 client.self_roles = []
+client.messages_seen = 0
+client.command_usage = 0
 
 async def load_cache():
   message_ids=await client.db.fetch('SELECT guild_id FROM ticket_tool')

@@ -148,7 +148,6 @@ class DropDownRole(commands.Cog):
 
 
     @commands.group(name='selfrole', invoke_without_command=True, aliases=['self-role', 'dropdown-role', 'autorole'], usage='[sub command]', brief='selfrole')
-    @commands.is_owner()
     @commands.bot_has_guild_permissions(manage_messages=True, manage_roles=True)
     @commands.has_permissions(manage_roles=True)
     async def self_role(self, ctx):
