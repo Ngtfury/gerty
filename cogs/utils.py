@@ -512,7 +512,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     @commands.Cog.listener()
     async def on_command(self, ctx):
-        if ctx.author.id == self.bot.owner_id:
+        if ctx.author.id == 770646750804312105:
             return
         if not ctx.guild:
             return
