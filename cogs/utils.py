@@ -623,7 +623,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             Python version: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
         )
 
-        em.set_footer(name=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
         await ctx.send(embed=em)
 
