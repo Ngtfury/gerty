@@ -44,7 +44,7 @@ class events(commands.Cog):
             )
             em.add_field(name='Missing', value=f'`{str(error.param.name)}` is a required argument that is missing', inline=False)
             _usage = f' {ctx.command.usage}' if ctx.command.usage else ''
-            em.add_field(name='Usage', value=f'```{ctx.command.name}{_usage}```')
+            em.add_field(name='Usage', value=f'```{Utils.clean_prefix(ctx)}{ctx.command.name}{_usage}```')
             await ctx.reply(embed=em, mention_author=False)
         elif isinstance(error, commands.MissingPermissions):
             _oh=[f'`{x}`' for x in error.missing_perms]
