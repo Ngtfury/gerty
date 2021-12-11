@@ -344,8 +344,12 @@ class DropDownRole(commands.Cog):
             _content = '\n'.join(roles)
             await interaction.respond(
                 type=4,
-                content=f'**Dynamic self-role menu**\n\n{_content}'
+                content=f'Dynamic Self-role menu\n\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}'
             )
-                    
+
+    @commands.Cog.listener('on_guild_remove')
+    async def delete_self_role_on_remove(self, guild):
+        await self.bot.db.execute('DELETE FROM self_role WHERE guild_id = $1', guild.id)
+        
 
 
