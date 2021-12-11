@@ -1,3 +1,4 @@
+import typing
 import discord
 from discord.ext import commands
 import asyncio
@@ -57,65 +58,44 @@ class moderation(commands.Cog):
 #kick command
     @commands.command(brief='mod', description='Kicks a user from the server', usage='[member] (reason)')
     @commands.cooldown(1,10,commands.BucketType.guild)
+    @commands.bot_has_guild_permissions(kick_members=True)
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx, member : discord.Member, *, reason=None):
         if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
-            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to kick that member", color=0x2F3136)
-            await ctx.send(embed=em)
+            await ctx.send(embed=Utils.BotEmbed.error('You are not high enough in the role hierarchy to kick that member'))
         else:
             await member.kick(reason=reason)
-            if reason == None:
-                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name}_**", color=0x2F3136)
-            else:
-                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is kicked from {ctx.guild.name} for reason: {reason}_**", color=0x2F3136)
-            await ctx.send(embed=em)
+            await ctx.send(
+                embed = Utils.BotEmbed.success(f'_**Kicked {member} successfully**_')
+            )
 
 
 #ban command
     @commands.command(brief='mod', description='Bans a member from the server', usage='[member] (reason)')
     @commands.cooldown(1,10,commands.BucketType.guild)
+    @commands.bot_has_guild_permissions(ban_members=True)
     @commands.has_permissions(ban_members=True)
     async def ban(self, ctx, member : discord.Member, *, reason=None):
         if member.top_role >= ctx.author.top_role and not ctx.author == ctx.guild.owner:
-            em = discord.Embed(description="<:error:867269410644557834> You are not high enough in the role hierarchy to ban that member", color=0x2F3136)
-            await ctx.send(embed=em)
+            await ctx.send(
+                embed = Utils.BotEmbed.error('You are not high enough in the role hierarchy to ban that member')
+            )
         else:
             await member.ban(reason=reason)
-            if reason == None:
-                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is banned from {ctx.guild.name}_**", color=0x2F3136)
-            else:
-                em = discord.Embed(description=f"<:succes:867385889059504128> **_{member.name} is banned from {ctx.guild.name} for reason: {reason}_**", color=0x2F3136)
-            await ctx.send(embed=em)
+            await ctx.send(
+                embed = Utils.BotEmbed.success(f'_**Banned {member} successfully**_')
+            )
 
 
 #unban command
-    @commands.command(brief='mod', description='Unbans a user', usage='[user]')
+    @commands.command(brief='mod', description='Unbans a user', usage='[user] (reason)')
     @commands.has_permissions(ban_members=True)
-    async def unban(self, ctx, *, member):
-        banned_users = await ctx.guild.bans()
-        member_name, member_discriminator = member.split('#')
+    async def unban(self, ctx, *, member: typing.Union[discord.User, discord.Member], reason=None):
+        await member.unban(reason=reason)
+        await ctx.send(
+            embed = Utils.BotEmbed.success(f'_**Unbanned {member} successfully**_')
+        )
 
-
-        for ban_entry in banned_users:
-            user = ban_entry.user
-
-            if (user.name, user.discriminator) == (member_name, member_discriminator):
-                await ctx.guild.unban(user)
-                await ctx.send(f'Successfully unbanned {user.mention}')
-                return
-
-
-#announcement command
-    @commands.command(brief='mod', description='Announces something to a channel', usage='[channel] [message]')
-    @commands.has_permissions(manage_channels=True)
-    async def announce(self, ctx, channel: discord.TextChannel, *, msg):
-      embed=discord.Embed(description=f"This is an announcement from moderator {ctx.author.name}", color=ctx.author.color)
-      embed.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
-      embed.add_field(name="Announcement:", value=f"{msg}", inline=False)
-      m = await channel.send(embed=embed)
-      await ctx.message.add_reaction('✅')
-      embed=discord.Embed(description=f"Announcement sent in [{channel.mention}] [Jump to announcement]({m.jump_url})", color=ctx.author.color)
-      await ctx.send(embed=embed)
 
 
 
