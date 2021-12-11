@@ -549,7 +549,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     @commands.command()
     @commands.is_owner()
-    async def bot_info(self, ctx):
+    async def _bot_info(self, ctx):
         p = pathlib.Path('./')
         cm = cr = fn = cl = ls = fc = 0
         for f in p.rglob('*.py'):
