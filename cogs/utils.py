@@ -679,7 +679,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
             em.add_field(
                 name=f'**__Shard #{shard_id}__**{_location}',
-                value=f"""Latency: `{round(shard.latency*1000)}`ms
+                value=f"""Latency: `{round(shard_obj.latency*1000)}`ms
                 Guilds: `{guild_count}`
                 Users: `{member_count}`"""
             )
