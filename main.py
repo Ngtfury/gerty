@@ -59,6 +59,7 @@ from discord_together import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
+from cogs.bot_errors import DisabledCommand, UserBlacklisted
 import async_cse
 import asyncpg
 import ast
@@ -175,12 +176,6 @@ async def time_formatter(seconds: float):
   return tmp[:-2]
 
 
-class UserBlacklisted(commands.CheckFailure):
-  def __init__(self, user, reason, *args, **kwargs):
-    self.user=user
-    self.reason=reason
-    super().__init__(*args, **kwargs)
-
 
 @client.check
 async def check_blacklist(ctx):
@@ -191,8 +186,7 @@ async def check_blacklist(ctx):
   else:
     return True
 
-class DisabledCommand(commands.CheckFailure):
-  pass
+
 
 @client.check
 async def disabled_command(ctx):

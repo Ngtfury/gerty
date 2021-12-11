@@ -4,7 +4,6 @@ import traceback
 import json
 from discord.ext import commands
 from cogs.utils import Utils
-from main import UserBlacklisted, DisabledCommand
 from difflib import get_close_matches
 import io
 
