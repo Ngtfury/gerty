@@ -616,11 +616,11 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         em.add_field(
             name = '__**System**__',
             value = f"""PID: `{os.getpid()}`
-            CPU: ``{round(psutil.cpu_percent())}%`/`100%``
+            CPU: `{round(psutil.cpu_percent())}%`/`100%`
             RAM: `{int(self.get_ram_usage() / 1024 / 1024)}MB`/`{int(self.get_ram_total() / 1024 / 1024)}MB`
             Disk: `{used // (2 ** 30)}GB`/`{total // (2 ** 30)}GB`
-            Discord.py version: `{pkg_resources.get_distribution('discord.py').version}`
-            Python version: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
+            Discord.py: `{pkg_resources.get_distribution('discord.py').version}`
+            Python: `{sys.version_info.major}.{sys.version_info.minor}.{sys.version_info.micro}`"""
         )
 
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
