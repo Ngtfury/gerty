@@ -59,7 +59,7 @@ from discord_together import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
-from cogs.bot_errors import DisabledCommand, UserBlacklisted
+from cogs.events import DisabledCommand, UserBlacklisted
 import async_cse
 import asyncpg
 import ast

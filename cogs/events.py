@@ -8,6 +8,16 @@ from difflib import get_close_matches
 import io
 
 
+class UserBlacklisted(commands.CheckFailure):
+  def __init__(self, user, reason, *args, **kwargs):
+    self.user=user
+    self.reason=reason
+    super().__init__(*args, **kwargs)
+
+
+class DisabledCommand(commands.CheckFailure):
+  pass
+
 class events(commands.Cog):
     def __init__(self, bot):
         self.client = bot
