@@ -139,7 +139,7 @@ class GertyBot(commands.AutoShardedBot):
       else:
         loaded_or_not.append(f'<a:GreenCircle:905843069549695026> Loaded extension `{ext}` succesfully.')
 
-    em = discord.Embed(color=Utils.BotColors.invis, description='\n'.join(loaded_or_not))
+    em = discord.Embed(color=Utils.BotColors.invis(), description='\n'.join(loaded_or_not))
 
     async with aiohttp.ClientSession() as session:
       web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
