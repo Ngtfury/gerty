@@ -1,3 +1,4 @@
+from _typeshed import Self
 import discord
 import random
 from discord.ext import commands
@@ -66,24 +67,113 @@ import ast
 import inspect
 
 
+INITIAL_EXTENSIONS = [
+  'jishaku',
+  'cogs.admin',
+  'cogs.AFK',
+  'cogs.covid',
+  'cogs.dropdown_role',
+  'cogs.embed_',
+  'cogs.events',
+  'cogs.github_api',
+  'cogs.giveaways',
+  'cogs.image',
+  'cogs.misc',
+  'cogs.moderation',
+  'cogs.modlogs',
+  'cogs.rtfm',
+  'cogs.tags',
+  'cogs.ticket_tool',
+  'cogs.utils'
+]
 
-activity = discord.Activity(type=discord.ActivityType.watching, name="My mobile")
 
-#bot
-client = commands.AutoShardedBot(
+class GertyBot(commands.AutoShardedBot):
+  def __init__(self, *args, **kwargs):
+    print('__init__ called. Loading bot...')
+    super().__init__(*args, **kwargs)
+
+    self.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `botinfo`\n> Shows information about me'
+    self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
+    self.remove_command("help")
+
+  async def load_cache(self):
+    self.ticket_tool_guild_ids = []
+    self.running_tickets = {}
+    self.sniped_messages = {}
+    self.self_roles = []
+    self.messages_seen = 0
+    self.command_usage = 0
+    
+    message_ids=await self.db.fetch('SELECT guild_id FROM ticket_tool')
+    for id in message_ids:
+      self.ticket_tool_guild_ids.append(id[0])
+
+    running_ids=await self.db.fetch('SELECT guild_id,author_id FROM running_tickets')
+    for guild in self.ticket_tool_guild_ids:
+      self.running_tickets[guild]=[]
+
+    for rid in running_ids:
+      try:
+        self.running_tickets[rid[0]].append(rid[1])
+      except KeyError:
+        pass
+
+
+    self_role_message = await self.db.fetch('SELECT * FROM self_role')
+    for message_id in self_role_message:
+      self.self_roles.append(message_id[0])
+
+  async def load_extensions(self):
+
+    loaded_or_not = []
+
+    for ext in INITIAL_EXTENSIONS:
+      try:
+        self.load_extension(ext)
+      except commands.ExtensionAlreadyLoaded:
+        try:
+          self.reload_extension(ext)
+        except Exception as error:
+          loaded_or_not.append(f'<a:Redcircle:905396170925424651> Extension `{ext}` didn\'t load properly.')
+          continue
+      else:
+        loaded_or_not.append(f'<a:GreenCircle:905843069549695026> Loaded extension `{ext}` succesfully.')
+
+    em = discord.Embed(color=Utils.BotColors.invis, description='\n'.join(loaded_or_not))
+
+    async with aiohttp.ClientSession() as session:
+      web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
+      await web.send(avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs', embeds = [em])
+    return
+ 
+
+
+  async def on_ready(self):
+    DiscordComponents(self)
+
+    print(f"Connected to {self.user}.")
+    await self.load_cache()
+    await self.load_extensions()
+    self.uptime = time.time()
+
+    async with aiohttp.ClientSession() as session:
+      web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
+      await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status')
+
+
+
+client = GertyBot(
   command_prefix = commands.when_mentioned_or('g!'),
   intents=discord.Intents.all(),
-  activity=activity,
+  activity=discord.Activity(type=discord.ActivityType.watching, name="My mobile"),
   status=discord.Status.online,
   strip_after_prefix=True,
   case_insensitive=True
 )
 
 
-togetherControl = DiscordTogether(client)
-client.remove_command("help")
 
-client.db = client.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
 
 
 def source(o):
@@ -100,28 +190,6 @@ discord.gateway.DiscordWebSocket.identify = loc["identify"]
 
 
 
-async def load_extensions():
-
-  async with aiohttp.ClientSession() as session:
-    web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
-    await web.send('--------------------------------', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
-    for filename in os.listdir('./cogs'):
-      if filename.endswith('.py'):
-        try:
-          client.load_extension(f'cogs.{filename[:-3]}')
-          await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `cogs.{filename[:-3]}` succesfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
-          print(f'Loaded module {filename[:-3]} succesfully ✅')
-        except:
-          print(f'Module {filename[:-3]} didn\'t load properly ❌')
-          await web.send(avatar_url='https://singlecolorimage.com/get/ffdd00/400x100', content=f'<a:Redcircle:905396170925424651> Module `cogs.{filename[:-3]}` didn\'t load properly ❌.', username='Ext Error Logs')
-    client.load_extension('jishaku')
-    await web.send(content=f'<a:GreenCircle:905843069549695026> Loaded module `jishaku` succesfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
-    print(f'Loaded module jishaku succesfully ✅')
-    print('--------------------------------')
-    await web.send('--------------------------------', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs')
-
-loop=asyncio.get_event_loop()
-loop.create_task(load_extensions())
 
 
 
@@ -136,32 +204,9 @@ os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True"
 os.environ["JISHAKU_HIDE"] = "True"
 
 
-client.ticket_tool_guild_ids = []
-client.running_tickets = {}
-client.sniped_messages = {}
-client.self_roles = []
-client.messages_seen = 0
-client.command_usage = 0
-
-async def load_cache():
-  message_ids=await client.db.fetch('SELECT guild_id FROM ticket_tool')
-  for id in message_ids:
-    client.ticket_tool_guild_ids.append(id[0])
-
-  running_ids=await client.db.fetch('SELECT guild_id,author_id FROM running_tickets')
-  for guild in client.ticket_tool_guild_ids:
-    client.running_tickets[guild]=[]
-
-  for rid in running_ids:
-    try:
-      client.running_tickets[rid[0]].append(rid[1])
-    except KeyError:
-      pass
 
 
-  self_role_message = await client.db.fetch('SELECT * FROM self_role')
-  for message_id in self_role_message:
-    client.self_roles.append(message_id[0])
+
 
 
 
@@ -201,20 +246,6 @@ async def disabled_command(ctx):
   else:
     return True
 
-@client.event
-async def on_ready():
-  DiscordComponents(client)
-
-  print(f"Connected to {client.user.name}.")
-  print('--------------------------------')
-  await load_cache()
-  print('Ticket system message cache loaded')
-  client.uptime = time.time()
-  client.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `botinfo`\n> Shows information about me'
-
-  async with aiohttp.ClientSession() as session:
-    web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-    await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status')
 
 @client.command(brief='meta', description='Gets the bot uptime')
 async def uptime(ctx):
