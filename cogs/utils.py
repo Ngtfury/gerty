@@ -660,7 +660,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         total_channels = sum(len(x.channels) for x in self.bot.guilds)
 
         em.add_field(
-            name='__**General Info**__',
+            name='<:robot:919852515737104395> __**General Info**__',
             value = f"""Total servers: `{len(self.bot.guilds)}`
             Total users: `{len(self.bot.users)}`
             Total channels: `{total_channels}`
@@ -670,7 +670,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         , inline=True)
 
         em.add_field(
-            name = '__**System**__',
+            name = '<:cogs:919851429613682688> __**System**__',
             value = f"""PID: `{os.getpid()}`
             CPU: `{round(psutil.cpu_percent())}%`/`100%`
             RAM: `{int(self.get_ram_usage() / 1024 / 1024)}MB`/`{int(self.get_ram_total() / 1024 / 1024)}MB`
@@ -680,7 +680,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         , inline=True)
 
         em.add_field(
-            name = '__**Files**__',
+            name = '<:folder:919852062668390410> __**Files**__',
             value = f"""Files: `{files[0]}`
             Lines: `{files[1]}`
             Classes: `{files[2]}`
@@ -691,7 +691,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         , inline=True)
 
         em.add_field(
-            name = '**__Latest changes__**',
+            name = '<:github:917691688984670240> **__Latest changes__**',
             value = self.get_last_commits(),
             inline = False
         )
