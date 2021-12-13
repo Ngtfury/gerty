@@ -1,4 +1,3 @@
-from _typeshed import Self
 import discord
 import random
 from discord.ext import commands
