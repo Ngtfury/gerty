@@ -152,19 +152,19 @@ class GertyBot(commands.AutoShardedBot):
 
   @property
   async def status_invis(self):
-    await self.change_presence(status=discord.Status.invisible)
+    await self.change_presence(status=discord.Status.invisible, activity=self.activity)
 
   @property
   async def status_idle(self):
-    await self.change_presence(status=discord.Status.idle)
+    await self.change_presence(status=discord.Status.idle, activity=self.activity)
 
   @property
   async def status_dnd(self):
-    await self.change_presence(status=discord.Status.dnd)
+    await self.change_presence(status=discord.Status.dnd, activity=self.activity)
 
   @property
   async def status_online(self):
-    await self.change_presence(status=discord.Status.online)
+    await self.change_presence(status=discord.Status.online, activity=self.activity)
 
   async def on_ready(self):
     DiscordComponents(self)
