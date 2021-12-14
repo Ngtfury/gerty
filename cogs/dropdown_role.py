@@ -120,8 +120,8 @@ class DropDownRole(commands.Cog):
             description_ = splited_[2]
 
             if self.isDiscordEmoji(_emoji):
-                _discord_emoji = await commands.EmojiConverter().convert(ctx=ctx, argument=_emoji)
-                emoji_ = int(_discord_emoji.id)
+                _discord_emoji = await commands.PartialEmojiConverter().convert(ctx=ctx, argument=_emoji)
+                emoji_ = str(_discord_emoji)
             else:
                 emoji_ = str(_emoji)
 
@@ -278,10 +278,10 @@ class DropDownRole(commands.Cog):
         for final_role in role_.items():
             _role_name_final = final_role[0]
             _role_dict = final_role[1]
-            if isinstance(_role_dict[0]['emoji'], str):
+            if not self.isDiscordEmoji(_role_dict[0]['emoji']):
                 _emoji_final = _role_dict[0]['emoji']
-            elif isinstance(_role_dict[0]['emoji'], int):
-                _emoji_final = self.bot.get_emoji(_role_dict[0]['emoji'])
+            elif:
+                _emoji_final = await commands.PartialEmojiConverter().convert(ctx=ctx, argument=_role_dict[0]['emoji'])
 
             options.append(
                 SelectOption(
