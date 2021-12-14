@@ -149,6 +149,26 @@ class GertyBot(commands.AutoShardedBot):
     print('Loaded extensions successfully.')
     return
 
+  class Status:
+    def __init___(self, bot):
+      self.bot = bot
+
+    @property
+    async def invis(self):
+      await self.bot.change_presence(status=discord.Status.invisible)
+
+    @property
+    async def idle(self):
+      await self.bot.change_presence(status=discord.Status.idle)
+
+    @property
+    async def dnd(self):
+      await self.bot.change_presence(status=discord.Status.dnd)
+
+    @property
+    async def online(self):
+      await self.bot.change_presence(status=discord.Status.online)
+
   async def on_ready(self):
     DiscordComponents(self)
 
