@@ -280,7 +280,7 @@ class DropDownRole(commands.Cog):
             _role_dict = final_role[1]
             if not self.isDiscordEmoji(_role_dict[0]['emoji']):
                 _emoji_final = _role_dict[0]['emoji']
-            elif:
+            else:
                 _emoji_final = await commands.PartialEmojiConverter().convert(ctx=ctx, argument=_role_dict[0]['emoji'])
 
             options.append(
