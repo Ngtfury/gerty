@@ -59,7 +59,6 @@ from discord_together import DiscordTogether
 from PIL import ImageFilter
 from PIL import Image
 from collections import namedtuple
-from cogs.events import DisabledCommand, UserBlacklisted
 import async_cse
 import asyncpg
 import ast
@@ -189,7 +188,15 @@ client = GertyBot(
   case_insensitive=True
 )
 
+class UserBlacklisted(commands.CheckFailure):
+  def __init__(self, user, reason, *args, **kwargs):
+    self.user=user
+    self.reason=reason
+    super().__init__(*args, **kwargs)
 
+
+class DisabledCommand(commands.CheckFailure):
+  pass
 
 
 
