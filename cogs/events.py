@@ -10,16 +10,6 @@ import os
 import sys
 
 
-class UserBlacklisted(commands.CheckFailure):
-  def __init__(self, user, reason, *args, **kwargs):
-    self.user=user
-    self.reason=reason
-    super().__init__(*args, **kwargs)
-
-
-class DisabledCommand(commands.CheckFailure):
-  pass
-
 class events(commands.Cog):
     def __init__(self, bot):
         self.client = bot
@@ -63,7 +53,7 @@ class events(commands.Cog):
             _perms=oh_.replace('_', " ")
             em = discord.Embed(description=f"<:error:893501396161290320> The bot is missing {_perms} permission(s) to run this command", color=0x2F3136)
             await ctx.reply(embed=em, mention_author=False)
-        elif isinstance(error, events.UserBlacklisted):
+        elif isinstance(error, errors.UserBlacklisted):
             em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for reason `{error.reason}`", color=0x2F3136)
             await ctx.send(embed=em)
         elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
