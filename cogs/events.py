@@ -7,6 +7,7 @@ from cogs.utils import Utils
 from difflib import get_close_matches
 import io
 import os
+import sys
 
 
 class UserBlacklisted(commands.CheckFailure):
