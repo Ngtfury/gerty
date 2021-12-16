@@ -117,7 +117,7 @@ class events(commands.Cog):
             await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
             error_log_channel=self.bot.get_channel(906874671847333899)
 
-            trace = "".join(traceback.format_exception(type(error), error, error.__traceback__)).replace("``", "`\u200b`")
+            traceback_string = "".join(traceback.format_exception(type(error), error, error.__traceback__)).replace("``", "`\u200b`")
 
             try:
                 await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
