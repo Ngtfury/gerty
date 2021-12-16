@@ -6,6 +6,7 @@ from discord.ext import commands
 from cogs.utils import Utils
 from difflib import get_close_matches
 import io
+import os
 
 
 class UserBlacklisted(commands.CheckFailure):
@@ -114,8 +115,9 @@ class events(commands.Cog):
         else:
             await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
             error_log_channel=self.bot.get_channel(906874671847333899)
+            exe = sys.exc_info()
 
-            traceback_string = "".join(traceback.format_exception(value=error, tb=error.__traceback__, exc=error))
+            traceback_string = "".join(traceback.format_exception(value=error, tb=error.__traceback__, exc=exe))
 
             try:
                 await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
