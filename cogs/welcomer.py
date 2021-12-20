@@ -48,20 +48,32 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @commands.group(aliases=['welcome'], invoke_without_command=False)
+    @commands.group(aliases=['welcome'], invoke_without_command=True, usage='[sub command]')
     @commands.is_owner()
     async def welcomer(self, ctx):
-        pass
+        if not await self.isGuildAlready(ctx.guild):
+            await ctx.send(
+                embed = Utils.BotEmbed.error("This server does not have welcomer setup")
+            )
+            return
+
+        row = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', ctx.guild.id)
+        channel_obj = self.bot.get_channel(row[0])
+
+        em = discord.Embed(color=Utils.BotColors.invis())
+        em.add_field(name='Channel', value=f'{channel_obj.mention}')
+        em.add_field(name='Message', value=row[1])
+        await ctx.send(embed=em)
 
 
 
-    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'])
+    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'], usage='(channel)')
     async def set_channel(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
         if not channel.permissions_for(ctx.guild.me).send_messages:
             await ctx.send(
-                embed = Utils.BotEmbed.error("I don't have permissions to send messages in that channel.")
+                embed = Utils.BotEmbed.error("I don't have permissions to send messages in that channel")
             )
             return
 
@@ -69,11 +81,11 @@ class WelcomerCog(commands.Cog):
         return
 
 
-    @welcomer.command()
+    @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]')
     async def set_message(self, ctx, message:str):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
-                embed = Utils.BotEmbed.error("This server don't have welcomer setup.")
+                embed = Utils.BotEmbed.error("This server does not have welcomer setup")
             )
             return
 
