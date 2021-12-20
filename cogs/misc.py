@@ -474,7 +474,8 @@ class Misc(commands.Cog):
             
         async with aiohttp.ClientSession() as sess:
             async with sess.get(emoji_url) as rep:
-                buf = io.BytesIO(await rep.read())
+                raw = io.BytesIO(await rep.read())
+                buf = raw.getvalue()
                 
                 
        
