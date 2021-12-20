@@ -14,6 +14,7 @@ import aiohttp
 import subprocess
 import sys
 import random
+from random import *
 import pathlib
 import shutil
 import os
