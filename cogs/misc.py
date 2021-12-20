@@ -1,3 +1,4 @@
+from random import random
 import re
 import discord
 from discord import emoji
@@ -514,12 +515,22 @@ https://discord.gg/gERnjRdF""",
                     mention_author=False
                 )
                 self.bot.bot_mention[message.author.id] = 1
-                await asyncio.sleep(5)
+                await asyncio.sleep(10)
                 self.bot.bot_mention[message.author.id] = 0
                 return
 
             else:
-                await message.reply('Why are you pinging me all time!?!!?!11', mention_author=False)
+                _reply_list = [
+                    'STOP IT!!!',
+                    'Why are you pinging me all time!?1',
+                    '<a:pingg:922457162079420427>',
+                    "Don't ping me I have **OTHER WORKS** to do",
+                    '<a:shutthefuckup:922457614636417045>'
+                ]
+                _reply = random.choice(_reply_list)
+
+                return await message.reply(_reply, mention_author=False)
+
 
         if message.content.lower() == 'hello':
             return await message.reply('https://nohello.net/', mention_author=False)
