@@ -56,7 +56,7 @@ class WelcomerCog(commands.Cog):
 
 
     @welcomer.command(aliases=['channel', 'channelset', 'setchannel'])
-    async def set_channel(self, ctx, channel: discord.TextChannel):
+    async def set_channel(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
         if not channel.permissions_for(ctx.guild.me).send_messages:
@@ -66,6 +66,7 @@ class WelcomerCog(commands.Cog):
             return
 
         await self.set_channel(ctx, channel)
+        return
 
 
     @welcomer.command()
