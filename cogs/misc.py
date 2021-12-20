@@ -611,7 +611,7 @@ https://discord.gg/gERnjRdF""",
         if 'imagine' in message.content.lower().split(' '):
             return await message.reply(f'**{message.author.name}** is trying really had to imagine', mention_author=False)
 
-        if message.content == '???':
+        if message.content == '???' or message.content == '??' or message.content == '?':
             return await message.reply('❓❔❓', mention_author=False)
 
         _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
