@@ -123,6 +123,7 @@ class GertyBot(commands.AutoShardedBot):
     for message_id in self_role_message:
       self.self_roles.append(message_id[0])
 
+
     print('Loaded cache successfully.')
 
   async def load_extensions(self):
