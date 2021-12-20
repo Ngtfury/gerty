@@ -476,6 +476,12 @@ class Misc(commands.Cog):
         else:
             emoji_url = str(emoji_.url)
 
+        if not emoji_url.startswith('https://cdn.discordapp.com/emojis/'):
+            await ctx.send(
+                embed = Utils.BotEmbed.error('URLs must be a rendered Discord emoji or an emoji URL')
+            )
+            return
+
         components = [[
             Button(style=ButtonStyle.green, label='Yes', id='EmojiUploadYes'),
             Button(label='No', id='EmojiUploadNo')
