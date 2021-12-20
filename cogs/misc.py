@@ -490,7 +490,6 @@ class Misc(commands.Cog):
         while True:
             event = await self.bot.wait_for('button_click', check = lambda i: i.author == ctx.author and i.message.id == MainMessage.id)
             if event.component.id == 'EmojiUploadYes':
-                await event.respond(type=6)
                 await MainMessage.disable_components()
 
                 async with aiohttp.ClientSession() as sess:
