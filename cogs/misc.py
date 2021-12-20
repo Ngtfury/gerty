@@ -460,6 +460,26 @@ class Misc(commands.Cog):
             MainMessageEmbeds.append(_embed)
 
         await ctx.send(embeds=MainMessageEmbeds)
+        
+
+    @commands.command(brief='mod', description='Upload an emoji to your server', usage='[emoji or url] (name)')
+    @commands.is_owner()
+    async def upload_emoji(self, ctx, emoji_: typing.Union[discord.Emoji, discord.PartialEmoji, str], name='emote'):
+        if isinstance(emoji_, str):
+            emoji_url = emoji_
+            
+        else:
+            emoji_url = str(emoji_.url)
+            
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(emoji_url) as rep:
+                buf = io.BytesIO(await rep.read())
+                
+                
+       
+        _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
+        await ctx.message.add_reaction(_uploaded_emoji)
+        return
 
 
 def setup(client):
