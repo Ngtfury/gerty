@@ -614,6 +614,12 @@ https://discord.gg/gERnjRdF""",
         if message.content == '???' or message.content == '??' or message.content == '?':
             return await message.reply('❓❔❓', mention_author=False)
 
+        if message.content.lower() == 'uwu':
+            await message.reply(
+                """**NO UWUING 🚫**
+                This is an uwu restricted zone""",
+            )
+
         _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
         if _islink_:
             for link in _islink_:
