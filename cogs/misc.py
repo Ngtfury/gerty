@@ -467,13 +467,33 @@ class Misc(commands.Cog):
         
 
     @commands.command(brief='mod', description='Upload an emoji to your server', usage='[emoji or url] (name)')
-    @commands.is_owner()
+    @commands.bot_has_guild_permissions(manage_emojis=True)
     async def upload_emoji(self, ctx, emoji_: typing.Union[discord.Emoji, discord.PartialEmoji, str], name='emote'):
         if isinstance(emoji_, str):
             emoji_url = emoji_
             
         else:
             emoji_url = str(emoji_.url)
+
+        components = [[
+            Button(style=ButtonStyle.green, label='Yes', id='EmojiUploadYes'),
+            Button(label='No', id='EmojiUploadNo')
+        ]]
+        em = discord.Embed(color=Utils.BotColors.invis())
+        em.set_image(url=emoji_url)
+        MainMessage = await ctx.send(
+            'Is this alright?',
+            embed = em,
+            components = components
+        )
+        while True:
+            event = await self.bot.wait_for('button_click', check = lambda i: i.author == ctx.author and i.message.id == MainMessage.id)
+            if event.component.id == 'EmojiUploadYes':
+                break
+            elif event.component.id == 'EmojiUploadNo':
+                await MainMessage.delete()
+                await ctx.send('Cancelled uploading emoji.')
+                return
             
         async with aiohttp.ClientSession() as sess:
             async with sess.get(emoji_url) as rep:
@@ -481,8 +501,10 @@ class Misc(commands.Cog):
                 buf = raw.getvalue()
                 
                 
-       
-        _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
+        try:
+            _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
+        except commands.CommandInvokeError:
+            return await ctx.send(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})'))
         await ctx.message.add_reaction(_uploaded_emoji)
         return
 
@@ -548,6 +570,7 @@ https://discord.gg/gERnjRdF""",
                 _reply_list = [
                     'https://tenor.com/view/lils-silly-duck-lilsduck-ducky-duck-duck-riri-the-duck-gif-19719423',
                     'https://tenor.com/view/bruh-moai-moyai-zemby7-big_funky-gif-23796913',
+                    'https://media.discordapp.net/attachments/922154070565879808/922477855991033896/unknown.png',
                     'STOP IT!!!',
                     '<a:therock:922460890270425149>',
                     'Hmmm <a:therock:922460890270425149>',
