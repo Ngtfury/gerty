@@ -522,13 +522,19 @@ https://discord.gg/gERnjRdF""",
 
             else:
                 _reply_list = [
+                    'https://tenor.com/view/lils-silly-duck-lilsduck-ducky-duck-duck-riri-the-duck-gif-19719423',
+                    'https://tenor.com/view/bruh-moai-moyai-zemby7-big_funky-gif-23796913',
                     'STOP IT!!!',
+                    '<a:therock:922460890270425149>',
+                    'Hmmm <a:therock:922460890270425149>',
                     'Why are you pinging me all time!?1',
                     '<a:pingg:922457162079420427>',
-                    "Don't ping me I have **OTHER WORKS** to do",
-                    '<a:shutthefuckup:922457614636417045>'
+                    "Don't ping me all time I have **OTHER WORKS** to do",
+                    '<a:shutthefuckup:922457614636417045>',
+                    '<:bruh:922459628569231380>'
                 ]
                 _reply = random.choice(_reply_list)
+
 
                 return await message.reply(_reply, mention_author=False)
 
