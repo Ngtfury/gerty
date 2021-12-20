@@ -1,3 +1,4 @@
+from re import A
 import discord
 from discord.ext import commands
 from cogs.utils import Utils
@@ -101,3 +102,51 @@ class WelcomerCog(commands.Cog):
             embed = Utils.BotEmbed.success("Successfully updated welcomer message for this server")
         )
         return
+
+    @welcomer.command(aliases=['del', 'deldata'])
+    async def delete_data(self, ctx):
+        if not await self.isGuildAlready(ctx.guild):
+            await ctx.send(
+                embed = Utils.BotEmbed.error("This server does not have welcomer setup")
+            )
+            return
+
+        await self.bot.db.execute(
+            """DELETE FROM welcomer WHERE guild_id = $1""",
+            ctx.guild.id
+        )
+
+        await ctx.send(
+            embed = Utils.BotEmbed.success("Successfully deleted welcomer data of this server")
+        )
+        return
+
+
+    @commands.Cog.listener('on_member_join')
+    async def welcome_member(self, member):
+        if await self.isGuildAlready(member.guild):
+            row = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', member.guild.id)
+            channel_obj = self.bot.get_channel(row[1])
+
+            user_mention = member.mention
+            user_name = member.name
+            user_full_name = str(member)
+            user_id = member.id
+            user_discrim = member.discriminator
+
+            server_name = member.guild.name
+            member_count = member.guild.member_count
+
+
+            await channel_obj.send(
+                str(row[2]).format(
+                    user_mention = user_mention,
+                    user_name = user_name,
+                    user_full_name = user_full_name,
+                    user_id = user_id,
+                    user_discrim = user_discrim,
+                    server_name = server_name,
+                    member_count = member_count
+                )
+            )
+
