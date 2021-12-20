@@ -468,7 +468,7 @@ class UtilsCog(commands.Cog):
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
         MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> **<:settingssssss:891223848970747916> Utilities**\n> **🧩 Miscellaneous**\n> **🎪 Fun**\n> **<:moderation:885156113656479784> Moderation**\n> **<:tag:880100337745264680> Tags**\n> **📘 Rtfm (docs)**\n> **<:image:873933502435962880> Image**\n> **<:menu:919180776896073768> Self-role**\n> **<:dev:908275726199963698> Admin**')
         MainEmbed.add_field(name='<:news:885177157138145280> News', value=f'> {self.bot.news}', inline=True)
-        MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105)', inline=False)
+        MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105) | [Support Server](https://discord.gg/gERnjRdF)', inline=False)
         MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
 
@@ -654,7 +654,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             I've been on discord since {_created_at}
             I've been online since {_uptime}
             
-            [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})"""
+            [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})
+            [For help consider joining Support Server](https://discord.gg/gERnjRdF)"""
         )
         em.set_author(name=str(self.bot.user), icon_url=self.bot.user.avatar_url)
 
