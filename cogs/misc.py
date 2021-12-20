@@ -501,7 +501,7 @@ class Misc(commands.Cog):
                     try:
                         _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
                     except HTTPException:
-                        return await event.send(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})**'), ephemeral=False)
+                        return await event.respond(type=4, embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})**'), ephemeral=False)
                     await event.respond(type=4, content=f'{ctx.author.display_name} uploaded {_uploaded_emoji}', ephemeral=False)
                 return
             elif event.component.id == 'EmojiUploadNo':
