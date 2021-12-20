@@ -492,24 +492,27 @@ class Misc(commands.Cog):
             if event.component.id == 'EmojiUploadYes':
                 await event.respond(type=6)
                 await MainMessage.disable_components()
-                break
+
+                async with aiohttp.ClientSession() as sess:
+                    async with sess.get(emoji_url) as rep:
+                        raw = io.BytesIO(await rep.read())
+                        buf = raw.getvalue()
+
+                    try:
+                        _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
+                    except HTTPException:
+                        return await event.send(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})**'), ephemeral=False)
+                    await event.respond(type=4, content=f'{ctx.author.display_name} uploaded {_uploaded_emoji}', ephemeral=False)
+                return
             elif event.component.id == 'EmojiUploadNo':
                 await event.respond(type=6)
                 await MainMessage.delete()
                 await ctx.send('Cancelled uploading emoji.')
                 return
             
-        async with aiohttp.ClientSession() as sess:
-            async with sess.get(emoji_url) as rep:
-                raw = io.BytesIO(await rep.read())
-                buf = raw.getvalue()
+
                 
-        try:
-            _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
-        except HTTPException:
-            return await ctx.send(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})'))
-        await ctx.message.add_reaction(_uploaded_emoji)
-        return
+
 
 
     async def check_rick_roll(self, url:str):
