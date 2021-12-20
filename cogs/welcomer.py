@@ -48,7 +48,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @commands.group(aliases=['welcome'], invoke_without_command=True)
+    @commands.group(aliases=['welcome'], invoke_without_command=False)
     @commands.is_owner()
     async def welcomer(self, ctx):
         pass
