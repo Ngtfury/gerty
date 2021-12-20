@@ -602,6 +602,9 @@ https://discord.gg/gERnjRdF""",
         if 'looser' in message.content.lower().split(' '):
             return await message.reply('You are the real **loser** here', mention_author=False)
 
+        if 'mad' in message.content.lower().split(' '):
+            return await message.reply(embed = discord.Embed(description='Why you heff to be [mad](https://www.youtube.com/watch?v=xzpndHtdl9A)??', color=Utils.BotColors.invis()), mention_author=False)
+
         if 'imagine' in message.content.lower().split(' '):
             return await message.reply(f'**{message.author.name}** is trying really had to imagine', mention_author=False)
 
