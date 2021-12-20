@@ -494,6 +494,8 @@ class Misc(commands.Cog):
     async def fun_replies(self, message):
         if not message.guild:
             return
+        if message.author.bot:
+            return
 
         if message.content.lower() == 'hello':
             return await message.reply('https://nohello.net/', mention_author=False)
