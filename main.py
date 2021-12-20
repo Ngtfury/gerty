@@ -102,6 +102,7 @@ class GertyBot(commands.AutoShardedBot):
     self.self_roles = []
     self.messages_seen = 0
     self.command_usage = 0
+    self.bot_mention = {}
     
     message_ids=await self.db.fetch('SELECT guild_id FROM ticket_tool')
     for id in message_ids:

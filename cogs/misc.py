@@ -490,12 +490,36 @@ class Misc(commands.Cog):
             async with sess.get(url) as rep:
                 return str(rep.url) == 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
+
     @commands.Cog.listener('on_message')
     async def fun_replies(self, message):
         if not message.guild:
             return
         if message.author.bot:
             return
+
+        if message.content == f'<@!{self.bot.user.id}>' or message.content == f'<@{self.bot.user.id}>':
+            try:
+                self.bot_mention[message.author.id]
+            except:
+                self.bot_mention[message.author.id] = 0
+
+            if self.bot_mention[message.author.id] == 0:
+                await message.reply(
+                    """Hello, I'm **Gerty**, My prefixes are `g!` and `@Gerty`
+For a list of commands do `g!help` or `@Gerty help`
+
+If you continue to have problems, consider asking for help on our **Support Server**
+https://discord.gg/gERnjRdF""",
+                    mention_author=False
+                )
+                self.bot_mention[message.author.id] = 1
+                await asyncio.sleep(5)
+                self.bot_mention[message.author.id] = 0
+                return
+
+            else:
+                await message.reply('Why are you pinging me all time!?!!?!11', mention_author=False)
 
         if message.content.lower() == 'hello':
             return await message.reply('https://nohello.net/', mention_author=False)
@@ -504,7 +528,7 @@ class Misc(commands.Cog):
             return await message.reply('You are the real **loser** here', mention_author=False)
 
         if 'imagine' in message.content.lower():
-            return await message.reply(f'**{message.author.name}** is trying really had to imagine')
+            return await message.reply(f'**{message.author.name}** is trying really had to imagine', mention_author=False)
 
         _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
         if _islink_:
