@@ -85,7 +85,7 @@ class WelcomerCog(commands.Cog):
 
 
     @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]', name='set-message')
-    async def set_message(self, ctx, message:str):
+    async def set_message(self, ctx, *, message:str):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
                 embed = Utils.BotEmbed.error("This server does not have welcomer setup")
@@ -121,7 +121,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @welcomer.command()
+    @welcomer.command(aliases=['var'])
     async def variables(self, ctx):
         em = discord.Embed(
             color=Utils.BotColors.invis(),
