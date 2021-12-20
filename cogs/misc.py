@@ -493,6 +493,30 @@ class Misc(commands.Cog):
                 return str(rep.url) == 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
 
 
+        #if message.content.lower() == 'hello':
+            #return await message.reply('https://nohello.net/', mention_author=False)
+
+    def isNoHello(self, content):
+        _lower = content.lower()
+
+        _hello_list = [
+            'hello',
+            'hi',
+            'hey',
+            'bonjour',
+            'yo',
+            'hola',
+            'hallo',
+            'ciao',
+            '👋',
+            'namaste',
+            'hoi',
+            'hiya'
+        ]
+
+        return _lower in _hello_list
+
+
     @commands.Cog.listener('on_message')
     async def fun_replies(self, message):
         if not message.guild:
@@ -538,9 +562,8 @@ https://discord.gg/gERnjRdF""",
 
                 return await message.reply(_reply, mention_author=False)
 
-
-        if message.content.lower() == 'hello':
-            return await message.reply('https://nohello.net/', mention_author=False)
+        if self.isNoHello(message.content):
+            return await message.reply('https://nohello.net', mention_author=False)
 
         if 'looser' in message.content.lower():
             return await message.reply('You are the real **loser** here', mention_author=False)
