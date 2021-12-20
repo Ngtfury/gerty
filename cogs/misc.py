@@ -530,7 +530,7 @@ class Misc(commands.Cog):
             except:
                 self.bot.bot_mention[message.author.id] = 0
 
-            if self.bot.bot_mention[message.author.id] <= 1:
+            if self.bot.bot_mention[message.author.id] == 0:
                 await message.reply(
                     """Hello, I'm **Gerty**, My prefixes are `g!` and `@Gerty`
 For a list of commands do `g!help` or `@Gerty help`
