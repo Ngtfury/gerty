@@ -5,6 +5,7 @@ from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
 from discord.ext import commands
 import datetime
+import io
 import time
 import asyncio
 from math import *
