@@ -199,6 +199,8 @@ class UserBlacklisted(commands.CheckFailure):
 class DisabledCommand(commands.CheckFailure):
   pass
 
+class NoDmCommands(commands.CheckFailure):
+  pass
 
 
 def source(o):
@@ -257,7 +259,7 @@ async def check_blacklist(ctx):
 @client.check
 async def no_dm_commands(ctx):
   if not ctx.guild:
-    await ctx.send(embed=Utils.BotEmbed.error('Sorry, commands will not work on DMs.'))
+    raise NoDmCommands
     return False
   return True
 
