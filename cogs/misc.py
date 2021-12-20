@@ -599,6 +599,9 @@ https://discord.gg/gERnjRdF""",
         if self.isNoHello(message.content):
             return await message.reply('https://nohello.net/', mention_author=False)
 
+        if message.content == '...':
+            return await message.reply('???????', mention_author=False)
+
         if 'looser' in message.content.lower().split(' '):
             return await message.reply('You are the real **loser** here', mention_author=False)
 
