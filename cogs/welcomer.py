@@ -12,18 +12,18 @@ class WelcomerCog(commands.Cog):
         self.bot = bot
 
     async def isGuildAlready(self, guild):
-        _is_already = await self.bot.db.fetchrow('SELECT FROM welcomer WHERE guild_id = $1', guild.id)
+        _is_already = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', guild.id)
         if _is_already:
             return True
         return False
 
     async def isChannelAlready(self, channel):
-        _is_already = await self.bot.db.fetchrow('SELECT FROM welcomer WHERE channel_id = $1', channel.id)
+        _is_already = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE channel_id = $1', channel.id)
         if _is_already:
             return True
         return False
 
-    async def set_channel(self, ctx, channel):
+    async def set_welcomer_channel(self, ctx, channel):
         if self.isChannelAlready(channel):
             await self.bot.db.execute(
                 """UPDATE welcomer SET channel_id = $1 WHERE guild_id = $2""",
@@ -65,7 +65,7 @@ class WelcomerCog(commands.Cog):
             )
             return
 
-        await self.set_channel(ctx, channel)
+        await self.set_welcomer_channel(ctx, channel)
         return
 
 
