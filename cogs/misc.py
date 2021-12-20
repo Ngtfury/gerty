@@ -563,12 +563,12 @@ https://discord.gg/gERnjRdF""",
                 return await message.reply(_reply, mention_author=False)
 
         if self.isNoHello(message.content):
-            return await message.reply('https://nohello.net', mention_author=False)
+            return await message.reply('https://nohello.net/', mention_author=False)
 
-        if 'looser' in message.content.lower():
+        if 'looser' in message.content.lower().split(' '):
             return await message.reply('You are the real **loser** here', mention_author=False)
 
-        if 'imagine' in message.content.lower():
+        if 'imagine' in message.content.lower().split(' '):
             return await message.reply(f'**{message.author.name}** is trying really had to imagine', mention_author=False)
 
         _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
