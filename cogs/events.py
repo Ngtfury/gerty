@@ -2,21 +2,14 @@ import discord
 import asyncio
 import traceback
 import json
+from __main__ import UserBlacklisted, DisabledCommand
 from discord.ext import commands
 from cogs.utils import Utils
 from difflib import get_close_matches
 import io
+import os
+import sys
 
-
-class UserBlacklisted(commands.CheckFailure):
-  def __init__(self, user, reason, *args, **kwargs):
-    self.user=user
-    self.reason=reason
-    super().__init__(*args, **kwargs)
-
-
-class DisabledCommand(commands.CheckFailure):
-  pass
 
 class events(commands.Cog):
     def __init__(self, bot):
@@ -115,7 +108,7 @@ class events(commands.Cog):
             await ctx.reply('An unexpected error ocurred... Error has been reported to our devs, will be fixed soon...', mention_author=False, delete_after=5)
             error_log_channel=self.bot.get_channel(906874671847333899)
 
-            traceback_string = "".join(traceback.format_exception(value=error, tb=error.__traceback__, exc=error))
+            traceback_string = "".join(traceback.format_exception(type(error), error, error.__traceback__)).replace("``", "`\u200b`")
 
             try:
                 await error_log_channel.send(f'__**AN ERROR OCCURED**__\n```yml\nInvoked by: {ctx.author}\nServer: {ctx.guild.name}\nCommand: {ctx.command.name}```\n__**TRACEBACK**__\n```py\n{traceback_string}```')
