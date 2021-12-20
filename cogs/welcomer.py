@@ -70,7 +70,7 @@ class WelcomerCog(commands.Cog):
 
 
 
-    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'], usage='(channel)')
+    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'], usage='(channel)', name='set-channel')
     async def set_channel(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
@@ -84,7 +84,7 @@ class WelcomerCog(commands.Cog):
         return
 
 
-    @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]')
+    @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]', name='set-message')
     async def set_message(self, ctx, message:str):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
@@ -103,7 +103,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @welcomer.command(aliases=['del', 'deldata'])
+    @welcomer.command(aliases=['del', 'deldata', 'delete'], name='delete')
     async def delete_data(self, ctx):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
@@ -120,6 +120,23 @@ class WelcomerCog(commands.Cog):
             embed = Utils.BotEmbed.success("Successfully deleted welcomer data of this server")
         )
         return
+
+    @welcomer.command()
+    async def variables(self, ctx):
+        em = discord.Embed(
+            color=Utils.BotColors.invis(),
+            title='Variables',
+            description=f"""**These are the variables of `welcomer` module in Gerty**
+            <:arrow:885193320068968508> `user_mention` - {ctx.author.mention}
+            <:arrow:885193320068968508> `user_name` - {ctx.author.name}
+            <:arrow:885193320068968508> `user_full_name` - {ctx.author}
+            <:arrow:885193320068968508> `user_id` - {ctx.author.id}
+            <:arrow:885193320068968508> `user_discrim` - {ctx.author.discriminator}
+            <:arrow:885193320068968508> `server_name` - {ctx.guild.name}
+            <:arrow:885193320068968508> `member_count` - {ctx.guild.member_count}"""
+        )
+
+        await ctx.send(embed=em)
 
 
     @commands.Cog.listener('on_member_join')
