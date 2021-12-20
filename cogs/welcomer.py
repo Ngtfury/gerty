@@ -24,7 +24,7 @@ class WelcomerCog(commands.Cog):
         return False
 
     async def set_welcomer_channel(self, ctx, channel):
-        if self.isChannelAlready(channel):
+        if await self.isChannelAlready(channel):
             await self.bot.db.execute(
                 """UPDATE welcomer SET channel_id = $1 WHERE guild_id = $2""",
                 channel.id,
@@ -71,7 +71,7 @@ class WelcomerCog(commands.Cog):
 
     @welcomer.command()
     async def set_message(self, ctx, message:str):
-        if not self.isGuildAlready(ctx.guild):
+        if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
                 embed = Utils.BotEmbed.error("This server don't have welcomer setup.")
             )
