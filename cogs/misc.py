@@ -11,6 +11,7 @@ import io
 import time
 import asyncio
 from math import *
+import random
 import typing
 import discord_components
 import aiohttp
