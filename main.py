@@ -254,6 +254,13 @@ async def check_blacklist(ctx):
   else:
     return True
 
+@client.check
+async def no_dm_commands(ctx):
+  if not ctx.guild:
+    await ctx.send(embed=Utils.BotEmbed.error('Sorry, commands will not work on DMs.'))
+    return False
+  return True
+
 
 
 @client.check
