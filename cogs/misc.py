@@ -506,7 +506,7 @@ class Misc(commands.Cog):
             except:
                 self.bot.bot_mention[message.author.id] = 0
 
-            if self.bot.bot_mention[message.author.id] == 0:
+            if self.bot.bot_mention[message.author.id] <= 1:
                 await message.reply(
                     """Hello, I'm **Gerty**, My prefixes are `g!` and `@Gerty`
 For a list of commands do `g!help` or `@Gerty help`
@@ -515,8 +515,8 @@ If you continue to have problems, consider asking for help on our **Support Serv
 https://discord.gg/gERnjRdF""",
                     mention_author=False
                 )
-                self.bot.bot_mention[message.author.id] = 1
-                await asyncio.sleep(10)
+                self.bot.bot_mention[message.author.id] += 1
+                await asyncio.sleep(20)
                 self.bot.bot_mention[message.author.id] = 0
                 return
 

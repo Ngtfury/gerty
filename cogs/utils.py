@@ -631,7 +631,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     def get_last_commits(self, count=5):
             repo = pygit2.Repository('.git')
             commits = list(itertools.islice(repo.walk(repo.head.target, pygit2.GIT_SORT_TOPOLOGICAL), count))
-            return '\n'.join(self.format_commit(c) for c in commits)
+            return '\n'.join(self.format_commit(c) for c in commits if not c.message.replace('\n', '') == 'a')
 
     @commands.command(name='botinfo', brief='util', aliases=['bot-info', 'invite', 'about', 'botabout', 'info'])
     async def _bot_info(self, ctx):
