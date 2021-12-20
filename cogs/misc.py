@@ -3,6 +3,7 @@ import re
 import discord
 from discord import emoji
 from discord import guild
+from discord.errors import HTTPException
 from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
 from discord.ext import commands
@@ -489,8 +490,11 @@ class Misc(commands.Cog):
         while True:
             event = await self.bot.wait_for('button_click', check = lambda i: i.author == ctx.author and i.message.id == MainMessage.id)
             if event.component.id == 'EmojiUploadYes':
+                await event.respond(type=6)
+                await MainMessage.disable_components()
                 break
             elif event.component.id == 'EmojiUploadNo':
+                await event.respond(type=6)
                 await MainMessage.delete()
                 await ctx.send('Cancelled uploading emoji.')
                 return
@@ -500,10 +504,9 @@ class Misc(commands.Cog):
                 raw = io.BytesIO(await rep.read())
                 buf = raw.getvalue()
                 
-                
         try:
             _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
-        except commands.CommandInvokeError:
+        except HTTPException:
             return await ctx.send(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})'))
         await ctx.message.add_reaction(_uploaded_emoji)
         return
