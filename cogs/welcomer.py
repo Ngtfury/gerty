@@ -103,7 +103,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @welcomer.command(aliases=['del', 'deldata', 'delete'], name='delete')
+    @welcomer.command(aliases=['del', 'deldata', 'deletedata'], name='delete')
     async def delete_data(self, ctx):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
