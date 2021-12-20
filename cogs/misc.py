@@ -1,6 +1,7 @@
 import re
 import discord
 from discord import emoji
+from discord import guild
 from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
 from discord.ext import commands
@@ -461,6 +462,33 @@ class Misc(commands.Cog):
 
         await ctx.send(embeds=MainMessageEmbeds)
 
+
+    async def check_rick_roll(self, url:str):
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(url) as rep:
+                return str(rep.url) == 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+
+    @commands.Cog.listener('on_message')
+    async def fun_replies(self, message):
+        if not message.guild:
+            return
+
+        if message.content.lower() == 'hello':
+            return await message.reply('https://nohello.net/', mention_author=False)
+
+        if 'looser' in message.content.lower():
+            return await message.reply('You are the real **loser** here', mention_author=False)
+
+        if 'imagine' in message.content.lower():
+            return await message.reply(f'**{message.author.name}** is trying really had to imagine')
+
+        _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
+        if _islink_:
+            for link in _islink_:
+                if await self.check_rick_roll(link):
+                    await message.reply('⚠️ Woah, nice **RickRoll** my guy', mention_author=False)
+                    return
+        return
 
 def setup(client):
     client.add_cog(Misc(client))

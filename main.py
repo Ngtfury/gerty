@@ -205,10 +205,6 @@ discord.gateway.DiscordWebSocket.identify = loc["identify"]
 
 
 
-
-
-
-
 ch1 = ["Rock", "Scissors", "Paper"]
 api_key = "AIzaSyDNgIRLXv0XcvFw_gJ_dpG2Cx-pkoN4Cio"
 
