@@ -58,11 +58,11 @@ class WelcomerCog(commands.Cog):
             return
 
         row = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', ctx.guild.id)
-        channel_obj = self.bot.get_channel(row[0])
+        channel_obj = self.bot.get_channel(row[1])
 
         em = discord.Embed(color=Utils.BotColors.invis())
         em.add_field(name='Channel', value=f'{channel_obj.mention}')
-        em.add_field(name='Message', value=row[1])
+        em.add_field(name='Message', value=row[2])
         await ctx.send(embed=em)
 
 
