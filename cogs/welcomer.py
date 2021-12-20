@@ -62,7 +62,9 @@ class WelcomerCog(commands.Cog):
 
         em = discord.Embed(color=Utils.BotColors.invis())
         em.add_field(name='Channel', value=f'{channel_obj.mention}')
-        em.add_field(name='Message', value=row[2])
+        em.set_author(name=ctx.guild.name, icon_url=str(ctx.guild.icon_url))
+        em.add_field(name='Message', value=row[2], inline=False)
+        em.set_footer(name=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
 
