@@ -50,7 +50,7 @@ class WelcomerCog(commands.Cog):
         return
 
     @commands.group(aliases=['welcome'], invoke_without_command=True, usage='[sub command]')
-    @commands.is_owner()
+    @commands.has_permissions(manage_channels=True)
     async def welcomer(self, ctx):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
