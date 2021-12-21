@@ -99,7 +99,7 @@ class AfkCommandCog(commands.Cog):
 
         embed = discord.Embed(
             color = Utils.BotColors.invis(),
-            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, you went afk {hum_delta} ago.'
+            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, You were AFK for {hum_delta}'
         )
         await message.reply(embed = embed, mention_author=False)
 
