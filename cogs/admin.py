@@ -266,6 +266,7 @@ class Admin(commands.Cog):
             title='New bot submission',
             timestamp=datetime.datetime.now()
         )
+        em.add_field(name='Reason', inline=False, value=reason)
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Requested')
 
@@ -283,6 +284,7 @@ class Admin(commands.Cog):
         )
         await ctx.message.add_reaction(Utils.BotEmojis.success())
         return
+
 
 
 
