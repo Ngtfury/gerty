@@ -247,7 +247,7 @@ class Admin(commands.Cog):
         em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
         em.set_footer(text='Requested')
 
-        channel_ = bot.get_channel(922736416956506153)
+        channel_ = self.bot.get_channel(922736416956506153)
         await channel_.send('<@&922150348871856158>', embed=em)
 
     @commands.command(brief='admin', description='Accepts bot submittions (admin only)', usage = '[Case ID]', name='acceptbot')
