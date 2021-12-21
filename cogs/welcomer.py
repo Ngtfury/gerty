@@ -37,7 +37,7 @@ class WelcomerCog(commands.Cog):
         _is_already = row[0]
         if not _is_already:
             return []
-        return _is_already[0]
+        return _is_already
 
     async def set_welcomer_channel(self, ctx, channel):
         if await self.isChannelAlready(channel):
