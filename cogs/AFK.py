@@ -46,9 +46,28 @@ class AfkCommandCog(commands.Cog):
         text = 'globally' if _global else 'locally'
         em = discord.Embed(
             color = Utils.BotColors.invis(),
-            description=f'<a:afk:890119774015717406> **{ctx.author.name}** I\'ve set your AFK {text}, {reason}'
+            description=f'<a:afk:890119774015717406> `{ctx.author.name}` I\'ve set your AFK {text}, {reason}'
         )
         await ctx.send(embed = em)
+
+
+        if _global:
+            await self.bot.db.execute(
+                """INSERT INTO afk (user_id,reason,time,global) VALUES ($1,$2,$3,$4)""",
+                ctx.author.id,
+                reason,
+                int(datetime.datetime.now().timestamp()),
+                _global,
+            )
+        else:
+            await self.bot.db.execute(
+                """INSERT INTO afk (user_id,reason,time,global,guild_id) VALUES ($1,$2,$3,$4)""",
+                ctx.author.id,
+                reason,
+                int(datetime.datetime.now().timestamp()),
+                _global,
+                ctx.guild.id
+            )
 
         self.bot.afk[ctx.author.id] = {}
         self.bot.afk[ctx.author.id]['reason'] = reason
@@ -57,13 +76,6 @@ class AfkCommandCog(commands.Cog):
         self.bot.afk[ctx.author.id]['guild_id'] = ctx.guild.id if not _global else None
 
 
-        await self.bot.db.execute(
-            """INSERT INTO afk (user_id,reason,time,global,guild_id) VALUES ($1,$2,$3,$4,$5)""",
-            reason,
-            int(datetime.datetime.now().timestamp()),
-            _global,
-            ctx.guild.id if not _global else None
-        )
 
 
 
