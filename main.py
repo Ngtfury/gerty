@@ -100,6 +100,7 @@ class GertyBot(commands.AutoShardedBot):
     self.command_usage = 0
     self.bot_mention = {}
     self.afk = {}
+    self.reminder = {}
     
 
     message_ids=await self.db.fetch('SELECT guild_id FROM ticket_tool')
