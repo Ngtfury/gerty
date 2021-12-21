@@ -72,7 +72,7 @@ INITIAL_EXTENSIONS = [
 for filename in os.listdir('./cogs'):
   if filename.endswith('.py'):
     INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
-
+INITIAL_EXTENSIONS.remove('cogs.reminder')
 
 #type=discord.ActivityType.watching, name="My mobile"
 class GertyBot(commands.AutoShardedBot):
@@ -179,7 +179,7 @@ class GertyBot(commands.AutoShardedBot):
     DiscordComponents(self)
 
     await self.load_cache()
-    #await self.load_extensions()
+    await self.load_extensions()
     for shard in self.shards:
       activity=discord.Activity(
         type = discord.ActivityType.watching,
