@@ -476,7 +476,7 @@ class Misc(commands.Cog):
         else:
             emoji_url = str(emoji_.url)
 
-        if not emoji_url.startswith('https://cdn.discordapp.com/emojis/'):
+        if not emoji_url.startswith('https://'):
             await ctx.send(
                 embed = Utils.BotEmbed.error('URLs must be a rendered Discord emoji or an emoji URL')
             )
