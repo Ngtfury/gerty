@@ -72,8 +72,40 @@ class AfkCommandCog(commands.Cog):
         self.bot.afk[ctx.author.id] = {}
         self.bot.afk[ctx.author.id]['reason'] = reason
         self.bot.afk[ctx.author.id]['time'] = int(datetime.datetime.now().timestamp())
-        self.bot.afk[ctx.author.id]['gobal'] = _global
+        self.bot.afk[ctx.author.id]['global'] = _global
         self.bot.afk[ctx.author.id]['guild_id'] = ctx.guild.id if not _global else None
+        self.bot.afk[ctx.author.id]['mentions'] = {}
+
+
+
+    @commands.Cog.listener('on_message')
+    async def delete_afk(self, message):
+        if message.author.bot:
+            return
+
+        if not message.author.id in self.bot.afk:
+            return
+
+        reason = self.bot.afk[message.author.id]['reason']
+        time = self.bot.afk[message.author.id]['time']
+        isglobal = self.bot.afk[message.author.id]['global']
+        guild_id = self.bot.afk[message.author.id]['guild_id']
+        mentions = self.bot.afk[message.author.id]['mentions']
+        if len(mentions) == 0:
+            _text = ''
+        else:
+            _text = f', You have {len(mentions)} mention(s)'
+
+        await message.channel.send(
+            f"""Welcome back **{message.author}**, you went afk <t:{time}:R> ago{_text}"""
+        )
+
+        del self.bot.afk[message.author.id]
+        await self.bot.db.execute(
+            """DELETE FROM afk WHERE user_id = $1""",
+            message.author.id
+        )
+
 
 
 
