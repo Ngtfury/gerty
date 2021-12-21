@@ -79,7 +79,8 @@ class ReminderCog(commands.Cog):
                 for reminder in self.bot.reminder.items():
                     for timer in reminder[1]:
                         if timer.timestamp >= int(datetime.datetime.now().timestamp()):
-                            await self.call_reminder(timer)
+                            await asyncio.sleep(timer.seconds)
+                        await self.call_reminder(timer)
         except:
             self._task.cancel()
             self._task = self.bot.loop.create_task(self.dispatch_reminders())
