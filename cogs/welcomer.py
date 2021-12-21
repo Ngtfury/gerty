@@ -76,10 +76,15 @@ class WelcomerCog(commands.Cog):
         row = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE guild_id = $1', ctx.guild.id)
         channel_obj = self.bot.get_channel(row[1])
 
+        welcomer_roles = await self.GetAutoRoles(ctx.guild)
+
         em = discord.Embed(color=Utils.BotColors.invis())
         em.add_field(name='Channel', value=f'{channel_obj.mention}')
         em.set_author(name=ctx.guild.name, icon_url=str(ctx.guild.icon_url))
         em.add_field(name='Message', value=row[2], inline=False)
+        if welcomer_roles:
+            role_objs = [ctx.guild.get_role(role) for role in welcomer_roles]
+            em.add_field(name='Autoroles', value=', '.join([role.mention for role in role_objs]), inline=False)
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
 
