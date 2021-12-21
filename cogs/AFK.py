@@ -2,6 +2,8 @@ import discord
 from discord.ext import commands
 import datetime
 from cogs.utils import Utils
+import discord_components
+from discord_components import *
 
 
 def setup(bot):
