@@ -254,6 +254,7 @@ class GertyHelpCommand:
         rtfm=[]
         image=[]
         selfrole = []
+        welcomer = []
         for command in self.bot.commands:
             if command.brief:
                 if command.description:
@@ -359,7 +360,18 @@ class GertyHelpCommand:
                             selfrole.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
                     except:
                         pass
-        return util, misc, fun, mod, tags, admin, rtfm, image, selfrole
+                elif command.brief=='welcomer':
+                    welcomer.append(f'<:arrow:885193320068968508> `{command.qualified_name}` - {_des}')
+                    try:
+                        for sub in command.commands:
+                            if sub.description:
+                                _des=sub.description
+                            else:
+                                _des='No description provided'
+                            welcomer.append(f'<:arrow:885193320068968508> `{sub.qualified_name}` - {_des}')
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm, image, selfrole, welcomer
 
     async def get_commands_without_description(self):
         util=[]
@@ -371,6 +383,7 @@ class GertyHelpCommand:
         rtfm=[]
         image=[]
         selfrole=[]
+        welcomer = []
         for command in self.bot.commands:
             if command.brief:
                 if command.brief=='util':
@@ -436,7 +449,14 @@ class GertyHelpCommand:
                             selfrole.append(f'`{sub.qualified_name}`')
                     except:
                         pass
-        return util, misc, fun, mod, tags, admin, rtfm, image, selfrole
+                elif command.brief=='welcomer':
+                    welcomer.append(f'`{command.name}`')
+                    try:
+                        for sub in command.commands:
+                            welcomer.append(f'`{sub.qualified_name}`')
+                    except:
+                        pass
+        return util, misc, fun, mod, tags, admin, rtfm, image, selfrole, welcomer
 
 
 class UtilsCog(commands.Cog):
@@ -458,6 +478,7 @@ class UtilsCog(commands.Cog):
             SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
             SelectOption(label='Image commands', description='Very cool image edit stuffs', value='ImageOption', emoji=self.bot.get_emoji(873933502435962880)),
             SelectOption(label='Self-role commands', description='Dynamic self-role menu commands', value='SelfRoleOption', emoji=self.bot.get_emoji(919180776896073768)),
+            SelectOption(label='Welcomer commands', description='Greet new users with autoroles and messages',value='WelcomerOption', emoji='🧭'),
             SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
         ]
         compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
@@ -466,7 +487,7 @@ class UtilsCog(commands.Cog):
 #
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=Utils.BotColors.invis())
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
-        MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> **<:settingssssss:891223848970747916> Utilities**\n> **🧩 Miscellaneous**\n> **🎪 Fun**\n> **<:moderation:885156113656479784> Moderation**\n> **<:tag:880100337745264680> Tags**\n> **📘 Rtfm (docs)**\n> **<:image:873933502435962880> Image**\n> **<:menu:919180776896073768> Self-role**\n> **<:dev:908275726199963698> Admin**')
+        MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> **<:settingssssss:891223848970747916> Utilities**\n> **🧩 Miscellaneous**\n> **🎪 Fun**\n> **<:moderation:885156113656479784> Moderation**\n> **<:tag:880100337745264680> Tags**\n> **📘 Rtfm (docs)**\n> **<:image:873933502435962880> Image**\n> **<:menu:919180776896073768> Self-role**\n> **🧭 Welcomer**\n> **<:dev:908275726199963698> Admin**')
         MainEmbed.add_field(name='<:news:885177157138145280> News', value=f'> {self.bot.news}', inline=True)
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105) | [Support Server](https://discord.gg/gERnjRdF)', inline=False)
         MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
@@ -517,8 +538,13 @@ class UtilsCog(commands.Cog):
 
         SelfRole='\n'.join(commands[8])
         SelfRoleEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{SelfRole}', color=Utils.BotColors.invis())
-        SelfRoleEmbed.set_author(name='Gerty HelpDesk - Image commands', icon_url=self.bot.user.avatar_url)
+        SelfRoleEmbed.set_author(name='Gerty HelpDesk - Selfrole commands', icon_url=self.bot.user.avatar_url)
         SelfRoleEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+
+        Welcomer='\n'.join(commands[9])
+        WelcomerEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{Welcomer}', color=Utils.BotColors.invis())
+        WelcomerEmbed.set_author(name='Gerty HelpDesk - Welcomer commands', icon_url=self.bot.user.avatar_url)
+        WelcomerEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
         commandlist=await GertyHelpCommand(self.bot).get_commands_without_description()
 
@@ -534,6 +560,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='📘 Rtfm commands', value=', '.join(commandlist[6]), inline=False)
         CommandListEmbed.add_field(name='<:image:873933502435962880> Image commands', value=', '.join(commandlist[7]), inline=False)
         CommandListEmbed.add_field(name='<:menu:919180776896073768> Self-role commands', value=', '.join(commandlist[8]), inline=False)
+        CommandListEmbed.add_field(name='🧭 Welcomer commands', value=', '.join(commandlist[9]), inline=False)
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
 
@@ -568,6 +595,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
                                 await event.respond(type=7, embed=ImageEmbed, components=compo2)
                             elif value=='SelfRoleOption':
                                 await event.respond(type=7, embed=SelfRoleEmbed, components=compo2)
+                            elif value=='WelcomerOption':
+                                await event.respond(type=7, embed=WelcomerEmbed, components=compo2)
                     elif isinstance(event.component, Button):
                         if event.component.id=='GoHome':
                             await event.respond(type=7, embed=MainEmbed, components=compo)

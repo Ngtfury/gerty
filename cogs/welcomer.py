@@ -18,11 +18,26 @@ class WelcomerCog(commands.Cog):
             return True
         return False
 
+    async def isAutoRoles(self, guild):
+        row = await self.bot.db.fetchrow('SELECT auto_roles FROM welcomer WHERE guild_id = $1', guild.id)
+        _is_already = row[0]
+        if _is_already:
+            return True
+        return False
+
+
     async def isChannelAlready(self, channel):
         _is_already = await self.bot.db.fetchrow('SELECT * FROM welcomer WHERE channel_id = $1', channel.id)
         if _is_already:
             return True
         return False
+
+    async def GetAutoRoles(self, guild):
+        row = await self.bot.db.fetchrow('SELECT auto_roles FROM welcomer WHERE guild_id = $1', guild.id)
+        _is_already = row[0]
+        if not _is_already:
+            return []
+        return _is_already[0]
 
     async def set_welcomer_channel(self, ctx, channel):
         if await self.isChannelAlready(channel):
@@ -49,7 +64,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @commands.group(aliases=['welcome'], invoke_without_command=True, usage='[sub command]')
+    @commands.group(aliases=['welcome'], invoke_without_command=True, usage='[sub command]', description='Welcomer module, welcome new users')
     @commands.has_permissions(manage_channels=True)
     async def welcomer(self, ctx):
         if not await self.isGuildAlready(ctx.guild):
@@ -70,7 +85,7 @@ class WelcomerCog(commands.Cog):
 
 
 
-    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'], usage='(channel)', name='set-channel')
+    @welcomer.command(aliases=['channel', 'channelset', 'setchannel'], usage='(channel)', name='set-channel', description='Set welcomer channel')
     async def set_channel(self, ctx, channel: discord.TextChannel = None):
         channel = channel or ctx.channel
 
@@ -83,8 +98,36 @@ class WelcomerCog(commands.Cog):
         await self.set_welcomer_channel(ctx, channel)
         return
 
+    @welcomer.command(aliases = ['autorole', 'auto-role', 'role'], usage='[role]', description='Set welcomer autoroles, welcome new users with a role')
+    async def auto_role(self, ctx, role: discord.Role):
+        if not await self.isGuildAlready(ctx.guild):
+            await ctx.send(
+                embed = Utils.BotEmbed.error("This server does not have welcomer setup")
+            )
+            return
 
-    @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]', name='set-message')
+        role_list = await self.GetAutoRoles(ctx.guild)
+        if len(role_list) >= 5:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('Sorry, but maximum autoroles for this server is 5')
+            )
+            return
+
+        role_list.append(role.id)
+        await self.bot.db.execute(
+            """UPDATE welcomer SET auto_roles = $1 WHERE guild_id = $2""",
+            role_list,
+            ctx.guild.id
+        )
+
+        await ctx.send(
+            embed = Utils.BotEmbed.success(f"Successfully added {role.mention} in welcomer autoroles")
+        )
+        return
+
+        
+
+    @welcomer.command(aliases=['setmessage', 'message', 'messageset'], usage='[message]', name='set-message', description='Set welcomer message, welcome new users with a message')
     async def set_message(self, ctx, *, message:str):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
@@ -103,7 +146,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @welcomer.command(aliases=['del', 'deldata', 'deletedata'], name='delete')
+    @welcomer.command(aliases=['del', 'deldata', 'deletedata'], name='delete', description='Delete all welcomer data')
     async def delete_data(self, ctx):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
@@ -121,7 +164,7 @@ class WelcomerCog(commands.Cog):
         )
         return
 
-    @welcomer.command(aliases=['var'])
+    @welcomer.command(aliases=['var'], description='See welcomer message variables')
     async def variables(self, ctx):
         em = discord.Embed(
             color=Utils.BotColors.invis(),
@@ -137,6 +180,8 @@ class WelcomerCog(commands.Cog):
         )
 
         await ctx.send(embed=em)
+
+
 
 
     @commands.Cog.listener('on_member_join')
@@ -166,4 +211,13 @@ class WelcomerCog(commands.Cog):
                     member_count = member_count
                 )
             )
+
+            if await self.isAutoRoles(member.guild):
+                role_list = await self.GetAutoRoles(member.guild)
+                for role in role_list:
+                    role_obj = member.guild.get_role(int(role))
+                    try:
+                        await member.add_roles(role_obj)
+                    except:
+                        pass
 

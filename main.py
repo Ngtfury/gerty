@@ -73,6 +73,7 @@ INITIAL_EXTENSIONS = [
   'cogs.dropdown_role',
   'cogs.embed_',
   'cogs.events',
+  'cogs.akinator'
   'cogs.github_api',
   'cogs.giveaways',
   'cogs.image',
@@ -82,7 +83,8 @@ INITIAL_EXTENSIONS = [
   'cogs.rtfm',
   'cogs.tags',
   'cogs.ticket_tool',
-  'cogs.utils'
+  'cogs.utils',
+  'cogs.welcomer'
 ]
 
 #type=discord.ActivityType.watching, name="My mobile"
