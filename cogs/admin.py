@@ -5,6 +5,7 @@ import sys
 import importlib
 import discord_components
 import io
+import typing
 import textwrap
 import traceback
 import io
@@ -219,6 +220,48 @@ class Admin(commands.Cog):
             else:
                 self._last_result = ret
                 await ctx.send(f'```py\n{value}{ret}\n```')
+
+    @commands.command(brief='admin', description='Add your bot to support server!! (only works on support server)', usage='[Bot ID] [Reason]', name='addbot')
+    async def add_bot(self, ctx, bot: discord.User, *, reason:str):
+        if not ctx.guild.id == 902948871267815454:
+            return
+
+        if not bot.bot:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('That is a user not a bot, Invite them to this server lmao')
+            )
+            return
+
+        em = discord.Embed(
+            color = Utils.BotColors.invis(),
+            description= f"""**Bot ID**: {bot.id}
+            **Bot**: {bot}/{bot.mention}
+            **Owner**: {ctx.author}/{ctx.author.mention}
+            **Case ID**: {ctx.author.id}
+            
+            [*Jump to request*]({ctx.message.jump_url})
+            [*Invite this bot here!*]({discord.utils.oauth_url(bot.id)})""",
+            title='New bot submission',
+            timestamp=datetime.datetime.now()
+        )
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_footer(text='Requested')
+
+        channel_ = bot.get_channel(922736416956506153)
+        await channel_.send('<@&922150348871856158>', embed=em)
+
+    @commands.command(brief='admin', description='Accepts bot submittions (admin only)', usage = '[Case ID]', name='acceptbot')
+    @commands.has_any_role(922151186386288671, 922150348871856158, 922150939702493204)
+    async def accept_bot(self, ctx, owner: typing.Union[discord.User, discord.Member], bot: typing.Union[discord.User, discord.Member]):
+        if not ctx.guild.id == 902948871267815454:
+            return
+
+        await owner.send(
+            f"""Your bot, {bot.mention}, has been added to Gerty HQ"""
+        )
+        await ctx.message.add_reaction(Utils.BotEmojis.success())
+        return
+
 
 
 
