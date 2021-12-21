@@ -61,7 +61,7 @@ class AfkCommandCog(commands.Cog):
             )
         else:
             await self.bot.db.execute(
-                """INSERT INTO afk (user_id,reason,time,global,guild_id) VALUES ($1,$2,$3,$4)""",
+                """INSERT INTO afk (user_id,reason,time,global,guild_id) VALUES ($1,$2,$3,$4,$5)""",
                 ctx.author.id,
                 reason,
                 int(datetime.datetime.now().timestamp()),
