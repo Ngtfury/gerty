@@ -3,7 +3,7 @@ import re
 import discord
 from discord import emoji
 from discord import guild
-from discord.errors import HTTPException
+from discord.errors import HTTPException, InvalidArgument
 from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
 from discord.ext import commands
@@ -507,6 +507,8 @@ class Misc(commands.Cog):
                         _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
                     except HTTPException:
                         return await event.respond(type=4, embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})**'), ephemeral=False)
+                    except InvalidArgument:
+                        return await event.respond(type=4, embed = Utils.BotEmbed.error('Uh oh!. Unsupported image type given'), ephemeral=False)
                     await event.respond(type=4, content=f'{ctx.author.display_name} uploaded {_uploaded_emoji}', ephemeral=False)
                 return
             elif event.component.id == 'EmojiUploadNo':
