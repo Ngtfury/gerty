@@ -26,7 +26,7 @@ class AfkCommandCog(commands.Cog):
             guild_name = 'some other server' if not self.bot.get_guild(guild_id) else self.bot.get_guild(guild_id).name
 
             await ctx.send(
-                f'Sorry, You are already AFK in {guild_name}'
+                f'Sorry, you are already AFK in {guild_name}, I cant set your AFK now.'
             )
             return
 
