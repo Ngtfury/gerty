@@ -99,7 +99,9 @@ class GertyBot(commands.AutoShardedBot):
     self.messages_seen = 0
     self.command_usage = 0
     self.bot_mention = {}
+    self.afk = {}
     
+
     message_ids=await self.db.fetch('SELECT guild_id FROM ticket_tool')
     for id in message_ids:
       self.ticket_tool_guild_ids.append(id[0])
@@ -118,6 +120,15 @@ class GertyBot(commands.AutoShardedBot):
     self_role_message = await self.db.fetch('SELECT * FROM self_role')
     for message_id in self_role_message:
       self.self_roles.append(message_id[0])
+
+
+    afk_users = await self.db.fetch('SELECT * FROM afk')
+    for afk_user in afk_users:
+      self.afk[afk_user['user_id']] = {}
+      self.afk[afk_user['user_id']]['reason'] = afk_user['reason']
+      self.afk[afk_user['user_id']]['time'] = afk_user['time']
+      self.afk[afk_user['user_id']]['global'] = afk_user['global']
+      self.afk[afk_user['user_id']]['guild_id'] = afk_user['guild_id'] if afk_user['guild_id'] else None
 
 
     print('Loaded cache successfully.')
