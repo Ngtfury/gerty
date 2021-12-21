@@ -104,6 +104,32 @@ class AfkCommandCog(commands.Cog):
         )
 
 
+    @commands.Cog.listener('on_message')
+    async def log_afk(self, message):
+        if not message.mentions:
+            return
+
+        for user in message.mentions:
+            if not user.id in self.bot.afk:
+                return
+
+            isglobal = self.bot.afk[user.id]['global']
+            guild_id = self.bot.afk[user.id]['guild_id']
+            if not isglobal:
+                if not guild_id == message.guild.id:
+                    return
+
+            _text = 'globally' if isglobal else 'locally'
+
+            reason = self.bot.afk[user.id]['reason']
+            time = self.bot.afk[user.id]['time']
+
+            await message.reply(
+                f"""**{user.name}** went {_text} AFK <t:{time}:R>, {reason}""",
+                mention_author=False
+            )
+        return
+
 
 
 
