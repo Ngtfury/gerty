@@ -251,6 +251,9 @@ class WelcomerCog(commands.Cog):
                 )
             )
 
+            if member.bot:
+                return
+
             if await self.isAutoRoles(member.guild):
                 role_list = await self.GetAutoRoles(member.guild)
                 for role in role_list:
