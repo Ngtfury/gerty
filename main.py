@@ -1,5 +1,6 @@
 import discord
 import random
+from discord import file
 from discord.ext import commands
 from discord.ext.commands.cooldowns import BucketType
 from discord.ext.commands.errors import MaxConcurrencyReached
@@ -66,26 +67,12 @@ import inspect
 
 
 INITIAL_EXTENSIONS = [
-  'jishaku',
-  'cogs.admin',
-  'cogs.AFK',
-  'cogs.covid',
-  'cogs.dropdown_role',
-  'cogs.embed_',
-  'cogs.events',
-  'cogs.akinator',
-  'cogs.github_api',
-  'cogs.giveaways',
-  'cogs.image',
-  'cogs.misc',
-  'cogs.moderation',
-  'cogs.modlogs',
-  'cogs.rtfm',
-  'cogs.tags',
-  'cogs.ticket_tool',
-  'cogs.utils',
-  'cogs.welcomer'
+  'jishaku'
 ]
+for filename in os.listdir('./cogs'):
+  if filename.endswith('.py'):
+    INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
+
 
 #type=discord.ActivityType.watching, name="My mobile"
 class GertyBot(commands.AutoShardedBot):
