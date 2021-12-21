@@ -25,4 +25,5 @@ asyncpg
 async-cse
 discord.py
 akinator.py
+humanize
 python-multibar

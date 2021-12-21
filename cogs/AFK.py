@@ -3,6 +3,7 @@ from discord.ext import commands
 import datetime
 from cogs.utils import Utils
 import discord_components
+import humanize
 from discord_components import *
 
 
@@ -93,9 +94,12 @@ class AfkCommandCog(commands.Cog):
             if not guild_id == message.guild.id:
                 return
 
+        dt_object = datetime.datetime.fromtimestamp(time)
+        hum_delta = humanize.naturaldelta(dt_object)
+
         embed = discord.Embed(
             color = Utils.BotColors.invis(),
-            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, you went afk <t:{time}:R> ago.'
+            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, you went afk {hum_delta} ago.'
         )
         await message.reply(embed = embed, mention_author=False)
 
@@ -127,8 +131,8 @@ class AfkCommandCog(commands.Cog):
             time = self.bot.afk[user.id]['time']
 
             em = discord.Embed(color=Utils.BotColors.invis(), description=f'<a:afk:890119774015717406> `{user.name}` went {_text} AFK <t:{time}:R>, {reason}')
-            await message.reply(embed = em)
-            
+            await message.reply(embed = em, mention_author = False)
+
         return
 
 
