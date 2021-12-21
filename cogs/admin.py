@@ -3,6 +3,7 @@ from discord.ext import commands
 import os
 import sys
 import importlib
+from discord.ext.commands import bot
 import discord_components
 import io
 import typing
@@ -28,6 +29,7 @@ from cogs.utils import Utils
 class Admin(commands.Cog):
     def __init__(self, client):
         self.client=client
+        self.bot = bot
         self._last_result = None
 
     @commands.command(brief='admin', description='Deletes a message sent by the bot', usage='[message]', aliases=["delm"])
