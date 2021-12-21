@@ -99,6 +99,8 @@ class AfkCommandCog(commands.Cog):
             if not guild_id == message.guild.id:
                 return
 
+        _text = 'globally' if isglobal else 'locally'
+
         del self.bot.afk[message.author.id]
 
         dt_object = datetime.datetime.fromtimestamp(time)
@@ -106,7 +108,7 @@ class AfkCommandCog(commands.Cog):
 
         embed = discord.Embed(
             color = Utils.BotColors.invis(),
-            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, You were AFK for {hum_delta}'
+            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, You were AFK {_text} for {hum_delta}'
         )
         await message.reply(embed = embed, mention_author=False)
 
