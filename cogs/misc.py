@@ -529,25 +529,25 @@ class Misc(commands.Cog):
         #if message.content.lower() == 'hello':
             #return await message.reply('https://nohello.net/', mention_author=False)
 
-    def isNoHello(self, content):
-        _lower = content.lower()
-
-        _hello_list = [
-            'hello',
-            'hi',
-            'hey',
-            'bonjour',
-            'yo',
-            'hola',
-            'hallo',
-            'ciao',
-            '👋',
-            'namaste',
-            'hoi',
-            'hiya'
-        ]
-
-        return _lower in _hello_list
+#    def isNoHello(self, content):
+#        _lower = content.lower()
+#
+#        _hello_list = [
+#            'hello',
+#            'hi',
+#            'hey',
+#            'bonjour',
+#            'yo',
+#            'hola',
+#            'hallo',
+#            'ciao',
+#            '👋',
+#            'namaste',
+#            'hoi',
+#            'hiya'
+#        ]
+#
+#        return _lower in _hello_list
 
 
     @commands.Cog.listener('on_message')
@@ -596,8 +596,8 @@ https://discord.gg/gERnjRdF""",
 
                 return await message.reply(_reply, mention_author=False)
 
-        if self.isNoHello(message.content):
-            return await message.reply('https://nohello.net/', mention_author=False)
+#        if self.isNoHello(message.content):
+#            return await message.reply('https://nohello.net/', mention_author=False)
 
         if message.content == '...' or message.content == '..' or message.content == '.':
             return await message.reply('???', mention_author=False)
