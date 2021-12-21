@@ -29,7 +29,7 @@ from cogs.utils import Utils
 class Admin(commands.Cog):
     def __init__(self, client):
         self.client=client
-        self.bot = bot
+        self.bot = client
         self._last_result = None
 
     @commands.command(brief='admin', description='Deletes a message sent by the bot', usage='[message]', aliases=["delm"])
