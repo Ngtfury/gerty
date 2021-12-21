@@ -608,7 +608,9 @@ https://discord.gg/gERnjRdF""",
             return await message.reply(f'**{message.author.name}** is trying really hard to imagine', mention_author=False)
 
 
-        _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', message.content)
+        brick_cont = message.content.replace('<')
+        rickroll_content = brick_cont.replace('>')
+        _islink_ = re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', rickroll_content)
         if _islink_:
             for link in _islink_:
                 if await self.check_rick_roll(link):
