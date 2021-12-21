@@ -92,11 +92,7 @@ class GertyBot(commands.AutoShardedBot):
     super().__init__(
       command_prefix = commands.when_mentioned_or('g!', 'G!'),
       intents=discord.Intents.all(),
-      activity=discord.Activity(
-        type = discord.ActivityType.watching,
-        name = f'@Gerty| g!help | {len(self.guilds)} servers'
-      ),
-      status=discord.Status.online,
+      status=discord.Status.dnd,
       strip_after_prefix=True,
       case_insensitive=True
     )
@@ -183,6 +179,13 @@ class GertyBot(commands.AutoShardedBot):
 
     await self.load_cache()
     await self.load_extensions()
+    for shard in self.shards:
+      activity=discord.Activity(
+        type = discord.ActivityType.watching,
+        name = f'@Gerty| g!help | {len(self.guilds)} servers | Shard {shard}'
+      )
+      await self.change_presence(status=discord.Status.online, activity=activity, shard_id=shard)
+
     self.uptime = time.time()
 
     async with aiohttp.ClientSession() as session:
