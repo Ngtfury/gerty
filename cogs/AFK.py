@@ -74,7 +74,7 @@ class AfkCommandCog(commands.Cog):
         self.bot.afk[ctx.author.id]['time'] = int(datetime.datetime.now().timestamp())
         self.bot.afk[ctx.author.id]['global'] = _global
         self.bot.afk[ctx.author.id]['guild_id'] = ctx.guild.id if not _global else None
-        self.bot.afk[ctx.author.id]['mentions'] = {}
+
 
 
 
@@ -86,18 +86,15 @@ class AfkCommandCog(commands.Cog):
         if not message.author.id in self.bot.afk:
             return
 
-        reason = self.bot.afk[message.author.id]['reason']
         time = self.bot.afk[message.author.id]['time']
         isglobal = self.bot.afk[message.author.id]['global']
         guild_id = self.bot.afk[message.author.id]['guild_id']
-        mentions = self.bot.afk[message.author.id]['mentions']
-        if len(mentions) == 0:
-            _text = ''
-        else:
-            _text = f', You have {len(mentions)} mention(s)'
+        if not isglobal:
+            if not guild_id == message.guild.id:
+                return
 
         await message.channel.send(
-            f"""Welcome back **{message.author}**, you went afk <t:{time}:R> ago{_text}"""
+            f"""Welcome back **{message.author}**, you went afk <t:{time}:R> ago."""
         )
 
         del self.bot.afk[message.author.id]
