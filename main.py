@@ -85,11 +85,22 @@ INITIAL_EXTENSIONS = [
   'cogs.utils'
 ]
 
-
+#type=discord.ActivityType.watching, name="My mobile"
 class GertyBot(commands.AutoShardedBot):
-  def __init__(self, *args, **kwargs):
+  def __init__(self):
     print('__init__ called. Loading bot...')
-    super().__init__(*args, **kwargs)
+    super().__init__(
+      command_prefix = commands.when_mentioned_or('g!', 'G!'),
+      intents=discord.Intents.all(),
+      activity=discord.Activity(
+        type = discord.ActivityType.watching,
+        name = f'@Gerty| g!help | {len(self.guilds)} servers'
+      ),
+      status=discord.Status.online,
+      strip_after_prefix=True,
+      case_insensitive=True
+    )
+
 
     self.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `botinfo`\n> Shows information about me'
     self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
@@ -168,7 +179,6 @@ class GertyBot(commands.AutoShardedBot):
     await self.change_presence(status=discord.Status.online, activity=self.activity)
 
   async def on_ready(self):
-    await self.db.execute('DELETE FROM blacklisted WHERE user_id=$1', 770646750804312105)
     DiscordComponents(self)
 
     await self.load_cache()
@@ -181,14 +191,7 @@ class GertyBot(commands.AutoShardedBot):
     print(f"Connected to {self.user}.")
 
 
-client = GertyBot(
-  command_prefix = commands.when_mentioned_or('g!'),
-  intents=discord.Intents.all(),
-  activity=discord.Activity(type=discord.ActivityType.watching, name="My mobile"),
-  status=discord.Status.online,
-  strip_after_prefix=True,
-  case_insensitive=True
-)
+client = GertyBot()
 
 class UserBlacklisted(commands.CheckFailure):
   def __init__(self, user, reason, *args, **kwargs):
