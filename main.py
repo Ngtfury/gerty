@@ -182,7 +182,7 @@ class GertyBot(commands.AutoShardedBot):
     for shard in self.shards:
       activity=discord.Activity(
         type = discord.ActivityType.watching,
-        name = f'@Gerty| g!help | {len(self.guilds)} servers | Shard {shard}'
+        name = f'@Gerty | g!help | {len(self.guilds)} servers | Shard {shard}'
       )
       await self.change_presence(status=discord.Status.online, activity=activity, shard_id=shard)
 
