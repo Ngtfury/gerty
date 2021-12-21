@@ -105,7 +105,7 @@ class WelcomerCog(commands.Cog):
         await self.set_welcomer_channel(ctx, channel)
         return
 
-    @welcomer.command(aliases = ['autorole', 'auto-role', 'role', 'autoroles'], usage='[role]', description='Set welcomer autoroles, welcome new users with a role')
+    @welcomer.command(aliases = ['autorole', 'auto-role', 'role', 'autoroles', 'ar', 'ar-add'], usage='[role]', description='Set welcomer autoroles, welcome new users with a role')
     async def auto_role(self, ctx, role: discord.Role):
         if not await self.isGuildAlready(ctx.guild):
             await ctx.send(
@@ -129,6 +129,38 @@ class WelcomerCog(commands.Cog):
 
         await ctx.send(
             embed = Utils.BotEmbed.success(f"Successfully added {role.mention} in welcomer autoroles")
+        )
+        return
+
+    @welcomer.command(aliases=['autorole-remove', 'ar-remove', 'autorolesremove'], description='Remove a role form autorole list', usage='[role]')
+    async def auto_role_remove(self, ctx, role: discord.Role):
+        if not await self.isGuildAlready(ctx.guild):
+            await ctx.send(
+                embed = Utils.BotEmbed.error("This server does not have welcomer setup")
+            )
+            return
+
+        role_list = await self.GetAutoRoles(ctx.guild)
+        if not role_list:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('There is no welcomer autoroles setup for this server')
+            )
+            return
+
+        if not role.id in role_list:
+            await ctx.send(
+                embed = Utils.BotEmbed.error(f'{role.mention} is not in the welcomer autorole list')
+            )
+            return
+
+        role_list.remove(role.id)
+        await self.bot.db.execute(
+            """UPDATE welcomer SET auto_roles = $1 WHERE guild_id = $2""",
+            role_list,
+            ctx.guild.id
+        )
+        await ctx.send(
+            embed = Utils.BotEmbed.success(f'Removed {role.mention} from welcomer autorole list')
         )
         return
 
