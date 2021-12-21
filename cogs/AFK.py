@@ -31,7 +31,7 @@ class AfkCommandCog(commands.Cog):
             return
 
         if len(reason) > 40:
-            await ctx.send('Sorry, only upto 40 charecters for reason please.')
+            await ctx.send('Sorry, only upto 40 characters for reason please.')
             return
 
         MainMessage = await ctx.send(
