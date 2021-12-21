@@ -17,7 +17,7 @@ class AfkCommandCog(commands.Cog):
 
 
     @commands.command(brief='meta', description='Sets your status as AFK', usage='(reason)')
-    async def afk(self, ctx, reason: str = 'I\'m AFK :)'):
+    async def afk(self, ctx, *, reason: str = 'I\'m AFK :)'):
         if ctx.author.id in self.bot.afk:
             isglobal = self.bot.afk[ctx.author.id]['global']
             if isglobal:
