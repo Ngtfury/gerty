@@ -234,6 +234,26 @@ class Admin(commands.Cog):
             )
             return
 
+        MainMessage = await ctx.send(
+            """By adding your bot to this server, you confirm that you **agree** to the rules of this server""",
+            components = [[
+                Button(style=ButtonStyle.green, label='I agree', id='AgreeAddBot'),
+                Button(label='Cancel', id='CancelAddBot')
+            ]]
+        )
+        while True:
+            event = await self.bot.wait_for('button_click', check=lambda i: i.author == ctx.author and i.channel == ctx.channel and i.message.id == MainMessage.id)
+            if event.component.id == 'AgreeAddBot':
+                await event.respond(type=6)
+                await MainMessage.delete()
+                await ctx.send('Your bot has been requested to the moderators, I will send you a DM when it gets added.')
+                break
+            elif event.component.id == 'CancelAddBot':
+                await event.respond(type=6)
+                await MainMessage.delete()
+                await ctx.send('You cancelled adding your bot to this server.')
+                return
+
         em = discord.Embed(
             color = Utils.BotColors.invis(),
             description= f"""**Bot ID**: {bot.id}
