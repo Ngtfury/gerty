@@ -99,6 +99,8 @@ class AfkCommandCog(commands.Cog):
             if not guild_id == message.guild.id:
                 return
 
+        del self.bot.afk[message.author.id]
+
         dt_object = datetime.datetime.fromtimestamp(time)
         hum_delta = humanize.naturaldelta(dt_object)
 
@@ -108,7 +110,6 @@ class AfkCommandCog(commands.Cog):
         )
         await message.reply(embed = embed, mention_author=False)
 
-        del self.bot.afk[message.author.id]
         await self.bot.db.execute(
             """DELETE FROM afk WHERE user_id = $1""",
             message.author.id
@@ -117,6 +118,9 @@ class AfkCommandCog(commands.Cog):
 
     @commands.Cog.listener('on_message')
     async def log_afk(self, message):
+        if message.author.bot:
+            return
+
         if not message.mentions:
             return
 
