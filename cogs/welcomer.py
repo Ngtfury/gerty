@@ -83,7 +83,9 @@ class WelcomerCog(commands.Cog):
         em.set_author(name=ctx.guild.name, icon_url=str(ctx.guild.icon_url))
         em.add_field(name='Message', value=row[2], inline=False)
         if welcomer_roles:
-            role_objs = [ctx.guild.get_role(role) for role in welcomer_roles]
+            role_objs = []
+            for role_id in welcomer_roles:
+                role_objs.append(ctx.guild.get_role(role_id))
             em.add_field(name='Autoroles', value=', '.join([role.mention for role in role_objs]), inline=False)
         em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
         await ctx.send(embed=em)
