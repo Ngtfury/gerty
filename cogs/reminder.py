@@ -41,7 +41,8 @@ class Reminder:
     def reason(self):
         return self.reason
 
-
+def setup(bot):
+    bot.add_cog(ReminderCog(bot))
 
 class ReminderCog(commands.Cog):
     def __init__(self, bot):
