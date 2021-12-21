@@ -82,6 +82,7 @@ class WelcomerCog(commands.Cog):
         em.add_field(name='Channel', value=f'{channel_obj.mention}')
         em.set_author(name=ctx.guild.name, icon_url=str(ctx.guild.icon_url))
         em.add_field(name='Message', value=row[2], inline=False)
+        await ctx.send(welcomer_roles)
         if welcomer_roles:
             role_objs = []
             for role_id in welcomer_roles:
