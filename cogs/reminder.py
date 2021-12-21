@@ -3,7 +3,7 @@ import discord
 import discord_components
 from discord_components import *
 from discord.ext import commands
-from discord.ext.commands.context import Context
+from discord.ext.commands import Context
 import parsedatetime as pdt
 import asyncio
 import datetime

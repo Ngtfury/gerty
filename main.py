@@ -179,7 +179,7 @@ class GertyBot(commands.AutoShardedBot):
     DiscordComponents(self)
 
     await self.load_cache()
-    await self.load_extensions()
+    #await self.load_extensions()
     for shard in self.shards:
       activity=discord.Activity(
         type = discord.ActivityType.watching,
