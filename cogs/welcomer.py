@@ -221,6 +221,28 @@ class WelcomerCog(commands.Cog):
         await ctx.send(embed=em)
 
 
+    @commands.Cog.listener('on_guild_channel_delete')
+    async def update_welcomer_on_channel_delete(self, channel):
+        if await self.isChannelAlready(channel):
+            await self.bot.db.execute(
+                """DELETE FROM welcomer WHERE channel_id = $1""",
+                channel.id
+            )
+
+    @commands.Cog.listener('on_guild_role_delete')
+    async def update_welcomer_role_on_delete(self, role):
+        if await self.isAutoRoles(role.guild):
+            role_list = await self.GetAutoRoles(role.guild)
+
+            if not role.id in role_list:
+                return
+
+            role_list.remove(role.id)
+            await self.bot.db.execute(
+                """UPDATE welcomer SET auto_roles = $1 WHERE guild_id = $2""",
+                role_list,
+                role.guild.id
+            )
 
 
     @commands.Cog.listener('on_member_join')
@@ -259,7 +281,7 @@ class WelcomerCog(commands.Cog):
                 for role in role_list:
                     role_obj = member.guild.get_role(int(role))
                     try:
-                        await member.add_roles(role_obj)
+                        await member.add_roles(role_obj, reason='Auto roles')
                     except:
                         pass
 
