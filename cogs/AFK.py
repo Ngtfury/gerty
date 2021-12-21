@@ -30,6 +30,9 @@ class AfkCommandCog(commands.Cog):
             )
             return
 
+        if len(reason) > 40:
+            await ctx.send('Sorry, only upto 40 charecters for reason please.')
+            return
 
         MainMessage = await ctx.send(
             embed = discord.Embed(color=Utils.BotColors.invis(), description='<a:afk:890119774015717406> Choose your afk style from the buttons below.'),
