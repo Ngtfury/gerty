@@ -73,7 +73,7 @@ INITIAL_EXTENSIONS = [
   'cogs.dropdown_role',
   'cogs.embed_',
   'cogs.events',
-  'cogs.akinator'
+  'cogs.akinator',
   'cogs.github_api',
   'cogs.giveaways',
   'cogs.image',
