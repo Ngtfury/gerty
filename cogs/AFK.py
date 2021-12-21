@@ -93,9 +93,11 @@ class AfkCommandCog(commands.Cog):
             if not guild_id == message.guild.id:
                 return
 
-        await message.channel.send(
-            f"""Welcome back **{message.author}**, you went afk <t:{time}:R> ago."""
+        embed = discord.Embed(
+            color = Utils.BotColors.invis(),
+            description=f'<a:afk:890119774015717406> Welcome back `{message.author.name}`, you went afk <t:{time}:R> ago.'
         )
+        await message.reply(embed = embed, mention_author=False)
 
         del self.bot.afk[message.author.id]
         await self.bot.db.execute(
@@ -124,10 +126,9 @@ class AfkCommandCog(commands.Cog):
             reason = self.bot.afk[user.id]['reason']
             time = self.bot.afk[user.id]['time']
 
-            await message.reply(
-                f"""**{user.name}** went {_text} AFK <t:{time}:R>, {reason}""",
-                mention_author=False
-            )
+            em = discord.Embed(color=Utils.BotColors.invis(), description=f'<a:afk:890119774015717406> `{user.name}` went {_text} AFK <t:{time}:R>, {reason}')
+            await message.reply(embed = em)
+            
         return
 
 
