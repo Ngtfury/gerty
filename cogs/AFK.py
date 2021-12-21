@@ -19,15 +19,20 @@ class AfkCommandCog(commands.Cog):
     @commands.command(brief='meta', description='Sets your status as AFK', usage='(reason)')
     async def afk(self, ctx, reason: str = 'I\'m AFK :)'):
         if ctx.author.id in self.bot.afk:
+            isglobal = self.bot.afk[ctx.author.id]['global']
+            if isglobal:
+                return
+            guild_id = self.bot.afk[ctx.author.id]['guild_id']
+            guild_name = 'some other server' if not self.bot.get_guild(guild_id) else self.bot.get_guild(guild_id).name
+
             await ctx.send(
-                f"""**I set your afk {ctx.author.display_name}!**
-                wait what?!! you can be afk twice??"""
+                f'Sorry, You are already AFK in {guild_name}'
             )
             return
 
 
         MainMessage = await ctx.send(
-            'Choose your afk style from the buttons below.',
+            embed = discord.Embed(color=Utils.BotColors.invis(), description='<a:afk:890119774015717406> Choose your afk style from the buttons below.'),
             components = [[
                 Button(style=ButtonStyle.green, label='Global', id='AfkSetGlobal'),
                 Button(label='Local', id='AfkSetLocal')
