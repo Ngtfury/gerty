@@ -30,13 +30,6 @@ class GertyBot(commands.AutoShardedBot):
         os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
         os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
         os.environ["JISHAKU_HIDE"] = "True"
-        self.INITIAL_EXTENSIONS = [
-            'jishaku',
-        ]
-        for filename in os.listdir('./cogs'):
-            if filename.endswith('.py'):
-                self.INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
-        self.INITIAL_EXTENSIONS.remove('cogs.reminder')
 
     async def load_cache(self):
         self.ticket_tool_guild_ids = []
@@ -48,6 +41,13 @@ class GertyBot(commands.AutoShardedBot):
         self.bot_mention = {}
         self.afk = {}
         self.reminder = {}
+        self.INITIAL_EXTENSIONS = [
+            'jishaku',
+        ]
+        for filename in os.listdir('./cogs'):
+            if filename.endswith('.py'):
+                self.INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
+        self.INITIAL_EXTENSIONS.remove('cogs.reminder')
         
 
         message_ids=await self.db.fetch('SELECT guild_id FROM ticket_tool')
