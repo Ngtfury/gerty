@@ -3,6 +3,5 @@ git remote add origin https://Ngtfury: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@g
 git config branch.master.remote origin
 git config branch.master.merge refs/heads/main
 rm -fr *
-git clean -d -f
 git pull
 python main.py
