@@ -9,13 +9,11 @@ import discord_components
 from discord_components import DiscordComponents
 from discord import Webhook, AsyncWebhookAdapter
 from cogs.utils import Utils
-from dotenv import load_dotenv
 
 
 
 class GertyBot(commands.AutoShardedBot):
     def __init__(self):
-        load_dotenv()
         print('__init__ called. Loading bot...')
         super().__init__(
             command_prefix = commands.when_mentioned_or('g!', 'G!'),
@@ -29,7 +27,7 @@ class GertyBot(commands.AutoShardedBot):
         self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
         print('Connected to database.')
         self.remove_command("help")
-        self.token = os.getenv('BOT_TOKEN')
+        self.token = "ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.PbT8noERy_xLFxNVK16iLvNdU-s"
         os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
         os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
         os.environ["JISHAKU_HIDE"] = "True"
