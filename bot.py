@@ -12,6 +12,8 @@ from cogs.utils import Utils
 
 
 class GertyBot(commands.AutoShardedBot):
+    """A top-tier multi-purpose alternative for discord bots"""
+
     def __init__(self):
         print('__init__ called. Loading bot...')
         super().__init__(
