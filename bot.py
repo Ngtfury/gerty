@@ -12,13 +12,6 @@ from cogs.utils import Utils
 from dotenv import load_dotenv
 
 
-INITIAL_EXTENSIONS = [
-  'jishaku'
-]
-for filename in os.listdir('./cogs'):
-  if filename.endswith('.py'):
-    INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
-INITIAL_EXTENSIONS.remove('cogs.reminder')
 
 class GertyBot(commands.AutoShardedBot):
     def __init__(self):
@@ -32,14 +25,21 @@ class GertyBot(commands.AutoShardedBot):
             case_insensitive=True
         )
 
-
         self.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `botinfo`\n> Shows information about me'
         self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
+        print('Connected to database.')
         self.remove_command("help")
         self.token = os.getenv('BOT_TOKEN')
         os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
         os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
         os.environ["JISHAKU_HIDE"] = "True"
+        self.INITIAL_EXTENSIONS = [
+            'jishaku',
+        ]
+        for filename in os.listdir('./cogs'):
+            if filename.endswith('.py'):
+                self.INITIAL_EXTENSIONS.append(f'cogs.{filename[:-3]}')
+        self.INITIAL_EXTENSIONS.remove('cogs.reminder')
 
     async def load_cache(self):
         self.ticket_tool_guild_ids = []
@@ -96,7 +96,7 @@ class GertyBot(commands.AutoShardedBot):
 
         loaded_or_not = []
 
-        for ext in INITIAL_EXTENSIONS:
+        for ext in self.INITIAL_EXTENSIONS:
             try:
                 self.load_or_reload(ext)
                 loaded_or_not.append(f'<a:GreenCircle:905843069549695026> Loaded extension `{ext}` succesfully.')

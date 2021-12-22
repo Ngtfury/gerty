@@ -4,4 +4,4 @@ git config branch.master.remote origin
 git config branch.master.merge refs/heads/main
 rm -fr *
 git pull
-python main.py
+python __main__.py
