@@ -95,7 +95,8 @@ class GertyBot(commands.AutoShardedBot):
 
         for ext in self.INITIAL_EXTENSIONS:
             try:
-                self.load_or_reload(ext)
+                #self.load_or_reload(ext)
+                self.load_extension(ext)
                 loaded_or_not.append(f'<a:GreenCircle:905843069549695026> Loaded extension `{ext}` succesfully.')
             except:
                 loaded_or_not.append(f'<a:Redcircle:905396170925424651> Extension `{ext}` didn\'t load properly.')
