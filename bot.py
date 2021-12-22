@@ -3,7 +3,6 @@ from discord.ext import commands
 import asyncpg
 import os
 import aiohttp
-import config
 import time
 import discord_components
 from discord_components import DiscordComponents
