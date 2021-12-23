@@ -361,17 +361,16 @@ class DropDownRole(commands.Cog):
         await self.send_panel_list(ctx)
 
     @commands.Cog.listener('on_interaction')
-    async def self_role_apply(self, interaction):
+    async def self_role_apply(self, interaction: Interaction):
         if interaction.message.id in self.bot.self_roles:
-#            try:
-#                await interaction.response.defer()
-#            except:
-#                return
+            if interaction.is_done():
+                return
 
             values = interaction.data['values']
 
             
             if 'SelfRoleNone' in values:
+                await interaction.response.defer()
                 return
 
             roles = []
