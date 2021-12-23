@@ -145,7 +145,7 @@ class GertyBot(commands.AutoShardedBot):
                 )
                 await self.change_presence(status=discord.Status.online, activity=activity, shard_id=shard)
             else:
-                await self.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.playing, name='Maintenance mode'), shard_id=shard)
+                await self.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.competing, name='Maintenance'), shard_id=shard)
 
         self.uptime = time.time()
 
