@@ -20,7 +20,6 @@ class GertyBot(commands.AutoShardedBot):
         super().__init__(
             command_prefix = commands.when_mentioned_or('g!', 'G!'),
             intents=discord.Intents.all(),
-            status=discord.Status.dnd,
             strip_after_prefix=True,
             case_insensitive=True
         )
