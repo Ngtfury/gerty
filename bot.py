@@ -137,15 +137,15 @@ class GertyBot(commands.AutoShardedBot):
 
         await self.load_cache()
         await self.load_extensions()
-        if not self.maintenance_mode:
-            for shard in self.shards:
+        for shard in self.shards:
+            if not self.maintenance_mode:
                 activity=discord.Activity(
                     type = discord.ActivityType.watching,
                     name = f'@Gerty | g!help | {len(self.guilds)} servers | Shard {shard}'
                 )
                 await self.change_presence(status=discord.Status.online, activity=activity, shard_id=shard)
-        else:
-            await self.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.playing, name='Maintenance mode'))
+            else:
+                await self.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=discord.ActivityType.playing, name='Maintenance mode'), shard_id=shard)
 
         self.uptime = time.time()
 
