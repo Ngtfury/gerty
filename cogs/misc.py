@@ -420,8 +420,8 @@ class Misc(commands.Cog):
                     emojis.append(_emoji)
                     
                     embed.add_field(name=f'{count}. {_emoji} `{author.name}` - [<t:{timestamp}:R>]', value=content, inline=False)
-                    embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar_url}')
-                    embed.set_author(name=f'Sniped messages in #{channel.name}', icon_url=ctx.guild.icon_url)
+                    embed.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=f'{ctx.author.avatar.url}')
+                    embed.set_author(name=f'Sniped messages in #{channel.name}', icon_url=ctx.guild.icon.url)
 
                     
                 await ctx.send(embed=embed)
@@ -452,9 +452,9 @@ class Misc(commands.Cog):
         MainMessageEmbeds = []
 
         em=discord.Embed(color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
-        em.set_author(name=f'{_author}', icon_url=f'{_author.avatar_url}')
+        em.set_author(name=f'{_author}', icon_url=f'{_author.avatar.url}')
         em.add_field(name=f'[<t:{_timestamp}:R>]', value=_content)
-        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
         if _attachments:
             em.set_image(url=_attachments)
         

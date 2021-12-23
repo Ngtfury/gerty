@@ -122,8 +122,8 @@ class Tags(commands.Cog):
         time=is_tag['created_at']
         uses=is_tag['tag_uses']
         embed=discord.Embed(description=f'**Owner**: {owner.name}/{owner.mention}\n**Created at**: <t:{time}>/<t:{time}:R>\n**Uses**: {uses}', color=0x2F3136)
-        embed.set_author(name=f'Info - {tag}', icon_url=owner.avatar_url)
-        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url=ctx.author.avatar_url)
+        embed.set_author(name=f'Info - {tag}', icon_url=owner.avatar.url)
+        embed.set_footer(text=f'Requested by {ctx.author.name}', icon_url=ctx.author.avatar.url)
         await ctx.send(embed=embed)
 
 
@@ -142,7 +142,7 @@ class Tags(commands.Cog):
                 tag_list.append(f'{count}. {name}')
             em=discord.Embed(description='\n'.join(tag_list),color=0x2F3136)
             em.set_footer(text=f'Do “tag info [name]“ or “tag [name]“')
-            em.set_author(name=f'Tags by {member.name} in {ctx.guild.name}', icon_url=member.avatar_url)
+            em.set_author(name=f'Tags by {member.name} in {ctx.guild.name}', icon_url=member.avatar.url)
             await ctx.send(embed=em)
         else:
             await ctx.send(f'{member.name} does not have any tags in this server')

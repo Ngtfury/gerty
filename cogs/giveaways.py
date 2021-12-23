@@ -60,7 +60,7 @@ class Giveaways(commands.Cog):
         await asyncio.sleep(1)
         
         em=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Timer: <t:{timenow+time}:R> <t:{timenow+time}:T>\n<:winner:905859555852967946> Winners: {winners}\nHost: {ctx.author.mention}\n\nReact with 🎉 to participate!\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
-        em.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
+        em.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon.url)
         em.set_image(url='https://i.imgur.com/USGQsyz.png')
         await main_message.edit('🎉 **GIVEAWAY** 🎉', embed=em)
         await main_message.add_reaction('🎉')
@@ -72,7 +72,7 @@ class Giveaways(commands.Cog):
 
         if len(entries) < winners:
             noentries=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<:winner:905859555852967946> Host: {ctx.author.mention}\n\nGiveaway cancelled, no valid participations.\nMust be at least **{winners}** participation(s)', color=0x2F3136)
-            noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
+            noentries.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon.url)
             noentries.set_image(url='https://i.imgur.com/USGQsyz.png')
             return await main_message.edit('🎉 **GIVEAWAY CANCELLED** 🎉', embed=noentries)
 
@@ -87,7 +87,7 @@ class Giveaways(commands.Cog):
             await asyncio.sleep(0.5)
         winners2=' '.join(win2)
         lwjgbw=discord.Embed(description=f'<:prize:905859038317776926> **Prize: {prize}**\n<a:timer:905859476257656872> Ended: <t:{timenow+time}:R> <t:{timenow+time}:T>\n<:winner:905859555852967946> Winners: {winners2}\nHost: {ctx.author.mention}\n\n\nTo reroll the giveaway, type:\n`g!greroll {main_message.id}`', color=0x2F3136)
-        lwjgbw.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon_url)
+        lwjgbw.set_author(name=f'{ctx.guild.name} Giveaways!', icon_url=ctx.guild.icon.url)
         lwjgbw.set_image(url='https://i.imgur.com/USGQsyz.png')
         await main_message.edit('🎉 **GIVEAWAY ENDED** 🎉', embed=lwjgbw)
 

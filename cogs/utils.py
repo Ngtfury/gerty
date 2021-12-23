@@ -87,7 +87,7 @@ class Utils:
 
         guild=bot.get_guild(random.choice(guild_ids))
         async with aiohttp.ClientSession() as sess:
-            async with sess.get(str(user.avatar_url)) as rep:
+            async with sess.get(str(user.avatar.url)) as rep:
                 buf=await rep.read()
                 
         img=Image.open(io.BytesIO(buf))
@@ -201,7 +201,7 @@ class GertyHelpCommand:
             return await ctx.send(embed=Utils.BotEmbed.error(f'There is no command called “{command}“'))
         t='`'
         em=discord.Embed(description=f'{t}{t}{t}ml\n[] - Required Argument | () - Optional Argument\n{t}{t}{t}', color=0x2F3136)
-        em.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f'Invoked by {ctx.author.name}', icon_url=ctx.author.avatar.url)
         if _command.description:
             _des=_command.description
         else:
@@ -216,7 +216,7 @@ class GertyHelpCommand:
         else:
             _usage=f'```{_prefix}{_command.qualified_name}```'
         em.add_field(name='Usage', value=_usage)
-        em.set_author(name=f'Help - {_command.qualified_name}', icon_url=self.bot.user.avatar_url)
+        em.set_author(name=f'Help - {_command.qualified_name}', icon_url=self.bot.user.avatar.url)
         if _command.aliases:
             aliases=[]
             for x in _command.aliases:
@@ -487,72 +487,72 @@ class UtilsCog(commands.Cog):
         compo3=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links', disabled=True), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
 #
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=Utils.BotColors.invis())
-        MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar_url, url=discord.utils.oauth_url(self.bot.user.id))
+        MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar.url, url=discord.utils.oauth_url(self.bot.user.id))
         MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> **<:settingssssss:891223848970747916> Utilities**\n> **🧩 Miscellaneous**\n> **🎪 Fun**\n> **<:moderation:885156113656479784> Moderation**\n> **<:tag:880100337745264680> Tags**\n> **📘 Rtfm (docs)**\n> **<:image:873933502435962880> Image**\n> **<:menu:919180776896073768> Self-role**\n> **🧭 Welcomer**\n> **<:dev:908275726199963698> Admin**')
         MainEmbed.add_field(name='<:news:885177157138145280> News', value=f'> {self.bot.news}', inline=True)
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105) | [Support Server](https://discord.gg/gERnjRdF)', inline=False)
-        MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
 
         MainMessage=await ctx.send(embed=MainEmbed, components=compo)
 
         _UtilNextLine='\n'.join(commands[0])
         UtilEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_UtilNextLine}', color=Utils.BotColors.invis())
-        UtilEmbed.set_author(name='Gerty HelpDesk - Utility commands', icon_url=self.bot.user.avatar_url)
-        UtilEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        UtilEmbed.set_author(name='Gerty HelpDesk - Utility commands', icon_url=self.bot.user.avatar.url)
+        UtilEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Misc='\n'.join(commands[1])
         MiscEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Misc}', color=Utils.BotColors.invis())
-        MiscEmbed.set_author(name='Gerty HelpDesk - Misc commands', icon_url=self.bot.user.avatar_url)
-        MiscEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        MiscEmbed.set_author(name='Gerty HelpDesk - Misc commands', icon_url=self.bot.user.avatar.url)
+        MiscEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Fun='\n'.join(commands[2])
         FunEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Fun}', color=Utils.BotColors.invis())
-        FunEmbed.set_author(name='Gerty HelpDesk - Fun commands', icon_url=self.bot.user.avatar_url)
-        FunEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        FunEmbed.set_author(name='Gerty HelpDesk - Fun commands', icon_url=self.bot.user.avatar.url)
+        FunEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Mod='\n'.join(commands[3])
         ModEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Mod}', color=Utils.BotColors.invis())
-        ModEmbed.set_author(name='Gerty HelpDesk - Moderator commands', icon_url=self.bot.user.avatar_url)
-        ModEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        ModEmbed.set_author(name='Gerty HelpDesk - Moderator commands', icon_url=self.bot.user.avatar.url)
+        ModEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Tags='\n'.join(commands[4])
         TagEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Tags}', color=Utils.BotColors.invis())
-        TagEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar_url)
-        TagEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        TagEmbed.set_author(name='Gerty HelpDesk - Tag commands', icon_url=self.bot.user.avatar.url)
+        TagEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Admin='\n'.join(commands[5])
         AdminEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Admin}', color=Utils.BotColors.invis())
-        AdminEmbed.set_author(name='Gerty HelpDesk - Admin commands', icon_url=self.bot.user.avatar_url)
-        AdminEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        AdminEmbed.set_author(name='Gerty HelpDesk - Admin commands', icon_url=self.bot.user.avatar.url)
+        AdminEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         _Rtfm='\n'.join(commands[6])
         RtfmEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Rtfm}', color=Utils.BotColors.invis())
-        RtfmEmbed.set_author(name='Gerty HelpDesk - Rtfm commands', icon_url=self.bot.user.avatar_url)
-        RtfmEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        RtfmEmbed.set_author(name='Gerty HelpDesk - Rtfm commands', icon_url=self.bot.user.avatar.url)
+        RtfmEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
 
         _Image='\n'.join(commands[7])
         ImageEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_Image}', color=Utils.BotColors.invis())
-        ImageEmbed.set_author(name='Gerty HelpDesk - Image commands', icon_url=self.bot.user.avatar_url)
-        ImageEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        ImageEmbed.set_author(name='Gerty HelpDesk - Image commands', icon_url=self.bot.user.avatar.url)
+        ImageEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         SelfRole='\n'.join(commands[8])
         SelfRoleEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{SelfRole}', color=Utils.BotColors.invis())
-        SelfRoleEmbed.set_author(name='Gerty HelpDesk - Selfrole commands', icon_url=self.bot.user.avatar_url)
-        SelfRoleEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        SelfRoleEmbed.set_author(name='Gerty HelpDesk - Selfrole commands', icon_url=self.bot.user.avatar.url)
+        SelfRoleEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         Welcomer='\n'.join(commands[9])
         WelcomerEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{Welcomer}', color=Utils.BotColors.invis())
-        WelcomerEmbed.set_author(name='Gerty HelpDesk - Welcomer commands', icon_url=self.bot.user.avatar_url)
-        WelcomerEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        WelcomerEmbed.set_author(name='Gerty HelpDesk - Welcomer commands', icon_url=self.bot.user.avatar.url)
+        WelcomerEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         commandlist=await GertyHelpCommand(self.bot).get_commands_without_description()
 
         CommandListEmbed=discord.Embed(description="""`g!help [command]` - View help for specific command
 Hover below categories for more help.
 Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```""", color=Utils.BotColors.invis())
-        CommandListEmbed.set_author(name='Gerty HelpDesk - Commands', icon_url=self.bot.user.avatar_url)
+        CommandListEmbed.set_author(name='Gerty HelpDesk - Commands', icon_url=self.bot.user.avatar.url)
         CommandListEmbed.add_field(name='<:settingssssss:891223848970747916> Utility commands', value=', '.join(commandlist[0]), inline=False)
         CommandListEmbed.add_field(name='🧩 Misc commands', value=', '.join(commandlist[1]), inline=False)
         CommandListEmbed.add_field(name='🎪 Fun commands', value=', '.join(commandlist[2]), inline=False)
@@ -563,7 +563,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:menu:919180776896073768> Self-role commands', value=', '.join(commandlist[8]), inline=False)
         CommandListEmbed.add_field(name='🧭 Welcomer commands', value=', '.join(commandlist[9]), inline=False)
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
-        CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
 
 
@@ -687,7 +687,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             [Invite me to your server!]({discord.utils.oauth_url(self.bot.user.id)})
             [For help consider joining Support Server](https://discord.gg/gERnjRdF)"""
         )
-        em.set_author(name=str(self.bot.user), icon_url=self.bot.user.avatar_url)
+        em.set_author(name=str(self.bot.user), icon_url=self.bot.user.avatar.url)
 
         total_channels = sum(len(x.channels) for x in self.bot.guilds)
 
@@ -728,7 +728,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             inline = False
         )
 
-        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar_url)
+        em.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
         for shard in self.bot.shards.items():
             shard_id = shard[0]
@@ -760,10 +760,10 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             return
         em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', color=Utils.BotColors.invis())
         em.set_timestamp()
-        em.set_author(name=str(ctx.author), icon_url=str(ctx.author.avatar_url))
+        em.set_author(name=str(ctx.author), icon_url=str(ctx.author.avatar.url))
         em.set_footer(text=f'Guild ID: {ctx.guild.id}')
-        em.set_thumbnail(url=str(ctx.guild.icon_url))
-        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', username='Gerty command logs', avatar_url=str(self.bot.user.avatar_url))
+        em.set_thumbnail(url=str(ctx.guild.icon.url))
+        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', username='Gerty command logs', avatar_url=str(self.bot.user.avatar.url))
         webhook.add_embed(em)
         webhook.execute()
         return
@@ -775,13 +775,13 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     async def on_guild_join(self, guild):
         em=DiscordEmbed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis())
         em.set_timestamp()
-        em.set_author(name=guild.name, icon_url=str(guild.icon_url))
-        em.set_thumbnail(url=str(guild.icon_url))
+        em.set_author(name=guild.name, icon_url=str(guild.icon.url))
+        em.set_thumbnail(url=str(guild.icon.url))
         em.set_footer(text='Joined server at')
         webhook = DiscordWebhook(
             url='https://discord.com/api/webhooks/907593485224386560/T6k31rtY8Yf_WsSjH77OW27bteM7Gnl7ve7q6rcRXfyQj6s5bLXsoYO97kHqo70MOtdH',
             username='Gerty guild logs',
-            avatar_url=str(self.bot.user.avatar_url)
+            avatar_url=str(self.bot.user.avatar.url)
         )
         webhook.add_embed(em)
         webhook.execute()

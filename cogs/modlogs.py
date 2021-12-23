@@ -58,7 +58,7 @@ class modlogs(commands.Cog):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", message.guild.id)
         if result and not message.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
-            em.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar_url}")
+            em.set_author(name=f"{message.author}", icon_url=f"{message.author.avatar.url}")
             em.add_field(name=f"Message deleted in #{message.channel.name}", value=f"\n{message.content}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
@@ -70,7 +70,7 @@ class modlogs(commands.Cog):
         result = await self.client.db.fetchrow("SELECT channel_id FROM mod_logs WHERE guild_id = $1", before.guild.id)
         if result and not before.author.bot:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
-            em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar_url}")
+            em.set_author(name=f"{before.author}", icon_url=f"{before.author.avatar.url}")
             em.add_field(name=f"Message edited in #{before.channel.name}", value=f"\n**Before**: {before.content}\n\n**After**: {after.content}")
             em.add_field(name="Jump", value=f"[Jump to message]({before.jump_url})", inline=False)
             channel = self.client.get_channel(result[0])
@@ -83,7 +83,7 @@ class modlogs(commands.Cog):
         if result:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.add_field(name=f"New channel created #{channel.name}", value=f"**Created at**: <t:{int(datetime.datetime.now().timestamp())}:R>\n**Position**: {channel.position}\n")
-            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon_url}")
+            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon.url}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
@@ -94,7 +94,7 @@ class modlogs(commands.Cog):
         if result:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.add_field(name=f"Channel deleted #{channel.name}", value=f"**Created at**: <t:{int(channel.created_at.timestamp())}:R>\n**Deleted at**: <t:{int(datetime.datetime.now().timestamp())}:R>\n**Position**: {channel.position}\n")
-            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon_url}")
+            em.set_author(name=f"{channel.guild.name}", icon_url=f"{channel.guild.icon.url}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
@@ -104,7 +104,7 @@ class modlogs(commands.Cog):
         if result:
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.add_field(name=f"New member {member.name}", value=f"**Account age:**: <t:{int(member.created_at.timestamp())}:R>")
-            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar_url}")
+            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar.url}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)
 
@@ -119,6 +119,6 @@ class modlogs(commands.Cog):
             em = discord.Embed(color=0x2F3136, timestamp=datetime.datetime.now())
             em.add_field(name=f"Member left {member.name}", value=f"**Joined at:**: <t:{int(member.joined_at.timestamp())}:R>")
             em.add_field(name="Roles", value=' '.join(rlist))
-            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar_url}")
+            em.set_author(name=f"{member.name}", icon_url=f"{member.avatar.url}")
             channel = self.client.get_channel(result[0])
             await channel.send(embed=em)

@@ -47,7 +47,7 @@ class TicketTool(commands.Cog):
         self.bot.running_tickets[ctx.guild.id]=[]
 
         TicketToolEmbed=discord.Embed(description='**Open a ticket to contact server moderators**\nTo create a ticket click the 📩 button', color=Utils.BotColors.invis())
-        TicketToolEmbed.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar_url)
+        TicketToolEmbed.set_footer(text='Gerty - Ticketing without clutter', icon_url=self.bot.user.avatar.url)
         TicketToolEmbed.set_author(name='Ticket Tool', icon_url='https://tickettool.xyz/images/footer.png')
         MainMessage=await channel.send(embed=TicketToolEmbed, components=TicketComponents)
         await self.bot.db.execute('INSERT INTO ticket_tool (guild_id,message_id,channel_id) VALUES ($1,$2,$3)', ctx.guild.id, MainMessage.id, channel.id)
@@ -101,7 +101,7 @@ class TicketTool(commands.Cog):
 
                 TicketEmbedDone=discord.Embed(description='**Support will be there for you shortly**\nTo close this ticket click 🔒 button', color=Utils.BotColors.invis())
                 TicketEmbedDone.set_author(name=f'{interaction.author.name}\'s ticket', icon_url='https://tickettool.xyz/images/footer.png')
-                TicketEmbedDone.set_footer(text=f'Invoked by {interaction.author}', icon_url=interaction.author.avatar_url)
+                TicketEmbedDone.set_footer(text=f'Invoked by {interaction.author}', icon_url=interaction.author.avatar.url)
                 await interaction.respond(type=4, content=f'Ticket created at channel {TicketChannel.mention}.')
                 await TicketChannel.send(f'{interaction.author.mention} Welcome', embed=TicketEmbedDone, components=TicketDoneCompo)
 

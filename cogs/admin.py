@@ -267,7 +267,7 @@ class Admin(commands.Cog):
             timestamp=datetime.datetime.now()
         )
         em.add_field(name='Reason', inline=False, value=reason)
-        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar_url)
+        em.set_author(name=ctx.author.name, icon_url=ctx.author.avatar.url)
         em.set_footer(text='Requested')
 
         channel_ = self.bot.get_channel(922736416956506153)

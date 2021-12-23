@@ -162,7 +162,7 @@ class DropDownRole(commands.Cog):
             _list.append(f'[**Panel {count}**]({message.jump_url}) - {channel.mention}')
 
         em = discord.Embed(title='Dynamic self-role menu', description='\n'.join(_list), color=Utils.BotColors.invis())
-        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        em.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         await ctx.send(embed=em)
         return
 
@@ -209,7 +209,7 @@ class DropDownRole(commands.Cog):
 
 
         ChannelEmbed = discord.Embed(description=f'<:rightarrow1:918127433184579594> In which **channel** you\'re planning to send the menu.\n<:rightarrow1:918127433184579594> You can send ID, mention or name of the channel\n> **Example** {ctx.channel.mention}', title='Dynamic self role menu', color=Utils.BotColors.invis())
-        ChannelEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        ChannelEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         ChannelEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
         ChannelEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
 
@@ -227,7 +227,7 @@ class DropDownRole(commands.Cog):
             title='Dynamic self role menu'
         )
         TitleDescEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
-        TitleDescEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        TitleDescEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         TitleDescEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
 
         await MainMessage.edit(embed=TitleDescEmbed)
@@ -246,7 +246,7 @@ class DropDownRole(commands.Cog):
             title='Dynamic self role menu'
         )
         RoleEmbed.set_thumbnail(url='https://media.discordapp.net/attachments/918104349148860457/918123683954978897/settings.png')
-        RoleEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar_url)
+        RoleEmbed.set_author(name=self.bot.user.name, icon_url=self.bot.user.avatar.url)
         RoleEmbed.set_footer(text='You can cancel this process by sending “cancel“ as reply.')
 
         await MainMessage.edit(embed=RoleEmbed)

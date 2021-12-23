@@ -220,8 +220,8 @@ async def avatar(ctx, user: discord.Member=None):
       else:
         user = ctx.author
     em = discord.Embed(title=f"{user.name}'s Avatar", description=f"[WEBP]({user.avatar_url_as(static_format='webp')}) | [JPEG]({user.avatar_url_as(static_format='jpeg')}) | [PNG]({user.avatar_url_as(static_format='png')})", color=0x2F3136)
-    em.set_image(url=f"{user.avatar_url}")
-    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar_url}")
+    em.set_image(url=f"{user.avatar.url}")
+    em.set_footer(text=f"Invoked by {ctx.author}", icon_url=f"{ctx.author.avatar.url}")
     await ctx.send(embed=em)
 
 
@@ -598,7 +598,7 @@ async def whois(ctx, member: discord.Member=None):
   roles = [role for role in member.roles]
   #general
   embed=discord.Embed(color=0x2F3136)
-  embed.add_field(name="General Info", value=f"> **<:personadd:880087005520863263> User name**: {member.name}\n> **<:gtextchannel:856095565632765972> Discriminator**: #{member.discriminator}\n> **<:pencil:880087936043974716> Display name**: {member.display_name}\n> **<:graypin:880087574490808370> User ID**: {member.id}\n> <:image:873933502435962880> **Avatar URL**: [:link:]({member.avatar_url})", inline=False)
+  embed.add_field(name="General Info", value=f"> **<:personadd:880087005520863263> User name**: {member.name}\n> **<:gtextchannel:856095565632765972> Discriminator**: #{member.discriminator}\n> **<:pencil:880087936043974716> Display name**: {member.display_name}\n> **<:graypin:880087574490808370> User ID**: {member.id}\n> <:image:873933502435962880> **Avatar URL**: [:link:]({member.avatar.url})", inline=False)
 
   #other info
   cdate = int(member.created_at.timestamp())
@@ -659,9 +659,9 @@ async def whois(ctx, member: discord.Member=None):
   #Info in server
   r = " ".join([role.mention for role in roles if role != ctx.guild.default_role])
   embed.add_field(name="Info regarding this server", value=f"> **<:greactionrole:856129896106688522> Top role**: {member.top_role.mention}\n> **<:greactionrole:856129896106688522> Roles ({len(roles)})**: {r}\n> **<:join:880111799314284634> Join position**: {pos}", inline=False)
-  embed.set_author(name=f"User info - {member}", icon_url=member.avatar_url)
-  embed.set_thumbnail(url=member.avatar_url)
-  embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar_url)
+  embed.set_author(name=f"User info - {member}", icon_url=member.avatar.url)
+  embed.set_thumbnail(url=member.avatar.url)
+  embed.set_footer(text=f"Requested by {ctx.author}", icon_url=ctx.author.avatar.url)
   await ctx.send(embed=embed)
 
 
@@ -768,10 +768,10 @@ async def report(ctx, *, report=None):
     await ctx.send("Your report must be at least 20 characters in length")
   else:
     em = discord.Embed(title="Gerty report logs", description=f"Report by {ctx.author} ({ctx.author.mention})\nOn server **[{ctx.guild.name}]({invite})**\nReported on <t:{int(timestamp_when_report)}:D> (<t:{int(timestamp_when_report)}:R>)", color=0x2F3136)
-    em.set_thumbnail(url=f"{ctx.author.avatar_url}")
-    em.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
+    em.set_thumbnail(url=f"{ctx.author.avatar.url}")
+    em.set_author(name=f"{ctx.guild.name}", icon_url=f"{ctx.guild.icon.url}")
     em.add_field(name="Report 📥", value=f"{report}")
-    em.set_footer(text=f"Invoker ID: {ctx.author.id}", icon_url=f"{ctx.author.avatar_url}")
+    em.set_footer(text=f"Invoker ID: {ctx.author.id}", icon_url=f"{ctx.author.avatar.url}")
     await ctx.send(":incoming_envelope: | _Your report has been sent to staff team!_")
     report_message = await report_channel.send(embed=em)
     ownerembed=discord.Embed(description=f"{ctx.author.name} has reported a bug!!! [Jump to report]({report_message.jump_url})", color=0x2F3136)
@@ -811,7 +811,7 @@ async def wanted(ctx, user: discord.Member = None):
     user = ctx.author
 
   wanted = Image.open("images/wanted.jpg")
-  asset  = user.avatar_url_as(size = 128)
+  asset  = user.avatar.url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
 
@@ -1023,7 +1023,7 @@ async def webhook(ctx, member: typing.Optional[discord.Member] = None, *, conten
   hooks=await ctx.channel.webhooks()
   data={
     'content': content,
-    'avatar_url': str(member.avatar_url),
+    'avatar_url': str(member.avatar.url),
     'username': f'{member.display_name}'
   }
   try:
@@ -1041,7 +1041,7 @@ async def trash(ctx, user: discord.Member = None):
     user = ctx.author
 
   trash = Image.open("images/delete.png")
-  asset  = user.avatar_url_as(size = 128)
+  asset  = user.avatar.url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
 
@@ -1058,7 +1058,7 @@ async def child(ctx, user: discord.Member = None):
     user = ctx.author
 
   affect = Image.open("images/affect.png")
-  asset  = user.avatar_url_as(size = 128)
+  asset  = user.avatar.url_as(size = 128)
   data = BytesIO(await asset.read())
   pfp = Image.open(data)
 
@@ -1124,13 +1124,13 @@ async def grayscale(ctx, user: discord.Member=None):
     if user == None:
       user = ctx.author
     filename = "avatar1.jpg"
-    await user.avatar_url.save(filename)
+    await user.avatar.url.save(filename)
     img = Image.open('avatar1.jpg').convert('L')
     img.save('greyscale.jpg')
     f = discord.File("greyscale.jpg", filename="greyscale.jpg")
-    em = discord.Embed(title=f"Image to gray", description=f"<:image:873933502435962880> Converted {user.name}'s [avatar]({user.avatar_url}) to gray", color=0x2F3136)
+    em = discord.Embed(title=f"Image to gray", description=f"<:image:873933502435962880> Converted {user.name}'s [avatar]({user.avatar.url}) to gray", color=0x2F3136)
     em.set_image(url="attachment://greyscale.jpg")
-    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em)
 
 @client.command(brief='fun', usage='[user]', description='Inverts a users avatar')
@@ -1138,14 +1138,14 @@ async def invert(ctx, user: discord.Member=None):
   if user == None:
     user = ctx.author
   filename = "avatar1.jpg"
-  await user.avatar_url.save(filename)
+  await user.avatar.url.save(filename)
   image = Image.open('avatar1.jpg')
   inverted_image = PIL.ImageOps.invert(image)
   inverted_image.save('inverted.jpg')
   f = discord.File("inverted.jpg", filename="inverted.jpg")
-  em = discord.Embed(title=f"Inverted image", description=f"<:image:873933502435962880> Inverted {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+  em = discord.Embed(title=f"Inverted image", description=f"<:image:873933502435962880> Inverted {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
   em.set_image(url="attachment://inverted.jpg")
-  em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+  em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
   await ctx.send(file=f, embed=em)
 
  
@@ -1168,9 +1168,9 @@ async def color(ctx, user: discord.Member=None):
     color = ImageEnhance.Color(image)
     color.enhance(1.5).save('color.jpg')
     f = discord.File("color.jpg", filename="color.jpg")
-    em2 = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced color of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em2 = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced color of {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
     em2.set_image(url="attachment://color.jpg")
-    em2.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em2.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em2)
 
 @enhance.command(description='Enhances contrast of a user\'s avatar', usage='(user)')
@@ -1186,9 +1186,9 @@ async def contrast(ctx, user: discord.Member=None):
     contrast = ImageEnhance.Contrast(image)
     contrast.enhance(1.5).save('contrast.jpg')
     f = discord.File("contrast.jpg", filename="contrast.jpg")
-    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced contrast of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced contrast of {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
     em.set_image(url="attachment://contrast.jpg")
-    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em)
 
 @enhance.command(description='Enhances brightness of a user\'s avatar', usage='(user)')
@@ -1204,9 +1204,9 @@ async def brightness(ctx, user:discord.Member=None):
     brightness = ImageEnhance.Brightness(image)
     brightness.enhance(1.5).save('brightness.jpg')
     f = discord.File("brightness.jpg", filename="brightness.jpg")
-    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced brightness of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced brightness of {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
     em.set_image(url="attachment://brightness.jpg")
-    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em)
 
 
@@ -1223,9 +1223,9 @@ async def sharpness(ctx, user:discord.Member=None):
     sharpness = ImageEnhance.Sharpness(image)
     sharpness.enhance(1.5).save('sharpness.jpg')
     f = discord.File("sharpness.jpg", filename="sharpness.jpg")
-    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced sharpness of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced sharpness of {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
     em.set_image(url="attachment://sharpness.jpg")
-    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em)
 
 @enhance.command(description='Enhances rgb of a user\'s avatar', usage='(user)')
@@ -1242,9 +1242,9 @@ async def rgb(ctx, user:discord.Member=None):
     new_image = Image.merge("RGB", (green, red, blue))
     new_image.save('rbg.jpg')
     f = discord.File("rbg.jpg", filename="rbg.jpg")
-    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced RGB of {user.name}'s [avatar]({user.avatar_url})", color=0x2F3136)
+    em = discord.Embed(title=f"Image enhancements", description=f"<:image:873933502435962880> Enhanced RGB of {user.name}'s [avatar]({user.avatar.url})", color=0x2F3136)
     em.set_image(url="attachment://rbg.jpg")
-    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar_url)
+    em.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=ctx.author.avatar.url)
     await ctx.send(file=f, embed=em)
   
   
@@ -1270,10 +1270,10 @@ async def serverinfo(ctx):
   else:
     desc = ""
   em = discord.Embed(description=f"{desc}", color=0x2F3136)
-  em.set_author(name=f"Server info - {ctx.guild.name}", icon_url=f"{ctx.guild.icon_url}")
+  em.set_author(name=f"Server info - {ctx.guild.name}", icon_url=f"{ctx.guild.icon.url}")
   #fields
   #general info
-  em.add_field(name="General Info", value=f"> **<:gsupportserver:855714629606703124> Server name**: {ctx.guild.name}\n> **<:graypin:880087574490808370> Server ID**: {ctx.guild.id}\n> **<:image:873933502435962880> Icon URL**: [:link:]({ctx.guild.icon_url})\n> **<:serverowner:880438839783600158> Server owner**: {ctx.guild.owner}({ctx.guild.owner.mention})", inline=False)
+  em.add_field(name="General Info", value=f"> **<:gsupportserver:855714629606703124> Server name**: {ctx.guild.name}\n> **<:graypin:880087574490808370> Server ID**: {ctx.guild.id}\n> **<:image:873933502435962880> Icon URL**: [:link:]({ctx.guild.icon.url})\n> **<:serverowner:880438839783600158> Server owner**: {ctx.guild.owner}({ctx.guild.owner.mention})", inline=False)
   #other info
   try:
     if ctx.guild.afk_channel is not None:
@@ -1341,7 +1341,7 @@ async def generate_token(ctx, member: discord.Member = None):
     embed.add_field(name="Token created:", value=f"<t:{epoch_offset}> (<t:{epoch_offset}:R>)", inline=False)
     embed.add_field(name="Generated Token:", value=f"`{complete}`", inline=False)
     embed.set_footer(text="This command is not a copy")
-    embed.set_thumbnail(url=member.avatar_url)
+    embed.set_thumbnail(url=member.avatar.url)
     await ctx.send(embed=embed)
 
 @client.command(brief='fun', description='You fucking weeb')
@@ -1351,7 +1351,7 @@ async def waifu(ctx):
           res = await r.json()  # returns dict
           embed = discord.Embed(color=0x2F3136)
           embed.set_image(url=f"{res['url']}")
-          embed.set_footer(text=f"Invoked by {ctx.author.name} · SFW - enabled", icon_url=f"{ctx.author.avatar_url}")
+          embed.set_footer(text=f"Invoked by {ctx.author.name} · SFW - enabled", icon_url=f"{ctx.author.avatar.url}")
           await ctx.send(embed=embed)
 
 
@@ -1359,7 +1359,7 @@ async def waifu(ctx):
 async def http(ctx, status_code):
   embed = discord.Embed(color=0x2F3136)
   embed.set_image(url=f"https://http.cat/{status_code}")
-  embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar_url}")
+  embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar.url}")
   await ctx.send(embed=embed)
 
 

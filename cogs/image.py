@@ -36,7 +36,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
@@ -87,7 +87,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
@@ -134,7 +134,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
@@ -181,7 +181,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
@@ -228,7 +228,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
@@ -276,7 +276,7 @@ class ImageCommands(commands.Cog):
         if isinstance(object, discord.PartialEmoji):
             _url=str(object.url)
         elif isinstance(object, discord.Member):
-            _url=str(object.avatar_url)
+            _url=str(object.avatar.url)
         elif isinstance(object, discord.Message):
             _urllist=re.findall(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*(),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', object.content)
             if _urllist:
