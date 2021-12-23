@@ -1,7 +1,9 @@
 import asyncio
 import datetime
 import discord
+from discord import embeds
 from discord.ext import commands
+from discord.types.components import ButtonStyle
 import numpy as np
 import functools
 from PIL import Image, ImageDraw
@@ -426,6 +428,108 @@ class GertyHelpCommand:
                         pass
         return util, misc, fun, mod, tags, admin, rtfm, image, selfrole, welcomer
 
+class HelpHomeButton(discord.ui.Button):
+    def __init__(self, HomeEmbed, ctx):
+        super().__init__(
+            style=discord.ButtonStyle.gray,
+            label='Home',
+            emoji='🏘️',
+        )
+        self.homeembed = HomeEmbed
+        self.ctx = ctx
+
+    async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
+            return
+        
+        await interaction.response.edit_message(embed=self.homeembed)
+
+class HelpCommandlistButton(discord.ui.Button):
+    def __init__(self, commandlistembed, ctx):
+        super().__init__(
+            style = discord.ButtonStyle.gray,
+            label='Command list',
+            emoji=ctx.bot.get_emoji(908288038101209100)
+        )
+        self.embed = commandlistembed
+        self.ctx = ctx
+
+    async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
+            return
+
+        await interaction.response.edit_message(embed=self.embed)
+
+
+class HelpQuitButton(discord.ui.Button):
+    def __init__(self, ctx):
+        super().__init__(
+            emoji=ctx.bot.get_emoji(890938576563503114),
+            label='Quit',
+            style=discord.ButtonStyle.gray
+        )
+        self.ctx = ctx
+
+    async def callback(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
+            return
+        
+        await interaction.delete_original_message()
+        await self.ctx.message.add_reaction('<:success:893501515107557466>')
+
+class HelpSelect(discord.ui.Select):
+    def __init__(
+        self,
+        options,
+        UtilEmbed,
+        MiscEmbed,
+        FunEmbed,
+        ModEmbed,
+        TagEmbed,
+        AdminEmbed,
+        RtfmEmbed,
+        ImageEmbed,
+        SelfRoleEmbed,
+        WelcomerEmbed,
+    ):
+        super().__init__(placeholder='Hover through modules!', options=options)
+        self.UtilEmbed = UtilEmbed
+        self.MiscEmbed = MiscEmbed
+        self.FunEmbed = FunEmbed
+        self.ModEmbed = ModEmbed
+        self.TagEmbed = TagEmbed
+        self.AdminEmbed = AdminEmbed
+        self.RtfmEmbed = RtfmEmbed
+        self.ImageEmbed = ImageEmbed
+        self.SelfRoleEmbed = SelfRoleEmbed
+        self.WelcomerEmbed = WelcomerEmbed
+
+    async def callback(self, interaction: discord.Interaction):
+        value = interaction.data['values'][0]
+        if value == 'UtilOption':
+            await interaction.response.edit_message(embed = self.UtilEmbed)
+        elif value == 'MiscOption':
+            await interaction.response.edit_message(embed = self.MiscEmbed)
+        elif value == 'FunOption':
+            await interaction.response.edit_message(embed = self.FunEmbed)
+        elif value == 'ModOption':
+            await interaction.response.edit_message(embed = self.ModEmbed)
+        elif value == 'TagOption':
+            await interaction.response.edit_message(embed = self.TagEmbed)
+        elif value == 'AdminOption':
+            await interaction.response.edit_message(embed = self.AdminEmbed)
+        elif value == 'RtfmOption':
+            await interaction.response.edit_message(embed = self.RtfmEmbed)
+        elif value == 'ImageOption':
+            await interaction.response.edit_message(embed = self.ImageEmbed)
+        elif value == 'SelfRoleOption':
+            await interaction.response.edit_message(embed = self.SelfRoleEmbed)
+        elif value == 'WelcomerOption':
+            await interaction.response.edit_message(embed = self.WelcomerEmbed)
+
 
 class UtilsCog(commands.Cog):
     def __init__(self,bot):
@@ -438,21 +542,18 @@ class UtilsCog(commands.Cog):
         
         commands=await GertyHelpCommand(self.bot).get_commands_according_brief()
         options=[
-            SelectOption(label='Utility commands', description='Commands that are useful for everyone and mods', value='UtilOption', emoji=self.bot.get_emoji(891223848970747916)),
-            SelectOption(label='Misc commands', description='Some other stuffs', value='MiscOption', emoji='🧩'),
-            SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption', emoji='🎪'),
-            SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption', emoji=self.bot.get_emoji(885156113656479784)),
-            SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption', emoji=self.bot.get_emoji(880100337745264680)),
-            SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
-            SelectOption(label='Image commands', description='Very cool image edit stuffs', value='ImageOption', emoji=self.bot.get_emoji(873933502435962880)),
-            SelectOption(label='Self-role commands', description='Dynamic self-role menu commands', value='SelfRoleOption', emoji=self.bot.get_emoji(919180776896073768)),
-            SelectOption(label='Welcomer commands', description='Greet new users with autoroles and messages',value='WelcomerOption', emoji='🧭'),
-            SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
+            discord.SelectOption(label='Utility commands', description='Commands that are useful for everyone and mods', value='UtilOption', emoji=self.bot.get_emoji(891223848970747916)),
+            discord.SelectOption(label='Misc commands', description='Some other stuffs', value='MiscOption', emoji='🧩'),
+            discord.SelectOption(label='Fun commands', description='Commands that everyone can use', value='FunOption', emoji='🎪'),
+            discord.SelectOption(label='Mod commands', description='Commands that only server mods can use', value='ModOption', emoji=self.bot.get_emoji(885156113656479784)),
+            discord.SelectOption(label='Tag commands', description='Commands of the tag module', value='TagOption', emoji=self.bot.get_emoji(880100337745264680)),
+            discord.SelectOption(label='Rtfm commands', description='Searches for something in documentations', value='RtfmOption', emoji='📘'),
+            discord.SelectOption(label='Image commands', description='Very cool image edit stuffs', value='ImageOption', emoji=self.bot.get_emoji(873933502435962880)),
+            discord.SelectOption(label='Self-role commands', description='Dynamic self-role menu commands', value='SelfRoleOption', emoji=self.bot.get_emoji(919180776896073768)),
+            discord.SelectOption(label='Welcomer commands', description='Greet new users with autoroles and messages',value='WelcomerOption', emoji='🧭'),
+            discord.SelectOption(label='Admin commands', description='Commands that only bot owner can use!', value='AdminOption', emoji=self.bot.get_emoji(908275726199963698))
         ]
-        compo=[[Button(label='Home', emoji='🏘️', disabled=True, id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
-        compo2=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links'), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
-        compo3=[[Button(label='Home', emoji='🏘️', id='GoHome'), Button(label='Command list', emoji=self.bot.get_emoji(908288038101209100), id='Links', disabled=True), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitDel')], Select(placeholder='Hover through modules!', options=options)]
-#
+
         MainEmbed=discord.Embed(description='`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```', color=Utils.BotColors.invis())
         MainEmbed.set_author(name=f'{self.bot.user.name} HelpDesk', icon_url=self.bot.user.avatar.url, url=discord.utils.oauth_url(self.bot.user.id))
         MainEmbed.add_field(name='<:modules:884784557822459985> Modules:', value='> **<:settingssssss:891223848970747916> Utilities**\n> **🧩 Miscellaneous**\n> **🎪 Fun**\n> **<:moderation:885156113656479784> Moderation**\n> **<:tag:880100337745264680> Tags**\n> **📘 Rtfm (docs)**\n> **<:image:873933502435962880> Image**\n> **<:menu:919180776896073768> Self-role**\n> **🧭 Welcomer**\n> **<:dev:908275726199963698> Admin**')
@@ -460,8 +561,6 @@ class UtilsCog(commands.Cog):
         MainEmbed.add_field(name='<:links:885161311456071750> Links', value=f'> [Invite me]({discord.utils.oauth_url(self.bot.user.id)}) | [About owner](https://discord.com/users/770646750804312105) | [Support Server](https://discord.gg/gERnjRdF)', inline=False)
         MainEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
-
-        MainMessage=await ctx.send(embed=MainEmbed, components=compo)
 
         _UtilNextLine='\n'.join(commands[0])
         UtilEmbed=discord.Embed(description=f'`g!help [command]` - View help for specific command\nHover below categories for more help.\nReports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional Argument```\n{_UtilNextLine}', color=Utils.BotColors.invis())
@@ -532,52 +631,31 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
+        view = discord.ui.View(timeout=60)
+        view.add_item(HelpHomeButton(MainEmbed, ctx))
+        view.add_item(HelpCommandlistButton(CommandListEmbed, ctx))
+        view.add_item(HelpQuitButton(ctx))
+        view.add_item(
+            HelpSelect(
+                options,
+                UtilEmbed,
+                MiscEmbed,
+                FunEmbed,
+                ModEmbed,
+                TagEmbed,
+                AdminEmbed,
+                RtfmEmbed,
+                ImageEmbed,
+                SelfRoleEmbed,
+                WelcomerEmbed
+            )
+        )
 
-
-        #loaded embeds
-
-        while True:
-            try:
-                event=await self.bot.wait_for('interaction', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
-                if event.author != ctx.author:
-                    await event.respond(type=4, content='Sorry, this menu cannot be controlled by you')
-                else:
-                    if isinstance(event.component, Select):
-                        if event.values[0]:
-                            value=event.values[0]
-                            if value=='UtilOption':
-                                await event.respond(type=7, embed=UtilEmbed, components=compo2)
-                            elif value=='MiscOption':
-                                await event.respond(type=7, embed=MiscEmbed, components=compo2)
-                            elif value=='FunOption':
-                                await event.respond(type=7, embed=FunEmbed, components=compo2)
-                            elif value=='ModOption':
-                                await event.respond(type=7, embed=ModEmbed, components=compo2)
-                            elif value=='TagOption':
-                                await event.respond(type=7, embed=TagEmbed, components=compo2)
-                            elif value=='AdminOption':
-                                await event.respond(type=7, embed=AdminEmbed, components=compo2)
-                            elif value=='RtfmOption':
-                                await event.respond(type=7, embed=RtfmEmbed, components=compo2)
-                            elif value=='ImageOption':
-                                await event.respond(type=7, embed=ImageEmbed, components=compo2)
-                            elif value=='SelfRoleOption':
-                                await event.respond(type=7, embed=SelfRoleEmbed, components=compo2)
-                            elif value=='WelcomerOption':
-                                await event.respond(type=7, embed=WelcomerEmbed, components=compo2)
-                    elif isinstance(event.component, Button):
-                        if event.component.id=='GoHome':
-                            await event.respond(type=7, embed=MainEmbed, components=compo)
-                        elif event.component.id=='QuitDel':
-                            await event.respond(type=6)
-                            await MainMessage.delete()
-                            await ctx.message.add_reaction('<:success:893501515107557466>')
-                            break
-                        elif event.component.id=='Links':
-                            await event.respond(type=7, embed=CommandListEmbed, components=compo3)
-            except asyncio.TimeoutError:
-                await MainMessage.disable_components()
-                break
+        await ctx.reply(
+            embed = MainEmbed,
+            mention_author = False,
+            view = view
+        )
 
 
     def get_ram_usage(self):
