@@ -2,6 +2,7 @@ import asyncio
 import json
 import re
 import discord
+from discord import *
 from discord.ext import commands
 import discord_components
 from cogs.utils import Utils
@@ -330,12 +331,13 @@ class DropDownRole(commands.Cog):
     async def _list(self, ctx):
         await self.send_panel_list(ctx)
 
-    @commands.Cog.listener('on_select_option')
+    @commands.Cog.listener('on_interaction')
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
-            values = interaction.values
+            values = []
+            for option in interaction.options:
+                values.append(option.value)
             if 'SelfRoleNone' in values:
-                await interaction.respond(type=6)
                 return
 
             roles = []
@@ -350,8 +352,7 @@ class DropDownRole(commands.Cog):
                     roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
 
             _content = '\n'.join(roles)
-            await interaction.respond(
-                type=4,
+            await interaction.response.send_message(
                 content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}'
             )
 

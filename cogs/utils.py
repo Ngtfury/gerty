@@ -30,37 +30,6 @@ import time
 
 class Utils:
 
-    class Paginator:
-        def __init__(self, embeds:list):
-            self.embeds = embeds
-            self.on_going = True
-
-        async def start(self, ctx, timeout:int=60):
-            current = 0
-
-
-            components= [[
-                Button(style=ButtonStyle.green, label='ᐊ', id='PaginatorBack'),
-                Button(label=f'{int(self.embeds.index(self.embeds[current])) + 1}/{len(self.embeds)}', disabled=True),
-                Button(style=ButtonStyle.green, label='ᐅ', id='PaginatorFront')
-            ]]
-            MainMessage = await ctx.send(embed = self.embeds[current], components=components)
-            while self.on_going:
-                try:
-                    event = await ctx.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.channel==ctx.channel and i.message.id == MainMessage.id, timeout=timeout)
-                    if event.component.id == 'PaginatorBack':
-                        current -= 1
-                    elif event.component.id == 'PaginatorFront':
-                        current += 1
-                    
-                except asyncio.TimeoutError:
-                    await MainMessage.disable_components()
-                    return
-
-        @property
-        def cancel(self):
-            self.on_going = False
-
 
     class Member:
         def __init__(self, bot, id):
