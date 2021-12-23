@@ -1,3 +1,4 @@
+from asyncio.tasks import wait
 import discord
 from discord.ext import commands
 import datetime
@@ -80,8 +81,7 @@ class AfkCommandCog(commands.Cog):
         )
 
         _wait = await view.wait()
-        if _wait == False:
-            return
+        await ctx.send(str(_wait))
 
 
         _global = view._global
