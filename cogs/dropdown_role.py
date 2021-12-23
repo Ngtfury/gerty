@@ -363,7 +363,7 @@ class DropDownRole(commands.Cog):
     @commands.Cog.listener('on_interaction')
     async def self_role_apply(self, interaction: Interaction):
         if interaction.message.id in self.bot.self_roles:
-            if interaction.is_done():
+            if interaction.response.is_done():
                 return
 
             values = interaction.data['values']
