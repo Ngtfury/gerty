@@ -387,7 +387,7 @@ class DropDownRole(commands.Cog):
                     roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
             _content = '\n'.join(roles)
             await interaction.response.send_message(
-                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
+                f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
                 ephemeral = True
             )
 
