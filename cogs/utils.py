@@ -461,7 +461,7 @@ class HelpCommandlistButton(discord.ui.Button):
             await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
             return
 
-        components = interaction.message.components.children
+        components = interaction.message.components
         components.remove(HelpCommandlistButton(self.embed, self.ctx))
         components.append(HelpCommandlistButton(self.embed, self.ctx, True))
 
