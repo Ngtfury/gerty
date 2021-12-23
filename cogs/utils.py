@@ -446,12 +446,11 @@ class HelpHomeButton(discord.ui.Button):
         await interaction.response.edit_message(embed=self.homeembed)
 
 class HelpCommandlistButton(discord.ui.Button):
-    def __init__(self, commandlistembed, ctx, disabled=False):
+    def __init__(self, commandlistembed, ctx):
         super().__init__(
             style = discord.ButtonStyle.gray,
             label='Command list',
             emoji=ctx.bot.get_emoji(908288038101209100),
-            disabled=disabled
         )
         self.embed = commandlistembed
         self.ctx = ctx
@@ -461,11 +460,7 @@ class HelpCommandlistButton(discord.ui.Button):
             await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
             return
 
-        components = interaction.message.components
-        components.remove(HelpCommandlistButton(self.embed, self.ctx))
-        components.append(HelpCommandlistButton(self.embed, self.ctx, True))
-
-        await interaction.response.edit_message(embed=self.embed, view = components)
+        await interaction.response.edit_message(embed=self.embed)
 
 
 class HelpQuitButton(discord.ui.Button):
