@@ -336,14 +336,8 @@ class DropDownRole(commands.Cog):
         if interaction.message.id in self.bot.self_roles:
             if not interaction.channel.id == 922156525852713010:
                 return
-            await interaction.channel.send('event called')
-            await interaction.channel.send(f'DATA: {interaction.data}')
-            values = []
-            for component in interaction.message.components:
-                for row in component.children:
-                    for option in row.options:
-                        values.append(option.value)
-            await interaction.channel.send(f'VALUES:\n{values}')
+
+            values = interaction.data['values']
 
             
             if 'SelfRoleNone' in values:
@@ -352,9 +346,7 @@ class DropDownRole(commands.Cog):
             roles = []
             for value in values:
                 role_id = int(value)
-                await interaction.channel.send(f'ROLE ID:\n{role_id}')
                 role_obj = interaction.guild.get_role(role_id)
-                await interaction.channel.send(f'ROLE OBJECT:\n{role_obj}')
                 if role_obj in interaction.user.roles:
                     await interaction.user.remove_roles(role_obj)
                     roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
