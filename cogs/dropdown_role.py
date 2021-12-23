@@ -336,8 +336,9 @@ class DropDownRole(commands.Cog):
         if interaction.message.id in self.bot.self_roles:
             values = []
             for component in interaction.message.components:
-                for option in component.options:
-                    values.append(option.value)
+                for row in component.children:
+                    for option in row.options:
+                        values.append(option.value)
     
             if 'SelfRoleNone' in values:
                 return
