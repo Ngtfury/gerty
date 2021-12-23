@@ -9,7 +9,8 @@ from PIL import Image, ImageDraw
 import psutil
 import io
 from discord_components import *
-from discord import Webhook, AsyncWebhookAdapter
+import discord_webhook
+from discord_webhook import DiscordWebhook, DiscordEmbed
 import aiohttp
 import subprocess
 import sys
@@ -757,44 +758,62 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
             return
         if not ctx.guild:
             return
-        em=discord.Embed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
+        em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
         em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
         em.set_footer(text=f'Guild ID: {ctx.guild.id}')
         em.set_thumbnail(url=ctx.guild.icon_url)
-        async with aiohttp.ClientSession() as session:
-            webhook = Webhook.from_url('https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', adapter=AsyncWebhookAdapter(session))
-            await webhook.send(embed=em, username='Gerty command logs', avatar_url=self.bot.user.avatar_url)
+        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', username='Gerty command logs', avatar_url=self.bot.user.avatar_url)
+        webhook.add_embed(em)
+        webhook.execute()
+        return
+
+
 
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        em=discord.Embed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
+        em=DiscordEmbed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
         em.set_author(name=guild.name, icon_url=guild.icon_url)
         em.set_thumbnail(url=guild.icon_url)
         em.set_footer(text='Joined server at')
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/907593485224386560/T6k31rtY8Yf_WsSjH77OW27bteM7Gnl7ve7q6rcRXfyQj6s5bLXsoYO97kHqo70MOtdH', adapter=AsyncWebhookAdapter(session))
-            await web.send(embed=em, username='Gerty guild logs', avatar_url=self.bot.user.avatar_url)
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/907593485224386560/T6k31rtY8Yf_WsSjH77OW27bteM7Gnl7ve7q6rcRXfyQj6s5bLXsoYO97kHqo70MOtdH',
+            username='Gerty guild logs',
+            avatar_url=self.bot.user.avatar_url
+        )
+        webhook.add_embed(em)
+        webhook.execute()
 
 
     @commands.Cog.listener()
     async def on_shard_connect(self, shard_id):
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'<a:GreenCircle:905843069549695026> Ready', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR',
+            content = f'<a:GreenCircle:905843069549695026> Ready',
+            username=f'Shard {shard_id}', 
+            avatar_url='https://singlecolorimage.com/get/2bff00/400x100'
+        )
+        webhook.execute()
 
     @commands.Cog.listener()
     async def on_shard_disconnect(self, shard_id):
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'<a:Redcircle:905396170925424651> Disconnected', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/ffdd00/400x100')
-#<:yellow_circle:841214778096877579>
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR',
+            content=f'<a:Redcircle:905396170925424651> Disconnected', 
+            username=f'Shard {shard_id}', 
+            avatar_url='https://singlecolorimage.com/get/ffdd00/400x100'
+        )
+        webhook.execute()
 
     @commands.Cog.listener()
     async def on_shard_resumed(self, shard_id):
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send(content=f'<a:GreenCircle:905843069549695026> Resumed', username=f'Shard {shard_id}', avatar_url='https://singlecolorimage.com/get/2bff00/400x100')
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR',
+            content=f'<a:GreenCircle:905843069549695026> Resumed', 
+            username=f'Shard {shard_id}', 
+            avatar_url='https://singlecolorimage.com/get/2bff00/400x100'
+        )
+        webhook.execute()
 
 
 
