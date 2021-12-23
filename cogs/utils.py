@@ -754,8 +754,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     @commands.Cog.listener()
     async def on_command(self, ctx):
         self.bot.command_usage += 1
-        if ctx.author.id == 770646750804312105:
-            return
+        #if ctx.author.id == 770646750804312105:
+        #    return
         if not ctx.guild:
             return
         em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
