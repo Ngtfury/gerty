@@ -367,6 +367,7 @@ class DropDownRole(commands.Cog):
         if interaction.message.id in self.bot.self_roles:
             if interaction.response.is_done():
                 return
+                
 
             values = interaction.data['values']
 
@@ -386,10 +387,13 @@ class DropDownRole(commands.Cog):
                     await interaction.user.add_roles(role_obj)
                     roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
             _content = '\n'.join(roles)
-            await interaction.response.send_message(
-                f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
-                ephemeral = True
-            )
+            try:
+                await interaction.response.send_message(
+                    f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
+                    ephemeral = True
+                )
+            except:
+                pass
 
     @commands.Cog.listener('on_guild_remove')
     async def delete_self_role_on_remove(self, guild):
