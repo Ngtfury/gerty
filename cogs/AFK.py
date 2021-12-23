@@ -81,7 +81,8 @@ class AfkCommandCog(commands.Cog):
         )
 
         _wait = await view.wait()
-        await ctx.send(str(_wait))
+        if _wait == True:
+            return
 
 
         _global = view._global
