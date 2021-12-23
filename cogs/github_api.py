@@ -34,7 +34,7 @@ class GithubRepo:
 
 class GithubView(discord.ui.View):
     def __init__(self, ctx):
-        super().__init__(60)
+        super().__init__(timeout=60)
         self.ctx = ctx
 
     async def on_timeout(self):
