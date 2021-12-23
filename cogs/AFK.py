@@ -74,16 +74,17 @@ class AfkCommandCog(commands.Cog):
 
         view = AfkView(ctx)
 
-        MainMessage = await ctx.send(
+        view.message = MainMessage = await ctx.send(
             embed = discord.Embed(color=Utils.BotColors.invis(), description='<a:afk:890119774015717406> Choose your afk style from the buttons below.'),
             view = view
         )
 
-        await view.wait()
+        _wait = await view.wait()
+        if not _wait:
+            return
 
         _global = view._global
 
-        await MainMessage.delete()
         text = 'globally' if _global else 'locally'
         em = discord.Embed(
             color = Utils.BotColors.invis(),
