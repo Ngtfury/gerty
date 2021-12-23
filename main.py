@@ -1086,7 +1086,7 @@ async def amongus(ctx, user: discord.Member = None):
   
   
 #buttons array
-buttons = [
+#buttons = [
 #    [
 #        Button(style=ButtonStyle.grey, label='1'),
 #        Button(style=ButtonStyle.grey, label='2'),
