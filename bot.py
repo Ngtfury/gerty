@@ -160,6 +160,7 @@ class GertyBot(commands.AutoShardedBot):
             content = '<:yes:910490899883126804> Connected to Gerty successfully.', 
             avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status'
         )
+        webhook.execute()
 
         print(f"Connected to {self.user}.")
 
