@@ -337,6 +337,7 @@ class DropDownRole(commands.Cog):
             if not interaction.channel.id == 922156525852713010:
                 return
             await interaction.channel.send('event called')
+            await interaction.channel.send(f'DATA: {interaction.data}')
             values = []
             for component in interaction.message.components:
                 for row in component.children:
