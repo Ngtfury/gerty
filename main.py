@@ -136,8 +136,9 @@ async def no_dm_commands(ctx):
 @client.check
 async def maintenance_mode(ctx):
   if ctx.bot.maintenance_mode:
-    raise MaintenanceMode
-    return False
+    if not ctx.author.id == 770646750804312105:
+      raise MaintenanceMode
+      return False
   return True
 
 

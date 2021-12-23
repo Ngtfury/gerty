@@ -61,7 +61,7 @@ class events(commands.Cog):
             await ctx.send(
                 embed = discord.Embed(
                     color = Utils.BotColors.invis(),
-                    description = f'<:maintenance:923486040738652220> Sorry, I\m on **maintenance mode**, I\'ll not respond to commands until <t:{ctx.bot.maintenance_timestamp}:t>'
+                    description = f'<:maintenance:923486040738652220> Sorry, I\'m on **maintenance mode**, I\'ll not respond to commands until <t:{ctx.bot.maintenance_timestamp}:t>'
                 )
             )
         elif isinstance(error, NoDmCommands):
