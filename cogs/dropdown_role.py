@@ -351,6 +351,7 @@ class DropDownRole(commands.Cog):
             roles = []
             for value in values:
                 role_id = int(value)
+                await interaction.channel.send(f'ROLE ID:\n{role_id}')
                 role_obj = interaction.guild.get_role(role_id)
                 await interaction.channel.send(f'ROLE OBJECT:\n{role_obj}')
                 if role_obj in interaction.user.roles:
