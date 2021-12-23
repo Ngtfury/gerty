@@ -352,6 +352,7 @@ class DropDownRole(commands.Cog):
             for value in values:
                 role_id = int(value)
                 role_obj = interaction.guild.get_role(role_id)
+                await interaction.channel.send(f'ROLE OBJECT:\n{role_obj}')
                 if role_obj in interaction.user.roles:
                     await interaction.user.remove_roles(role_obj)
                     roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
