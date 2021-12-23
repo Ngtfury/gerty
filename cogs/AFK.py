@@ -35,7 +35,7 @@ class AfkView(discord.ui.View):
         await interation.response.defer()
         await interation.message.delete()
         self._global = True
-        return True
+        self.stop()
 
     @discord.ui.button(
         style = discord.ButtonStyle.gray,
@@ -45,7 +45,7 @@ class AfkView(discord.ui.View):
         await interaction.response.defer()
         await interaction.message.delete()
         self._global = False
-        return False
+        self.stop()
 
 
 
