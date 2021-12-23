@@ -31,17 +31,17 @@ class AfkView(discord.ui.View):
         style = discord.ButtonStyle.green,
         label = 'Global'
     )
-    async def set_global(self, interation: discord.Interaction):
+    async def set_global(self, button, interation: discord.Interaction):
         await interation.response.defer()
         await interation.message.delete()
         self._global = True
         return True
 
     @discord.ui.button(
-        style = discord.ButtonStyle.green,
+        style = discord.ButtonStyle.gray,
         label = 'Local'
     )
-    async def set_local(self, interaction: discord.Interaction):
+    async def set_local(self, button, interaction: discord.Interaction):
         await interaction.response.defer()
         await interaction.message.delete()
         self._global = False
