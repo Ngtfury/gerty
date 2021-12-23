@@ -11,46 +11,6 @@ def setup(bot):
     bot.add_cog(DropDownRole(bot))
 
 
-class SelfRoleSelect(discord.ui.Select):
-    def __init__(self, options):
-        super().__init__(
-            placeholder='Dynamic self-role menu',
-            options=options,
-            min_values=1,
-            max_values=len(options)
-        )
-
-
-    async def callback(self, interaction: Interaction):
-        if interaction.message.id in self.bot.self_roles:
-            values = interaction.data['values']
-
-            
-            if 'SelfRoleNone' in values:
-                await interaction.response.defer()
-                return
-
-            roles = []
-            for value in values:
-                role_id = int(value)
-                role_obj = interaction.guild.get_role(role_id)
-                if role_obj in interaction.user.roles:
-                    await interaction.user.remove_roles(role_obj)
-                    roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
-                else:
-                    await interaction.user.add_roles(role_obj)
-                    roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
-
-            _content = '\n'.join(roles)
-            await interaction.response.send_message(
-                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
-                ephemeral = True
-            )
-
-
-class SelfRoleView(discord.ui.View):
-    def __init__(self):
-        super().__init__()
 
 class DropDownRole(commands.Cog):
     def __init__(self, bot):
@@ -341,9 +301,15 @@ class DropDownRole(commands.Cog):
             )
         )
 
-        view = SelfRoleView()
-        menu = SelfRoleSelect(options=options)
-        view.add_item(menu)
+        view = discord.ui.View(timeout=None)
+        view.add_item(
+            discord.ui.Select(
+                placeholder='Dynamic self-role menu',
+                options=options,
+                min_values=1,
+                max_values=len(options)
+            )
+        )
 
         _final_desc = ''.join(description_)
         FinalEmbed = discord.Embed(
@@ -353,7 +319,7 @@ class DropDownRole(commands.Cog):
         )
         await FinalMessage.edit(
             embed=FinalEmbed,
-            view=view
+            view = view
         )
 
 
@@ -369,33 +335,33 @@ class DropDownRole(commands.Cog):
     async def _list(self, ctx):
         await self.send_panel_list(ctx)
 
-#    @commands.Cog.listener('on_interaction')
-#    async def self_role_apply(self, interaction):
-#        if interaction.message.id in self.bot.self_roles:
+    @commands.Cog.listener('on_interaction')
+    async def self_role_apply(self, interaction):
+        if interaction.message.id in self.bot.self_roles:
 
-#            values = interaction.data['values']
+            values = interaction.data['values']
 
             
-#            if 'SelfRoleNone' in values:
-#                await interaction.response.defer()
-#                return
+            if 'SelfRoleNone' in values:
+                await interaction.response.defer()
+                return
 
-#            roles = []
-#            for value in values:
-#                role_id = int(value)
-#                role_obj = interaction.guild.get_role(role_id)
-#                if role_obj in interaction.user.roles:
-#                    await interaction.user.remove_roles(role_obj)
-#                    roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
-#                else:
-#                    await interaction.user.add_roles(role_obj)
-#                    roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
+            roles = []
+            for value in values:
+                role_id = int(value)
+                role_obj = interaction.guild.get_role(role_id)
+                if role_obj in interaction.user.roles:
+                    await interaction.user.remove_roles(role_obj)
+                    roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
+                else:
+                    await interaction.user.add_roles(role_obj)
+                    roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
 
-#            _content = '\n'.join(roles)
-#            await interaction.response.send_message(
-#                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
-#                ephemeral = True
-#            )
+            _content = '\n'.join(roles)
+            await interaction.response.send_message(
+                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
+                ephemeral = True
+            )
 
     @commands.Cog.listener('on_guild_remove')
     async def delete_self_role_on_remove(self, guild):
