@@ -759,10 +759,10 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         if not ctx.guild:
             return
         em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
-        em.set_author(name=ctx.author, icon_url=ctx.author.avatar_url)
+        em.set_author(name=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         em.set_footer(text=f'Guild ID: {ctx.guild.id}')
-        em.set_thumbnail(url=ctx.guild.icon_url)
-        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', username='Gerty command logs', avatar_url=self.bot.user.avatar_url)
+        em.set_thumbnail(url=str(ctx.guild.icon_url))
+        webhook = DiscordWebhook(url='https://discord.com/api/webhooks/907593512856477717/OSHPK46rXV_jJCPIn_W9K71kRb_GqTeLzR2EXOs0Uzmf4FaVmVlrJdiJPkOsw8cXevYx', username='Gerty command logs', avatar_url=str(self.bot.user.avatar_url))
         webhook.add_embed(em)
         webhook.execute()
         return
@@ -773,13 +773,13 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
         em=DiscordEmbed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
-        em.set_author(name=guild.name, icon_url=guild.icon_url)
-        em.set_thumbnail(url=guild.icon_url)
+        em.set_author(name=guild.name, icon_url=str(guild.icon_url))
+        em.set_thumbnail(url=str(guild.icon_url))
         em.set_footer(text='Joined server at')
         webhook = DiscordWebhook(
             url='https://discord.com/api/webhooks/907593485224386560/T6k31rtY8Yf_WsSjH77OW27bteM7Gnl7ve7q6rcRXfyQj6s5bLXsoYO97kHqo70MOtdH',
             username='Gerty guild logs',
-            avatar_url=self.bot.user.avatar_url
+            avatar_url=str(self.bot.user.avatar_url)
         )
         webhook.add_embed(em)
         webhook.execute()
