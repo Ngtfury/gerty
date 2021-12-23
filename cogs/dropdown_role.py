@@ -347,11 +347,11 @@ class DropDownRole(commands.Cog):
             for value in values:
                 role_id = int(value)
                 role_obj = interaction.guild.get_role(role_id)
-                if role_obj in interaction.author.roles:
-                    await interaction.author.remove_roles(role_obj)
+                if role_obj in interaction.user.roles:
+                    await interaction.user.remove_roles(role_obj)
                     roles.append(f'<:minus:917468380947177573> Removed role {role_obj.mention}')
                 else:
-                    await interaction.author.add_roles(role_obj)
+                    await interaction.user.add_roles(role_obj)
                     roles.append(f'<:plus:917468380846497904> Added role {role_obj.mention}')
 
             _content = '\n'.join(roles)
