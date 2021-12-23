@@ -758,7 +758,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         #    return
         if not ctx.guild:
             return
-        em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', timestamp=datetime.datetime.now(), color=Utils.BotColors.invis())
+        em = DiscordEmbed(description=f'Command “**{ctx.command.qualified_name}**“ used by **{ctx.author}** ({ctx.author.mention})\nIn server **{ctx.guild.name}**\nIn channel {ctx.channel.name} ({ctx.channel.mention})\n\n[Jump to message]({ctx.message.jump_url})', color=Utils.BotColors.invis())
+        em.set_timestamp()
         em.set_author(name=str(ctx.author), icon_url=str(ctx.author.avatar_url))
         em.set_footer(text=f'Guild ID: {ctx.guild.id}')
         em.set_thumbnail(url=str(ctx.guild.icon_url))
@@ -772,7 +773,8 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
 
     @commands.Cog.listener()
     async def on_guild_join(self, guild):
-        em=DiscordEmbed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis(), timestamp=datetime.datetime.now())
+        em=DiscordEmbed(description=f'**Guild owner**: **{guild.owner.name}** ({guild.owner.mention})\n**Channels**: {len(guild.channels)}\n**Members**: {guild.member_count}', color=Utils.BotColors.invis())
+        em.set_timestamp()
         em.set_author(name=guild.name, icon_url=str(guild.icon_url))
         em.set_thumbnail(url=str(guild.icon_url))
         em.set_footer(text='Joined server at')
