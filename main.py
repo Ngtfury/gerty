@@ -10,8 +10,6 @@ import urllib.parse, urllib.request, re
 import os
 import requests
 import aiohttp
-import discord_components
-from discord_components import *
 import math
 #
 import urllib.request
@@ -483,7 +481,7 @@ async def google(ctx, *, search):
   current = 0
 
 
-  mainmessage = await ctx.send(embed=paginationList[current], components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]])
+  #mainmessage = await ctx.send(embed=paginationList[current], components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]])
 
   await googleclient.close()
   while True:
@@ -512,16 +510,17 @@ async def google(ctx, *, search):
         elif current < 0:
           current = len(paginationList) - 1
             
-        await event.respond(
-          type=7,
-          embed=paginationList[current],
-          components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]]
-        )
+#        await event.respond(
+#          type=7,
+#          embed=paginationList[current],
+#          components=[[Button(style=ButtonStyle.grey, id = "back", label='<'), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>'), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114))]]
+#        )
     except asyncio.TimeoutError:
       try:
-        await mainmessage.edit(
-          components=[[Button(style=ButtonStyle.grey, id = "back", label='<', disabled=True), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>', disabled=True), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114), disabled=True)]]
-        )
+        pass
+#        await mainmessage.edit(
+#          components=[[Button(style=ButtonStyle.grey, id = "back", label='<', disabled=True), Button(style=ButtonStyle.grey, label=f'{int(paginationList.index(paginationList[current])) + 1}/{len(paginationList)}', disabled=True), Button(style=ButtonStyle.grey, id = "front", label='>', disabled=True), Button(style=ButtonStyle.red, id = "delete", emoji=client.get_emoji(890938576563503114), disabled=True)]]
+#        )
         break
       except:
         break
@@ -546,10 +545,10 @@ async def rps(ctx):
   lost = discord.Embed(title=f"{ctx.author.display_name} You Lost!", description=f"> Status: You have lost bot had chosen {comp}", color=0xff0000)
   tie = discord.Embed(title=f"{ctx.author.display_name} It's Tie", description=f"> Status: **It's a tie** bot had chosen {comp}", color=0xd4ff00)
 
-  m = await ctx.send(
-    embed=yet,
-    components=[[Button(style=1, label="Rock",), Button(style=3, label="Paper"), Button(style=ButtonStyle.red, label="Scissors")]]
-  )
+#  m = await ctx.send(
+#    embed=yet,
+#    components=[[Button(style=1, label="Rock",), Button(style=3, label="Paper"), Button(style=ButtonStyle.red, label="Scissors")]]
+#  )
 
   def check(res):
     return ctx.author == res.user and res.channel == ctx.channel
@@ -1088,35 +1087,35 @@ async def amongus(ctx, user: discord.Member = None):
   
 #buttons array
 buttons = [
-    [
-        Button(style=ButtonStyle.grey, label='1'),
-        Button(style=ButtonStyle.grey, label='2'),
-        Button(style=ButtonStyle.grey, label='3'),
-        Button(style=ButtonStyle.blue, label='×'),
-        Button(style=ButtonStyle.red, label='Exit')
-    ],
-    [
-        Button(style=ButtonStyle.grey, label='4'),
-        Button(style=ButtonStyle.grey, label='5'),
-        Button(style=ButtonStyle.grey, label='6'),
-        Button(style=ButtonStyle.blue, label='÷'),
-        Button(style=ButtonStyle.red, label='←')
-    ],
-    [
-        Button(style=ButtonStyle.grey, label='7'),
-        Button(style=ButtonStyle.grey, label='8'),
-        Button(style=ButtonStyle.grey, label='9'),
-        Button(style=ButtonStyle.blue, label='+'),
-        Button(style=ButtonStyle.red, label='Clear')
-    ],
-    [
-        Button(style=ButtonStyle.grey, label='00'),
-        Button(style=ButtonStyle.grey, label='0'),
-        Button(style=ButtonStyle.grey, label='.'),
-        Button(style=ButtonStyle.blue, label='-'),
-        Button(style=ButtonStyle.green, label='=')
-    ],
-]
+#    [
+#        Button(style=ButtonStyle.grey, label='1'),
+#        Button(style=ButtonStyle.grey, label='2'),
+#        Button(style=ButtonStyle.grey, label='3'),
+#        Button(style=ButtonStyle.blue, label='×'),
+#        Button(style=ButtonStyle.red, label='Exit')
+#    ],
+#    [
+#        Button(style=ButtonStyle.grey, label='4'),
+#        Button(style=ButtonStyle.grey, label='5'),
+#        Button(style=ButtonStyle.grey, label='6'),
+#        Button(style=ButtonStyle.blue, label='÷'),
+#        Button(style=ButtonStyle.red, label='←')
+#    ],
+#    [
+#        Button(style=ButtonStyle.grey, label='7'),
+#        Button(style=ButtonStyle.grey, label='8'),
+#        Button(style=ButtonStyle.grey, label='9'),
+#        Button(style=ButtonStyle.blue, label='+'),
+#        Button(style=ButtonStyle.red, label='Clear')
+#    ],
+#    [
+#        Button(style=ButtonStyle.grey, label='00'),
+#        Button(style=ButtonStyle.grey, label='0'),
+#        Button(style=ButtonStyle.grey, label='.'),
+#        Button(style=ButtonStyle.blue, label='-'),
+#        Button(style=ButtonStyle.green, label='=')
+#    ],
+#]
  
  
 #brief='fun', usage='', description=''
