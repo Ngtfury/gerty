@@ -334,8 +334,6 @@ class DropDownRole(commands.Cog):
     @commands.Cog.listener('on_interaction')
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
-            if not interaction.channel.id == 922156525852713010:
-                return
 
             values = interaction.data['values']
 
