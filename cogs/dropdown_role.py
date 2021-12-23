@@ -356,7 +356,8 @@ class DropDownRole(commands.Cog):
 
             _content = '\n'.join(roles)
             await interaction.response.send_message(
-                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}'
+                content=f'Dynamic Self-role menu:\n> [*Add me to your server*]({discord.utils.oauth_url(self.bot.user.id)})\n\n{_content}',
+                ephemeral = True
             )
 
     @commands.Cog.listener('on_guild_remove')
