@@ -341,7 +341,7 @@ class DropDownRole(commands.Cog):
 
             
             if 'SelfRoleNone' in values:
-                await interaction.response.defer()
+                await interaction.response.pong()
 
             roles = []
             for value in values:
