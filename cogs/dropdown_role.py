@@ -335,8 +335,10 @@ class DropDownRole(commands.Cog):
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
             values = []
-            for option in interaction.options:
-                values.append(option.value)
+            for component in interaction.message.components:
+                for option in component.options:
+                    values.append(option.value)
+    
             if 'SelfRoleNone' in values:
                 return
 
