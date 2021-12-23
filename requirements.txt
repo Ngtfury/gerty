@@ -24,7 +24,7 @@ gTTS
 PyNaCl
 asyncpg
 async-cse
-git+https://github.com/Rapptz/discord.py
+discord.py
 akinator.py
 humanize
 python-multibar
