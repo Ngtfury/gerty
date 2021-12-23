@@ -334,12 +334,17 @@ class DropDownRole(commands.Cog):
     @commands.Cog.listener('on_interaction')
     async def self_role_apply(self, interaction):
         if interaction.message.id in self.bot.self_roles:
+            if not interaction.channel.id == 922156525852713010:
+                return
+            await interaction.channel.send('event called')
             values = []
             for component in interaction.message.components:
                 for row in component.children:
                     for option in row.options:
                         values.append(option.value)
-    
+            await interaction.channel.send(f'VALUES:\n{values}')
+
+            
             if 'SelfRoleNone' in values:
                 return
 
