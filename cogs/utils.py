@@ -545,7 +545,7 @@ class HelpCommandView(discord.ui.View):
         await self.message.edit(view = self)
 
     async def interaction_check(self, interaction: discord.Interaction):
-        if interaction.author.id != self.ctx.author.id:
+        if interaction.user.id != self.ctx.author.id:
             await interaction.response.send_message(ephemeral=True, content='Sorry, you cannot interact with this help menu.')
             return False
         return True
