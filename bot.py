@@ -24,7 +24,7 @@ class GertyBot(commands.AutoShardedBot):
             strip_after_prefix=True,
             case_insensitive=True
         )
-        self.maintenance_mode = True
+        self.maintenance_mode = False
         self.maintenance_timestamp = 1640277000
 
         self.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `welcomer`\n> Welcome new members with a message\n> and autoroles..'

@@ -10,6 +10,55 @@ import time
 import asyncio
 from math import *
 
+class AkinatorComponents:
+
+    class AkinatorView(discord.ui.View):
+        def __init__(self):
+            super().__init__(timeout=60)
+
+        async def on_timeout(self):
+            for children in self.children:
+                children.disabled = True
+
+            await self.message.edit(view = self)
+
+        async def interaction_check(self, interaction: discord.Interaction):
+            if interaction.author.id != self.ctx.author.id:
+                await interaction.response.send_message('Sorry, this is not your game and you cannot interact with these buttons.', ephemeral=True)
+                return False
+            return True
+
+    class AkiCharButton(discord.ui.Button):
+        def __init__(self, aki):
+            super().__init__(
+                style = discord.ButtonStyle.gray,
+                label = 'Character',
+            )
+            self.aki = aki
+
+        async def callback(self, interaction: discord.Interaction):
+            q=await self.aki.start_game(language=None, child_mode=True)
+            em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+            await interaction.response.edit_message(embed = em)
+            return q
+
+    class AkiAnimalButton(discord.ui.Button):
+        def __init__(self, aki):
+            super().__init__(
+                style=discord.ButtonStyle.gray,
+                label = 'Animal'
+            )
+            self.aki = aki
+
+        async def callback(self, interaction: discord.Interaction):
+            q=await self.aki.start_game(language='en_animals', child_mode=True)
+            em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+            compos = interaction.message.components
+            for compo in compos:
+                for children in compo.children:
+                    children.disabled = True
+            await interaction.response.edit_message(embed = em, view = compos)
+            return q
 
 def setup(bot):
     bot.add_cog(AkinatorCog(bot))
