@@ -58,7 +58,7 @@ class GithubSelect(discord.ui.Select):
         )
         self._user_name = _user_name
         self._user_avatar_url = _user_avatar_url
-        self._user_html_url = _user_html_url
+        self._user_htmlurl = _user_html_url
 
     async def callback(self, interaction: discord.Interaction):
         value = interaction.data['values'][0]
@@ -205,7 +205,7 @@ class GithubApi(commands.Cog):
                     disabled=True
                 )
             )
-            await ctx.send(embed = MainEmbed, view=view)
+            view.message = await ctx.send(embed = MainEmbed, view=view)
             return
 
 
@@ -233,5 +233,5 @@ class GithubApi(commands.Cog):
                 _user_htmlurl,
             )
         )
-        await ctx.send(embed = MainEmbed, view=view)
+        view.message = await ctx.send(embed = MainEmbed, view=view)
 
