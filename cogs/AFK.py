@@ -80,8 +80,9 @@ class AfkCommandCog(commands.Cog):
         )
 
         _wait = await view.wait()
-        if not _wait:
+        if _wait == False:
             return
+
 
         _global = view._global
 
