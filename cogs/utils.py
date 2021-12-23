@@ -527,7 +527,7 @@ class HelpSelect(discord.ui.Select):
 
 class HelpCommandView(discord.ui.View):
     def __init__(self):
-        super().__init__(timeout=5)
+        super().__init__(timeout=60)
 
     async def on_timeout(self):
         for children in self.children:
