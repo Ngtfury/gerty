@@ -1,4 +1,5 @@
 import discord
+from discord.enums import try_enum
 from discord.ext import commands
 import asyncpg
 import os
@@ -23,6 +24,8 @@ class GertyBot(commands.AutoShardedBot):
             strip_after_prefix=True,
             case_insensitive=True
         )
+        self.maintenance_mode = True
+        self.maintenance_timestamp = 1640277000
 
         self.news=f'<:updates:911239861225279488> **UPDATE**\n> New command `welcomer`\n> Welcome new members with a message\n> and autoroles..'
         self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))

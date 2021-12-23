@@ -80,6 +80,8 @@ class DisabledCommand(commands.CheckFailure):
 class NoDmCommands(commands.CheckFailure):
   pass
 
+class MaintenanceMode(commands.CheckFailure):
+  pass
 
 def source(o):
   s = inspect.getsource(o).split("\n")
@@ -130,6 +132,13 @@ async def no_dm_commands(ctx):
     return False
   return True
 
+
+@client.check
+async def maintenance_mode(ctx):
+  if ctx.bot.maintenance_mode:
+    raise MaintenanceMode
+    return False
+  return True
 
 
 @client.check

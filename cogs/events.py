@@ -2,7 +2,7 @@ import discord
 import asyncio
 import traceback
 import json
-from __main__ import UserBlacklisted, DisabledCommand, NoDmCommands
+from __main__ import UserBlacklisted, DisabledCommand, NoDmCommands, MaintenanceMode
 from discord.ext import commands
 from cogs.utils import Utils
 from difflib import get_close_matches
@@ -57,6 +57,13 @@ class events(commands.Cog):
         elif isinstance(error, UserBlacklisted):
             em = discord.Embed(description=f"<:error:893501396161290320> You are blacklisted from using commands for reason `{error.reason}`", color=0x2F3136)
             await ctx.send(embed=em)
+        elif isinstance(error, MaintenanceMode):
+            await ctx.send(
+                embed = discord.Embed(
+                    color = Utils.BotColors.invis(),
+                    description = f'<:maintenance:923486040738652220> Sorry, I\m on **maintenance mode**, I\'ll not respond to commands until <t:{ctx.bot.maintenance_timestamp}:t>'
+                )
+            )
         elif isinstance(error, NoDmCommands):
             await ctx.send(embed = Utils.BotEmbed.error('Sorry, commands will not work on DMs'))
         elif f"{error}" == "Command raised an exception: Forbidden: 403 Forbidden (error code: 50013): Missing Permissions":
