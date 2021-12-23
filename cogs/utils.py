@@ -3,7 +3,9 @@ import datetime
 import discord
 from discord import embeds
 from discord.ext import commands
+from discord.interactions import Interaction
 from discord.types.components import ButtonStyle
+from discord.ui import view
 import numpy as np
 import functools
 from PIL import Image, ImageDraw
@@ -439,9 +441,7 @@ class HelpHomeButton(discord.ui.Button):
         self.ctx = ctx
 
     async def callback(self, interaction: discord.Interaction):
-        if interaction.user.id != self.ctx.author.id:
-            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
-            return
+
         
         await interaction.response.edit_message(embed=self.homeembed)
 
@@ -456,9 +456,6 @@ class HelpCommandlistButton(discord.ui.Button):
         self.ctx = ctx
 
     async def callback(self, interaction: discord.Interaction):
-        if interaction.user.id != self.ctx.author.id:
-            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
-            return
 
         await interaction.response.edit_message(embed=self.embed)
 
@@ -473,10 +470,7 @@ class HelpQuitButton(discord.ui.Button):
         self.ctx = ctx
 
     async def callback(self, interaction: discord.Interaction):
-        if interaction.user.id != self.ctx.author.id:
-            await interaction.response.send_message(f'Sorry, you cannot interact with these buttons.', ephemeral=True)
-            return
-        
+
         await interaction.response.defer()
         await interaction.message.delete()
         await self.ctx.message.add_reaction('<:success:893501515107557466>')
@@ -531,6 +525,15 @@ class HelpSelect(discord.ui.Select):
         elif value == 'WelcomerOption':
             await interaction.response.edit_message(embed = self.WelcomerEmbed)
 
+class HelpCommandView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=60)
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
 
 class UtilsCog(commands.Cog):
     def __init__(self,bot):
