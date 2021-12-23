@@ -18,81 +18,99 @@ import aiohttp
 from io import BytesIO
 
 
+class CalcuViewOne(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message('Sorry, you cannot use this calculator', ephemeral=True)
+            return False
+        return True
+
+
 
 class Misc(commands.Cog):
     def __init__(self, client):
         self.client=client
         self.bot=client
-        self.buttons_one = [
-            [
-                Button(style=ButtonStyle.grey, label='1', id='1'),
-                Button(style=ButtonStyle.grey, label='2', id='2'),
-                Button(style=ButtonStyle.grey, label='3', id='3'),
-                Button(style=ButtonStyle.blue, label='×', id='×'),
-                Button(style=ButtonStyle.red, label='Exit', id='Exit')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='4', id='4'),
-                Button(style=ButtonStyle.grey, label='5', id='5'),
-                Button(style=ButtonStyle.grey, label='6', id='6'),
-                Button(style=ButtonStyle.blue, label='÷', id='÷'),
-                Button(style=ButtonStyle.red, label='⌫', id='⌫')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='7', id='7'),
-                Button(style=ButtonStyle.grey, label='8', id='8'),
-                Button(style=ButtonStyle.grey, label='9', id='9'),
-                Button(style=ButtonStyle.blue, label='+', id='+'),
-                Button(style=ButtonStyle.red, label='Clear', id='Clear')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='00', id='00'),
-                Button(style=ButtonStyle.grey, label='0', id='0'),
-                Button(style=ButtonStyle.grey, label='.', id='.'),
-                Button(style=ButtonStyle.blue, label='-', id='-'),
-                Button(style=ButtonStyle.green, label='=', id='=')
-            ],
-            [
-                Button(style=ButtonStyle.green, label='❮', id='❮'),
-                Button(style=ButtonStyle.green, label='❯', id='❯'),
-                Button(style=ButtonStyle.grey, label='Change to scientific mode', emoji='\U0001f9d1\u200D\U0001f52c', id='400')
-            ],
-        ]
-        self.buttons_two = [
-            [
-                Button(style=ButtonStyle.grey, label='(', id='('),
-                Button(style=ButtonStyle.grey, label=')', id=')'),
-                Button(style=ButtonStyle.grey, label='π', id='π'),
-                Button(style=ButtonStyle.blue, label='×', id='×'),
-                Button(style=ButtonStyle.red, label='Exit', id='Exit')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='X²', disabled=True),
-                Button(style=ButtonStyle.grey, label='X³', disabled=True),
-                Button(style=ButtonStyle.grey, label='Xˣ', disabled=True),
-                Button(style=ButtonStyle.blue, label='÷', id='÷'),
-                Button(style=ButtonStyle.red, label='⌫', id='⌫')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='e', id='e'),
-                Button(style=ButtonStyle.grey, label='τ', id='τ'),
-                Button(style=ButtonStyle.grey, label='000', id='000'),
-                Button(style=ButtonStyle.blue, label='+', id='+'),
-                Button(style=ButtonStyle.red, label='Clear', id='Clear')
-            ],
-            [
-                Button(style=ButtonStyle.grey, label='√', id='√'),
-                Button(style=ButtonStyle.grey, label=' ', disabled=True),
-                Button(style=ButtonStyle.grey, label=' ', disabled=True),
-                Button(style=ButtonStyle.blue, label='-', id='-'),
-                Button(style=ButtonStyle.green, label='=', id='=')
-            ],
-            [
-                Button(style=ButtonStyle.green, label='❮', id='❮'),
-                Button(style=ButtonStyle.green, label='❯', id='❯'),
-                Button(style=ButtonStyle.grey, label='Change to normal modeㅤ', emoji='\U0001f468\u200D\U0001f3eb', id='401')
-            ],
-        ]
+
+        #self.buttons_one = [
+        #    [
+        #        Button(style=ButtonStyle.grey, label='1', id='1'),
+        #        Button(style=ButtonStyle.grey, label='2', id='2'),
+        #        Button(style=ButtonStyle.grey, label='3', id='3'),
+        #        Button(style=ButtonStyle.blue, label='×', id='×'),
+        #        Button(style=ButtonStyle.red, label='Exit', id='Exit')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='4', id='4'),
+        #        Button(style=ButtonStyle.grey, label='5', id='5'),
+        #        Button(style=ButtonStyle.grey, label='6', id='6'),
+        #        Button(style=ButtonStyle.blue, label='÷', id='÷'),
+        #        Button(style=ButtonStyle.red, label='⌫', id='⌫')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='7', id='7'),
+        #        Button(style=ButtonStyle.grey, label='8', id='8'),
+        #        Button(style=ButtonStyle.grey, label='9', id='9'),
+        #        Button(style=ButtonStyle.blue, label='+', id='+'),
+        #        Button(style=ButtonStyle.red, label='Clear', id='Clear')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='00', id='00'),
+        #        Button(style=ButtonStyle.grey, label='0', id='0'),
+        #        Button(style=ButtonStyle.grey, label='.', id='.'),
+        #        Button(style=ButtonStyle.blue, label='-', id='-'),
+        #        Button(style=ButtonStyle.green, label='=', id='=')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.green, label='❮', id='❮'),
+        #        Button(style=ButtonStyle.green, label='❯', id='❯'),
+        #        Button(style=ButtonStyle.grey, label='Change to scientific mode', emoji='\U0001f9d1\u200D\U0001f52c', id='400')
+        #    ],
+        #]
+        #self.buttons_two = [
+        #    [
+        #        Button(style=ButtonStyle.grey, label='(', id='('),
+        #        Button(style=ButtonStyle.grey, label=')', id=')'),
+        #        Button(style=ButtonStyle.grey, label='π', id='π'),
+        #        Button(style=ButtonStyle.blue, label='×', id='×'),
+        #        Button(style=ButtonStyle.red, label='Exit', id='Exit')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='X²', disabled=True),
+        #        Button(style=ButtonStyle.grey, label='X³', disabled=True),
+        #        Button(style=ButtonStyle.grey, label='Xˣ', disabled=True),
+        #        Button(style=ButtonStyle.blue, label='÷', id='÷'),
+        #        Button(style=ButtonStyle.red, label='⌫', id='⌫')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='e', id='e'),
+        #        Button(style=ButtonStyle.grey, label='τ', id='τ'),
+        #        Button(style=ButtonStyle.grey, label='000', id='000'),
+        #        Button(style=ButtonStyle.blue, label='+', id='+'),
+        #        Button(style=ButtonStyle.red, label='Clear', id='Clear')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.grey, label='√', id='√'),
+        #        Button(style=ButtonStyle.grey, label=' ', disabled=True),
+        #        Button(style=ButtonStyle.grey, label=' ', disabled=True),
+        #        Button(style=ButtonStyle.blue, label='-', id='-'),
+        #        Button(style=ButtonStyle.green, label='=', id='=')
+        #    ],
+        #    [
+        #        Button(style=ButtonStyle.green, label='❮', id='❮'),
+        #        Button(style=ButtonStyle.green, label='❯', id='❯'),
+        #        Button(style=ButtonStyle.grey, label='Change to normal modeㅤ', emoji='\U0001f468\u200D\U0001f3eb', id='401')
+        #    ],
+        #]
 
 
 
@@ -617,4 +635,5 @@ https://discord.gg/gERnjRdF""",
         return
 
 def setup(client):
+    client.remove_command('calcu')
     client.add_cog(Misc(client))
