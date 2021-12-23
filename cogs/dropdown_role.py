@@ -15,6 +15,7 @@ class SelfRoleSelect(discord.ui.Select):
         super().__init__(
             placeholder='Dynamic self-role menu',
             min_values=1,
+            options=options,
             max_values=len(options),
         )
         self.ctx = ctx
