@@ -32,6 +32,109 @@ class GithubRepo:
                 return len(await response.json())
 
 
+class GithubView(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(60)
+        self.ctx = ctx
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.author.id != self.ctx.author.id:
+            await interaction.response.send_message('Sorry, you cannot interact with these menu', ephemeral=True)
+            return False
+        return True
+
+class GithubSelect(discord.ui.Select):
+    def __init__(self, options, _user_name, _user_avatar_url, _user_html_url, disabled=False):
+        super().__init__(
+            placeholder=f'Select first 25 repositories of {_user_name}',
+            options = options,
+            disabled=disabled
+        )
+        self._user_name = _user_name
+        self._user_avatar_url = _user_avatar_url
+        self._user_html_url = _user_html_url
+
+    async def callback(self, interaction: discord.Interaction):
+        value = interaction.data['values'][0]
+
+        repo_search_object = await GithubRepo(str(value)).search_repo()
+        _repo_html_url = repo_search_object['html_url']
+        _repo_description = repo_search_object['description']
+        _repo_isForked = repo_search_object['fork']
+        _repo_forks = repo_search_object['forks_count'] if repo_search_object['forks_count'] else None
+        _repo_fullname = repo_search_object['full_name']
+        _repo_name = _repo_fullname if not _repo_isForked else f'{_repo_fullname} (forked)'
+        _repo_created_at = int(datetime.fromisoformat(repo_search_object['created_at'][:-1]).timestamp())
+        _repo_updated_at = int(datetime.fromisoformat(repo_search_object['updated_at'][:-1]).timestamp())
+        _repo_pushed_at = int(datetime.fromisoformat(repo_search_object['pushed_at'][:-1]).timestamp())
+        _repo_clone_url = repo_search_object['clone_url']
+        _repo_homepage = repo_search_object['homepage']
+        _repo_stars = repo_search_object['stargazers_count']
+        _repo_language = repo_search_object['language']
+        _repo_archived = 'Yes, archived' if repo_search_object['archived'] else 'Not archived'
+        _repo_disabled = 'Yes, disabled' if repo_search_object['disabled'] else 'Not disabled'
+        _repo_open_issues_count = repo_search_object['open_issues_count']
+        _repo_license = repo_search_object['license']['name'] if repo_search_object['license'] else None
+        _repo_topics = ', '.join(repo_search_object['topics']) if repo_search_object['topics'] else None
+        _repo_default_branch = repo_search_object['default_branch']
+
+        RepoEmbed = discord.Embed(title=f'<:repo:917465967808901121> {_repo_name}', url=f'{_repo_html_url}',color=Utils.BotColors.invis())
+        RepoEmbed.set_author(name=self._user_name, icon_url=self._user_avatar_url, url=self._user_htmlurl)
+        if _repo_description:
+            RepoEmbed.description = f'<:description:917691689152438312> {_repo_description}'
+        RepoEmbed.add_field(name='<:plus:917468380846497904> Created at', value=f'<t:{_repo_created_at}:D> (<t:{_repo_created_at}:R>)')
+        RepoEmbed.add_field(name=f'<:cog:917467039201886258> Updated at', value=f'<t:{_repo_updated_at}:D> (<t:{_repo_updated_at}:R>)')
+        RepoEmbed.add_field(name='<:repo2:917691689060139048> Pushed at', value=f'<t:{_repo_pushed_at}:D> (<t:{_repo_pushed_at}:R>)')
+        RepoEmbed.add_field(name='<:copy:917691689051758652> Clone URL', value=f'[Copy clone URL]({_repo_clone_url})')
+        if _repo_homepage:
+            RepoEmbed.add_field(name='<:home:917691688984670239> Homepage', value=f'[Copy homepage URL]({_repo_homepage})')
+        RepoEmbed.add_field(name='<:star:917691689278251048> Stars', value=_repo_stars)
+        if _repo_forks:
+            RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks, inline=False)
+        if _repo_language:
+            RepoEmbed.add_field(name='<:code:917691688963698718> Language', value=_repo_language)
+        RepoEmbed.add_field(name='<:archive:917691688980467762> Archived', value=_repo_archived)
+        RepoEmbed.add_field(name='<:cross:917691689060139028> Disabled', value=_repo_disabled)
+        RepoEmbed.add_field(name='<:issue:917691689236324362> Issues', value=_repo_open_issues_count)
+        if _repo_license:
+            RepoEmbed.add_field(name='<:creative:917691688997257266> License', value=_repo_license)
+        if _repo_topics:
+            RepoEmbed.add_field(name='<:github:917691688984670240> Topics', value=_repo_topics)
+        RepoEmbed.add_field(name='<:gitbranch:917691689102094377> Default branch', value=_repo_default_branch)
+
+        await interaction.response.edit_message(embed = RepoEmbed)
+
+class GithubButtonHome(discord.ui.Button):
+    def __init__(self, HomeEmbed, ctx):
+        super().__init__(
+            style = discord.ButtonStyle.gray,
+            label ='Home',
+            emoji = ctx.bot.get_emoji(917691688984670239)
+        )
+        self.HomeEmbed = HomeEmbed
+
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.edit_message(embed = self.HomeEmbed)
+
+class GithubQuitButton(discord.ui.Button):
+    def __init__(self, ctx):
+        super().__init__(
+            style = discord.ButtonStyle.gray,
+            label = 'Quit',
+            emoji = ctx.bot.get_emoji(890938576563503114)
+        )
+        self.ctx = ctx
+    
+    async def callback(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await interaction.message.delete()
+        await self.ctx.message.add_reaction(Utils.BotEmojis.success())
 
 
 class GithubApi(commands.Cog):
@@ -89,8 +192,20 @@ class GithubApi(commands.Cog):
         MainEmbed.add_field(name='<:account:917467039176720524> Created at', value=f'> <t:{_user_account_created_at}:D> (<t:{_user_account_created_at}:R>)', inline=False)
         MainEmbed.add_field(name='<:cog:917467039201886258> Last updated at', value=f'> <t:{_user_account_updated_at}:D> (<t:{_user_account_updated_at}:R>)', inline=False)
         
+        view = GithubView(ctx)
+        view.add_item(GithubButtonHome(MainEmbed, ctx))
+        view.add_item(discord.ui.Button(style=discord.ButtonStyle.url, label='Github', url=f'{_user_htmlurl}', emoji='<:github:917691688984670240>'))
+        view.add_item(GithubQuitButton(ctx))
+        
         if _user_public_repos <= 0:
-            await ctx.send(embed=MainEmbed, components=[Select(placeholder=f'There are no repositories for {_user_name}', disabled=True, options=[SelectOption(label='No', value='No')])])
+            view.add_item(
+                discord.ui.Select(
+                    placeholder=f'There are no repos for {_user_name}',
+                    options = discord.SelectOption(label='no', value='no'),
+                    disabled=True
+                )
+            )
+            await ctx.send(embed = MainEmbed, view=view)
             return
 
 
@@ -107,85 +222,16 @@ class GithubApi(commands.Cog):
             else:
                 _repo_name = _repo_name_basic
             _repo_desc = repo['description'][:100] if repo['description'] else None
-            options.append(SelectOption(label=f'{_repo_name}', value=f'{_repo_name_basic}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
+            options.append(discord.SelectOption(label=f'{_repo_name}', value=f'{_repo_name_basic}', emoji=self.bot.get_emoji(917465967808901121), description=_repo_desc))
             count +=1
 
-        components=[[Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub'), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')], [
-            Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ]]
-
-        HomeCompo=[[Button(label='Home', emoji=self.bot.get_emoji(917691688984670239), id='GoBackHomeGithub', disabled=True), Button(style=ButtonStyle.URL, label='Github', url=f'{_user_htmlurl}', emoji=self.bot.get_emoji(917691688984670240)), Button(label='Quit', emoji=self.bot.get_emoji(890938576563503114), id='QuitGithub')], [
-            Select(placeholder=f'Select first 25 repositories of {_user_name}', options=options)
-        ]]
-
-
-        MainMessage = await ctx.send(embed=MainEmbed, components=HomeCompo)
-
-        while True:
-            try:
-                event = await self.bot.wait_for('interaction', check=lambda i: i.author == ctx.author and i.channel == ctx.channel and i.message == MainMessage, timeout=30)
-                
-                if isinstance(event.component, Select):
-                    await event.respond(type=6)
-                    value = event.values[0]
-
-                    repo_search_object = await GithubRepo(str(value)).search_repo()
-                    _repo_html_url = repo_search_object['html_url']
-                    _repo_description = repo_search_object['description']
-                    _repo_isForked = repo_search_object['fork']
-                    _repo_forks = repo_search_object['forks_count'] if repo_search_object['forks_count'] else None
-                    _repo_fullname = repo_search_object['full_name']
-                    _repo_name = _repo_fullname if not _repo_isForked else f'{_repo_fullname} (forked)'
-                    _repo_created_at = int(datetime.fromisoformat(repo_search_object['created_at'][:-1]).timestamp())
-                    _repo_updated_at = int(datetime.fromisoformat(repo_search_object['updated_at'][:-1]).timestamp())
-                    _repo_pushed_at = int(datetime.fromisoformat(repo_search_object['pushed_at'][:-1]).timestamp())
-                    _repo_clone_url = repo_search_object['clone_url']
-                    _repo_homepage = repo_search_object['homepage']
-                    _repo_stars = repo_search_object['stargazers_count']
-                    _repo_language = repo_search_object['language']
-                    _repo_archived = 'Yes, archived' if repo_search_object['archived'] else 'Not archived'
-                    _repo_disabled = 'Yes, disabled' if repo_search_object['disabled'] else 'Not disabled'
-                    _repo_open_issues_count = repo_search_object['open_issues_count']
-                    _repo_license = repo_search_object['license']['name'] if repo_search_object['license'] else None
-                    _repo_topics = ', '.join(repo_search_object['topics']) if repo_search_object['topics'] else None
-                    _repo_default_branch = repo_search_object['default_branch']
-
-                    RepoEmbed = discord.Embed(title=f'<:repo:917465967808901121> {_repo_name}', url=f'{_repo_html_url}',color=Utils.BotColors.invis())
-                    RepoEmbed.set_author(name=_user_name, icon_url=_user_avatar_url, url=_user_htmlurl)
-                    if _repo_description:
-                        RepoEmbed.description = f'<:description:917691689152438312> {_repo_description}'
-                    RepoEmbed.add_field(name='<:plus:917468380846497904> Created at', value=f'<t:{_repo_created_at}:D> (<t:{_repo_created_at}:R>)')
-                    RepoEmbed.add_field(name=f'<:cog:917467039201886258> Updated at', value=f'<t:{_repo_updated_at}:D> (<t:{_repo_updated_at}:R>)')
-                    RepoEmbed.add_field(name='<:repo2:917691689060139048> Pushed at', value=f'<t:{_repo_pushed_at}:D> (<t:{_repo_pushed_at}:R>)')
-                    RepoEmbed.add_field(name='<:copy:917691689051758652> Clone URL', value=f'[Copy clone URL]({_repo_clone_url})')
-                    if _repo_homepage:
-                        RepoEmbed.add_field(name='<:home:917691688984670239> Homepage', value=f'[Copy homepage URL]({_repo_homepage})')
-                    RepoEmbed.add_field(name='<:star:917691689278251048> Stars', value=_repo_stars)
-                    if _repo_forks:
-                        RepoEmbed.add_field(name='<:codefork:917466548577374298> Forks', value=_repo_forks, inline=False)
-                    if _repo_language:
-                        RepoEmbed.add_field(name='<:code:917691688963698718> Language', value=_repo_language)
-                    RepoEmbed.add_field(name='<:archive:917691688980467762> Archived', value=_repo_archived)
-                    RepoEmbed.add_field(name='<:cross:917691689060139028> Disabled', value=_repo_disabled)
-                    RepoEmbed.add_field(name='<:issue:917691689236324362> Issues', value=_repo_open_issues_count)
-                    if _repo_license:
-                        RepoEmbed.add_field(name='<:creative:917691688997257266> License', value=_repo_license)
-                    if _repo_topics:
-                        RepoEmbed.add_field(name='<:github:917691688984670240> Topics', value=_repo_topics)
-                    RepoEmbed.add_field(name='<:gitbranch:917691689102094377> Default branch', value=_repo_default_branch)
-
-                    await event.respond(type=7, embed=RepoEmbed, components=components)
-
-                elif isinstance(event.component, Button):
-                    if event.component.id=='GoBackHomeGithub':
-                        await event.respond(type=7, embed=MainEmbed, components=HomeCompo)
-                    elif event.component.id == 'QuitGithub':
-                        await MainMessage.delete()
-                        await ctx.message.add_reaction(Utils.BotEmojis.success())
-                        break
-
-            except asyncio.TimeoutError:
-                await MainMessage.disable_components()
-                break
-
+        view.add_item(
+            GithubSelect(
+                options,
+                _user_name,
+                _user_avatar_url,
+                _user_htmlurl,
+            )
+        )
+        await ctx.send(embed = MainEmbed, view=view)
 

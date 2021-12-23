@@ -28,6 +28,15 @@ import itertools
 import time
 
 
+class ConfirmView(discord.ui.View):
+    def __init__(self):
+        super().__init__(timeout=60)
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
 
 
 class Utils:
@@ -82,6 +91,7 @@ class Utils:
         if not interaction:
             if not ctx:
                 raise RuntimeError('ctx or interaction should be specified')
+
 
         ConfirmCompo=[[
             Button(style=ButtonStyle.green, id='ConfirmOk', emoji=bot.get_emoji(910490899883126804)),
@@ -441,8 +451,6 @@ class HelpHomeButton(discord.ui.Button):
         self.ctx = ctx
 
     async def callback(self, interaction: discord.Interaction):
-
-        
         await interaction.response.edit_message(embed=self.homeembed)
 
 class HelpCommandlistButton(discord.ui.Button):
@@ -526,14 +534,21 @@ class HelpSelect(discord.ui.Select):
             await interaction.response.edit_message(embed = self.WelcomerEmbed)
 
 class HelpCommandView(discord.ui.View):
-    def __init__(self):
+    def __init__(self, ctx):
         super().__init__(timeout=60)
+        self.ctx = ctx
 
     async def on_timeout(self):
         for children in self.children:
             children.disabled = True
 
         await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.author.id != self.ctx.author.id:
+            await interaction.response.send_message(ephemeral=True, content='Sorry, you cannot interact with this help menu.')
+            return False
+        return True
 
 class UtilsCog(commands.Cog):
     def __init__(self,bot):
@@ -635,7 +650,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
-        view = HelpCommandView()
+        view = HelpCommandView(ctx)
         view.add_item(HelpHomeButton(MainEmbed, ctx))
         view.add_item(HelpCommandlistButton(CommandListEmbed, ctx))
         view.add_item(HelpQuitButton(ctx))
