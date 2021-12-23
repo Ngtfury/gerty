@@ -635,5 +635,5 @@ https://discord.gg/gERnjRdF""",
         return
 
 def setup(client):
-    client.remove_command('calcu')
     client.add_cog(Misc(client))
+    client.remove_command('calcu')
