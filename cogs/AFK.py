@@ -1,12 +1,52 @@
 import discord
 from discord.ext import commands
 import datetime
+
+from discord.ui import view
 from cogs.utils import Utils
 import humanize
 
 
 def setup(bot):
     bot.add_cog(AfkCommandCog(bot))
+
+class AfkView(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interation: discord.Interaction):
+        if interation.user.id != self.ctx.author.id:
+            await interation.response.send_message(ephemeral=True, content='Sorry, you cannot interact with these buttons')
+            return False
+        return True
+
+    @discord.ui.Button(
+        style = discord.ButtonStyle.green,
+        label = 'Global'
+    )
+    async def set_global(self, interation: discord.Interaction):
+        await interation.response.defer()
+        await interation.message.delete()
+        self._global = True
+        return True
+
+    @discord.ui.Button(
+        style = discord.ButtonStyle.green,
+        label = 'Local'
+    )
+    async def set_local(self, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await interaction.message.delete()
+        self._global = False
+        return False
+
 
 
 class AfkCommandCog(commands.Cog):
@@ -32,23 +72,17 @@ class AfkCommandCog(commands.Cog):
             await ctx.send('Sorry, only upto 40 characters for reason please.')
             return
 
+        view = AfkView(ctx)
+
         MainMessage = await ctx.send(
             embed = discord.Embed(color=Utils.BotColors.invis(), description='<a:afk:890119774015717406> Choose your afk style from the buttons below.'),
-            components = [[
-                Button(style=ButtonStyle.green, label='Global', id='AfkSetGlobal'),
-                Button(label='Local', id='AfkSetLocal')
-            ]]
+            view = view
         )
-        while True:
-            event = await self.bot.wait_for('button_click', check=lambda i: i.author==ctx.author and i.message.id == MainMessage.id)
-            await event.respond(type=6)
-            if event.component.id == 'AfkSetGlobal':
-                _global = True
-                break
-            elif event.component.id == 'AfkSetLocal':
-                _global = False
-                break
-        
+
+        await view.wait()
+
+        _global = view._global
+
         await MainMessage.delete()
         text = 'globally' if _global else 'locally'
         em = discord.Embed(

@@ -6,7 +6,6 @@ import asyncpg
 import os
 import aiohttp
 import time
-
 import discord_webhook
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from cogs.utils import Utils
