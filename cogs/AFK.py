@@ -27,7 +27,7 @@ class AfkView(discord.ui.View):
             return False
         return True
 
-    @discord.ui.Button(
+    @discord.ui.button(
         style = discord.ButtonStyle.green,
         label = 'Global'
     )
@@ -37,7 +37,7 @@ class AfkView(discord.ui.View):
         self._global = True
         return True
 
-    @discord.ui.Button(
+    @discord.ui.button(
         style = discord.ButtonStyle.green,
         label = 'Local'
     )
