@@ -1,7 +1,5 @@
 import discord
-import discord_components
 from discord.ext import commands
-from discord_components import *
 import asyncio
 import random
 from cogs.utils import Utils

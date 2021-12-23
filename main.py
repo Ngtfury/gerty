@@ -47,7 +47,6 @@ from PIL import Image
 from PIL import Image, ImageFont, ImageDraw
 from io import BytesIO
 from discord import asset
-from discord_components import *
 from discord import channel
 from discord import embeds, DMChannel
 from random import choice

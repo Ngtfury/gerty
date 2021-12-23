@@ -14,10 +14,8 @@ import asyncio
 from math import *
 import random
 import typing
-import discord_components
 import aiohttp
 from io import BytesIO
-from discord_components import *
 
 
 

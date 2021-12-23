@@ -9,8 +9,6 @@ import datetime
 import time
 import asyncio
 from math import *
-import discord_components
-from discord_components import *
 
 
 def setup(bot):

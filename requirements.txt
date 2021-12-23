@@ -1,7 +1,6 @@
 google-api-python-client
 praw
 youtube_dl
-discord-components
 PyNaCl
 oauth
 mod

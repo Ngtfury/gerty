@@ -2,13 +2,11 @@ import asyncio
 import datetime
 import discord
 from discord.ext import commands
-import discord_components
 import numpy as np
 import functools
 from PIL import Image, ImageDraw
 import psutil
 import io
-from discord_components import *
 import discord_webhook
 from discord_webhook import DiscordWebhook, DiscordEmbed
 import aiohttp

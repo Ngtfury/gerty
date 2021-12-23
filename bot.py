@@ -6,8 +6,6 @@ import asyncpg
 import os
 import aiohttp
 import time
-import discord_components
-from discord_components import DiscordComponents
 import discord_webhook
 from discord_webhook import DiscordWebhook, DiscordEmbed
 from cogs.utils import Utils
@@ -139,7 +137,6 @@ class GertyBot(commands.AutoShardedBot):
         await self.change_presence(status=discord.Status.online, activity=self.activity)
 
     async def on_ready(self):
-        DiscordComponents(self)
 
         await self.load_cache()
         await self.load_extensions()

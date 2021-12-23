@@ -4,7 +4,6 @@ import os
 import sys
 import importlib
 from discord.ext.commands import bot
-import discord_components
 import io
 import typing
 import textwrap
@@ -16,7 +15,6 @@ import sys
 import copy
 import time
 import subprocess
-from discord_components import *
 import asyncio
 import subprocess
 import re

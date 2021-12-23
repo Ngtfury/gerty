@@ -4,14 +4,25 @@ import re
 import discord
 from discord import *
 from discord.ext import commands
-import discord_components
 from cogs.utils import Utils
-from discord_components import *
 
 
 def setup(bot):
     bot.add_cog(DropDownRole(bot))
 
+
+class SelfRoleSelect(discord.ui.Select):
+    def __init__(self, options):
+        super().__init__(
+            placeholder='Dynamic self-role menu',
+            options=options,
+            min_values=1,
+            max_values=len(options)
+        )
+
+class SelfRoleView(discord.ui.View):
+    def __init__(self):
+        super().__init__()
 
 class DropDownRole(commands.Cog):
     def __init__(self, bot):
@@ -285,7 +296,7 @@ class DropDownRole(commands.Cog):
                 _emoji_final = await commands.PartialEmojiConverter().convert(ctx=ctx, argument=_role_dict[0]['emoji'])
 
             options.append(
-                SelectOption(
+                discord.SelectOption(
                     label=_role_name_final,
                     value=str(_role_dict[0]['id']),
                     description=str(_role_dict[0]['desc']),
@@ -294,7 +305,7 @@ class DropDownRole(commands.Cog):
             )
 
         options.append(
-            SelectOption(
+            discord.SelectOption(
                 label='None',
                 value='SelfRoleNone',
                 emoji='🚫',
@@ -302,10 +313,9 @@ class DropDownRole(commands.Cog):
             )
         )
 
-        components = [
-            Select(placeholder='Dynamic self-role menu', options=options, min_values=1, max_values=len(options))
-        ]
-
+        view = SelfRoleView()
+        menu = SelfRoleSelect(options=options)
+        view.add_item(menu)
 
         _final_desc = ''.join(description_)
         FinalEmbed = discord.Embed(
@@ -315,7 +325,7 @@ class DropDownRole(commands.Cog):
         )
         await FinalMessage.edit(
             embed=FinalEmbed,
-            components=components
+            view=view
         )
 
 

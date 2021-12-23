@@ -6,8 +6,6 @@ import datetime
 from discord.ext import commands
 import aiohttp
 from datetime import datetime
-import discord_components
-from discord_components import *
 from cogs.utils import Utils, GertyHelpCommand
 
 
