@@ -635,7 +635,7 @@ Reports bug if any via `g!report`\n```ml\n[] - Required Argument | () - Optional
         CommandListEmbed.add_field(name='<:dev:908275726199963698> Admin commands', value=', '.join(commandlist[5]), inline=False)
         CommandListEmbed.set_footer(text=f'Invoked by {ctx.author}', icon_url=ctx.author.avatar.url)
 
-        view = discord.ui.View(timeout=60)
+        view = HelpCommandView()
         view.add_item(HelpHomeButton(MainEmbed, ctx))
         view.add_item(HelpCommandlistButton(CommandListEmbed, ctx))
         view.add_item(HelpQuitButton(ctx))
