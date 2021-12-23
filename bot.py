@@ -1,4 +1,5 @@
 import discord
+from discord import webhook
 from discord.enums import try_enum
 from discord.ext import commands
 import asyncpg
@@ -7,7 +8,8 @@ import aiohttp
 import time
 import discord_components
 from discord_components import DiscordComponents
-from discord import Webhook, AsyncWebhookAdapter
+import discord_webhook
+from discord_webhook import DiscordWebhook, DiscordEmbed
 from cogs.utils import Utils
 
 
@@ -107,12 +109,16 @@ class GertyBot(commands.AutoShardedBot):
                 continue
                 
 
-        em = discord.Embed(color=Utils.BotColors.invis(), description='\n'.join(loaded_or_not))
+        em = DiscordEmbed(color=Utils.BotColors.invis(), description='\n'.join(loaded_or_not))
 
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg', adapter=AsyncWebhookAdapter(session))
-            await web.send(avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Ext Logs', embeds = [em])
-            print('Loaded extensions successfully.')
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/913841289198452767/QCan64ApWA4aP0-rSR664hq-HH3FUoEZ5dmFLZmT6lFNMPXVawJzpyAmDn6Nl9wpLItg',
+            avatar_url='https://singlecolorimage.com/get/2bff00/400x100', 
+            username='Ext Logs'
+        )
+        webhook.add_embed(em)
+        webhook.execute()
+        print('Loaded extensions successfully.')
         return
 
 
@@ -149,10 +155,13 @@ class GertyBot(commands.AutoShardedBot):
 
         self.uptime = time.time()
 
-        async with aiohttp.ClientSession() as session:
-            web=Webhook.from_url(url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR', adapter=AsyncWebhookAdapter(session))
-            await web.send('<:yes:910490899883126804> Connected to Gerty successfully.', avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status')
-            print(f"Connected to {self.user}.")
+        webhook = DiscordWebhook(
+            url='https://discord.com/api/webhooks/907681269452800061/-uEovWEWLcEXKNecuYe_1OlfkSAlCpv_fR8TcH2TsBJ9wab52GdB6QarlHaa3WqUotqR',
+            content = '<:yes:910490899883126804> Connected to Gerty successfully.', 
+            avatar_url='https://singlecolorimage.com/get/2bff00/400x100', username='Status'
+        )
+
+        print(f"Connected to {self.user}.")
 
     def run(self):
         super().run(self.token, reconnect=True)
