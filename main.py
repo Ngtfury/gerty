@@ -10,6 +10,8 @@ import urllib.parse, urllib.request, re
 import os
 import requests
 import aiohttp
+import discord_components
+from discord_components import *
 import math
 #
 import urllib.request
