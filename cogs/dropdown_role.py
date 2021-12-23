@@ -11,12 +11,13 @@ def setup(bot):
     bot.add_cog(DropDownRole(bot))
 
 class SelfRoleSelect(discord.ui.Select):
-    def __init__(self, options, ctx):
+    def __init__(self, options, ctx, custom_id):
         super().__init__(
             placeholder='Dynamic self-role menu',
             min_values=1,
             options=options,
             max_values=len(options),
+            custom_id=custom_id
         )
         self.ctx = ctx
 
@@ -336,7 +337,7 @@ class DropDownRole(commands.Cog):
         )
 
         view = discord.ui.View(timeout=None)
-        view.add_item(SelfRoleSelect(options, ctx))
+        view.add_item(SelfRoleSelect(options, ctx, f'{ctx.guild.id}'))
 
         _final_desc = ''.join(description_)
         FinalEmbed = discord.Embed(
