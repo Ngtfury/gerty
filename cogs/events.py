@@ -1,14 +1,56 @@
+import math
+from re import match
 import discord
 import asyncio
 import traceback
 import json
 from __main__ import UserBlacklisted, DisabledCommand, NoDmCommands, MaintenanceMode
+from discord import message
 from discord.ext import commands
 from cogs.utils import Utils
 from difflib import get_close_matches
 import io
 import os
+import copy
 import sys
+
+class ErrorMatchExecute(discord.ui.Button):
+    def __init__(self, ctx, match):
+        super().__init__(
+            style = discord.ButtonStyle.gray,
+            label=f'Execute {match}',
+            emoji = '<:icons_correct:922161718610776105>'
+        )
+        self._message = ctx.message
+        self.ctx = ctx
+        self.match = math
+
+    async def callback(self, interaction: discord.Interaction):
+        copied = copy.copy(self._message)
+        copied._edited_timestamp = discord.utils.utcnow()
+        copied.content.replace(self.ctx.invoked_with, self.match)
+        await interaction.response.defer()
+        await self.message.delete()
+        await self.ctx.bot.process_commands(copied)
+    
+
+class ErrorMatchesView(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+
+
+    async def on_timeout(self):
+        await self.message.delete()
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message('Sorry, you cannot interact with these buttons', ephemeral=True)
+            return False
+        return True
+
+
+
 
 
 class events(commands.Cog):
@@ -103,16 +145,29 @@ class events(commands.Cog):
             em=Utils.BotEmbed.error(f'Too many people are using this command. It can only be used **{error.number}** time per **{types[error.per]}**')
             await ctx.reply(embed=em, mention_author=False)
         elif isinstance(error, commands.CommandNotFound):
-            command_names = [str(x) for x in ctx.bot.commands]
+            command_names = []
+            for command in ctx.bot.commands:
+                command_names.append(command.name)
+                for alias in command.aliases:
+                    command_names.append(alias)
+                try:
+                    for subcommand in command.commands:
+                        command_names.append(subcommand.name)
+                        for subaliases in subcommand.aliases:
+                            command_names.append(subaliases)
+                except:
+                    pass        
             matches = get_close_matches(ctx.invoked_with, command_names)
+
+
             if matches:
-                matches_=[]
-            num=0
-            for x in matches:
-                num=num+1
-                matches_.append(f'> {num}. {x}')
-            _matches='\n'.join(matches_)
-            await ctx.send(embed=Utils.BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
+                view = ErrorMatchesView(ctx)
+                view.add_item(ErrorMatchExecute(ctx, matches[0]))
+                await ctx.send(
+                    f"""Sorry, but the command **{ctx.invoked_with}** was not found
+                    did you mean **`{matches[0]}`**?""",
+                    view = view
+                )
         else:
             errview = discord.ui.View()
             errview.add_item(discord.ui.Button(style = discord.ButtonStyle.url, label = 'Support Server', url = 'https://discord.gg/7DJwH6rh', emoji='<:supportserver:923960355842031646>'))
