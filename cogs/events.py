@@ -115,7 +115,7 @@ class events(commands.Cog):
             await ctx.send(embed=Utils.BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
         else:
             errview = discord.ui.View()
-            errview.add_item(discord.ui.Button(style = discord.ButtonStyle.link, label = 'Support Server', url = 'https://discord.gg/7DJwH6rh'))
+            errview.add_item(discord.ui.Button(style = discord.ButtonStyle.url, label = 'Support Server', url = 'https://discord.gg/7DJwH6rh', emoji='<:supportserver:923960355842031646>'))
             await ctx.reply(
                 embed = discord.Embed(
                     color = Utils.BotColors.invis(),
