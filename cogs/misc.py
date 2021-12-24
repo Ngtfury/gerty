@@ -774,6 +774,11 @@ class Misc(commands.Cog):
     @waifu.command(description='Shows your waifu-favorites gallery')
     async def gallery(self, ctx):
         _is_already = await self.bot.db.fetchrow('SELECT url FROM waifu WHERE user_id = $1', ctx.author.id)
+        if not _is_already:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('You don\'t have any images on your gallery')
+            )
+            return
         _waifu_list = _is_already['url']
         if not _waifu_list:
             await ctx.send(

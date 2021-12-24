@@ -39,7 +39,117 @@ class ConfirmView(discord.ui.View):
         await self.message.edit(view = self)
 
 
+
 class Utils:
+
+    class Paginator(discord.ui.View):
+        def __init__(self, embeds, ctx):
+            super().__init__(timeout=60)
+            self.embeds = embeds
+            self.ctx = ctx
+            self.current = 0
+            self._number_pages_awaiting = False
+
+        async def on_timeout(self):
+            for children in self.children:
+                children.disabled = True
+
+            await self.message.edit(view = self)
+
+        async def interaction_check(self, interaction: discord.Interaction):
+            if interaction.user.id != self.ctx.author.id:
+                await interaction.response.send_message('Sorry, you cannot interact with this menu', ephemeral=True)
+                return False
+            return True
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = '<<'
+        )
+        async def double_left_arrow(self, button: discord.ui.Button, interaction: discord.Interaction):
+            self.current = 0
+            await interaction.response.edit_message(embed = self.embeds[self.current])
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = '<'
+        )
+        async def left_arrow(self, button: discord.ui.Button, interaction: discord.Interaction):
+            self.current -= 1
+            if self.current ==  len(self.embeds):
+                self.current = 0
+            elif self.current < 0:
+                self.current = len(self.embeds) - 1
+            await interaction.response.edit_message(embed = self.embeds[self.current])
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.red,
+            emoji = '<:trashcan:890938576563503114>'
+        )
+        async def quit_button(self, button, interaction: discord.Interaction):
+            await interaction.response.defer()
+            await self.message.delete()
+            await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+            self.stop()
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = '>'
+        )
+        async def right_arrow(self, button, interaction: discord.Interaction):
+            self.current += 1
+            if self.current ==  len(self.embeds):
+                self.current = 0
+            elif self.current < 0:
+                self.current = len(self.embeds) - 1
+
+            await interaction.response.edit_message(embed = self.embeds[self.current])
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = '>>'
+        )
+        async def double_right_arrow(self, button, interaction: discord.Interaction):
+            self.current = 0
+            await interaction.response.edit_message(embed = self.embeds[self.current])
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.blurple,
+            label = 'Skip to page...'
+        )
+        async def skip_to_page(self, button, interaction: discord.Interaction):
+            if self._number_pages_awaiting:
+                await interaction.response.send_message('Already awaiting for your response...', ephemeral=True)
+                return
+    
+            await interaction.response.send_message('What page do you want to go to?', ephemeral=True)
+            try:
+                self._number_pages_awaiting = True
+                resMessage = await self.ctx.bot.wait_for('message', check = lambda i: i.author.id == interaction.user.id and i.channel.id == interaction.channel.id and i.content.isdigit(), timeout = 20)
+            except asyncio.TimeoutError:
+                self._number_pages_awaiting = False
+                await interaction.followup.send('You didn\'t respond on time...', ephemeral=True)
+                return
+
+
+            _content = int(resMessage.content)
+            if _content <= 0:
+                await interaction.followup.send(f'Pages start from 1 not {_content}.', ephemeral=True)
+                return
+            if _content > len(self.embeds):
+                await interaction.followup.send(f'Sorry, there are only {len(self.embeds)} pages, not {_content}.', ephemeral=True)
+                return
+
+            try:
+                await resMessage.delete()
+            except:
+                pass
+
+            self.current = _content - 1
+            await interaction.followup.edit_message(embed = self.embeds[self.current])
+            
+
+ 
 
 
     class Member:
