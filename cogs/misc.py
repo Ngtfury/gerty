@@ -18,6 +18,7 @@ import typing
 import aiohttp
 from io import BytesIO
 
+
 class WaifuView(discord.ui.View):
     def __init__(self, ctx, image_url):
         super().__init__(timeout=60)
@@ -52,8 +53,9 @@ class WaifuView(discord.ui.View):
         await self.create_if_not(self.ctx.author)
         _waifus_rec = await self.ctx.bot.db.fetchrow('SELECT url FROM waifu WHERE user_id = $1', self.ctx.author.id)
         _waifus = _waifus_rec[0]
-        _waifus.append(self.image_url)
-        await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
+        if not self.image_url in _waifus:
+            _waifus.append(self.image_url)
+            await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
         button.disabled = True
         embed = discord.Embed(
             description=f"""I've added [**this image**]({self.image_url}) to your favorites (gallery) successfully ❤️, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery` to see all your favorite images.""",
@@ -70,6 +72,52 @@ class WaifuView(discord.ui.View):
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+
+
+class WaifuPagesView(discord.ui.View):
+    def __init__(self, embeds, ctx):
+        super().__init__(timeout=60)
+        self.embeds = embeds
+        self.ctx = ctx
+        self.current = 0
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message('Only the one who use this command can interact with these buttons.', ephemeral=True)
+            return False
+        return True
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.gray,
+        label = '<'
+    )
+    async def left_arrow(self, button, interaction: discord.Interaction):
+        self.current -= 1
+        if self.current <= 0:
+            button.disabled = True
+        else:
+            button.disabled = False
+        await interaction.response.edit_message(embed = self.embeds[self.current], view=self)
+
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.gray,
+        label = '>'
+    )
+    async def right_arrow(self, button, interaction: discord.Interaction):
+        self.current += 1
+        if self.current >= len(self.embeds):
+            button.disabled = True
+        else:
+            button.disabled = False
+        await interaction.response.edit_message(embed = self.embeds[self.current], view=self)
+
 
 
 
@@ -667,7 +715,7 @@ class Misc(commands.Cog):
         return
 
 
-    @commands.command(brief='fun', description='You fucking weeb')
+    @commands.group(brief='fun', description='Waifu images... you can add your favorites to gallery')
     async def waifu(self, ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get('https://waifu.pics/api/sfw/waifu') as r:
@@ -679,6 +727,27 @@ class Misc(commands.Cog):
             view = WaifuView(ctx, res['url'])
 
             view.message = await ctx.send(embed=embed, view=view)
+
+    @waifu.command(description='Shows your waifu-favorites gallery')
+    async def gallery(self, ctx):
+        _is_already = await self.bot.db.fetchrow('SELECT url FROM waifu WHERE user_id = $1', ctx.author.id)
+        if not _is_already:
+            await ctx.send(
+                embed = Utils.BotEmbed.error('You don\'t have any images on your gallery')
+            )
+            return
+        _waifu_list = _is_already['url']
+        embeds = []
+        count = 0
+        for waifu in _waifu_list:
+            count+=1
+            embed = discord.Embed(color=0x2F3136)
+            embed.set_image(url=waifu)
+            embed.set_footer(text = f'Showing image {count} of {len(_waifu_list)}')
+            embeds.append(embed)
+
+        view = WaifuPagesView(embeds, ctx)
+        view.message = await ctx.send(embed = embeds[0], view = view)
 
 
 
