@@ -811,7 +811,9 @@ class Misc(commands.Cog):
             embed.set_image(url=f"{res['url']}")
             embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar.url}")
             if random.randint(1,3) == 2:
-                embed.description = 'Hey, check out this new feature `g!waifu gallery`'
+                embed.description = '> Hey, check out this new feature `g!waifu gallery`'
+            elif random.randint(1,3) == 3:
+                embed.description = 'Loving me? consider joining our [**Support Server**](https://discord.gg/UZ7WCpQQ)'
 
             view = WaifuView(ctx, res['url'])
 
