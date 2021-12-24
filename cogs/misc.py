@@ -114,7 +114,7 @@ class WaifuPagesView(discord.ui.View):
         print(f'right {self.current}')
         self.current += 1
         print(f'right {self.current}')
-        if self.current >= len(self.embeds):
+        if self.current <= len(self.embeds):
             button.disabled = True
         else:
             button.disabled = False
