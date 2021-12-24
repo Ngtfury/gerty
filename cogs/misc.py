@@ -20,7 +20,7 @@ from io import BytesIO
 
 class NitroView(discord.ui.View):
     def __init__(self, ctx):
-        super().__init__(timeout=60)
+        super().__init__(timeout=5)
         self.ctx = ctx
 
     async def interaction_check(self, interaction: discord.Interaction):
@@ -32,6 +32,8 @@ class NitroView(discord.ui.View):
     async def on_timeout(self):
         for children in self.children:
             children.disabled = True
+            children.style = discord.ButtonStyle.gray
+            children.label = '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'
 
         embi=discord.Embed(color=Utils.BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
         embi.set_author(name="You recived a gift, but...")
