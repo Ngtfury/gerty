@@ -162,8 +162,9 @@ class events(commands.Cog):
 
             if matches:
                 view = ErrorMatchesView(ctx)
-                view.add_item(ErrorMatchExecute(ctx, str(matches[0])))
-                view.message = await ctx.send(
+                _button = ErrorMatchExecute(ctx, str(matches[0]))
+                view.add_item(_button)
+                view.message = _button.message = await ctx.send(
                     f"""Sorry, but the command **{ctx.invoked_with}** was not found
 did you mean **`{matches[0]}`**?""",
                     view = view
