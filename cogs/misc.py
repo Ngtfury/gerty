@@ -96,7 +96,6 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.gray,
         label = '<',
-        disabled = True
     )
     async def left_arrow(self, button, interaction: discord.Interaction):
         self.current -= 1
