@@ -28,7 +28,7 @@ class ErrorMatchExecute(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         copied = copy.copy(self._message)
         copied._edited_timestamp = discord.utils.utcnow()
-        copied.content.replace(str(self.ctx.invoked_with), self.match)
+        copied.content = copied.content.replace(str(self.ctx.invoked_with), self.match)
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.bot.process_commands(copied)
