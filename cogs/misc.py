@@ -94,7 +94,7 @@ class WaifuPagesView(discord.ui.View):
         return True
 
     @discord.ui.button(
-        style = discord.ButtonStyle.blurple,
+        style = discord.ButtonStyle.green,
         label = '<',
     )
     async def left_arrow(self, button, interaction: discord.Interaction):
@@ -104,7 +104,7 @@ class WaifuPagesView(discord.ui.View):
         elif self.current < 0:
             self.current = len(self.embeds) - 1
         _embed = self.embeds[self.current]
-        _embed.set_footer(text=f'Showing image {self.current} of {len(self.embeds)}')
+        _embed.set_footer(text=f'Showing image {self.current+1} of {len(self.embeds)}')
         await interaction.response.edit_message(embed = _embed, view=self)
 
 
@@ -132,7 +132,7 @@ class WaifuPagesView(discord.ui.View):
         await self.message.edit(embed = self.embeds[self.current])
 
     @discord.ui.button(
-        style = discord.ButtonStyle.blurple,
+        style = discord.ButtonStyle.green,
         label = '>'
     )
     async def right_arrow(self, button, interaction: discord.Interaction):
@@ -142,10 +142,19 @@ class WaifuPagesView(discord.ui.View):
         elif self.current < 0:
             self.current = len(self.embeds) - 1
         _embed = self.embeds[self.current]
-        _embed.set_footer(text=f'Showing image {self.current} of {len(self.embeds)}')
+        _embed.set_footer(text=f'Showing image {self.current+1} of {len(self.embeds)}')
         await interaction.response.edit_message(embed = _embed, view=self)
 
 
+    @discord.ui.button(
+        style = discord.ButtonStyle.red,
+        emoji='<:trashcan:890938576563503114>'
+    )
+    async def quit_pages(self, button, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await self.message.delete()
+        await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+        self.stop()
 
 
 class NitroView(discord.ui.View):
