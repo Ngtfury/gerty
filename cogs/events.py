@@ -32,6 +32,7 @@ class ErrorMatchExecute(discord.ui.Button):
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.bot.process_commands(copied)
+        self.view.stop()
     
 
 class ErrorMatchesView(discord.ui.View):
