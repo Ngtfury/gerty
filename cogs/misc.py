@@ -132,6 +132,10 @@ class WaifuPagesView(discord.ui.View):
         await interaction.response.send_message(embed = em, ephemeral=True)
         _embed = self.embeds[self.current]
         _embed.set_footer(text=f'Showing image {self.current+1} of {len(self.embeds)}')
+        if not self.embeds:
+            await self.message.delete()
+            self.stop()
+            return
         await self.message.edit(embed = _embed)
 
     @discord.ui.button(
@@ -786,7 +790,7 @@ class Misc(commands.Cog):
 
         view = WaifuPagesView(embeds, ctx)
         _embed = embeds[0]
-        _embed.set_footer(f'Showing image 1 of {len(embeds)}')
+        _embed.set_footer(text=f'Showing image 1 of {len(embeds)}')
         view.message = await ctx.send(embed = _embed, view = view)
 
 
