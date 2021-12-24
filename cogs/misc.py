@@ -203,7 +203,9 @@ class WaifuPagesView(discord.ui.View):
             pass
 
         self.current = _content - 1
-        await interaction.followup.edit_message(embed = self.embeds[self.current], message_id=self.message.id)
+        _embed = self.embeds[self.current]
+        _embed.set_footer(text=f'Showing image {self.current+1} of {len(self.embeds)}')
+        await interaction.followup.edit_message(embed = _embed, message_id=self.message.id)
 
 
 class NitroView(discord.ui.View):
