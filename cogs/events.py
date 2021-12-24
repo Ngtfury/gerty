@@ -23,7 +23,7 @@ class ErrorMatchExecute(discord.ui.Button):
         )
         self._message = ctx.message
         self.ctx = ctx
-        self.match = math
+        self.match = match
 
     async def callback(self, interaction: discord.Interaction):
         copied = copy.copy(self._message)
