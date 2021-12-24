@@ -26,7 +26,7 @@ class AkinatorComponents:
             await self.message.edit(view = self)
 
         async def interaction_check(self, interaction: discord.Interaction):
-            if interaction.author.id != self.ctx.author.id:
+            if interaction.user.id != self.ctx.author.id:
                 await interaction.response.send_message('Sorry, this is not your game and you cannot interact with these buttons.', ephemeral=True)
                 return False
             return True
@@ -77,7 +77,7 @@ class AkinatorComponents:
             await self.message.edit(view = self)
 
         async def interaction_check(self, interaction: discord.Interaction):
-            if interaction.author.id != self.ctx.author.id:
+            if interaction.user.id != self.ctx.author.id:
                 await interaction.response.send_message('Sorry, this is not your game and you cannot interact with these buttons.', ephemeral=True)
                 return False
             return True
