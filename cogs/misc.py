@@ -103,7 +103,9 @@ class WaifuPagesView(discord.ui.View):
             self.current = 0
         elif self.current < 0:
             self.current = len(self.embeds) - 1
-        await interaction.response.edit_message(embed = self.embeds[self.current], view=self)
+        _embed = self.embeds[self.current]
+        _embed.set_footer(text=f'Showing image {self.current} of {len(self.embeds)}')
+        await interaction.response.edit_message(embed = _embed, view=self)
 
 
     @discord.ui.button(
@@ -122,6 +124,10 @@ class WaifuPagesView(discord.ui.View):
             color = Utils.BotColors.invis(),
             description=f"""Alright, I've removed [**this image**]({_url}) from your favorites, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery` to see all your favorite images."""
         )
+        if self.current ==  len(self.embeds):
+            self.current = 0
+        elif self.current < 0:
+            self.current = len(self.embeds) - 1
         await interaction.response.send_message(embed = em, ephemeral=True)
         await self.message.edit(embed = self.embeds[self.current])
 
@@ -135,7 +141,9 @@ class WaifuPagesView(discord.ui.View):
             self.current = 0
         elif self.current < 0:
             self.current = len(self.embeds) - 1
-        await interaction.response.edit_message(embed = self.embeds[self.current], view=self)
+        _embed = self.embeds[self.current]
+        _embed.set_footer(text=f'Showing image {self.current} of {len(self.embeds)}')
+        await interaction.response.edit_message(embed = _embed, view=self)
 
 
 
@@ -762,7 +770,6 @@ class Misc(commands.Cog):
             count+=1
             embed = discord.Embed(color=0x2F3136)
             embed.set_image(url=waifu)
-            embed.set_footer(text = f'Showing image {count} of {len(_waifu_list)}')
             embeds.append(embed)
 
         view = WaifuPagesView(embeds, ctx)
