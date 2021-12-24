@@ -1344,15 +1344,7 @@ async def generate_token(ctx, member: discord.Member = None):
     embed.set_thumbnail(url=member.avatar.url)
     await ctx.send(embed=embed)
 
-@client.command(brief='fun', description='You fucking weeb')
-async def waifu(ctx):
-  async with aiohttp.ClientSession() as cs:
-      async with cs.get('https://api.waifu.pics/sfw/waifu') as r:
-          res = await r.json()  # returns dict
-          embed = discord.Embed(color=0x2F3136)
-          embed.set_image(url=f"{res['url']}")
-          embed.set_footer(text=f"Invoked by {ctx.author.name} · SFW - enabled", icon_url=f"{ctx.author.avatar.url}")
-          await ctx.send(embed=embed)
+
 
 
 @client.command(brief='fun', description='Http cat images', usage='(http status code)', aliases=['http_cat'])

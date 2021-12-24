@@ -3,6 +3,7 @@ import re
 import discord
 from discord import emoji
 from discord import guild
+from discord import integrations
 from discord.errors import HTTPException, InvalidArgument
 from discord.ext.commands.cooldowns import BucketType
 from cogs.utils import Utils
@@ -16,6 +17,55 @@ import random
 import typing
 import aiohttp
 from io import BytesIO
+
+class WaifuView(discord.ui.View):
+    def __init__(self, ctx, image_url):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+        self.image_url = image_url
+
+    async def create_if_not(self, user):
+        _is_already = await self.ctx.bot.fetch('SELECT * FROM waifu WHERE user_id = $1', user.id)
+        if not _is_already:
+            await self.ctx.bot.execute('INSERT INTO waifu (user_id,url) VALUES ($1,$2)', user.id, [])
+        return
+
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message('Only the one who use this command can interact with these buttons.', ephemeral=True)
+            return False
+        return True
+
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.gray,
+        emoji = '❤️'
+    )
+    async def add_to_gallery(self, button, interaction: discord.Interaction):
+        await self.create_if_not(self.ctx.author)
+        _waifus = await self.ctx.bot.fetchrow('SELECT * FROM waifu WHERE user_id = $1', self.ctx.author.id)
+        _waifus.append(self.image_url)
+        await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
+        button.disabled = True
+        await interaction.response.send_message(f'I have added this image to your gallery, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery`')
+        await self.message.edit(view = self)
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.red,
+        emoji = '<:trashcan:890938576563503114>'
+    )
+    async def delete_message(self, button, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await self.message.delete()
+        await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+
 
 
 class NitroView(discord.ui.View):
@@ -612,7 +662,18 @@ class Misc(commands.Cog):
         return
 
 
-                
+    @commands.command(brief='fun', description='You fucking weeb')
+    async def waifu(self, ctx):
+        async with aiohttp.ClientSession() as cs:
+            async with cs.get('https://waifu.pics/api/sfw/waifu') as r:
+                res = await r.json()  # returns dict
+            embed = discord.Embed(color=0x2F3136)
+            embed.set_image(url=f"{res['url']}")
+            embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar.url}")
+
+            view = WaifuView(ctx, res['url'])
+
+            view.message = await ctx.send(embed=embed, view=view)
 
 
 
