@@ -93,6 +93,7 @@ class AkinatorComponents:
             q = await self.aki.answer('yes')
             self._q = q
             self._interaction = interaction
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -102,6 +103,7 @@ class AkinatorComponents:
             q = await self.aki.answer('no')
             self._q = q
             self._interaction = interaction
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.blurple,
@@ -111,6 +113,7 @@ class AkinatorComponents:
             q = await self.aki.answer('idk')
             self._q = q
             self._interaction = interaction
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.green,
@@ -120,6 +123,7 @@ class AkinatorComponents:
             q = await self.aki.answer('probably')
             self._q = q
             self._interaction = interaction
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -129,6 +133,7 @@ class AkinatorComponents:
             q = await self.aki.answer('probably not')
             self._q = q
             self._interaction = interaction
+            self.stop()
 
 
 def setup(bot):
@@ -192,6 +197,9 @@ class AkinatorCog(commands.Cog):
             progress=bar.write_progress(**DiscordTemplates.DEFAULT)
 
             LastView = AkinatorComponents.AkinatorView(ctx, aki)
+            _last_wait = await LastView.wait()
+            if _last_wait:
+                return
             q = LastView._q
             interaction: discord.Interaction = LastView._interaction
 
@@ -200,7 +208,7 @@ class AkinatorCog(commands.Cog):
             em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
             em.add_field(name='Question', value=f'{q}', inline=False)
             em.add_field(name='Progress', value=f'{progress}', inline=False)
-            await interaction.response.edit_message(embed = em)
+            await interaction.response.edit_message(embed = em, view = LastView)
 
         await aki.win()
         _des=aki.first_guess['description']
