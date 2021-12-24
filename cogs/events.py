@@ -115,7 +115,7 @@ class events(commands.Cog):
             await ctx.send(embed=Utils.BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
         else:
             await ctx.reply(
-                em = discord.Embed(
+                embed = discord.Embed(
                     color = Utils.BotColors.invis(),
                     title='<:exclamation:922393359941771304> An unexpected error occured',
                     description=f'{str(error)}'
