@@ -150,15 +150,15 @@ class AkinatorCog(commands.Cog):
         StartGame.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
 
         Startview = AkinatorComponents.AkinatorStartView(ctx)
-        Startview.message = MainMessage= await ctx.reply(embed=StartGame, view=Startview, mention_author=False)
+        Startview.message = MainMessage = await ctx.reply(embed=StartGame, view=Startview, mention_author=False)
         _startwait = await Startview.wait()
         if _startwait:
             return
 
         _lang = Startview._lang
         em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+        await MainMessage.edit(embed = em)
         q = await aki.start_game(language = _lang, child_mode = True)
-
 
 
         bar=ProgressBar(
