@@ -20,7 +20,7 @@ from io import BytesIO
 
 class NitroView(discord.ui.View):
     def __init__(self, ctx):
-        super().__init__(timeout=5)
+        super().__init__(timeout=60)
         self.ctx = ctx
 
     async def interaction_check(self, interaction: discord.Interaction):
