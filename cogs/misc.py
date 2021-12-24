@@ -810,6 +810,8 @@ class Misc(commands.Cog):
             embed = discord.Embed(color=0x2F3136)
             embed.set_image(url=f"{res['url']}")
             embed.set_footer(text=f"Invoked by {ctx.author.name}", icon_url=f"{ctx.author.avatar.url}")
+            if random.randint(1,3) == 2:
+                embed.description = 'Hey, check out this new feature `g!waifu gallery`'
 
             view = WaifuView(ctx, res['url'])
 
