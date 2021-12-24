@@ -50,7 +50,8 @@ class WaifuView(discord.ui.View):
     )
     async def add_to_gallery(self, button, interaction: discord.Interaction):
         await self.create_if_not(self.ctx.author)
-        _waifus = await self.ctx.bot.db.fetchrow('SELECT * FROM waifu WHERE user_id = $1', self.ctx.author.id)
+        _waifus_rec = await self.ctx.bot.db.fetchrow('SELECT url FROM waifu WHERE user_id = $1', self.ctx.author.id)
+        _waifus = _waifus_rec[0]
         _waifus.append(self.image_url)
         await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
         button.disabled = True
