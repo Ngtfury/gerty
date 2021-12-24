@@ -1,4 +1,6 @@
+import aiohttp
 import discord
+from discord import integrations
 from discord.embeds import Embed
 from discord.ext import commands
 from akinator.async_aki import Akinator
@@ -12,9 +14,10 @@ from math import *
 
 class AkinatorComponents:
 
-    class AkinatorView(discord.ui.View):
-        def __init__(self):
+    class AkinatorStartView(discord.ui.View):
+        def __init__(self, ctx):
             super().__init__(timeout=60)
+            self.ctx = ctx
 
         async def on_timeout(self):
             for children in self.children:
@@ -28,37 +31,102 @@ class AkinatorComponents:
                 return False
             return True
 
-    class AkiCharButton(discord.ui.Button):
-        def __init__(self, aki):
-            super().__init__(
-                style = discord.ButtonStyle.gray,
-                label = 'Character',
-            )
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = 'Characters',
+        )
+        async def aki_char(self, button: discord.ui.Button, interaction: discord.Interaction):
+            self._lang = None
+            button.style = discord.ButtonStyle.green
+            for children in self.children:
+                children.disabled = True
+            await interaction.response.edit_message(view = self)
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = 'Animals'
+        )
+        async def aki_animal(self, button: discord.ui.Button, interaction: discord.Interaction):
+            self._lang = 'en_animals'
+            button.style = discord.ButtonStyle.green
+            for children in self.children:
+                children.disabled = True
+            await interaction.response.edit_message(view = self)
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = 'Objects'
+        )
+        async def aki_obj(self, button: discord.ui.Button, interaction: discord.Interaction):
+            self._lang = 'en_objects'
+            button.style = discord.ButtonStyle.green
+            for children in self.children:
+                children.disabled = True
+            await interaction.response.edit_message(view = self)
+
+    class AkinatorView(discord.ui.View):
+        def __init__(self, ctx, aki):
+            super().__init__(timeout=60)
+            self.ctx = ctx
             self.aki = aki
 
-        async def callback(self, interaction: discord.Interaction):
-            q=await self.aki.start_game(language=None, child_mode=True)
-            em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-            await interaction.response.edit_message(embed = em)
-            return q
+        async def on_timeout(self):
+            for children in self.children:
+                children.disabled = True
 
-    class AkiAnimalButton(discord.ui.Button):
-        def __init__(self, aki):
-            super().__init__(
-                style=discord.ButtonStyle.gray,
-                label = 'Animal'
-            )
-            self.aki = aki
+            await self.message.edit(view = self)
 
-        async def callback(self, interaction: discord.Interaction):
-            q=await self.aki.start_game(language='en_animals', child_mode=True)
-            em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-            compos = interaction.message.components
-            for compo in compos:
-                for children in compo.children:
-                    children.disabled = True
-            await interaction.response.edit_message(embed = em, view = compos)
-            return q
+        async def interaction_check(self, interaction: discord.Interaction):
+            if interaction.author.id != self.ctx.author.id:
+                await interaction.response.send_message('Sorry, this is not your game and you cannot interact with these buttons.', ephemeral=True)
+                return False
+            return True
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.green,
+            label = 'Yes'
+        )
+        async def aki_yes(self, button, interaction: discord.Interaction):
+            q = await self.aki.answer('yes')
+            self._q = q
+            self._interaction = interaction
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = 'No'
+        )
+        async def aki_no(self, button, interaction: discord.Interaction):
+            q = await self.aki.answer('no')
+            self._q = q
+            self._interaction = interaction
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.blurple,
+            label = 'Don\'t know'
+        )
+        async def aki_idk(self, button, interaction: discord.Interaction):
+            q = await self.aki.answer('idk')
+            self._q = q
+            self._interaction = interaction
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.green,
+            label = 'Probably'
+        )
+        async def aki_prolly(self, button, interaction: discord.Interaction):
+            q = await self.aki.answer('probably')
+            self._q = q
+            self._interaction = interaction
+
+        @discord.ui.button(
+            style = discord.ButtonStyle.gray,
+            label = 'Probably not'
+        )
+        async def aki_prolly_not(self, button, interaction: discord.Interaction):
+            q = await self.aki.answer('probably not')
+            self._q = q
+            self._interaction = interaction
+
 
 def setup(bot):
     bot.add_cog(AkinatorCog(bot))
@@ -76,76 +144,21 @@ class AkinatorCog(commands.Cog):
 
         aki=Akinator()
 
-        StartComponents=[[
-            Button(label='Character', id='AkiCharacter'),
-            Button(label='Animal', id='AkiAnimal'),
-            Button(label='Object', id='AkiObject')
-        ]]
-        CharecterCompo=[[
-            Button(label='Character', id='AkiCharacter', style=ButtonStyle.green, disabled=True),
-            Button(label='Animal', id='AkiAnimal', disabled=True),
-            Button(label='Object', id='AkiObject', disabled=True)
-        ]]
-        AnimalCompo=[[
-            Button(label='Character', id='AkiCharacter', disabled=True),
-            Button(label='Animal', id='AkiAnimal', disabled=True, style=ButtonStyle.green),
-            Button(label='Object', id='AkiObject', disabled=True)
-        ]]
-        ObjCompo=[[
-            Button(label='Character', id='AkiCharacter', disabled=True),
-            Button(label='Animal', id='AkiAnimal', disabled=True),
-            Button(label='Object', id='AkiObject', disabled=True, style=ButtonStyle.green)
-        ]]
-
 
         StartGame=discord.Embed(description='Please select an option what you are guessing.', color=Utils.BotColors.invis())
         StartGame.set_thumbnail(url='https://en.akinator.com/bundles/elokencesite/images/akinator.png?v94')
         StartGame.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-        MainMessage=await ctx.reply(embed=StartGame, components=StartComponents, mention_author=False)
 
+        Startview = AkinatorComponents.AkinatorStartView(ctx)
+        Startview.message = MainMessage= await ctx.reply(embed=StartGame, view=Startview, mention_author=False)
+        _startwait = await Startview.wait()
+        if _startwait:
+            return
 
-        while True:
-            try:
-                AkiStartEvent=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=20)
-                if AkiStartEvent.author != ctx.author:
-                    await AkiStartEvent.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
-                    continue
-                if AkiStartEvent.component.id=='AkiCharacter':
-                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em, components=CharecterCompo)
-                    q=await aki.start_game(language=None, child_mode=True)
-                    break
-                elif AkiStartEvent.component.id=='AkiAnimal':
-                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em, components=AnimalCompo)
-                    q=await aki.start_game(language='en_animals', child_mode=True)
-                    break
-                elif AkiStartEvent.component.id=='AkiObject':
-                    em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
-                    await AkiStartEvent.respond(type=7, embed=em, components=ObjCompo)
-                    q=await aki.start_game(language='en_objects', child_mode=True)
-                    break
-            except:
-                await MainMessage.disable_components()
-                return
+        _lang = Startview._lang
+        em=discord.Embed(description=f'{Utils.BotEmojis.loading()} Loading akinator... Please wait', color=Utils.BotColors.invis())
+        q = await aki.start_game(language = _lang, child_mode = True)
 
-
-        FirstCompoNents=[[
-            Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
-            Button(label='No', id='AkiNo'),
-            Button(label='Don\'t know', id='AkiIdk', style=ButtonStyle.blue),
-            Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
-            Button(label='Probably not', id='AkiProbablyNot')
-        ], [Button(label='Back', disabled=True, id='AkiBack'), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
-
-
-        components=[[
-            Button(style=ButtonStyle.green, label='Yes', id='AkiYes'),
-            Button(label='No', id='AkiNo'),
-            Button(label='Don\'t know', id='AkiIdk', style=ButtonStyle.blue),
-            Button(style=ButtonStyle.green, label='Probably', id='AkiProbably'),
-            Button(label='Probably not', id='AkiProbablyNot')
-        ], [Button(label='Back', id='AkiBack', style=ButtonStyle.blue), Button(style=ButtonStyle.red, label='Quit', id='AkiQuit')]]
 
 
         bar=ProgressBar(
@@ -153,13 +166,19 @@ class AkinatorCog(commands.Cog):
             80
         )
 
+        Mainview = AkinatorComponents.AkinatorView(ctx, aki)
+
         ohk=bar.write_progress(**DiscordTemplates.DEFAULT)
         em=discord.Embed(color=Utils.BotColors.invis())
         em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
         em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
         em.add_field(name='Question', value=f'{q}', inline=False)
         em.add_field(name='Progress', value=f'{ohk}', inline=False)
-        await MainMessage.edit(embed=em, components=FirstCompoNents)
+        await MainMessage.edit(embed=em, view=Mainview)
+
+        _main_wait = await Mainview.wait()
+        if _main_wait:
+            return
 
         while aki.progression <= 80:
             bar=ProgressBar(
@@ -169,85 +188,17 @@ class AkinatorCog(commands.Cog):
 
             progress=bar.write_progress(**DiscordTemplates.DEFAULT)
 
-            try:
-                event=await self.client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==MainMessage, timeout=40)
-                if event.author != ctx.author:
-                    await event.respond(type=4, content='Sorry, this is not your game and you cannot interact with these buttons.')
-                    continue
-                if event.component.id=='AkiYes':
-                    await event.respond(type=6)
-                    q=await aki.answer('yes')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em, components=components)
-                    continue
-                elif event.component.id=='AkiNo':
-                    await event.respond(type=6)
-                    q=await aki.answer('no')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em, components=components)
-                    continue
-                elif event.component.id=='AkiProbably':
-                    await event.respond(type=6)
-                    q=await aki.answer('Probably')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em, components=components)
-                    continue
-                elif event.component.id=='AkiProbablyNot':
-                    await event.respond(type=6)
-                    q=await aki.answer('Probably not')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em, components=components)
-                    continue
-                elif event.component.id=='AkiIdk':
-                    await event.respond(type=6)
-                    q=await aki.answer('idk')
-                    em=discord.Embed(color=Utils.BotColors.invis())
-                    em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                    em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                    em.add_field(name='Question', value=f'{q}', inline=False)
-                    em.add_field(name='Progress', value=f'{progress}', inline=False)
-                    await event.respond(type=7, embed=em, components=components)
-                    continue
-                elif event.component.id=='AkiBack':
-                    await event.respond(type=6)
-                    try:
-                        q = await aki.back()
-                        em=discord.Embed(color=Utils.BotColors.invis())
-                        em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                        em.add_field(name='Question', value=f'{q}', inline=False)
-                        em.add_field(name='Progress', value=f'{progress}', inline=False)
-                        await event.respond(type=7, embed=em, components=components)
-                        continue
-                    except akinator.CantGoBackAnyFurther:
-                        em=discord.Embed(color=Utils.BotColors.invis())
-                        em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
-                        em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
-                        em.add_field(name='Question', value=f'{q}', inline=False)
-                        em.add_field(name='Progress', value=f'{progress}', inline=False)
-                        await event.respond(type=7, embed=em, components=FirstCompoNents)
-                        continue     
-                elif event.component.id=='AkiQuit':
-                    await event.respond(type=6)
-                    break
-            except asyncio.TimeoutError:
-                break
+            LastView = AkinatorComponents.AkinatorView(ctx, aki)
+            q = LastView._q
+            interaction: discord.Interaction = LastView._interaction
+
+            em=discord.Embed(color=Utils.BotColors.invis())
+            em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
+            em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
+            em.add_field(name='Question', value=f'{q}', inline=False)
+            em.add_field(name='Progress', value=f'{progress}', inline=False)
+            await interaction.response.edit_message(embed = em)
+
         await aki.win()
         _des=aki.first_guess['description']
         _title=aki.first_guess['name']

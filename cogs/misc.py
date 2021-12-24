@@ -34,7 +34,53 @@ class CalcuViewOne(discord.ui.View):
             return False
         return True
 
+class UploadEmojiView(discord.ui.View):
+    def __init__(self, ctx, emoji_url, emoji_name):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+        self.emoji_url = emoji_url
+        self.emoji_name = emoji_name
 
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+        
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id != self.ctx.author.id:
+            await interaction.response.send_message('Sorry, you cannot interact with these buttons.', ephemeral=True)
+            return False
+        return True
+
+    @discord.ui.button(
+        style=discord.ButtonStyle.green,
+        label = 'Yes'
+    )
+    async def _upload_emoji_yes(self, button, interaction: discord.Interaction):
+        async with aiohttp.ClientSession() as sess:
+            async with sess.get(self.emoji_url) as rep:
+                raw = io.BytesIO(await rep.read())
+                buf = raw.getvalue()
+
+            try:
+                _uploaded_emoji = await self.ctx.guild.create_custom_emoji(name=self.emoji_name, image=buf, reason=f'Uploaded by {self.ctx.author.name}')
+            except HTTPException:
+                return await interaction.response.send_message(embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({self.ctx.guild.emoji_limit})**'), ephemeral=False)
+            except InvalidArgument:
+                return await interaction.response.send_message(embed = Utils.BotEmbed.error('Uh oh!. Unsupported image type given'), ephemeral=False)
+            await interaction.response.send_message(f'{self.ctx.author} uploaded {_uploaded_emoji}', ephemeral=False)
+            self.stop()
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.gray,
+        label = 'No'
+    )
+    async def _upload_emoji_cancel(self, button, interaction: discord.Interaction):
+        await interaction.response.defer()
+        await self.message.delete()
+        await self.ctx.send(f'Cancelled uploading emoji.')
+        self.stop()
 
 class Misc(commands.Cog):
     def __init__(self, client):
@@ -359,8 +405,23 @@ class Misc(commands.Cog):
                 NoResultEmbed=f'{member.name} is'
             em=Utils.BotEmbed.error(f'{NoResultEmbed} not listening to spotify or the bot can\'t detect it')
             return await ctx.reply(embed=em, mention_author=False)
-            
-        components=[[Button(style=ButtonStyle.URL, label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800', url=f'https://open.spotify.com/track/{spotify_result.track_id}', emoji=self.client.get_emoji(902569759323848715)), Button(style=ButtonStyle.gray, label='\u2630', disabled=True)]]
+
+        view = discord.ui.View()
+        view.add_item(
+            discord.ui.Button(
+                style = discord.ButtonStyle.url,
+                label='Listen on spotify\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800\u2800',
+                url = f'https://open.spotify.com/track/{spotify_result.track_id}',
+                emoji = self.client.get_emoji(902569759323848715)
+            )
+        )
+        view.add_item(
+            discord.ui.Button(
+                style = discord.ButtonStyle.gray,
+                label='\u2630',
+                disabled=True
+            )
+        )
 
 
         params = {
@@ -375,7 +436,7 @@ class Misc(commands.Cog):
             async with session.get('https://api.jeyy.xyz/discord/spotify', params=params) as r:
                 buf=BytesIO(await r.read())
 
-        await ctx.reply(f'Listening to **{spotify_result.title}** | {member.name}', file=discord.File(buf, 'spotify.png'), components=components, mention_author=False)
+        await ctx.reply(f'Listening to **{spotify_result.title}** | {member.name}', file=discord.File(buf, 'spotify.png'), view=view, mention_author=False)
 
 
 
@@ -498,41 +559,16 @@ class Misc(commands.Cog):
             )
             return
 
-        components = [[
-            Button(style=ButtonStyle.green, label='Yes', id='EmojiUploadYes'),
-            Button(label='No', id='EmojiUploadNo')
-        ]]
+        view = UploadEmojiView(ctx, emoji_url, name)
         em = discord.Embed(color=Utils.BotColors.invis())
         em.set_image(url=emoji_url)
-        MainMessage = await ctx.send(
+        view.message = await ctx.send(
             'Is this alright?',
             embed = em,
-            components = components
+            view = view
         )
-        while True:
-            event = await self.bot.wait_for('button_click', check = lambda i: i.author == ctx.author and i.message.id == MainMessage.id)
-            if event.component.id == 'EmojiUploadYes':
-                await MainMessage.disable_components()
+        return
 
-                async with aiohttp.ClientSession() as sess:
-                    async with sess.get(emoji_url) as rep:
-                        raw = io.BytesIO(await rep.read())
-                        buf = raw.getvalue()
-
-                    try:
-                        _uploaded_emoji = await ctx.guild.create_custom_emoji(name=name, image=buf, reason=f'Uploaded by {ctx.author.name}')
-                    except HTTPException:
-                        return await event.respond(type=4, embed = Utils.BotEmbed.error(f'Uh oh!, Maximum number of emojis reached **({ctx.guild.emoji_limit})**'), ephemeral=False)
-                    except InvalidArgument:
-                        return await event.respond(type=4, embed = Utils.BotEmbed.error('Uh oh!. Unsupported image type given'), ephemeral=False)
-                    await event.respond(type=4, content=f'{ctx.author.display_name} uploaded {_uploaded_emoji}', ephemeral=False)
-                return
-            elif event.component.id == 'EmojiUploadNo':
-                await event.respond(type=6)
-                await MainMessage.delete()
-                await ctx.send('Cancelled uploading emoji.')
-                return
-            
 
                 
 
@@ -587,7 +623,7 @@ class Misc(commands.Cog):
 For a list of commands do `g!help`, `G!help` or `@Gerty help`
 
 If you continue to have problems, consider asking for help on our **Support Server**
-https://discord.gg/gERnjRdF""",
+https://discord.gg/GdftdzWKqv""",
                     mention_author=False
                 )
                 self.bot.bot_mention[message.author.id] += 1
