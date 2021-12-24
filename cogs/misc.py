@@ -99,7 +99,7 @@ class WaifuPagesView(discord.ui.View):
         disabled = True
     )
     async def left_arrow(self, button, interaction: discord.Interaction):
-        self.current = self.current - 1
+        self.current -= 1
         if self.current <= 0:
             button.disabled = True
         else:
@@ -112,7 +112,9 @@ class WaifuPagesView(discord.ui.View):
         label = '>'
     )
     async def right_arrow(self, button, interaction: discord.Interaction):
+        print(f'right {self.current}')
         self.current += 1
+        print(f'right {self.current}')
         if self.current >= len(self.embeds):
             button.disabled = True
         else:
