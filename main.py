@@ -1379,43 +1379,6 @@ async def tts(ctx, *, text:commands.clean_content):
 
 
 
-@client.command(brief='fun', description='NITRO!!! FREE NITRO!!!')
-async def nitro(ctx):
-  em=discord.Embed(title="Nitro", description="Expires in 48 hours", color=0x2F3136)
-  em.set_author(name="A WILD GIFT APPEARS!")
-  em.set_thumbnail(url="https://media.discordapp.net/attachments/884423056934711326/888057999875244072/2Q.png")
-
-
-  components = [
-    Button(style=ButtonStyle.green, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton')
-  ]
-
-  main = await ctx.send(embed=em, components=components)
-
-  while True:
-    try:
-      event = await client.wait_for('button_click', check=lambda i: i.channel==ctx.channel and i.message==main, timeout=40) #
-      if event.author==ctx.author:
-        await event.respond(type=4, content="You cannot claim your gift yourself!")
-      elif event.component.id=='NitroButton':
-        await main.edit(components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
-        await event.respond(type=4, content='https://tenor.com/view/rick-roll-nitro-gif-21997352')
-        try:
-          await ctx.author.send(f"You've rickrolled {event.author.name} :joy:")
-        except:
-          pass
-        break
-
-    except asyncio.TimeoutError:
-      try:
-        await ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
-      except:
-        pass
-      embi=discord.Embed(color=Utils.BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
-      embi.set_author(name="You recived a gift, but...")
-      embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
-      await main.edit(embed=embi, components=[Button(style=ButtonStyle.gray, label='⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀', id='NitroButton', disabled=True)])
-      break
 
 
 

@@ -18,6 +18,43 @@ import aiohttp
 from io import BytesIO
 
 
+class NitroView(discord.ui.View):
+    def __init__(self, ctx):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        if interaction.user.id == self.ctx.author.id:
+            await interaction.response.send_message('You cannot claim your gift yourself...', ephemeral=True)
+            return False
+        return True
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        embi=discord.Embed(color=Utils.BotColors.invis(), title='Nitro', description='The gift link has either expired\n or has been revoked.')
+        embi.set_author(name="You recived a gift, but...")
+        embi.set_thumbnail(url='https://external-preview.redd.it/9HZBYcvaOEnh4tOp5EqgcCr_vKH7cjFJwkvw-45Dfjs.png?auto=webp&s=ade9b43592942905a45d04dbc5065badb5aa3483')
+
+        await self.message.edit(embed = embi, view=self)
+        await self.ctx.author.send('No one fall for your nitro <:Sad_cat:900825746841411604>')
+
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.green,
+        label = '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀ACCEPT⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'
+    )
+    async def accept_nitro(self, button: discord.ui.Button, interaction: discord.Interaction):
+        await interaction.response.send_message(content='https://tenor.com/view/rick-roll-nitro-gif-21997352', ephemeral=True)
+        button.style = discord.ButtonStyle.gray
+        button.label = '⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀CLAIMED⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀'
+        for children in self.children:
+            children.disabled = True
+        await self.message.edit(view = self)
+        self.stop()
+
+
 class CalcuViewOne(discord.ui.View):
     def __init__(self, ctx):
         super().__init__(timeout=60)
@@ -70,6 +107,9 @@ class UploadEmojiView(discord.ui.View):
             except InvalidArgument:
                 return await interaction.response.send_message(embed = Utils.BotEmbed.error('Uh oh!. Unsupported image type given'), ephemeral=False)
             await interaction.response.send_message(f'{self.ctx.author} uploaded {_uploaded_emoji}', ephemeral=False)
+            for children in self.children:
+                children.disabled = True
+            await self.message.edit(view = self)
             self.stop()
 
     @discord.ui.button(
@@ -669,6 +709,17 @@ https://discord.gg/GdftdzWKqv""",
                     await message.reply('⚠️ Woah, nice **RickRoll** my guy', mention_author=False)
                     return
         return
+
+    @commands.command(brief='fun', description='Prank your friends with a fake nitro')
+    async def nitro(self, ctx):
+        em=discord.Embed(title="Nitro", description="Expires in 48 hours", color=0x2F3136)
+        em.set_author(name="A WILD GIFT APPEARS!")
+        em.set_thumbnail(url="https://media.discordapp.net/attachments/884423056934711326/888057999875244072/2Q.png")
+
+        view = NitroView(ctx)
+        view.message = await ctx.send(embed = em, view = view)
+
+
 
 def setup(client):
     client.add_cog(Misc(client))
