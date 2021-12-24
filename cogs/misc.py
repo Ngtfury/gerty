@@ -715,7 +715,7 @@ class Misc(commands.Cog):
         return
 
 
-    @commands.group(brief='fun', description='Waifu images... you can add your favorites to gallery')
+    @commands.group(brief='fun', description='Waifu images... you can add your favorites to gallery', invoke_without_command = True)
     async def waifu(self, ctx):
         async with aiohttp.ClientSession() as cs:
             async with cs.get('https://waifu.pics/api/sfw/waifu') as r:
