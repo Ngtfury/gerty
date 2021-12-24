@@ -196,19 +196,18 @@ class AkinatorCog(commands.Cog):
 
             progress=bar.write_progress(**DiscordTemplates.DEFAULT)
 
-            LastView = AkinatorComponents.AkinatorView(ctx, aki)
-            _last_wait = await LastView.wait()
+            _last_wait = await Mainview.wait()
             if _last_wait:
                 return
-            q = LastView._q
-            interaction: discord.Interaction = LastView._interaction
+            q = Mainview._q
+            interaction: discord.Interaction = Mainview._interaction
 
             em=discord.Embed(color=Utils.BotColors.invis())
             em.set_author(name='Akinator', icon_url='https://play-lh.googleusercontent.com/rjX8LZCV-MaY3o927R59GkEwDOIRLGCXFphaOTeFFzNiYY6SQ4a-B_5t7eUPlGANrcw')
             em.set_thumbnail(url='https://pbs.twimg.com/profile_images/1206579384762679299/hbixlO64_400x400.jpg')
             em.add_field(name='Question', value=f'{q}', inline=False)
             em.add_field(name='Progress', value=f'{progress}', inline=False)
-            await interaction.response.edit_message(embed = em, view = LastView)
+            await interaction.response.edit_message(embed = em, view = Mainview)
 
         await aki.win()
         _des=aki.first_guess['description']
