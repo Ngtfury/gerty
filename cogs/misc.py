@@ -129,7 +129,9 @@ class WaifuPagesView(discord.ui.View):
         elif self.current < 0:
             self.current = len(self.embeds) - 1
         await interaction.response.send_message(embed = em, ephemeral=True)
-        await self.message.edit(embed = self.embeds[self.current])
+        _embed = self.embeds[self.current]
+        _embed.set_footer(text=f'Showing image {self.current+1} of {len(self.embeds)}')
+        await self.message.edit(embed = _embed)
 
     @discord.ui.button(
         style = discord.ButtonStyle.green,
