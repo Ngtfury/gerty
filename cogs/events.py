@@ -35,15 +35,17 @@ class ErrorMatchExecute(discord.ui.Button):
         self.view.stop()
     
 class ErrorDeleteView(discord.ui.Button):
-    def __init__(self):
+    def __init__(self, ctx):
         super().__init__(
             style=discord.ButtonStyle.gray,
             emoji = '<:trashcan:890938576563503114>'
         )
+        self.ctx = ctx
     
     async def callback(self, interaction: discord.Interaction):
         await interaction.response.defer()
         await self.view.message.delete()
+        await self.ctx.message.add_reaction(Utils.BotEmojis.success())
         self.view.stop()
 
 class ErrorMatchesView(discord.ui.View):
@@ -176,7 +178,7 @@ class events(commands.Cog):
                 view = ErrorMatchesView(ctx)
                 _button = ErrorMatchExecute(ctx, str(matches[0]))
                 view.add_item(_button)
-                view.add_item(ErrorDeleteView())
+                view.add_item(ErrorDeleteView(ctx))
                 view.message = _button.message = await ctx.send(
                     f"""Sorry, but the command **{ctx.invoked_with}** was not found
 did you mean **`{matches[0]}`**?""",
