@@ -146,7 +146,7 @@ class Utils:
                 pass
 
             self.current = _content - 1
-            await interaction.followup.edit_message(embed = self.embeds[self.current])
+            await interaction.followup.edit_message(embed = self.embeds[self.current], message_id=self.message.id)
             
 
  
