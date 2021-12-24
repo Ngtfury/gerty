@@ -114,13 +114,15 @@ class events(commands.Cog):
             _matches='\n'.join(matches_)
             await ctx.send(embed=Utils.BotEmbed.error(f'Command `{ctx.invoked_with}` does\'t exists\nDid you mean...\n{_matches}'))
         else:
+            errview = discord.ui.View()
+            errview.add_item(discord.ui.Button(style = discord.ButtonStyle.link, label = 'Support Server', url = 'https://discord.gg/7DJwH6rh'))
             await ctx.reply(
                 embed = discord.Embed(
                     color = Utils.BotColors.invis(),
                     title='<:exclamation:922393359941771304> An unexpected error occured',
                     description=f'{str(error)}'
                 ).set_footer(text='Error has been reported to our devs, will be fixed soon...'),
-                view = discord.ui.View().add_item(discord.ui.Button(style = discord.ButtonStyle.link, label = 'Support Server', url = 'https://discord.gg/7DJwH6rh')),
+                view = errview,
                 mention_author=False
             )
             error_log_channel=self.bot.get_channel(906874671847333899)
