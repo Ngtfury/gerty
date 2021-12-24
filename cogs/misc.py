@@ -72,6 +72,7 @@ class WaifuView(discord.ui.View):
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+        self.stop()
 
 
 class WaifuPagesView(discord.ui.View):
