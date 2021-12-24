@@ -114,7 +114,7 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.blurple,
         emoji = '💔',
-        row = 2
+        row = 1
     )
     async def del_from_list(self, button, interaction: discord.Interaction):
         _current_embed: discord.Embed = self.embeds[self.current]
@@ -144,7 +144,7 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.gray,
         label = '>',
-        row = 3
+        row = 1
     )
     async def right_arrow(self, button, interaction: discord.Interaction):
         self.current += 1
@@ -160,7 +160,7 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.red,
         emoji = '<:trashcan:890938576563503114>',
-        row = 4
+        row = 1
     )
     async def quit_pages(self, button, interaction: discord.Interaction):
         await interaction.response.defer()
@@ -171,7 +171,7 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.green,
         label = 'Skip to page...',
-        row = 1
+        row = 2
     )
     async def skip_to_page(self, button, interaction: discord.Interaction):
         if self._number_pages_awaiting:
