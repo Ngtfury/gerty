@@ -25,9 +25,9 @@ class WaifuView(discord.ui.View):
         self.image_url = image_url
 
     async def create_if_not(self, user):
-        _is_already = await self.ctx.bot.fetch('SELECT * FROM waifu WHERE user_id = $1', user.id)
+        _is_already = await self.ctx.bot.db.fetch('SELECT * FROM waifu WHERE user_id = $1', user.id)
         if not _is_already:
-            await self.ctx.bot.execute('INSERT INTO waifu (user_id,url) VALUES ($1,$2)', user.id, [])
+            await self.ctx.bot.db.execute('INSERT INTO waifu (user_id,url) VALUES ($1,$2)', user.id, [])
         return
 
 
@@ -50,7 +50,7 @@ class WaifuView(discord.ui.View):
     )
     async def add_to_gallery(self, button, interaction: discord.Interaction):
         await self.create_if_not(self.ctx.author)
-        _waifus = await self.ctx.bot.fetchrow('SELECT * FROM waifu WHERE user_id = $1', self.ctx.author.id)
+        _waifus = await self.ctx.bot.db.fetchrow('SELECT * FROM waifu WHERE user_id = $1', self.ctx.author.id)
         _waifus.append(self.image_url)
         await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
         button.disabled = True
