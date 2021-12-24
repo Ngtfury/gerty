@@ -179,10 +179,11 @@ class events(commands.Cog):
                 _button = ErrorMatchExecute(ctx, str(matches[0]))
                 view.add_item(_button)
                 view.add_item(ErrorDeleteView(ctx))
-                view.message = _button.message = await ctx.send(
+                view.message = _button.message = await ctx.reply(
                     f"""Sorry, but the command **{ctx.invoked_with}** was not found
 did you mean **`{matches[0]}`**?""",
-                    view = view
+                    view = view,
+                    mention_author = False
                 )
         else:
             errview = discord.ui.View()
