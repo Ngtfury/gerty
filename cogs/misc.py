@@ -55,7 +55,11 @@ class WaifuView(discord.ui.View):
         _waifus.append(self.image_url)
         await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifus, self.ctx.author.id)
         button.disabled = True
-        await interaction.response.send_message(f'I have added this image to your gallery, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery`')
+        embed = discord.Embed(
+            description=f"""I've added [**this image**]({self.image_url}) to your favorites (gallery) successfully ❤️, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery` to see all your favorite images.""",
+            color = Utils.BotColors.invis()
+        ) #
+        await interaction.response.send_message(ephemeral=True)
         await self.message.edit(view = self)
 
     @discord.ui.button(
