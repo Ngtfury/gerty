@@ -126,6 +126,7 @@ class Utils:
             try:
                 self._number_pages_awaiting = True
                 resMessage = await self.ctx.bot.wait_for('message', check = lambda i: i.author.id == interaction.user.id and i.channel.id == interaction.channel.id and i.content.isdigit(), timeout = 20)
+                self._number_pages_awaiting = False
             except asyncio.TimeoutError:
                 self._number_pages_awaiting = False
                 await interaction.followup.send('You didn\'t respond on time...', ephemeral=True)
