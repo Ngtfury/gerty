@@ -94,7 +94,7 @@ class WaifuPagesView(discord.ui.View):
         return True
 
     @discord.ui.button(
-        style = discord.ButtonStyle.gray,
+        style = discord.ButtonStyle.blurple,
         label = '<',
     )
     async def left_arrow(self, button, interaction: discord.Interaction):
@@ -108,6 +108,26 @@ class WaifuPagesView(discord.ui.View):
 
     @discord.ui.button(
         style = discord.ButtonStyle.gray,
+        emoji = '💔'
+    )
+    async def del_from_list(self, button, interaction: discord.Interaction):
+        _current_embed: discord.Embed = self.embeds[self.current]
+        _url = str(_current_embed.image.url)
+        _waifu_row = await self.ctx.bot.db.execute('SELECT url FROM waifu WHERE user_id = $1', self.ctx.author.id)
+        _waifu_list = _waifu_row[0]
+        _waifu_list.remove(_url)
+        await self.ctx.bot.db.execute('UPDATE waifu SET url = $1 WHERE user_id = $2', _waifu_list, self.ctx.author.id)
+        self.embeds.remove(_current_embed)
+        em = discord.Embed(
+            color = Utils.BotColors.invis(),
+            description=f"""Alright, I've removed [**this image**]({_url}) from your favorites, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery` to see all your favorite images."""
+        )
+        await interaction.response.send_message(embed = em, ephemeral=True)
+        self.current += 1
+        await self.message.edit(embed = self.embeds[self.current])
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.blurple,
         label = '>'
     )
     async def right_arrow(self, button, interaction: discord.Interaction):
