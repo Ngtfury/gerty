@@ -59,7 +59,7 @@ class WaifuView(discord.ui.View):
             description=f"""I've added [**this image**]({self.image_url}) to your favorites (gallery) successfully ❤️, Use command `{Utils.clean_prefix(ctx=self.ctx)}waifu gallery` to see all your favorite images.""",
             color = Utils.BotColors.invis()
         ) #
-        await interaction.response.send_message(ephemeral=True)
+        await interaction.response.send_message(embed = embed, ephemeral=True)
         await self.message.edit(view = self)
 
     @discord.ui.button(
