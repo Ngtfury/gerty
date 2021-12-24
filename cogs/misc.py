@@ -81,6 +81,7 @@ class WaifuPagesView(discord.ui.View):
         self.embeds = embeds
         self.ctx = ctx
         self.current = 0
+        self._number_pages_awaiting = False
 
     async def on_timeout(self):
         for children in self.children:
@@ -95,8 +96,9 @@ class WaifuPagesView(discord.ui.View):
         return True
 
     @discord.ui.button(
-        style = discord.ButtonStyle.green,
+        style = discord.ButtonStyle.gray,
         label = '<',
+        row = 1
     )
     async def left_arrow(self, button, interaction: discord.Interaction):
         self.current -= 1
@@ -110,8 +112,9 @@ class WaifuPagesView(discord.ui.View):
 
 
     @discord.ui.button(
-        style = discord.ButtonStyle.gray,
-        emoji = '💔'
+        style = discord.ButtonStyle.blurple,
+        emoji = '💔',
+        row = 2
     )
     async def del_from_list(self, button, interaction: discord.Interaction):
         _current_embed: discord.Embed = self.embeds[self.current]
@@ -139,8 +142,9 @@ class WaifuPagesView(discord.ui.View):
         await self.message.edit(embed = _embed)
 
     @discord.ui.button(
-        style = discord.ButtonStyle.green,
-        label = '>'
+        style = discord.ButtonStyle.gray,
+        label = '>',
+        row = 3
     )
     async def right_arrow(self, button, interaction: discord.Interaction):
         self.current += 1
@@ -155,13 +159,51 @@ class WaifuPagesView(discord.ui.View):
 
     @discord.ui.button(
         style = discord.ButtonStyle.red,
-        emoji='<:trashcan:890938576563503114>'
+        emoji = '<:trashcan:890938576563503114>',
+        row = 4
     )
     async def quit_pages(self, button, interaction: discord.Interaction):
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
         self.stop()
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.green,
+        label = 'Skip to page...',
+        row = 6
+    )
+    async def skip_to_page(self, button, interaction: discord.Interaction):
+        if self._number_pages_awaiting:
+            await interaction.response.send_message('Already awaiting for your response...', ephemeral=True)
+            return
+    
+        await interaction.response.send_message('What page do you want to go to?', ephemeral=True)
+        try:
+            self._number_pages_awaiting = True
+            resMessage = await self.ctx.bot.wait_for('message', check = lambda i: i.author.id == interaction.user.id and i.channel.id == interaction.channel.id and i.content.isdigit(), timeout = 20)
+            self._number_pages_awaiting = False
+        except asyncio.TimeoutError:
+            self._number_pages_awaiting = False
+            await interaction.followup.send('You didn\'t respond on time...', ephemeral=True)
+            return
+
+
+        _content = int(resMessage.content)
+        if _content <= 0:
+            await interaction.followup.send(f'Pages start from 1 not {_content}.', ephemeral=True)
+            return
+        if _content > len(self.embeds):
+            await interaction.followup.send(f'Sorry, there are only {len(self.embeds)} pages, not {_content}.', ephemeral=True)
+            return
+
+        try:
+            await resMessage.delete()
+        except:
+            pass
+
+        self.current = _content - 1
+        await interaction.followup.edit_message(embed = self.embeds[self.current], message_id=self.message.id)
 
 
 class NitroView(discord.ui.View):

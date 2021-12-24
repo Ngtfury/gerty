@@ -110,7 +110,7 @@ class Utils:
             label = '>>'
         )
         async def double_right_arrow(self, button, interaction: discord.Interaction):
-            self.current = 0
+            self.current = len(self.embeds) - 1
             await interaction.response.edit_message(embed = self.embeds[self.current])
 
         @discord.ui.button(
