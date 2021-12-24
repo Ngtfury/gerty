@@ -41,6 +41,7 @@ class AkinatorComponents:
             for children in self.children:
                 children.disabled = True
             await interaction.response.edit_message(view = self)
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -52,6 +53,7 @@ class AkinatorComponents:
             for children in self.children:
                 children.disabled = True
             await interaction.response.edit_message(view = self)
+            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -63,6 +65,7 @@ class AkinatorComponents:
             for children in self.children:
                 children.disabled = True
             await interaction.response.edit_message(view = self)
+            self.stop()
 
     class AkinatorView(discord.ui.View):
         def __init__(self, ctx, aki):
