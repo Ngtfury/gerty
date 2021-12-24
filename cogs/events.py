@@ -28,7 +28,7 @@ class ErrorMatchExecute(discord.ui.Button):
     async def callback(self, interaction: discord.Interaction):
         copied = copy.copy(self._message)
         copied._edited_timestamp = discord.utils.utcnow()
-        copied.content.replace(self.ctx.invoked_with, self.match)
+        copied.content.replace(str(self.ctx.invoked_with), self.match)
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.bot.process_commands(copied)
@@ -165,7 +165,7 @@ class events(commands.Cog):
                 view.add_item(ErrorMatchExecute(ctx, matches[0]))
                 await ctx.send(
                     f"""Sorry, but the command **{ctx.invoked_with}** was not found
-                    did you mean **`{matches[0]}`**?""",
+did you mean **`{matches[0]}`**?""",
                     view = view
                 )
         else:
