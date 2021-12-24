@@ -171,7 +171,7 @@ class WaifuPagesView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.green,
         label = 'Skip to page...',
-        row = 6
+        row = 1
     )
     async def skip_to_page(self, button, interaction: discord.Interaction):
         if self._number_pages_awaiting:
