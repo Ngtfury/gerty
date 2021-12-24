@@ -93,7 +93,6 @@ class AkinatorComponents:
             q = await self.aki.answer('yes')
             self._q = q
             self._interaction = interaction
-            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -103,7 +102,6 @@ class AkinatorComponents:
             q = await self.aki.answer('no')
             self._q = q
             self._interaction = interaction
-            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.blurple,
@@ -113,7 +111,6 @@ class AkinatorComponents:
             q = await self.aki.answer('idk')
             self._q = q
             self._interaction = interaction
-            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.green,
@@ -123,7 +120,6 @@ class AkinatorComponents:
             q = await self.aki.answer('probably')
             self._q = q
             self._interaction = interaction
-            self.stop()
 
         @discord.ui.button(
             style = discord.ButtonStyle.gray,
@@ -133,7 +129,6 @@ class AkinatorComponents:
             q = await self.aki.answer('probably not')
             self._q = q
             self._interaction = interaction
-            self.stop()
 
 
 def setup(bot):
