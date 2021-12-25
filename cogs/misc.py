@@ -893,11 +893,11 @@ class Misc(commands.Cog):
 
             if self.bot.bot_mention[message.author.id] == 0:
                 await message.reply(
-                    """Hello, I'm **Gerty**, My prefixes are `g!`, `G!` and `@Gerty`
+                    f"""Hello, I'm **Gerty**, My prefixes are `g!`, `G!` and `@Gerty`
 For a list of commands do `g!help`, `G!help` or `@Gerty help`
 
 If you continue to have problems, consider asking for help on our **Support Server**
-https://discord.gg/GdftdzWKqv""",
+{self.bot.support_server_link}""",
                     mention_author=False
                 )
                 self.bot.bot_mention[message.author.id] += 1
