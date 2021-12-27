@@ -293,7 +293,6 @@ class ServerInfoView(discord.ui.View):
 {_space}{len([filter(lambda i: i.status == discord.Status.offline, guild.members)])}""",
             inline = True
         )
-
 #        em.add_field(
 #            name = '<:emoji_guard:925021822821478410> Emojis',
 #            value = """"""
