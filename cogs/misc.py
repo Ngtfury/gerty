@@ -197,13 +197,13 @@ class ServerInfoView(discord.ui.View):
 
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
-            value = guild.description if guild.description else '<:cross:924976416062332979> No description',
+            value = _space + guild.description if guild.description else '<:cross:924976416062332979> No description',
             inline = False
         )
 
         em.add_field(
             name = '<:add:925002720736333864> Created at',
-            value = format_dt(guild.created_at),
+            value = f'{_space}{format_dt(guild.created_at)}',
             inline = False
         )
 
@@ -212,6 +212,8 @@ class ServerInfoView(discord.ui.View):
             value = f'{_space}{CONTENT_FILTER[guild.explicit_content_filter]}' + '\n\u200b _ _',
             inline = False
         )
+
+
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
         _guild_boost_tier = boost_tier[guild.premium_tier]
