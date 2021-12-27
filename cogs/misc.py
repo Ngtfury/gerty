@@ -249,7 +249,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{len([c for c in guild.channels if isinstance(c, discord.StageChannel)])}
 **<:cate_channel:925014473687826452> Category Channels**
 {_space}{len([c for c in guild.channels if isinstance(c, discord.CategoryChannel)])}
-**<:thread_channel:925014548807815178> Thread Channels
+**<:thread_channel:925014548807815178> Thread Channels**
 {_space}{len(guild.threads)}
 **<:store_channel:925016581921185812> Store Channels**
 {_space}{len([c for c in guild.channels if isinstance(c, discord.StoreChannel)])}"""
@@ -264,7 +264,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_boost_role}
 **<:award:925000347582365696> Last Boost**
 {_space}{_last_boost_offset}""",
-            inline = True
+            inline = False
         )    
 
         self.message = await self.ctx.send(embed = em, view = self)
