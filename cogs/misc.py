@@ -191,12 +191,12 @@ class ServerInfoView(discord.ui.View):
 {_space}{_owner.id}**
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
-            inline = True
+            inline = False
         )
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
             value = guild.description if guild.description else '<:cross:924976416062332979> No description',
-            inline = False
+            inline = True
         )
 
         await self.ctx.send(embed = em)
