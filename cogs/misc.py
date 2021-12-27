@@ -181,12 +181,6 @@ class ServerInfoView(discord.ui.View):
 \u200b _ _"""
         )
 
-        em.add_field(
-            name = '<:message:924985005644578846> Server Description',
-            value = guild.description if guild.description else '<:cross:924976416062332979> No description',
-            inline = False
-        )
-
         _owner = guild.owner
         em.add_field(
             name = '<:owner:924985927720378388> About Owner',
@@ -198,6 +192,11 @@ class ServerInfoView(discord.ui.View):
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
             inline = True
+        )
+        em.add_field(
+            name = '<:message:924985005644578846> Server Description',
+            value = guild.description if guild.description else '<:cross:924976416062332979> No description',
+            inline = False
         )
 
         await self.ctx.send(embed = em)
