@@ -203,13 +203,13 @@ class ServerInfoView(discord.ui.View):
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
             value = guild.description if guild.description else '<:cross:924976416062332979> No description' + '\n\u200b _ _',
-            inline = False
+            inline = True
         )
 
         em.add_field(
             name = '<:add:925002720736333864> Created at',
             value = format_dt(guild.created_at),
-            inline = False
+            inline = True
         )
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
