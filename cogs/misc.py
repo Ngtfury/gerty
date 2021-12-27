@@ -197,7 +197,7 @@ class ServerInfoView(discord.ui.View):
         em.add_field(
             name = '<:add:925002720736333864> Created at',
             value = format_dt(guild.created_at),
-            inline = True
+            inline = False
         )
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
@@ -229,7 +229,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_owner.id}
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
-            inline = False
+            inline = True
         )
     
         self.message = await self.ctx.send(embed = em, view = self)
