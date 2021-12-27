@@ -223,6 +223,39 @@ class ServerInfoView(discord.ui.View):
             _fmted = format_dt(last_boost.premium_since, 'R')
         _last_boost_offset = f'By {last_boost}, {_fmted}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
 
+
+        _owner = guild.owner
+        em.add_field(
+            name = '<:owner:924985927720378388> About Owner',
+            value = f"""
+**<:human:924986190921367562> Owner Name**
+{_space}{_owner.name}
+**<:ID:924978855381438515> Owner ID**
+{_space}{_owner.id}
+**<:time:924986886823493662> Account created at**
+{_space}{format_dt(_owner.created_at)}""", 
+            inline = True
+        )
+
+
+
+        em.add_field(
+            name = '<:magicwand:925009525587734548> Channels',
+            value = f"""**<:text_channel:925013200943075338> Text Channels**
+{_space}{len([c for c in guild.channels if isinstance(c, discord.TextChannel)])}
+**<:voice_channel:925013284816568390> Voice Channels**
+{_space}{len([c for c in guild.channels if isinstance(c, discord.VoiceChannel)])}
+**<:stage_channel:925013315615326209> Stage Channels**
+{_space}{len([c for c in guild.channels if isinstance(c, discord.StageChannel)])}
+**<:cate_channel:925014473687826452> Category Channels**
+{_space}{len([c for c in guild.channels if isinstance(c, discord.CategoryChannel)])}
+**<:thread_channel:925014548807815178> Thread Channels
+{_space}{len(guild.threads)}
+**<:store_channel:925016581921185812> Store Channels**
+{_space}{len([c for c in guild.channels if isinstance(c, discord.StoreChannel)])}"""
+        )
+
+
         em.add_field(
             name = '<:boost2:924992412626071612> Premium Info',
             value = f"""**<:boost:924990949984194560> Boost tier**
@@ -232,21 +265,8 @@ class ServerInfoView(discord.ui.View):
 **<:award:925000347582365696> Last Boost**
 {_space}{_last_boost_offset}""",
             inline = True
-        )
+        )    
 
-        _owner = guild.owner
-        em.add_field(
-            name = '<:owner:924985927720378388> About Owner',
-            value = f"""
-**<:human:924986190921367562> Owner Name**
-{_space}{guild.owner.name}
-**<:ID:924978855381438515> Owner ID**
-{_space}{_owner.id}
-**<:time:924986886823493662> Account created at**
-{_space}{format_dt(_owner.created_at)}""", 
-            inline = True
-        )
-    
         self.message = await self.ctx.send(embed = em, view = self)
  
 
