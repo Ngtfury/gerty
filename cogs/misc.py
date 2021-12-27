@@ -186,11 +186,6 @@ class ServerInfoView(discord.ui.View):
         )
 
 
-        em.add_field(
-            name = '<:message:924985005644578846> Server Description',
-            value = guild.description if guild.description else '<:cross:924976416062332979> No description' + '\n\u200b _ _',
-            inline = False
-        )
 
         _owner = guild.owner
         em.add_field(
@@ -202,9 +197,20 @@ class ServerInfoView(discord.ui.View):
 {_space}{_owner.id}
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
-            inline = True
+            inline = False
         )
 
+        em.add_field(
+            name = '<:message:924985005644578846> Server Description',
+            value = guild.description if guild.description else '<:cross:924976416062332979> No description' + '\n\u200b _ _',
+            inline = False
+        )
+
+        em.add_field(
+            name = '<:add:925002720736333864> Created at',
+            value = format_dt(guild.created_at),
+            inline = False
+        )
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
         _guild_boost_tier = boost_tier[guild.premium_tier]
@@ -221,7 +227,8 @@ class ServerInfoView(discord.ui.View):
 **<:roles:924982455176396820> Boost Role**
 {_space}{_boost_role}
 **<:award:925000347582365696> Last Boost**
-{_space}{_last_boost_offset}"""
+{_space}{_last_boost_offset}""",
+            inline = True
         )
     
         self.message = await self.ctx.send(embed = em, view = self)
