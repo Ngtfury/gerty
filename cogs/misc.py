@@ -224,6 +224,17 @@ class ServerInfoView(discord.ui.View):
         _last_boost_offset = f'By {last_boost}, {_fmted}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
 
 
+        em.add_field(
+            name = '<:boost2:924992412626071612> Premium Info',
+            value = f"""**<:boost:924990949984194560> Boost tier**
+{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})
+**<:roles:924982455176396820> Boost Role**
+{_space}{_boost_role}
+**<:award:925000347582365696> Last Boost**
+{_space}{_last_boost_offset}""",
+            inline = True
+        )  
+
 
         em.add_field(
             name = '<:magicwand:925009525587734548> Channels',
@@ -238,9 +249,11 @@ class ServerInfoView(discord.ui.View):
 **<:thread_channel:925014548807815178> Thread Channels**
 {_space}{len(guild.threads)}
 **<:store_channel:925016581921185812> Store Channels**
-{_space}{len([c for c in guild.channels if isinstance(c, discord.StoreChannel)])}""",
-            inline = False
+{_space}{len([c for c in guild.channels if isinstance(c, discord.StoreChannel)])}
+\u200b _ _""",
+            inline = True
         )
+
 
         _owner = guild.owner
         em.add_field(
@@ -252,19 +265,9 @@ class ServerInfoView(discord.ui.View):
 {_space}{_owner.id}
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
-            inline = True
+            inline = False
         )
-
-        em.add_field(
-            name = '<:boost2:924992412626071612> Premium Info',
-            value = f"""**<:boost:924990949984194560> Boost tier**
-{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})
-**<:roles:924982455176396820> Boost Role**
-{_space}{_boost_role}
-**<:award:925000347582365696> Last Boost**
-{_space}{_last_boost_offset}""",
-            inline = True
-        )    
+  
 
         self.message = await self.ctx.send(embed = em, view = self)
  
