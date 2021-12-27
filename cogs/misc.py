@@ -22,10 +22,11 @@ from discord import VoiceRegion
 from discord import Interaction
 import humanize
 
-def format_dt(datetime: datetime.datetime):
+def format_dt(datetime: datetime.datetime, type = None):
     timestamp = int(datetime.timestamp())
-    offset = f'<t:{timestamp}:D> (<t:{timestamp}:R>)'
+    offset = f'<t:{timestamp}:D> (<t:{timestamp}:R>)' if not type else f'<t:{timestamp}:{type}>'
     return offset
+
 
 GUILD_FEATURES = {
     'COMMUNITY': 'Community Server',
@@ -209,7 +210,9 @@ class ServerInfoView(discord.ui.View):
         _guild_boost_tier = boost_tier[guild.premium_tier]
         _boost_role = f'{guild.premium_subscriber_role.mention}' if guild.premium_subscriber_role else '<:cross:924976416062332979> No boost role...'
         last_boost = max(guild.members, key=lambda m: m.premium_since or guild.created_at)
-        _last_boost_offset = f'By {last_boost}, {format_dt(last_boost.premium_since)}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
+        if last_boost.premium_since:
+            _fmted = format_dt(last_boost.premium_since, 'R')
+        _last_boost_offset = f'By {last_boost}, {_fmted}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
 
         em.add_field(
             name = '<:boost2:924992412626071612> Premium Info',
