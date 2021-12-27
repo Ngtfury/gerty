@@ -187,18 +187,6 @@ class ServerInfoView(discord.ui.View):
 
 
 
-        _owner = guild.owner
-        em.add_field(
-            name = '<:owner:924985927720378388> About Owner',
-            value = f"""
-**<:human:924986190921367562> Owner Name**
-{_space}{guild.owner.name}
-**<:ID:924978855381438515> Owner ID**
-{_space}{_owner.id}
-**<:time:924986886823493662> Account created at**
-{_space}{format_dt(_owner.created_at)}""", 
-            inline = False
-        )
 
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
@@ -229,6 +217,19 @@ class ServerInfoView(discord.ui.View):
 **<:award:925000347582365696> Last Boost**
 {_space}{_last_boost_offset}""",
             inline = True
+        )
+
+        _owner = guild.owner
+        em.add_field(
+            name = '<:owner:924985927720378388> About Owner',
+            value = f"""
+**<:human:924986190921367562> Owner Name**
+{_space}{guild.owner.name}
+**<:ID:924978855381438515> Owner ID**
+{_space}{_owner.id}
+**<:time:924986886823493662> Account created at**
+{_space}{format_dt(_owner.created_at)}""", 
+            inline = False
         )
     
         self.message = await self.ctx.send(embed = em, view = self)
