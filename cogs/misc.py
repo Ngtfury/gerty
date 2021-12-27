@@ -169,7 +169,7 @@ class ServerInfoView(discord.ui.View):
 
         em.add_field(
             name = '<:education:924970018863726672> Features',
-            value = '\n'.join(enabled_features) if enabled_features else '<:cross:924976416062332979> No features...' + '\n\u200b  ',
+            value = '\n'.join(enabled_features) if enabled_features else '<:cross:924976416062332979> No features...' + '\n\u200b _ _',
             inline = True
         )
         _space = '<:text1:924978527332368434> '
@@ -264,7 +264,8 @@ class ServerInfoView(discord.ui.View):
 **<:ID:924978855381438515> Owner ID**
 {_space}{_owner.id}
 **<:time:924986886823493662> Account created at**
-{_space}{format_dt(_owner.created_at)}""", 
+{_space}{format_dt(_owner.created_at)}
+\u200b _ _""", 
             inline = False
         )
 
