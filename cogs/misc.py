@@ -210,7 +210,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})"""
         )
     
-        await self.ctx.send(embed = em, view = self)
+        self.message = await self.ctx.send(embed = em, view = self)
  
 
 
