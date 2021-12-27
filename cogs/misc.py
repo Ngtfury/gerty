@@ -20,6 +20,7 @@ import aiohttp
 from io import BytesIO
 from discord import VoiceRegion
 from discord import Interaction
+import humanize
 
 
 GUILD_FEATURES = {
@@ -101,7 +102,7 @@ def get_server_region(guild: discord.Guild):
     if str(region) == 'santa-clara':
         return "🇺🇸 Santa Clara"
     else:
-        return "⁉ Not Found"
+        return "<:loading_error:924980440736088106> Not Found"
 
 class ServerInfoView(discord.ui.View):
     def __init__(self, ctx: commands.Context, guild: discord.Guild):
@@ -134,6 +135,7 @@ class ServerInfoView(discord.ui.View):
 
 
     async def start(self):
+        guild = self.guild
         enabled_features = []
 
         _guild_features = str(self.guild.features)
@@ -156,6 +158,7 @@ class ServerInfoView(discord.ui.View):
             inline = True
         )
         _space = '<:text1:924978527332368434> '
+        _verification_level = str(self.guild.verification_level).title()
         em.add_field(
             name = '<:general_info:923863510012817419> General Info',
             value = f"""
@@ -164,10 +167,17 @@ class ServerInfoView(discord.ui.View):
 **<:ID:924978855381438515> Server ID**
 {_space}{self.guild.id}
 **<:globe:924979379195502622> Server Region**
-{_space}{get_server_region(self.guild)}"""
+{_space}{get_server_region(self.guild)}
+**<:verified:924981313730121758> Verification Level**
+{_space}{_verification_level} verification level
+**<:filesize:924981795957649449> File size limit**
+{_space}{humanize.naturalsize(guild.filesize_limit)}
+**<:roles:924982455176396820> Total Roles**
+{_space}{humanize.intcomma(len(guild.roles))}
+\u200b _ _"""
         )
         await self.ctx.send(embed = em)
-        self.stop()
+ 
 
 
 
