@@ -200,6 +200,15 @@ class ServerInfoView(discord.ui.View):
 {_space}{format_dt(_owner.created_at)}""", 
             inline = True
         )
+
+
+        boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
+        _guild_boost_tier = boost_tier[guild.premium_tier]
+        em.add_field(
+            name = '<:boost2:924992412626071612> Premium Info',
+            value = f"""**<:boost:924990949984194560> Boost tier**
+{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})"""
+        )
     
         await self.ctx.send(embed = em)
  
