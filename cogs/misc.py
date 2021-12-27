@@ -52,6 +52,13 @@ GUILD_FEATURES = {
     'THREE_DAY_THREAD_ARCHIVE': '3 Day Thread Archive',
     'SEVEN_DAY_THREAD_ARCHIVE': '1 Week Thread Archive',
 }
+
+CONTENT_FILTER = {
+    discord.ContentFilter.disabled: "Don't scan any media content",
+    discord.ContentFilter.no_role: "Scan media content from members without a role.",
+    discord.ContentFilter.all_members: "Scan media content from all members."
+}
+
 def get_server_region(guild: discord.Guild):
     r = discord.VoiceRegion.us_central
     region = guild.region
@@ -197,7 +204,13 @@ class ServerInfoView(discord.ui.View):
         em.add_field(
             name = '<:add:925002720736333864> Created at',
             value = format_dt(guild.created_at),
-            inline = True
+            inline = False
+        )
+
+        em.add_field(
+            name = '<:server_verified:925006074803785739> Explict content filter',
+            value = f'{_space}{CONTENT_FILTER[guild.explicit_content_filter]}',
+            inline = False
         )
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
