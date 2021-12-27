@@ -193,7 +193,7 @@ class ServerInfoView(discord.ui.View):
             name = '<:owner:924985927720378388> About Owner',
             value = f"""
 **<:human:924986190921367562> Owner Name**
-{_space}**` {guild.owner.name} `**
+{_space}{guild.owner.name}
 **<:ID:924978855381438515> Owner ID**
 {_space}{_owner.id}
 **<:time:924986886823493662> Account created at**
@@ -210,7 +210,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})"""
         )
     
-        await self.ctx.send(embed = em)
+        await self.ctx.send(embed = em, view = self)
  
 
 
