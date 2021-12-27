@@ -197,7 +197,7 @@ class ServerInfoView(discord.ui.View):
 
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
-            value = _space + guild.description if guild.description else '<:cross:924976416062332979> No description',
+            value = _space + guild.description if guild.description else _space + '<:cross:924976416062332979> No description',
             inline = False
         )
 
