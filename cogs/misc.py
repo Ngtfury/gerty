@@ -267,6 +267,37 @@ class ServerInfoView(discord.ui.View):
 {_space}{format_dt(_owner.created_at)}""", 
             inline = False
         )
+
+        em.add_field(
+            name = '<:human:924986190921367562> Members',
+            value = f"""**<:human:924986190921367562> Humans**
+{_space}{len([m for m in guild.members if not m.bot])}
+**<:bots:925019937708343317> Bots**
+{_space}{len([m for m in guild.members if m.bot])}
+**<:join:925019779796979773> Total**
+{_space}{guild.member_count}
+**<:exclamation:922393359941771304> Limit**
+{_space}{guild.max_members}""",
+            inline =  True
+        )
+
+        em.add_filed(
+            name = '<:discord:925023197093560411> Member Statuses',
+            value = f"""**<:online:925024042954674207> Online**
+{_space}{len([filter(lambda i: i.status == discord.Status.online, guild.members)])}
+**<:idle:925023995181543436> Idle**
+{_space}{len([filter(lambda i: i.status == discord.Status.idle, guild.members)])}
+**<:dnd:925024125423091773> Do Not Disturb**
+{_space}{len([filter(lambda i: i.status == discord.Status.dnd, guild.members)])}
+**<:offline:925024082037190656> Offline**
+{_space}{len([filter(lambda i: i.status == discord.Status.offline, guild.members)])}""",
+            inline = True
+        )
+
+#        em.add_field(
+#            name = '<:emoji_guard:925021822821478410> Emojis',
+#            value = """"""
+#        )
   
 
         self.message = await self.ctx.send(embed = em, view = self)
