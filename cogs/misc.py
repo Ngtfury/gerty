@@ -15,6 +15,7 @@ import time
 import asyncio
 from math import *
 import random
+import numpy
 import typing
 import aiohttp
 from io import BytesIO
@@ -137,6 +138,15 @@ class ServerInfoView(discord.ui.View):
         return True
 
     @discord.ui.button(
+        style = discord.ButtonStyle.gray,
+        emoji = '<:general_info:923863510012817419>',
+        disabled = True
+    )
+    async def _send_home(self, button, interaction: Interaction):
+        button.disabled = True
+        await interaction.response.edit_message(embed = self._main_message, view = self)
+
+    @discord.ui.button(
         style = discord.ButtonStyle.red,
         emoji = '<:delete:924972358698151946>'
     )
@@ -145,6 +155,27 @@ class ServerInfoView(discord.ui.View):
         await self.message.delete()
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
         self.stop()
+
+
+#    @discord.ui.select(
+#        placeholder = 'Select categories...',
+#        options = [
+#            discord.SelectOption(label = 'Emojis', emoji = '<:emoji_guard:925021822821478410>', value = 'ServerInfoEmoji', description = 'View detailed info of server emojis')
+#        ],
+#        row = 2
+#    )
+#    async def _select_cates(self, select: discord.ui.Select, interaction: Interaction):
+#        self._send_home.disabled = False
+#        value = select.values[0]
+#        if value == 'ServerInfoEmoji':
+#            em = discord.Embed(title = 'Server Emojis', color = Utils.BotColors.invis())
+
+#            _list = []
+#            for emoji in self.guild.emojis:
+#                _a = 'a' if emoji.animated else ''
+#                _list.append(
+#                    f'**{emoji} ` <{_a}:{emoji.name}:{emoji.id}> `**'
+#               )
 
 
     async def start(self):
