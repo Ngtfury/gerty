@@ -216,7 +216,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_boost_role}
 **<:award:925000347582365696> Last Boost**
 {_space}{_last_boost_offset}""",
-            inline = True
+            inline = False
         )
 
         _owner = guild.owner
