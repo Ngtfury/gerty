@@ -6,6 +6,7 @@ from discord import guild
 from discord import integrations
 from discord.errors import HTTPException, InvalidArgument
 from discord.ext.commands.cooldowns import BucketType
+from bot import GertyBot
 from cogs.utils import Utils
 from discord.ext import commands
 import datetime
@@ -17,6 +18,160 @@ import random
 import typing
 import aiohttp
 from io import BytesIO
+from discord import VoiceRegion
+from discord import Interaction
+
+
+GUILD_FEATURES = {
+    'COMMUNITY': 'Community Server',
+    'VERIFIED': 'Verified',
+    'DISCOVERABLE': 'Discoverable',
+    'PARTNERED': 'Partnered',
+    'FEATURABLE': 'Featured',
+    'COMMERCE': 'Commerce',
+    'MONETIZATION_ENABLED': 'Monetization',
+    'NEWS': 'News Channels',
+    'PREVIEW_ENABLED': 'Preview Enabled',
+    'INVITE_SPLASH': 'Invite Splash',
+    'VANITY_URL': 'Vanity Invite URL',
+    'ANIMATED_ICON': 'Animated Server Icon',
+    'BANNER': 'Server Banner',
+    'MORE_EMOJI': 'More Emoji',
+    'MORE_STICKERS': 'More Stickers',
+    'WELCOME_SCREEN_ENABLED': 'Welcome Screen',
+    'MEMBER_VERIFICATION_GATE_ENABLED': 'Membership Screening',
+    'TICKETED_EVENTS_ENABLED': 'Ticketed Events',
+    'VIP_REGIONS': 'VIP Voice Regions',
+    'PRIVATE_THREADS': 'Private Threads',
+    'THREE_DAY_THREAD_ARCHIVE': '3 Day Thread Archive',
+    'SEVEN_DAY_THREAD_ARCHIVE': '1 Week Thread Archive',
+}
+def get_server_region(guild: discord.Guild):
+    r = discord.VoiceRegion.us_central
+    region = guild.region
+
+    if region == VoiceRegion.amsterdam:
+        return "🇳🇱 Amsterdam"
+    if region == VoiceRegion.brazil:
+        return "🇧🇷 Brazil"
+    if region == VoiceRegion.dubai:
+        return "🇦🇪 Dubai"
+    if region == VoiceRegion.eu_central:
+        return "🇪🇺 EU central"
+    if region == VoiceRegion.eu_west:
+        return "🇪🇺 EU west"
+    if region == VoiceRegion.europe:
+        return "🇪🇺 Europe"
+    if region == VoiceRegion.frankfurt:
+        return "🇩🇪 Frankfurt"
+    if region == VoiceRegion.hongkong:
+        return "🇭🇰 Hong Kong"
+    if region == VoiceRegion.india:
+        return "🇮🇳 India"
+    if region == VoiceRegion.japan:
+        return "🇯🇵 Japan"
+    if region == VoiceRegion.london:
+        return "🇬🇧 London"
+    if region == VoiceRegion.russia:
+        return "🇷🇺 Russia"
+    if region == VoiceRegion.singapore:
+        return "🇸🇬 Singapore"
+    if region == VoiceRegion.southafrica:
+        return "🇿🇦 South Africa"
+    if region == VoiceRegion.south_korea:
+        return "🇰🇷 South Korea"
+    if region == VoiceRegion.sydney:
+        return "🇦🇺 Sydney"
+    if region == VoiceRegion.us_central:
+        return "🇺🇸 US Central"
+    if region == VoiceRegion.us_east:
+        return "🇺🇸 US East"
+    if region == VoiceRegion.us_south:
+        return "🇺🇸 US South"
+    if region == VoiceRegion.us_west:
+        return "🇺🇸 US West"
+    if region == VoiceRegion.vip_amsterdam:
+        return "🇳🇱🌟 VIP Amsterdam"
+    if region == VoiceRegion.vip_us_east:
+        return "🇺🇸🌟 VIP US East"
+    if region == VoiceRegion.vip_us_west:
+        return "🇺🇸🌟 VIP US West"
+    if str(region) == 'atlanta':
+        return "🇺🇸 Atlanta"
+    if str(region) == 'santa-clara':
+        return "🇺🇸 Santa Clara"
+    else:
+        return "⁉ Not Found"
+
+class ServerInfoView(discord.ui.View):
+    def __init__(self, ctx: commands.Context, guild: discord.Guild):
+        super().__init__(timeout=60)
+        self.ctx = ctx
+        self.guild: discord.Guild = guild
+        self.bot: GertyBot = ctx.bot
+        self._main_message: discord.Message = None
+
+    async def on_timeout(self):
+        for children in self.children:
+            children.disabled = True
+
+        await self.message.edit(view = self)
+
+    async def interaction_check(self, interaction: Interaction):
+        if interaction.author.id != self.ctx.author.id:
+            await interaction.response.send_message('Sorry, you cannot interact with these menu', ephemeral=True)
+            return False
+        return True
+
+    @discord.ui.button(
+        style = discord.ButtonStyle.red,
+        emoji = '<:delete:924972358698151946>'
+    )
+    async def _delete_si(self, button, interaction: Interaction):
+        await interaction.response.defer()
+        await self.message.delete()
+        await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+
+
+    async def start(self):
+        enabled_features = []
+
+        _guild_features = str(self.guild.features)
+        for feature, label in GUILD_FEATURES.items():
+            if feature in _guild_features:
+                enabled_features.append(f'<:tick:924974436866748416> {label}')
+
+
+        em = discord.Embed(
+            color = Utils.BotColors.invis(),
+        )
+
+        _guild_icon = str(self.guild.icon.url) if self.guild.icon else ''
+        em.set_author(name=str(self.guild.name), icon_url=_guild_icon)
+        em.set_thumbnail(url=_guild_icon)
+
+        em.add_field(
+            name = '<:education:924970018863726672> Features',
+            value = '\n'.join(enabled_features) if enabled_features else '<:cross:924976416062332979> No features...' + '\n\u200b  ',
+            inline = True
+        )
+        _space = '<:text1:924978527332368434> '
+        em.add_field(
+            name = '<:general_info:923863510012817419> General Info',
+            value = f"""
+**<:wave:924978198368895016> Server Name**
+{_space}{self.guild.name}
+**<:ID:924978855381438515> Server ID**
+{_space}{self.guild.id}
+**<:globe:924979379195502622> Server Region**
+{_space}{get_server_region(self.guild)}"""
+        )
+        await self.ctx.send(embed = em)
+        self.stop()
+
+
+
+
 
 
 class WaifuView(discord.ui.View):
@@ -953,8 +1108,19 @@ https://discord.gg/GdftdzWKqv""",
         view = NitroView(ctx)
         view.message = await ctx.send(embed = em, view = view)
 
+    @commands.command(brief = 'util', description="Shows the current server's information.", aliases=['si', 'guildinfo', 'gi'])
+    async def serverinfo(self, ctx, guild: typing.Optional[discord.Guild]):
+        _guild = guild if guild and await self.bot.is_owner(ctx.author) else ctx.guild
+        
+        view = ServerInfoView(ctx, _guild)
+        await view.start()
+        return
+
+
+
 
 
 def setup(client):
     client.add_cog(Misc(client))
-    client.remove_command('calcu')
+    d = client.get_command('calcu')
+    d.disabled = True
