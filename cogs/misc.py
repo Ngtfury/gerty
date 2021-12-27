@@ -281,7 +281,7 @@ class ServerInfoView(discord.ui.View):
             inline =  True
         )
 
-        em.add_filed(
+        em.add_field(
             name = '<:discord:925023197093560411> Member Statuses',
             value = f"""**<:online:925024042954674207> Online**
 {_space}{len([filter(lambda i: i.status == discord.Status.online, guild.members)])}
