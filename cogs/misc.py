@@ -197,7 +197,7 @@ class ServerInfoView(discord.ui.View):
 {_space}{_owner.id}**
 **<:time:924986886823493662> Account created at**
 {_space}{format_dt(_owner.created_at)}""", 
-            inline=False
+            inline = True
         )
 
         await self.ctx.send(embed = em)
