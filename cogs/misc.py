@@ -197,7 +197,7 @@ class ServerInfoView(discord.ui.View):
         em.add_field(
             name = '<:add:925002720736333864> Created at',
             value = format_dt(guild.created_at),
-            inline = False
+            inline = True
         )
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
