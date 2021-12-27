@@ -136,6 +136,7 @@ class ServerInfoView(discord.ui.View):
         await interaction.response.defer()
         await self.message.delete()
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
+        self.stop()
 
 
     async def start(self):
@@ -155,6 +156,8 @@ class ServerInfoView(discord.ui.View):
         _guild_icon = str(self.guild.icon.url) if self.guild.icon else ''
         em.set_author(name=str(self.guild.name), icon_url=_guild_icon)
         em.set_thumbnail(url=_guild_icon)
+        if guild.banner:
+            em.set_image(url=guild.banner.url)
 
         em.add_field(
             name = '<:education:924970018863726672> Features',
@@ -204,10 +207,18 @@ class ServerInfoView(discord.ui.View):
 
         boost_tier = ['<:tier0:924991564902715403>', '<:tier1:924991572108541973>', '<:tier2:924991581239517214>', '<:tier3:924991646704222279>']
         _guild_boost_tier = boost_tier[guild.premium_tier]
+        _boost_role = f'{guild.premium_subscriber_role.mention}' if guild.premium_subscriber_role else '<:cross:924976416062332979> No boost role...'
+        last_boost = max(guild.members, key=lambda m: m.premium_since or guild.created_at)
+        _last_boost_offset = f'By {last_boost}, {format_dt(last_boost.premium_since)}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
+
         em.add_field(
             name = '<:boost2:924992412626071612> Premium Info',
             value = f"""**<:boost:924990949984194560> Boost tier**
-{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})"""
+{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})
+**<:roles:924982455176396820> Boost Role**
+{_space}{_boost_role}
+**<:award:925000347582365696> Last Boost**
+{_space}{_last_boost_offset}"""
         )
     
         self.message = await self.ctx.send(embed = em, view = self)
