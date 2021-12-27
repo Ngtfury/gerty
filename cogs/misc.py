@@ -197,7 +197,7 @@ class ServerInfoView(discord.ui.View):
 
         em.add_field(
             name = '<:message:924985005644578846> Server Description',
-            value = guild.description if guild.description else '<:cross:924976416062332979> No description' + '\n\u200b _ _',
+            value = guild.description if guild.description else '<:cross:924976416062332979> No description',
             inline = False
         )
 
@@ -209,7 +209,7 @@ class ServerInfoView(discord.ui.View):
 
         em.add_field(
             name = '<:server_verified:925006074803785739> Explict content filter',
-            value = f'{_space}{CONTENT_FILTER[guild.explicit_content_filter]}',
+            value = f'{_space}{CONTENT_FILTER[guild.explicit_content_filter]}' + '\n\u200b _ _',
             inline = False
         )
 
