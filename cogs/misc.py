@@ -22,6 +22,10 @@ from discord import VoiceRegion
 from discord import Interaction
 import humanize
 
+def format_dt(datetime: datetime.datetime):
+    timestamp = int(datetime.timestamp())
+    offset = f'<t:{timestamp}:D> (<t:{timestamp}:R>)'
+    return offset
 
 GUILD_FEATURES = {
     'COMMUNITY': 'Community Server',
@@ -176,6 +180,25 @@ class ServerInfoView(discord.ui.View):
 {_space}{humanize.intcomma(len(guild.roles))}
 \u200b _ _"""
         )
+
+        em.add_field(
+            name = '<:message:924985005644578846> Server Description',
+            value = guild.description if guild.description else '<:cross:924976416062332979> No description',
+            inline = False
+        )
+
+        _owner = guild.owner
+        em.add_field(
+            name = '<:owner:924985927720378388> About Owner',
+            value = f"""
+**<:human:924986190921367562> Owner Name**
+{_space}{guild.owner.name}
+**<:ID:924978855381438515> Owner ID
+{_space}{_owner.id}**
+**<:time:924986886823493662> Account created at**
+{_space}{format_dt(_owner.created_at)}"""
+        )
+
         await self.ctx.send(embed = em)
  
 
