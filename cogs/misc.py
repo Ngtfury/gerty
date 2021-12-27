@@ -223,19 +223,6 @@ class ServerInfoView(discord.ui.View):
             _fmted = format_dt(last_boost.premium_since, 'R')
         _last_boost_offset = f'By {last_boost}, {_fmted}' if last_boost.premium_since else '<:cross:924976416062332979> No active boosters..'
 
-
-        em.add_field(
-            name = '<:boost2:924992412626071612> Premium Info',
-            value = f"""**<:boost:924990949984194560> Boost tier**
-{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})
-**<:roles:924982455176396820> Boost Role**
-{_space}{_boost_role}
-**<:award:925000347582365696> Last Boost**
-{_space}{_last_boost_offset}""",
-            inline = True
-        )  
-
-
         em.add_field(
             name = '<:magicwand:925009525587734548> Channels',
             value = f"""**<:text_channel:925013200943075338> Text Channels**
@@ -253,6 +240,30 @@ class ServerInfoView(discord.ui.View):
 \u200b _ _""",
             inline = True
         )
+
+
+        em.add_field(
+            name = '<:boost2:924992412626071612> Premium Info',
+            value = f"""**<:boost:924990949984194560> Boost tier**
+{_space}{_guild_boost_tier} {guild.premium_tier} ({guild.premium_subscription_count})
+**<:roles:924982455176396820> Boost Role**
+{_space}{_boost_role}
+**<:award:925000347582365696> Last Boost**
+{_space}{_last_boost_offset}""",
+            inline = True
+        )  
+
+        em.add_field(
+            name = '<:emoji_guard:925021822821478410> Emojis',
+            value = f"""**<:add_reactions:925051701394808833> Animated Emojis**
+{_space}{len([e for e in guild.emojis if e.animated])}/{guild.emoji_limit}
+**<:add_reactions:925051701394808833> Static Emojis**
+{_space}{len([e for e in guild.emojis if not e.animated])}/{guild.emoji_limit}
+**<:add_reactions:925051701394808833> Total Emojis**
+{_space}{len(guild.emojis)}""",
+            inline = True
+        )
+
 
 
         _owner = guild.owner
@@ -285,22 +296,19 @@ class ServerInfoView(discord.ui.View):
         em.add_field(
             name = '<:discord:925023197093560411> Member Statuses',
             value = f"""**<:online:925024042954674207> Online**
-{_space}{len([filter(lambda i: i.status == discord.Status.online, guild.members)])}
+{_space}{len(list(filter(lambda i: i.status == discord.Status.online, guild.members)))}
 **<:idle:925023995181543436> Idle**
-{_space}{len([filter(lambda i: i.status == discord.Status.idle, guild.members)])}
+{_space}{len(list(filter(lambda i: i.status == discord.Status.idle, guild.members)))}
 **<:dnd:925024125423091773> Do Not Disturb**
-{_space}{len([filter(lambda i: i.status == discord.Status.dnd, guild.members)])}
+{_space}{len(list(filter(lambda i: i.status == discord.Status.dnd, guild.members)))}
 **<:offline:925024082037190656> Offline**
-{_space}{len([filter(lambda i: i.status == discord.Status.offline, guild.members)])}""",
+{_space}{len(list(filter(lambda i: i.status == discord.Status.offline, guild.members)))}""",
             inline = True
         )
-#        em.add_field(
-#            name = '<:emoji_guard:925021822821478410> Emojis',
-#            value = """"""
-#        )
+
   
 
-        self.message = await self.ctx.send(embed = em, view = self)
+        self.message = self._main_message = await self.ctx.send(embed = em, view = self)
  
 
 
