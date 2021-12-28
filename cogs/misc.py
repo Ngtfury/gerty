@@ -167,8 +167,8 @@ class ServerInfoView(discord.ui.View):
             title = guild.name,
             description = 'Channel Name and Memeber Count'
         )
-        pag = WrappedPaginator(max_size = 1024)
-        pag2 = WrappedPaginator(max_size = 1024)
+        pag = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
+        pag2 = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
         for channel in guild.channels:
             _tick = '<:tick:924974436866748416>' if channel.permissions_for(self.ctx.author).view_channel else '<:cross:924976416062332979>'
             member_count = len(channel.members) if not isinstance(channel, discord.CategoryChannel) else '---'
