@@ -142,6 +142,7 @@ class ServerInfoView(discord.ui.View):
     @discord.ui.button(
         style = discord.ButtonStyle.gray,
         emoji = '<:general_info:923863510012817419>',
+        disabled = True
     )
     async def _send_home(self, button, interaction: Interaction):
         button.disabled = True
