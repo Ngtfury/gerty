@@ -140,14 +140,14 @@ class ServerInfoView(discord.ui.View):
             return False
         return True
 
-    @discord.ui.button(
-        style = discord.ButtonStyle.gray,
-        emoji = '<:general_info:923863510012817419>',
-        disabled = True
-    )
-    async def _send_home(self, button, interaction: Interaction):
-        button.disabled = True
-        await interaction.response.edit_message(embed = self._main_message, view = self)
+#    @discord.ui.button(
+#        style = discord.ButtonStyle.gray,
+#        emoji = '<:general_info:923863510012817419>',
+#        disabled = True
+#    )
+#    async def _send_home(self, button, interaction: Interaction):
+#        button.disabled = True
+#        await interaction.response.edit_message(embed = self._main_message, view = self)
 
     @discord.ui.button(
         style = discord.ButtonStyle.red,
@@ -159,58 +159,58 @@ class ServerInfoView(discord.ui.View):
         await self.ctx.message.add_reaction(Utils.BotEmojis.success())
         self.stop()
 
-    async def _channel_embed_builder(self):
-        guild = self.guild
-        ctx = self.ctx
-        em = discord.Embed(
-            color = Utils.BotColors.invis(),
-            title = guild.name,
-            description = 'Channel Name and Memeber Count'
-        )
-        pag = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
-        pag2 = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
-        for channel in guild.channels:
-            _tick = '<:tick:924974436866748416>' if channel.permissions_for(self.ctx.author).view_channel else '<:cross:924976416062332979>'
-            member_count = len(channel.members) if not isinstance(channel, discord.CategoryChannel) else '---'
-            pag2.add_line(f'{_tick} {member_count}')
-            if isinstance(channel, discord.TextChannel):
-                pag.add_line(f'<:text_channel:925013200943075338> {channel.name}')
-            elif isinstance(channel, discord.CategoryChannel):
-                pag.add_line(f'<:cate_channel:925014473687826452> {channel.name}')
-            elif isinstance(channel, discord.StoreChannel):
-                pag.add_line(f'<:store_channel:925016581921185812> {channel.name}')
-            elif isinstance(channel, discord.VoiceChannel):
-                pag.add_line(f'<:voice_channel:925013284816568390> {channel.name}')
-            elif isinstance(channel, discord.StageChannel):
-                pag.add_line(f'<:stage_channel:925013315615326209> {channel.name}')
+#    async def _channel_embed_builder(self):
+#        guild = self.guild
+#        ctx = self.ctx
+#        em = discord.Embed(
+#            color = Utils.BotColors.invis(),
+#            title = guild.name,
+#            description = 'Channel Name and Memeber Count'
+#        )
+#        pag = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
+#        pag2 = WrappedPaginator(max_size = 1024, prefix = '\n\u200b _ _', suffix = '\n\u200b _ _')
+#        for channel in guild.channels:
+#            _tick = '<:tick:924974436866748416>' if channel.permissions_for(self.ctx.author).view_channel else '<:cross:924976416062332979>'
+#            member_count = len(channel.members) if not isinstance(channel, discord.CategoryChannel) else '---'
+#            pag2.add_line(f'{_tick} {member_count}')
+#            if isinstance(channel, discord.TextChannel):
+#                pag.add_line(f'<:text_channel:925013200943075338> {channel.name}')
+#
+#                pag.add_line(f'<:cate_channel:925014473687826452> {channel.name}')
+#            elif isinstance(channel, discord.StoreChannel):
+#                pag.add_line(f'<:store_channel:925016581921185812> {channel.name}')
+#            elif isinstance(channel, discord.VoiceChannel):
+#                pag.add_line(f'<:voice_channel:925013284816568390> {channel.name}')
+#            elif isinstance(channel, discord.StageChannel):
+#                pag.add_line(f'<:stage_channel:925013315615326209> {channel.name}')
 
-        for p in pag.pages:
-            em.add_field(name = 'Channel Name', value = p)
-        for pp in pag2.pages:
-            em.add_field(name = 'Member Count', value = pp)
+#        for p in pag.pages:
+#            em.add_field(name = 'Channel Name', value = p)
+#        for pp in pag2.pages:
+#            em.add_field(name = 'Member Count', value = pp)
 
-        return em
+#       return em
 
 
 
-    @discord.ui.select(
+#    @discord.ui.select(
 
-        placeholder= 'Select catgories of server info...',
-        options = [
-            discord.SelectOption(
-                label = 'Channels',
-                value = 'ServerInfoChannels',
-                emoji = '<:text_channel:925013200943075338>',
-                description = 'View all info about channels in this server'
-            )
-        ]
-    )
-    async def _serverinfo_select(self, select: discord.ui.Select, interaction: Interaction):
-        value = select.values[0]
-        self._send_home.disabled = False
-        if value == 'ServerInfoChannels':
-            embed = await self._channel_embed_builder()
-            await interaction.response.edit_message(embed = embed, view = self)
+#        placeholder= 'Select catgories of server info...',
+#        options = [
+#            discord.SelectOption(
+#                label = 'Channels',
+#                value = 'ServerInfoChannels',
+#                emoji = '<:text_channel:925013200943075338>',
+#                description = 'View all info about channels in this server'
+#            )
+#        ]
+#    )
+#    async def _serverinfo_select(self, select: discord.ui.Select, interaction: Interaction):
+#        value = select.values[0]
+#        self._send_home.disabled = False
+#        if value == 'ServerInfoChannels':
+#            embed = await self._channel_embed_builder()
+#            await interaction.response.edit_message(embed = embed, view = self)
 
     async def start(self):
         guild = self.guild
