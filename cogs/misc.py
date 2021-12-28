@@ -184,8 +184,10 @@ class ServerInfoView(discord.ui.View):
             elif isinstance(channel, discord.StageChannel):
                 pag.add_line(f'<:stage_channel:925013315615326209> {channel.name}')
 
-        em.add_field(name = 'Channel Name', value = pag.pages[0])
-        em.add_field(name = 'Member Count', value = pag2.pages[0])
+        for p in pag.pages:
+            em.add_field(name = 'Channel Name', value = p)
+        for pp in pag2.pages:
+            em.add_field(name = 'Member Count', value = pp)
 
         return em
 
