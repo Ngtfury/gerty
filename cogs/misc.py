@@ -4,6 +4,7 @@ import discord
 from discord import emoji
 from discord import guild
 from discord import integrations
+from discord.channel import CategoryChannel
 from discord.errors import HTTPException, InvalidArgument
 from discord.ext.commands.cooldowns import BucketType
 from bot import GertyBot
@@ -170,7 +171,7 @@ class ServerInfoView(discord.ui.View):
         pag2 = WrappedPaginator(max_size = 1024)
         for channel in guild.channels:
             _tick = '<:tick:924974436866748416>' if channel.permissions_for(self.ctx.author).view_channel else '<:cross:924976416062332979>'
-            member_count = len(channel.members)
+            member_count = len(channel.members) if not isinstance(channel, discord.CategoryChannel) else '---'
             pag2.add_line(f'{_tick} {member_count}')
             if isinstance(channel, discord.TextChannel):
                 pag.add_line(f'<:text_channel:925013200943075338> {channel.name}')
