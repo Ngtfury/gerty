@@ -125,7 +125,7 @@ class ServerInfoView(discord.ui.View):
         self.ctx = ctx
         self.guild: discord.Guild = guild
         self.bot: GertyBot = ctx.bot
-        self._main_message: discord.Message = None
+        self._main_message: discord.Embed = None
 
     async def on_timeout(self):
         for children in self.children:
@@ -367,13 +367,10 @@ class ServerInfoView(discord.ui.View):
 {_space}{len(list(filter(lambda i: i.status == discord.Status.offline, guild.members)))}""",
             inline = True
         )
-
-
-
-
+        self._main_message = em
   
 
-        self.message = self._main_message = await self.ctx.send(embed = em, view = self)
+        self.message = await self.ctx.send(embed = em, view = self)
  
 
 
