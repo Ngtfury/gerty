@@ -34,7 +34,7 @@ class VariableEngine:
     def __init__(self, prefix=None, suffix=None):
         self.variables = {}
         self.prefix = prefix if prefix else ''
-        self.suffix = suffix if suffix else prefix or ''
+        self.suffix = suffix if suffix else self.prefix
 
     def add_variable(self, variable: str, value: str):
         if not isinstance(variable, str):
