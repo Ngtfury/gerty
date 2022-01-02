@@ -21,7 +21,8 @@ class GertyBot(commands.AutoShardedBot):
             command_prefix = commands.when_mentioned_or('g!', 'G!'),
             intents=discord.Intents.all(),
             strip_after_prefix=True,
-            case_insensitive=True
+            case_insensitive=True,
+            owner_ids = [293468815130492928, 770646750804312105]
         )
         self.maintenance_mode = False
         self.maintenance_timestamp = 1640277000
