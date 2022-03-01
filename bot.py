@@ -32,7 +32,7 @@ class GertyBot(commands.AutoShardedBot):
         self.db = self.loop.run_until_complete(asyncpg.create_pool(host="ec2-54-162-119-125.compute-1.amazonaws.com", port="5432", user="fejnxxnhwryzfy", password="5c956634680e4137ff4baede1a09b0f27e98f045eeb779b50d6729b0f5a2abae", database="dcph9t30tehh6l"))
         print('Connected to database.')
         self.remove_command("help")
-        self.token = "ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.PbT8noERy_xLFxNVK16iLvNdU-s"
+        self.token = "ODU1NDQzMjc1NjU4MTY2Mjgy.YMyjog.s8mZ8nZopldI5j7wd6PaeGXPxvE"
         os.environ["JISHAKU_NO_UNDERSCORE"] = "True"
         os.environ["JISHAKU_NO_DM_TRACEBACK"] = "True" 
         os.environ["JISHAKU_HIDE"] = "True"
