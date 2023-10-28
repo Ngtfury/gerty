@@ -1,5 +1,5 @@
 git init
-git remote add origin https://Ngtfury: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@github.com/Ngtfury/gerty.git
+git remote add origin https://Ngtfury:<token>@github.com/Ngtfury/gerty.git
 git config branch.master.remote origin
 git config branch.master.merge refs/heads/main
 rm -fr *
